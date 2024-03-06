@@ -1,0 +1,252 @@
+.imagecontainer1 {
+  align-self: stretch;
+  overflow: hidden;
+  background-image: url(/auth/login/imagecontainer@3x.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.imagecontainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 40.625rem;
+}
+.logoIcon {
+  width: 17.488rem;
+  position: relative;
+  height: 3.6rem;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.logocontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.enterYourEmail,
+.welcometext {
+  align-self: stretch;
+  position: relative;
+  line-height: 120%;
+  display: inline-block;
+}
+.welcometext {
+  margin: 0;
+  height: 2.375rem;
+  font-size: inherit;
+  font-weight: 500;
+  font-family: inherit;
+}
+.enterYourEmail {
+  height: 1.188rem;
+  font-size: clamp(12px, 0.83vw, 32px);
+  font-weight: 300;
+  white-space: pre-wrap;
+}
+.textwrapper {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 0;
+}
+.lable {
+  cursor: pointer;
+  align-self: stretch;
+  height: 1.188rem;
+  position: relative;
+  font-size: clamp(12px, 0.83vw, 32px);
+  line-height: 120%;
+  font-family: Poppins;
+  color: #000;
+  text-align: left;
+  display: inline-block;
+}
+.email,
+.emailinput {
+  align-self: stretch;
+  display: flex;
+}
+.emailinput {
+  border: 0;
+  outline: 0;
+  font-family: Poppins;
+  font-size: 0.875rem;
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.063rem 0.625rem;
+  color: #828282;
+}
+.email {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.25rem 0;
+}
+.passwordinput,
+.text {
+  font-size: 0.875rem;
+  font-family: Poppins;
+}
+.passwordinput {
+  border: 0;
+  outline: 0;
+  background-color: #f5f7fa;
+  align-self: stretch;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.063rem 0.625rem;
+  color: #828282;
+}
+.text {
+  margin: 0;
+  position: relative;
+  line-height: 120%;
+  font-weight: 500;
+  color: #258aff;
+  text-align: left;
+}
+.forgotpasswordbutton {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.container,
+.forgotpasswordbuttoncontainer,
+.inputgroup {
+  align-self: stretch;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+.container,
+.inputgroup {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.75rem 0;
+}
+.inputgroup {
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2rem 0;
+  row-gap: clamp(16px, 1.66vw, 64px);
+}
+.text1 {
+  margin: 0;
+  position: relative;
+  font-size: 0.875rem;
+  line-height: 120%;
+  font-weight: 500;
+  font-family: Poppins;
+  color: #fff;
+  text-align: left;
+}
+.form,
+.signinbutton {
+  display: flex;
+  align-items: center;
+}
+.signinbutton {
+  cursor: pointer;
+  border: 0;
+  padding: 0.5rem 0.625rem;
+  background-color: #1b2459;
+  align-self: stretch;
+  border-radius: 8px;
+  height: 3rem;
+  flex-direction: row;
+  justify-content: center;
+  box-sizing: border-box;
+}
+.form {
+  margin: 0;
+}
+.form,
+.loginform {
+  align-self: stretch;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 4rem 0;
+  row-gap: clamp(24px, 3.33vw, 120px);
+}
+.login,
+.logincontainer,
+.loginform {
+  display: flex;
+  align-items: center;
+}
+.logincontainer {
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10rem 11.25rem;
+  box-sizing: border-box;
+  gap: 5.5rem 0;
+  max-width: 50rem;
+  padding-inline: clamp(24px, 9.37vw, 360px);
+  padding-block: clamp(24px, 8.33vw, 360px);
+  row-gap: clamp(24px, 4.58vw, 160px);
+  text-align: center;
+  font-size: Clamp(24px, 1.66vw, 64px);
+  color: #000;
+  font-family: Poppins;
+}
+.login {
+  align-self: stretch;
+  background-color: #fff;
+  overflow: hidden;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+@media screen and (max-width: 1600px) {
+  .logincontainer {
+    padding-inline: clamp(24px, 7.29vw, 360px);
+    padding-block: clamp(24px, 8.33vw, 360px);
+    row-gap: clamp(24px, 4.58vw, 160px);
+  }
+}
+@media screen and (max-width: 1400px) {
+  .logincontainer {
+    padding-inline: clamp(24px, 6.25vw, 360px);
+    padding-block: clamp(24px, 8.33vw, 360px);
+    row-gap: clamp(24px, 4.58vw, 160px);
+  }
+}
+@media screen and (max-width: 1200px) {
+  .welcometext {
+    font-size: Clamp(24px, 1.66vw, 64px);
+  }
+  .logincontainer {
+    padding-inline: clamp(24px, 4.16vw, 360px);
+    padding-block: clamp(24px, 8.33vw, 360px);
+    row-gap: clamp(24px, 4.58vw, 160px);
+  }
+}
+@media screen and (max-width: 960px) {
+  .imagecontainer,
+  .logincontainer {
+    flex: unset;
+    align-self: stretch;
+  }
+  .login {
+    flex-direction: column;
+  }
+}
