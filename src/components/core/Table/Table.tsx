@@ -23,6 +23,8 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
   getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
+  console.log(sorting);
+
   const table = useReactTable({
     columns,
     data,
@@ -108,7 +110,7 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
               .map((headerGroup: any, mainIndex: number) => (
                 <tr
                   className="table-row"
-                  key={mainIndex}
+                  key={headerGroup.id}
                   style={{ border: "1px solid red" }}
                 >
                   {headerGroup.headers.map((header: any, index: number) => {
@@ -145,8 +147,22 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
                               header.getContext()
                             )}
                             {{
-                              asc: " 🔼",
-                              desc: " 🔽",
+                              asc: (
+                                <Image
+                                  src="/core/sort/sort-asc.svg"
+                                  height={15}
+                                  width={15}
+                                  alt="image"
+                                />
+                              ),
+                              desc: (
+                                <Image
+                                  src="/core/sort/sort-desc.svg"
+                                  height={15}
+                                  width={15}
+                                  alt="image"
+                                />
+                              ),
                             }[header.column.getIsSorted() as string] ?? null}
                             {/* <SortItems
                               searchParams={searchParams}
@@ -162,24 +178,30 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
           </thead>
           <tbody className="tbody">
             {data?.length ? (
-              table
-                .getFilteredRowModel()
-                .rows.map((row: any, mainIndex: number) => {
-                  return (
-                    <tr className="table-row" key={mainIndex}>
-                      {row.getVisibleCells().map((cell: any, index: number) => {
-                        return (
-                          <td className="cell" key={index}>
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })
+              table.getRowModel().rows.map((row: any, mainIndex: number) => {
+                return (
+                  <tr className="table-row" key={mainIndex}>
+                    {row.getVisibleCells().map((cell: any, index: number) => {
+                      return (
+                        <td
+                          className="cell"
+                          key={index}
+                          style={{
+                            backgroundColor: !row?.original?.target_reached
+                              ? "#ffebe9"
+                              : "",
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })
             ) : !loading ? (
               <tr>
                 <td colSpan={10}>
