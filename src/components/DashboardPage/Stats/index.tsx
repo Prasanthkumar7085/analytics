@@ -91,6 +91,7 @@ const Stats = () => {
             </div>
           </div>
         </div>
+
         <div className={styles.card}>
           <div className={styles.titlecontainer}>
             <div className={styles.title1}>Volume</div>
@@ -103,7 +104,7 @@ const Stats = () => {
               />
             </button>
           </div>
-          <div className={styles.row1}>
+          <div className={styles.row}>
             <div className={styles.billed}>
               <div className={styles.header}>
                 <label className={styles.lable}>Total</label>

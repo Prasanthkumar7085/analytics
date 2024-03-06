@@ -241,8 +241,8 @@
   font-size: clamp(12px, 0.72vw, 28px);
 }
 .revenuecard {
-  flex: 1;
   border-radius: 6px;
+  gap: 16px;
   background: linear-gradient(110.31deg, #ee0979, #cf8bf3);
   box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),
     0 4px 14px -2px transparent;
@@ -255,14 +255,17 @@
   position: relative;
   line-height: 100%;
 }
-.row1 {
+.card,
+.row1{
   align-self: stretch;
   display: flex;
+}
+.row1 {
   flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0 1.5rem;
-  font-size: clamp(12px, 0.72vw, 28px);
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 0 1.5rem;
+    font-size: clamp(12px, 0.72vw, 28px);
 }
 .card {
   border-radius: 6px;
@@ -270,9 +273,11 @@
   box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),
     0 4px 14px -2px transparent;
   display: flex;
-  justify-content: space-between;
+    gap: 16px;
+justify-content: space-between;
   padding: 1rem;
 }
+
 .card,
 .cardscontainer,
 .stats {
