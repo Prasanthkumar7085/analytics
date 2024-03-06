@@ -1,6 +1,7 @@
 import styles from "./index.module.css";
+import { Chart } from "react-google-charts";
 
-const Revenue = () => {
+const CaseTypes = () => {
   return (
     <div className={styles.stats1}>
       <div className={styles.header}>
@@ -8,7 +9,7 @@ const Revenue = () => {
           <div className={styles.iconcontainer}>
             <img className={styles.icon} alt="" src="/navbar/icon.svg" />
           </div>
-          <div className={styles.heading}>Case Type</div>
+          <div className={styles.heading}>Case Types</div>
         </div>
         <div className={styles.datepicker}>
           <img
@@ -23,19 +24,8 @@ const Revenue = () => {
           </div>
         </div>
       </div>
-      <div className={styles.averagedetails}>
-        <label className={styles.lable5}>Avg per month</label>
-        <div className={styles.valuecontainer}>
-          <h3 className={styles.value6}>$38.99K</h3>
-          <img
-            className={styles.upanddownIcon}
-            alt=""
-            src="/navbar/upanddown.svg"
-          />
-        </div>
-      </div>
-    </div>
+    </div >
   );
 };
 
-export default Revenue;
+export default CaseTypes;

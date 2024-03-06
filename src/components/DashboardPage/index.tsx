@@ -1,3 +1,4 @@
+"use client"
 import Revenue from "./CaseType";
 import CaseType from "./CaseType";
 import SalesRep from "./SalesRep";
