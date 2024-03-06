@@ -1,3 +1,5 @@
+"use client";
+import SalesRepsTable from "@/components/core/Table/SalesRepsTable";
 import styles from "./index.module.css";
 
 const SalesRep = () => {
@@ -25,6 +27,7 @@ const SalesRep = () => {
           </div>
         </div>
       </div>
+      <SalesRepsTable />
     </div>
   );
 };

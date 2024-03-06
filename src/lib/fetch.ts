@@ -62,7 +62,7 @@ class FetchService {
     const authReq = this.isAuthRequest(path);
 
     if (!authReq) {
-      this.configureAuthorization(config);
+      // this.configureAuthorization(config);
     }
 
     // request interceptor starts
