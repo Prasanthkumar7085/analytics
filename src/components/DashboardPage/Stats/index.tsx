@@ -1,6 +1,57 @@
+import { useEffect, useState } from "react";
 import styles from "./index.module.css";
+import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import formatMoney from "@/lib/Pipes/moneyFormat";
+import { Skeleton } from "@mui/material";
 
 const Stats = () => {
+
+  const [loading, setLoading] = useState<boolean>(true)
+  const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>()
+  const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>()
+
+  //get the stats counts
+  const getStatsCounts = async () => {
+
+    setLoading(true)
+    let urls = [
+      "/overview/stats-revenue",
+      "/overview/stats-volume"
+    ];
+    try {
+      let tempResult: any = [];
+
+      const responses = await Promise.allSettled(
+        urls.map(async (url) => {
+          const response = await getStatsDetailsAPI(url);
+          return response;
+        })
+      );
+      responses.forEach((result, num) => {
+        if (result.status === "fulfilled") {
+          tempResult.push(result.value);
+        }
+        if (result.status === "rejected") {
+        }
+      });
+      setRevenueStatsDetails(tempResult[0]?.data)
+      setVolumeStatsDetails(tempResult[1]?.data)
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    finally {
+      setLoading(false)
+
+    }
+  }
+
+
+  //api call to get stats count
+  useEffect(() => {
+    getStatsCounts()
+  }, [])
+
   return (
     <div className={styles.stats}>
       <div className={styles.header}>
@@ -49,7 +100,13 @@ const Stats = () => {
                   <p className={styles.value}>+13.4 %</p>
                 </div>
               </div>
-              <h2 className={styles.totalvalue}>$40,000</h2>
+              <h2 className={styles.totalvalue}>
+                {loading ?
+                  <Skeleton width={120} height={50} /> :
+                  formatMoney(revenueStatsDetails?.generated ? revenueStatsDetails?.generated : 0)
+                }
+
+              </h2>
             </div>
             <img
               className={styles.dividerIcon}
@@ -68,7 +125,10 @@ const Stats = () => {
                   <p className={styles.value}>+13.4 %</p>
                 </div>
               </div>
-              <h2 className={styles.totalvalue}>$20,000</h2>
+              <h2 className={styles.totalvalue}>
+                {loading ?
+                  <Skeleton width={120} height={50} /> :
+                  formatMoney(revenueStatsDetails?.collected ? revenueStatsDetails?.collected : 0)}</h2>
             </div>
             <img
               className={styles.dividerIcon}
@@ -87,7 +147,12 @@ const Stats = () => {
                   <p className={styles.value}>+13.4 %</p>
                 </div>
               </div>
-              <h2 className={styles.totalvalue}>$20,000</h2>
+              <h2 className={styles.totalvalue}>
+                {loading ?
+                  <Skeleton width={120} height={50} /> :
+                  formatMoney(revenueStatsDetails?.pending ? revenueStatsDetails?.pending : 0)}
+
+              </h2>
             </div>
           </div>
         </div>
@@ -117,7 +182,11 @@ const Stats = () => {
                   <p className={styles.value}>+13.4 %</p>
                 </div>
               </div>
-              <h2 className={styles.totalvalue}>295</h2>
+              <h2 className={styles.totalvalue}>
+                {loading ?
+                  <Skeleton width={120} height={50} /> :
+                  formatMoney(volumeStatsDetails?.total ? volumeStatsDetails?.total : 0)}
+              </h2>
             </div>
             <img
               className={styles.dividerIcon}
@@ -136,7 +205,12 @@ const Stats = () => {
                   <p className={styles.value}>+13.4 %</p>
                 </div>
               </div>
-              <h2 className={styles.totalvalue}>200</h2>
+              <h2 className={styles.totalvalue}>
+                {loading ?
+                  <Skeleton width={120} height={50} /> :
+                  formatMoney(volumeStatsDetails?.completed ? volumeStatsDetails?.completed : 0)}
+
+              </h2>
             </div>
             <img
               className={styles.dividerIcon}
@@ -155,7 +229,11 @@ const Stats = () => {
                   <p className={styles.value}>+13.4 %</p>
                 </div>
               </div>
-              <h2 className={styles.totalvalue}>95</h2>
+              <h2 className={styles.totalvalue}>
+                {loading ?
+                  <Skeleton width={120} height={50} /> :
+                  formatMoney(volumeStatsDetails?.pending ? volumeStatsDetails?.pending : 0)}
+              </h2>
             </div>
           </div>
         </div>

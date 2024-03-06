@@ -1,9 +1,9 @@
 import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
-export const getStatsDetailsAPI = async (url: string) => {
+export const getCaseTypesStatsAPI = async () => {
     try {
-        const { data, success } = await $fetch.get(url);
+        const { data, success } = await $fetch.get("/overview/case-types");
         if (!success) {
             return handleAPIErrorResponse(data);
         }

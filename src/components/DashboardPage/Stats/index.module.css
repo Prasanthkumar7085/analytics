@@ -1,81 +1,4 @@
-.background {
-  width: 120rem;
-  position: absolute;
-  margin: 0 !important;
-  top: 0;
-  left: calc(50% - 960px);
-  background-color: #1b2459;
-  height: 10.813rem;
-  overflow: hidden;
-  flex-shrink: 0;
-  z-index: 0;
-}
-.labsquirelogoIcon {
-  width: 12.444rem;
-  position: relative;
-  height: 2.563rem;
-  overflow: hidden;
-  flex-shrink: 0;
-  object-fit: cover;
-}
-.logocontaier {
-  height: 2.563rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.pagename {
-  text-decoration: none;
-  height: 1rem;
-  position: relative;
-  line-height: 100%;
-  color: inherit;
-  display: inline-block;
-}
-.container1 {
-  align-items: center;
-  justify-content: center;
-  padding: 0.625rem;
-}
-.container1,
-.navbar,
-.navlinkscontainer {
-  display: flex;
-  flex-direction: row;
-}
-.navlinkscontainer {
-  margin: 0;
-  align-items: flex-start;
-  justify-content: flex-start;
-  gap: 0 2.5rem;
-  column-gap: clamp(24px, 2.08vw, 80px);
-}
-.navbar {
-  align-self: stretch;
-  align-items: center;
-  justify-content: space-between;
-  text-align: center;
-  font-size: clamp(14px, 0.83vw, 32px);
-  color: #fff;
-  font-family: Poppins;
-}
-.icon {
-  width: 1rem;
-  position: relative;
-  height: 1rem;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.iconcontainer {
-  border-radius: 32px;
-  background-color: #dd5050;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
-}
+
 .heading {
   position: relative;
   letter-spacing: -0.25px;
@@ -281,10 +204,9 @@ justify-content: space-between;
 .card,
 .cardscontainer,
 .stats {
-  align-self: stretch;
   flex: 1;
+  display: flex;
   flex-direction: column;
-  align-items: flex-start;
 }
 .cardscontainer {
   display: flex;
@@ -301,15 +223,10 @@ justify-content: space-between;
     0 8px 16px -6px rgba(24, 39, 75, 0.02);
   padding: 1rem;
   box-sizing: border-box;
-  gap: 1rem 0;
+  gap: 3rem 0;
   max-width: 46.5rem;
 }
-.casetype,
-.container7,
-.stats {
-  display: flex;
-  justify-content: flex-start;
-}
+
 .casetype {
   flex: 1;
   border-radius: 12px;
@@ -323,119 +240,6 @@ justify-content: space-between;
   padding: 1rem;
   box-sizing: border-box;
 }
-.container7 {
-  align-self: stretch;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 0 1rem;
-  text-align: left;
-  font-size: 1rem;
-  color: #000;
-  font-family: Poppins;
-}
-.lable5,
-.value6 {
-  position: relative;
-  line-height: 100%;
-}
-.lable5 {
-  cursor: pointer;
-  letter-spacing: -0.25px;
-}
-.value6 {
-  margin: 0;
-  font-size: inherit;
-  font-weight: 500;
-  font-family: inherit;
-}
-.upanddownIcon {
-  width: 1.419rem;
-  height: 0.5rem;
-}
-.averagedetails,
-.valuecontainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0 0.75rem;
-  font-size: 1.75rem;
-  color: #5cbc4d;
-}
-.averagedetails {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem 0;
-  font-size: 0.75rem;
-  color: #9799bf;
-}
-.stats1 {
-  flex: 1;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),
-    0 4px 14px -2px transparent;
-  height: 34rem;
-  padding: 1rem;
-  box-sizing: border-box;
-  gap: 1rem 0;
-  max-width: 46.5rem;
-}
-.headinglable,
-.stats1 {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-.container8,
-.salesrepresentative {
-  height: 34rem;
-  display: flex;
-  justify-content: flex-start;
-}
-.salesrepresentative {
-  flex: 1;
-  border-radius: 12px;
-  background-color: #fff;
-  box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),
-    0 4px 14px -2px transparent;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  box-sizing: border-box;
-}
-.container8 {
-  align-self: stretch;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 0 1rem;
-  text-align: left;
-  font-size: 1rem;
-  color: #000;
-  font-family: Poppins;
-}
-.overviewdetails {
-  align-items: flex-start;
-  gap: 1.5rem 0;
-}
-.container,
-.overviewdetails,
-.overviewpage {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-.container {
-  align-items: flex-start;
-  gap: 2rem 0;
-  z-index: 1;
-}
-.overviewpage {
-  background-color: #f9f9fb;
-  overflow: hidden;
-  align-items: center;
-  padding: 2.5rem;
-  position: relative;
-}
+
+
+

@@ -1,6 +1,6 @@
 import styles from "./index.module.css";
 
-const CaseType = () => {
+const RevenueBlock = () => {
   return (
     <div className={styles.casetype}>
       <div className={styles.header}>
@@ -27,4 +27,4 @@ const CaseType = () => {
   );
 };
 
-export default CaseType;
+export default RevenueBlock;
