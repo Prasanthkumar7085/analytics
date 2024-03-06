@@ -14,7 +14,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
             <img
               className={styles.labsquirelogoIcon}
               alt=""
-              src="/labsquirelogo@2x.png"
+              src="/navbar/labsquirelogo@2x.png"
             />
           </div>
           <ul className={styles.navlinkscontainer}>
