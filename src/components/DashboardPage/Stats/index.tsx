@@ -102,7 +102,7 @@ const Stats = () => {
               </div>
               <h2 className={styles.totalvalue}>
                 {loading ?
-                  <Skeleton width={150} height={50} /> :
+                  <Skeleton width={120} height={50} /> :
                   formatMoney(revenueStatsDetails?.generated ? revenueStatsDetails?.generated : 0)
                 }
 
@@ -127,7 +127,7 @@ const Stats = () => {
               </div>
               <h2 className={styles.totalvalue}>
                 {loading ?
-                  <Skeleton width={150} height={50} /> :
+                  <Skeleton width={120} height={50} /> :
                   formatMoney(revenueStatsDetails?.collected ? revenueStatsDetails?.collected : 0)}</h2>
             </div>
             <img
@@ -149,7 +149,7 @@ const Stats = () => {
               </div>
               <h2 className={styles.totalvalue}>
                 {loading ?
-                  <Skeleton width={150} height={50} /> :
+                  <Skeleton width={120} height={50} /> :
                   formatMoney(revenueStatsDetails?.pending ? revenueStatsDetails?.pending : 0)}
 
               </h2>
@@ -184,7 +184,7 @@ const Stats = () => {
               </div>
               <h2 className={styles.totalvalue}>
                 {loading ?
-                  <Skeleton width={150} height={50} /> :
+                  <Skeleton width={120} height={50} /> :
                   formatMoney(volumeStatsDetails?.total ? volumeStatsDetails?.total : 0)}
               </h2>
             </div>
@@ -207,7 +207,7 @@ const Stats = () => {
               </div>
               <h2 className={styles.totalvalue}>
                 {loading ?
-                  <Skeleton width={150} height={50} /> :
+                  <Skeleton width={120} height={50} /> :
                   formatMoney(volumeStatsDetails?.completed ? volumeStatsDetails?.completed : 0)}
 
               </h2>
@@ -231,7 +231,7 @@ const Stats = () => {
               </div>
               <h2 className={styles.totalvalue}>
                 {loading ?
-                  <Skeleton width={150} height={50} /> :
+                  <Skeleton width={120} height={50} /> :
                   formatMoney(volumeStatsDetails?.pending ? volumeStatsDetails?.pending : 0)}
               </h2>
             </div>
