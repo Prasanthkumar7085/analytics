@@ -1,8 +1,20 @@
 "use client";
-import SalesRepsTable from "@/components/core/Table/SalesRepsTable";
+import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
 import styles from "./index.module.css";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const SalesRep = () => {
+
+  const getUsersData = async () => {
+    try {
+    } catch (err: any) {
+      toast.error(err.message || "Something went wrong");
+    }
+  };
+  useEffect(() => {
+    getUsersData();
+  }, []);
   return (
     <div className={styles.salesrepresentative}>
       <div className={styles.header}>

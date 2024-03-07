@@ -1,7 +1,12 @@
 import DashboardOverview from "@/components/DashboardPage";
+import { Suspense } from "react";
 
 const Dashboard = () => {
-  return <DashboardOverview />;
+  return (
+    <Suspense>
+      <DashboardOverview />
+    </Suspense>
+  );
 };
 
 export default Dashboard;
