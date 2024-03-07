@@ -434,3 +434,12 @@
   padding: 2.5rem;
   position: relative;
 }
+.dot {
+  height: 5px;
+  width: 5px;
+  /* Change the color here */
+  border-radius: 50%;
+  /* Ensures the dot is round */
+  display: inline-block;
+  /* Allows the dot to be inline */
+}

@@ -6,10 +6,12 @@ import TanStackTableComponent from "@/components/core/Table/caseTypesTable/Table
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { Badge } from "@mui/material";
 const CaseTypes = () => {
 
   const [loading, setLoading] = useState<boolean>(true)
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([])
+  let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8', '#92298f', '#2e3094', '#0071b9']
 
   //get the caseTypes data
   const getCaseTypesStats = async () => {
@@ -44,11 +46,15 @@ const CaseTypes = () => {
       accessorFn: (row: any) => row.case_type,
       id: "case_type",
       header: () => <span>Case Type</span>,
-      cell: (info: any) => (
-        <span style={{ padding: "40px 10px 40px 10px" }}>
-          {info.getValue()}
-        </span>
-      ),
+      cell: (info: any, index: number) => {
+        console.log(info, "we")
+        return (
+          <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem" }}>
+            <div className={styles.dot} style={{ backgroundColor: colors[info.row.index] }}></div>
+            {info.getValue()}
+          </span>
+        )
+      },
       footer: (props: any) => props.column.id,
       width: "60px",
       minWidth: "60px",
@@ -62,7 +68,7 @@ const CaseTypes = () => {
           {info.getValue()}
         </span>
       ),
-      header: () => <span>Requested By</span>,
+      header: () => <span>Total Cases</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -74,9 +80,9 @@ const CaseTypes = () => {
           {formatMoney(info.getValue())}
         </span>
       ),
-      header: () => <span>Operation Title</span>,
+      header: () => <span>Revenue</span>,
       footer: (props: any) => props.column.id,
-      width: "220px",
+      width: "150px",
     },
   ]
 
@@ -95,7 +101,7 @@ const CaseTypes = () => {
     chart: {
       type: 'pie',
     },
-    colors: ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8', '#92298f', '#2e3094', '#0071b9'],
+    colors: colors,
     subtitle: {
       useHTML: true,
       text: getSubtitle(),
