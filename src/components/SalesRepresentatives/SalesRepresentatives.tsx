@@ -142,7 +142,9 @@ const SalesRepresentatives = () => {
         minWidth: "200px",
         cell: (info: any) => {
           return <Button onClick={() => {
-            router.push(`/sales-representatives/${info.row.original.id}`)
+            router.push(
+              `/sales-representatives/${info.row.original.marketer_id}`
+            );
           }}>view</Button>;
         },
       },
