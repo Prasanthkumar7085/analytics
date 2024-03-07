@@ -14,6 +14,7 @@ const DashboardPage = () => {
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>()
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>()
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([])
+  const [totalRevenueSum, setTotalSumValues] = useState<any>([])
   //get the stats counts
   const getStatsCounts = async () => {
 
@@ -57,7 +58,18 @@ const DashboardPage = () => {
     try {
       const response = await getCaseTypesStatsAPI()
       if (response.status == 200 || response?.status == 201) {
+        let paidRevenueSum = 0;
+        let totalRevenueSum = 0;
+
+        response?.data?.forEach((entry: any) => {
+          paidRevenueSum += entry.paid_revenue;
+          totalRevenueSum += entry.total_cases ? entry.total_cases : 0;
+        });
+
+        const result = ["Total", paidRevenueSum, totalRevenueSum];
+        setTotalSumValues(result)
         setCaseTypesStatsData(response?.data)
+
       }
     }
     catch (err) {
@@ -86,7 +98,12 @@ const DashboardPage = () => {
             loading={loading} />
         </div>
         <div style={{ width: "60%" }}>
-          <CaseType caseTypesStatsData={caseTypesStatsData} loading={loading} />
+          <CaseType
+            caseTypesStatsData={caseTypesStatsData}
+            loading={loading}
+            getCaseTypesStats={getCaseTypesStats}
+            totalRevenueSum={totalRevenueSum}
+          />
         </div>
       </section>
       <section className={styles.container8}>

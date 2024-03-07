@@ -20,6 +20,7 @@ const Facilities = () => {
       if (facilitiesData?.status == 201 || facilitiesData?.status == 200) {
         dispatch(setAllFacilities(facilitiesData?.data));
       }
+      const response = await getFacilitiesBySalesRepId({ id: id as string });
     } catch (err) {
       console.error(err);
     }

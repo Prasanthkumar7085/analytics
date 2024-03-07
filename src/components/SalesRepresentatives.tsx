@@ -6,10 +6,12 @@ import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TanStackTableComponent from "./core/Table/Table";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [salesReps, setSalesReps] = useState([]);
@@ -23,7 +25,7 @@ const SalesRepresentatives = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({}) => {
+  const getAllSalesReps = async ({ }) => {
     try {
       const response = await salesRepsAPI();
 
@@ -138,8 +140,12 @@ const SalesRepresentatives = () => {
         width: "200px",
         maxWidth: "200px",
         minWidth: "200px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+        cell: (info: any) => {
+          return (
+            <Button onClick={() => {
+              router.push(`/sales-representatives/${info.row.original.marketer_id}`)
+            }}>View</Button>
+          );
         },
       },
     ],
@@ -159,6 +165,7 @@ const SalesRepresentatives = () => {
         columns={columnDef}
         loading={false}
         getData={getAllSalesReps}
+        totalSumValues={[]}
       />
     </div>
   );

@@ -81,71 +81,74 @@ const SalesRepView = () => {
     }, [])
 
     return (
-      <div className={styles.salesrepviewpage}>
-        <div className={styles.container}>
-          <div className={styles.detailscontainer}>
-            <section className={styles.container7}>
-              <Stats
-                revenueStatsDetails={revenueStatsDetails}
-                volumeStatsDetails={volumeStatsDetails}
-                loading={loading}
-              />
+        <div className={styles.salesrepviewpage}>
+            <div className={styles.container}>
+                <div className={styles.detailscontainer}>
+                    <section className={styles.container7}>
+                        <div style={{ width: "40%" }}>
+                            <Stats
+                                revenueStatsDetails={revenueStatsDetails}
+                                volumeStatsDetails={volumeStatsDetails}
+                                loading={loading}
+                            />
+                        </div>
+                        <div style={{ width: "60%" }}>
+                            <CaseTypes
+                                caseTypesStatsData={caseTypesStatsData}
+                                loading={loading}
+                            />
+                        </div>
+                    </section>
 
-              <CaseTypes
-                caseTypesStatsData={caseTypesStatsData}
-                loading={loading}
-              />
-            </section>
+                    <div className={styles.casetypecontainer}>
+                        <SingleSalesRepCaseTypeDetails />
+                    </div>
 
-            <div className={styles.casetypecontainer}>
-              <SingleSalesRepCaseTypeDetails />
-            </div>
-
-            <div className={styles.insurancetrendscontainer}>
-              <div className={styles.casetypedetails}>
-                <header className={styles.headercontainer}>
-                  <div className={styles.header1}>
-                    <div className={styles.headingcontainer}>
-                      <div className={styles.iconcontainer}>
-                        <img className={styles.icon} alt="" src="/icon.svg" />
-                      </div>
-                      <h3 className={styles.heading}>Insurance Payors</h3>
+                    <div className={styles.insurancetrendscontainer}>
+                        <div className={styles.casetypedetails}>
+                            <header className={styles.headercontainer}>
+                                <div className={styles.header1}>
+                                    <div className={styles.headingcontainer}>
+                                        <div className={styles.iconcontainer}>
+                                            <img className={styles.icon} alt="" src="/icon.svg" />
+                                        </div>
+                                        <h3 className={styles.heading}>Insurance Payors</h3>
+                                    </div>
+                                </div>
+                            </header>
+                        </div>
+                        <div className={styles.revenuedetails}>
+                            <header className={styles.headercontainer3}>
+                                <div className={styles.header1}>
+                                    <div className={styles.headingcontainer}>
+                                        <div className={styles.iconcontainer}>
+                                            <img className={styles.icon} alt="" src="/icon.svg" />
+                                        </div>
+                                        <h3 className={styles.heading}>Trends</h3>
+                                    </div>
+                                </div>
+                            </header>
+                            <Trends />
+                        </div>
                     </div>
-                  </div>
-                </header>
-              </div>
-              <div className={styles.revenuedetails}>
-                <header className={styles.headercontainer3}>
-                  <div className={styles.header1}>
-                    <div className={styles.headingcontainer}>
-                      <div className={styles.iconcontainer}>
-                        <img className={styles.icon} alt="" src="/icon.svg" />
-                      </div>
-                      <h3 className={styles.heading}>Trends</h3>
+                    <div className={styles.facilitiescontainer}>
+                        <div className={styles.facilitiesdetails}>
+                            <header className={styles.headercontainer}>
+                                <div className={styles.header1}>
+                                    <div className={styles.headingcontainer}>
+                                        <div className={styles.iconcontainer}>
+                                            <img className={styles.icon} alt="" src="/icon.svg" />
+                                        </div>
+                                        <h3 className={styles.heading}>Facilities</h3>
+                                    </div>
+                                </div>
+                            </header>
+                            <Facilities />
+                        </div>
                     </div>
-                  </div>
-                </header>
-                <Trends />
-              </div>
+                </div>
             </div>
-            <div className={styles.facilitiescontainer}>
-              <div className={styles.facilitiesdetails}>
-                <header className={styles.headercontainer}>
-                  <div className={styles.header1}>
-                    <div className={styles.headingcontainer}>
-                      <div className={styles.iconcontainer}>
-                        <img className={styles.icon} alt="" src="/icon.svg" />
-                      </div>
-                      <h3 className={styles.heading}>Facilities</h3>
-                    </div>
-                  </div>
-                </header>
-                <Facilities />
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
     );
 };
 
