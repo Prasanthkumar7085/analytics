@@ -6,15 +6,7 @@ import { toast } from "sonner";
 
 const SalesRep = () => {
 
-  const getUsersData = async () => {
-    try {
-    } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
-    }
-  };
-  useEffect(() => {
-    getUsersData();
-  }, []);
+
   return (
     <div className={styles.salesrepresentative}>
       <div className={styles.header}>

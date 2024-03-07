@@ -19,6 +19,7 @@ import ErrorMessages from "@/components/core/ErrorMessage/ErrorMessages";
 import Image from "next/image";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { setAllMarketers } from "@/Redux/Modules/marketers";
 
 const SignIn: NextPage = () => {
   const dispatch = useDispatch();
@@ -33,10 +34,11 @@ const SignIn: NextPage = () => {
   const getUsersFromLabsquire = async () => {
     try {
       const userData = await getAllUsersAPI();
-
-      console.log(userData);
+      if (userData?.status == 201 || userData?.status == 200) {
+        dispatch(setAllMarketers(userData?.data));
+      }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
   const signIn = async (e: any) => {

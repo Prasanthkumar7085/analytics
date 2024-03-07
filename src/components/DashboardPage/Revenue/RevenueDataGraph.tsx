@@ -20,7 +20,6 @@ const RevenueDataGraph = () => {
     let groupedData = [["Year", "Billed", "Collected"]];
 
     for (let i = 0; i < dataKeys?.length + 1; i++) {
-      console.log(dataKeys[i], "adfs");
       if (dataKeys[i]) {
         groupedData.push([
           dataKeys[i]?.split(" ")[0]?.slice(0, 3),
@@ -29,7 +28,6 @@ const RevenueDataGraph = () => {
         ]);
       }
     }
-    console.log(groupedData, "plpl");
 
     setTotalGraphData(groupedData);
   };
