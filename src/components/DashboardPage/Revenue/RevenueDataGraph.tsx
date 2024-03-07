@@ -44,6 +44,8 @@ const RevenueDataGraph = () => {
     }
   };
 
+  console.log(billedData, "aass");
+  
   const options = {
     chart: {
       type: 'column'
