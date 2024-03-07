@@ -139,20 +139,20 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
         </div>
       </div>
 
-      <div style={{ height: "100%", width: "100%", display: "flex" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", height: "336px" }}>
         {loading ? (
           ""
         ) : (
-          <div>
+          <div style={{ width: "35%" }}>
             <HighchartsReact
               highcharts={Highcharts}
               options={options}
               containerProps={{ style: { height: "70%", width: "100%" } }}
             />
           </div>)}
-        
+
         {caseTypesStatsData?.length ?
-          <div style={{ flex: "1", overflow: "auto" }}>
+          <div style={{ flex: "1", overflow: "auto", width: "50%", overflowX: "hidden" }}>
             <TanStackTableComponent
               data={caseTypesStatsData}
               columns={columns}

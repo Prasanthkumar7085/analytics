@@ -18,6 +18,7 @@ const SalesRepView = () => {
     const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>()
     const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>()
     const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([])
+    const [totalRevenueSum, setTotalSumValues] = useState<any>([])
 
     //get the stats counts
     const getStatsCounts = async () => {
@@ -62,6 +63,16 @@ const SalesRepView = () => {
             const response = await getSingleRepCaseTypes(id as string)
             if (response.status == 200 || response?.status == 201) {
                 setCaseTypesStatsData(response?.data)
+                let paidRevenueSum = 0;
+                let totalRevenueSum = 0;
+
+                response?.data?.forEach((entry: any) => {
+                    paidRevenueSum += entry.paid_revenue;
+                    totalRevenueSum += entry.total_cases ? entry.total_cases : 0;
+                });
+
+                const result = ["Total", paidRevenueSum, totalRevenueSum];
+                setTotalSumValues(result)
             }
         }
         catch (err) {
@@ -96,6 +107,7 @@ const SalesRepView = () => {
                             <CaseTypes
                                 caseTypesStatsData={caseTypesStatsData}
                                 loading={loading}
+                                totalRevenueSum={totalRevenueSum}
                             />
                         </div>
                     </section>

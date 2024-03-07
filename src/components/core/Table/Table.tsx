@@ -16,7 +16,7 @@ interface pageProps {
   data: any[];
   totalSumValues?: any;
   loading: boolean;
-  getData: ({}) => void;
+  getData: ({ }) => void;
 }
 const TanStackTableComponent: FunctionComponent<pageProps> = ({
   columns,
