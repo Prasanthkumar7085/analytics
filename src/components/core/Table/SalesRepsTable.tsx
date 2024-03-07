@@ -1,6 +1,6 @@
 "use client";
 
-import { salesRepsAPI } from "@/services/salesRepsAPIService";
+import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import TanStackTableComponent from "./Table";
 import { useEffect, useMemo, useState } from "react";
 

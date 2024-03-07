@@ -1,3 +1,4 @@
+import RevenueDataGraph from "./RevenueDataGraph";
 import styles from "./index.module.css";
 
 const RevenueBlock = () => {
@@ -23,6 +24,7 @@ const RevenueBlock = () => {
           </div>
         </div>
       </div>
+      <RevenueDataGraph />
     </div>
   );
 };
