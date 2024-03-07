@@ -24,7 +24,9 @@ const RevenueBlock = () => {
           </div>
         </div>
       </div>
-      <RevenueDataGraph />
+      <div style={{ width: "98%" }}>
+        <RevenueDataGraph />
+      </div>
     </div>
   );
 };

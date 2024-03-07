@@ -10,6 +10,7 @@ import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import Facilities from "./Facilities";
+import Trends from "@/components/Trends";
 const SalesRepView = () => {
 
     const { id } = useParams();

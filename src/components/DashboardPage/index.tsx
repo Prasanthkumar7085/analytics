@@ -90,8 +90,13 @@ const DashboardPage = () => {
         </div>
       </section>
       <section className={styles.container8}>
-        <RevenueBlock />
-        <SalesRep />
+        <div style={{ width: "40%" }}>
+
+          <RevenueBlock />
+        </div>
+        <div style={{ width: "60%" }}>
+          <SalesRep />
+        </div>
       </section>
     </main>
   );

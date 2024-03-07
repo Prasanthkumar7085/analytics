@@ -8,7 +8,7 @@ const SalesRep = () => {
 
 
   return (
-    <div className={styles.salesrepresentative}>
+    <div className={styles.salesrepresentative} >
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
