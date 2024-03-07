@@ -9,6 +9,7 @@ import { useParams } from "next/navigation";
 import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
+import Trends from "@/components/Trends";
 const SalesRepView = () => {
 
     const { id } = useParams();
@@ -123,6 +124,7 @@ const SalesRepView = () => {
                                     </div>
                                 </div>
                             </header>
+                            <Trends />
                         </div>
                     </div>
                     <div className={styles.facilitiescontainer}>

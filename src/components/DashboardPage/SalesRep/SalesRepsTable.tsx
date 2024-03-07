@@ -25,7 +25,7 @@ const SalesRepsTable = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({}) => {
+  const getAllSalesReps = async ({ }) => {
     try {
       const response = await salesRepsAPI();
 
@@ -154,7 +154,7 @@ const SalesRepsTable = () => {
     getAllSalesReps({});
   }, []);
   return (
-    <div>
+    <div style={{ height: "386px", overflow: "auto" }}>
       <TanStackTableComponent
         data={salesReps}
         columns={columnDef}

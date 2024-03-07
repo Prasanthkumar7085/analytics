@@ -49,7 +49,6 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
                     }
                 }
 
-                console.log(formattedData, "SDfsdfsdf")
                 setCaseData(formattedData)
             }
         }

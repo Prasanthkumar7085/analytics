@@ -15,7 +15,7 @@ interface pageProps {
   columns: any[];
   data: any[];
   loading: boolean;
-  getData: ({}) => void;
+  getData: ({ }) => void;
 }
 const TanStackTableComponent: FunctionComponent<pageProps> = ({
   columns,
@@ -80,7 +80,6 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
     <div
       style={{
         overflow: "auto",
-        height: "72vh",
         width: "94%",
         margin: "0 auto",
       }}
