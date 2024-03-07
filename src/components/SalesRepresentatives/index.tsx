@@ -11,7 +11,7 @@ import { Button } from "@mui/material";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [salesReps, setSalesReps] = useState([]);
@@ -25,7 +25,7 @@ const SalesRepresentatives = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({ }) => {
+  const getAllSalesReps = async ({}) => {
     try {
       const response = await salesRepsAPI();
 
@@ -141,9 +141,17 @@ const SalesRepresentatives = () => {
         maxWidth: "200px",
         minWidth: "200px",
         cell: (info: any) => {
-          return <Button onClick={() => {
-            router.push(`/sales-representatives/${info.row.original.marketer_id}`)
-          }}>view</Button>;
+          return (
+            <Button
+              onClick={() => {
+                router.push(
+                  `/sales-representatives/${info.row.original.marketer_id}`
+                );
+              }}
+            >
+              view
+            </Button>
+          );
         },
       },
     ],

@@ -1,4 +1,4 @@
-import SalesRepresentatives from "@/components/SalesRepresentatives/SalesRepresentatives";
+import SalesRepresentatives from "@/components/SalesRepresentatives";
 import { Suspense } from "react";
 
 const SalesRepresentativesPage = () => {

@@ -1,7 +1,8 @@
+import {} from "@/services/getRevenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
-} from "@/services/getRevenueAPIs";
+} from "@/services/salesRepsAPIs";
 import { Backdrop, CircularProgress } from "@mui/material";
 import Highcharts from "highcharts";
 import { useParams } from "next/navigation";
