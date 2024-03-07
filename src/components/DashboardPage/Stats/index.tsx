@@ -4,53 +4,7 @@ import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Skeleton } from "@mui/material";
 
-const Stats = () => {
-
-  const [loading, setLoading] = useState<boolean>(true)
-  const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>()
-  const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>()
-
-  //get the stats counts
-  const getStatsCounts = async () => {
-
-    setLoading(true)
-    let urls = [
-      "/overview/stats-revenue",
-      "/overview/stats-volume"
-    ];
-    try {
-      let tempResult: any = [];
-
-      const responses = await Promise.allSettled(
-        urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url);
-          return response;
-        })
-      );
-      responses.forEach((result, num) => {
-        if (result.status === "fulfilled") {
-          tempResult.push(result.value);
-        }
-        if (result.status === "rejected") {
-        }
-      });
-      setRevenueStatsDetails(tempResult[0]?.data)
-      setVolumeStatsDetails(tempResult[1]?.data)
-
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    finally {
-      setLoading(false)
-
-    }
-  }
-
-
-  //api call to get stats count
-  useEffect(() => {
-    getStatsCounts()
-  }, [])
+const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
 
   return (
     <div className={styles.stats}>

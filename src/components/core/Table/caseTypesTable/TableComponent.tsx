@@ -11,7 +11,7 @@ import {
 } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-const TanStackTableComponent = ({
+const TanStackTableForCaseTypes = ({
     data,
     columns,
     paginationDetails,
@@ -135,4 +135,4 @@ const TanStackTableComponent = ({
 
     );
 };
-export default TanStackTableComponent;
+export default TanStackTableForCaseTypes;

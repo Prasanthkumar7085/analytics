@@ -7,28 +7,11 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Badge } from "@mui/material";
-const CaseTypes = () => {
+const CaseTypes = ({ caseTypesStatsData, loading }: any) => {
 
-  const [loading, setLoading] = useState<boolean>(true)
-  const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([])
+
   let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8', '#92298f', '#2e3094', '#0071b9']
 
-  //get the caseTypes data
-  const getCaseTypesStats = async () => {
-    setLoading(true)
-    try {
-      const response = await getCaseTypesStatsAPI()
-      if (response.status == 200 || response?.status == 201) {
-        setCaseTypesStatsData(response?.data)
-      }
-    }
-    catch (err) {
-      console.error(err)
-    }
-    finally {
-      setLoading(false)
-    }
-  }
 
   //chagedData for pie chart
   const modifyData = (array: Array<any>) => {
@@ -131,10 +114,7 @@ const CaseTypes = () => {
 
   };
 
-  //call the api for get case types count
-  useEffect(() => {
-    getCaseTypesStats()
-  }, [])
+
 
   return (
     <div className={styles.stats1}>
@@ -169,9 +149,10 @@ const CaseTypes = () => {
             />
           </div>
         }
-        <div style={{ flex: "1", overflow: "auto" }}>
-          <TanStackTableComponent data={caseTypesStatsData} columns={columns} />
-        </div>
+        {caseTypesStatsData?.length ?
+          <div style={{ flex: "1", overflow: "auto" }}>
+            <TanStackTableComponent data={caseTypesStatsData} columns={columns} />
+          </div> : ""}
       </div>
 
     </div >
