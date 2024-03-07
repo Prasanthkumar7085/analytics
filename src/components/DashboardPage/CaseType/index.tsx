@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { Chart } from "react-google-charts";
 import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
-import TanStackTableComponent from "@/components/core/Table/caseTypesTable/TableComponent";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Badge } from "@mui/material";
-const CaseTypes = ({ caseTypesStatsData, loading }: any) => {
+import TanStackTableComponent from "@/components/core/Table/Table";
+const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenueSum }: any) => {
 
 
   let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8', '#92298f', '#2e3094', '#0071b9']
@@ -151,7 +151,13 @@ const CaseTypes = ({ caseTypesStatsData, loading }: any) => {
         }
         {caseTypesStatsData?.length ?
           <div style={{ flex: "1", overflow: "auto" }}>
-            <TanStackTableComponent data={caseTypesStatsData} columns={columns} />
+            <TanStackTableComponent
+              data={caseTypesStatsData}
+              columns={columns}
+              totalSumValues={totalRevenueSum}
+              loading={false}
+              getData={getCaseTypesStats}
+            />
           </div> : ""}
       </div>
 

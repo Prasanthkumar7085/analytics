@@ -14,12 +14,14 @@ import { useSelector } from "react-redux";
 interface pageProps {
   columns: any[];
   data: any[];
+  totalSumValues: any,
   loading: boolean;
   getData: ({ }) => void;
 }
 const TanStackTableComponent: FunctionComponent<pageProps> = ({
   columns,
   data,
+  totalSumValues,
   loading,
   getData,
 }) => {
@@ -222,6 +224,20 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
             ""
           )}
         </tbody>
+        <tfoot
+        >
+          <tr style={{
+            background: "#dfe1e8",
+            border: "1px solid #a5a5a5",
+          }}>
+            {totalSumValues?.map((item: any, index: number) => {
+              return (
+                <td key={index}>{item}</td>
+
+              )
+            })}
+          </tr>
+        </tfoot>
       </table>
     </div>
   );

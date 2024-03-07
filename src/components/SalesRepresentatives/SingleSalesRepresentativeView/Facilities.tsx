@@ -7,7 +7,6 @@ const Facilities = () => {
   const getSalesRepFacilities = async () => {
     try {
       const response = await getFacilitiesBySalesRepId({ id: id as string });
-      console.log(response, "asdfasdf");
     } catch (err) {
       console.error(err);
     }

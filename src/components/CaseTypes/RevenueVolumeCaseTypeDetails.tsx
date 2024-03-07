@@ -10,7 +10,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
     const { id } = useParams();
     const [loading, setLoading] = useState<boolean>(true)
     const [caseData, setCaseData] = useState<any>([])
+    const [totalSumValues, setTotalSumValues] = useState<any>(["Total"])
+
     const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+
     const tableRef: any = useRef()
     //get details of Revenue or Volume of caseTypes
     const getDetailsOfCaseTypes = async () => {
@@ -27,28 +30,33 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
             const response = await getRevenueOrVolumeCaseDetailsAPI(url)
             if (response.status == 200 || response.status == 201) {
                 const formattedData = [];
+                const monthSums: number[] = [];
 
                 // Loop through each month in the data
                 for (const month in response?.data) {
                     const monthData = response?.data[month].case_type_wise_counts;
+                    let monthSum = 0;
+
                     // Loop through each case type in the month data
                     for (const caseType in monthData) {
-                        // Find the corresponding object in formattedData or create a new one if not found
                         let caseObj: any = formattedData.find(obj => obj.caseType === caseType);
+                        monthSum += monthData[caseType];
                         if (!caseObj) {
                             caseObj = { caseType: caseType };
-                            // Initialize counts for each month
                             for (const monthName in response?.data) {
                                 caseObj[monthName.slice(0, 3).toLowerCase()] = 0;
                             }
                             // Add the case object to the formatted data array
                             formattedData.push(caseObj);
                         }
+
                         // Set the count for the current month
                         caseObj[month.slice(0, 3).toLowerCase()] = monthData[caseType];
                     }
-                }
+                    monthSums.push(monthSum);
 
+                }
+                setTotalSumValues([...totalSumValues, ...monthSums])
                 setCaseData(formattedData)
             }
         }
@@ -112,9 +120,11 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
             <TanStackTableComponent
                 data={caseData}
                 columns={columnDef}
+                totalSumValues={totalSumValues}
                 loading={false}
                 getData={getDetailsOfCaseTypes}
             />
+
             {loading ? (
                 <Backdrop
                     open={true}

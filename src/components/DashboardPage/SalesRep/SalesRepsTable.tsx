@@ -157,6 +157,7 @@ const SalesRepsTable = () => {
     <div style={{ height: "386px", overflow: "auto" }}>
       <TanStackTableComponent
         data={salesReps}
+        totalSumValues={[]}
         columns={columnDef}
         loading={false}
         getData={getAllSalesReps}
