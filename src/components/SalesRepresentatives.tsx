@@ -15,6 +15,8 @@ const SalesRepresentatives = () => {
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [salesReps, setSalesReps] = useState([]);
+  const [totalRevenueSum, setTotalSumValues] = useState<any>([])
+
   const getUsersFromLabsquire = async () => {
     try {
       const userData = await getAllUsersAPI();
@@ -38,7 +40,24 @@ const SalesRepresentatives = () => {
             };
           }
         );
+        let totalCases = 0
+        let paidRevenueSum = 0;
+        let totalRevenueSum = 0;
+        let targeted_amount = 0;
+        let billedAmoumnt = 0;
+        let pendingAmoumnt = 0;
 
+        response?.data?.forEach((entry: any) => {
+          totalCases += entry.total_cases,
+            targeted_amount += entry.targeted_amount,
+            paidRevenueSum += entry.paid_amount;
+          billedAmoumnt += entry.total_amount;
+          pendingAmoumnt += entry.pending_amount;
+
+        });
+
+        const result = ["Total", totalCases, targeted_amount, billedAmoumnt, paidRevenueSum, pendingAmoumnt];
+        setTotalSumValues(result)
         setSalesReps(mappedData);
       } else {
         throw response;
@@ -165,7 +184,7 @@ const SalesRepresentatives = () => {
         columns={columnDef}
         loading={false}
         getData={getAllSalesReps}
-        totalSumValues={[]}
+        totalSumValues={totalRevenueSum}
       />
     </div>
   );
