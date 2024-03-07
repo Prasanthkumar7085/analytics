@@ -57,82 +57,72 @@ const TanStackTableForCaseTypes = ({
 
 
     return (
-        <div
-            className="dataTable-container scrollbar"
-        >
-            <table
-                className="table"
-                border={0}
-                style={{ borderSpacing: "0 !important" }}
-            >
-                <thead
-                    className="thead"
-                    style={{
-                        height: "32px",
-                        position: "sticky",
-                        top: "0px",
-                        zIndex: "2"
-                    }}
-                >
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <tr className="table-row" key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                    <th
-                                        className="cell"
-                                        key={header.id}
-                                        colSpan={header.colSpan}
-                                        style={{
-                                            minWidth: getWidth(header.id),
-                                            width: getWidth(header.id),
-                                            background: "#686D75",
-
-                                        }}
-                                    >
-                                        {header.isPlaceholder ? null : (
-                                            <div
-                                                onClick={() => sortAndGetData(header)}
-                                                style={{
-                                                    display: "flex",
-                                                    gap: "10px",
-                                                    cursor: "pointer",
-                                                }}
-                                            >
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-
-                                            </div>
-                                        )}
-                                    </th>
-                                );
-                            })}
-                        </tr>
-                    ))}
-                </thead>
-                <tbody className="tbody">
-                    {table.getFilteredRowModel().rows.map((row) => {
-
-                        return (
-                            <tr className="table-row" key={row.id}>
-                                {row.getVisibleCells().map((cell) => {
-                                    return (
-                                        <td className="cell" key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </td>
-                                    );
-                                })}
-                            </tr>
-                        );
-                    })}
-                </tbody>
-            </table>
-        </div>
-
+      <div className="dataTable-container scrollbar">
+        <table className="table">
+          <thead
+            className="thead"
+            style={{
+              height: "32px",
+              position: "sticky",
+              top: "0px",
+              zIndex: "2",
+            }}
+          >
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr className="table-row" key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <th
+                      className="cell"
+                      key={header.id}
+                      colSpan={header.colSpan}
+                      style={{
+                        minWidth: getWidth(header.id),
+                        width: getWidth(header.id),
+                        background: "#686D75",
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div
+                          onClick={() => sortAndGetData(header)}
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </div>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="tbody">
+            {table.getFilteredRowModel().rows.map((row) => {
+              return (
+                <tr className="table-row" key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td className="cell" key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     );
 };
 export default TanStackTableForCaseTypes;

@@ -125,6 +125,7 @@ const SalesRepView = () => {
                     </div>
                   </div>
                 </header>
+                <Trends />
               </div>
             </div>
             <div className={styles.facilitiescontainer}>

@@ -139,23 +139,30 @@ const CaseTypes = ({ caseTypesStatsData, loading }: any) => {
         </div>
       </div>
 
-      <div style={{ height: "335px", width: "100%", display: "flex" }}>
-        {loading ? "" :
-          <div style={{ flex: "1", marginRight: "10px" }}>
+      <div style={{ height: "100%", width: "100%", display: "flex" }}>
+        {loading ? (
+          ""
+        ) : (
+          <div>
             <HighchartsReact
               highcharts={Highcharts}
               options={options}
-              containerProps={{ style: { height: '100%', width: '100%' } }}
+              containerProps={{ style: { height: "70%", width: "100%" } }}
             />
           </div>
-        }
-        {caseTypesStatsData?.length ?
-          <div style={{ flex: "1", overflow: "auto" }}>
-            <TanStackTableComponent data={caseTypesStatsData} columns={columns} />
-          </div> : ""}
+        )}
+        {caseTypesStatsData?.length ? (
+          <div>
+            <TanStackTableComponent
+              data={caseTypesStatsData}
+              columns={columns}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
-
-    </div >
+    </div>
   );
 };
 
