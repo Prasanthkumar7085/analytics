@@ -9,12 +9,13 @@ import {
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FunctionComponent, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 interface pageProps {
   columns: any[];
   data: any[];
   loading: boolean;
-  getData: ({ }) => void;
+  getData: ({}) => void;
 }
 const TanStackTableComponent: FunctionComponent<pageProps> = ({
   columns,
@@ -23,7 +24,6 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
   getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  console.log(sorting);
 
   const table = useReactTable({
     columns,
@@ -77,153 +77,153 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
   };
 
   return (
-    <div>
-      <div
+    <div
+      style={{
+        overflow: "auto",
+        height: "72vh",
+        width: "94%",
+        margin: "0 auto",
+      }}
+      className="orders-tableContainer scrollbar"
+    >
+      <table
+        className="table"
+        border={0}
         style={{
-          overflow: "auto",
-          height: "72vh",
-          width: "94%",
-          margin: "0 auto",
+          borderSpacing: " 0 2px !important",
+          borderCollapse: "separate",
         }}
-        className="orders-tableContainer scrollbar"
       >
-        <table
-          className="table"
-          border={0}
+        <thead
+          className="thead"
           style={{
-            borderSpacing: " 0 2px !important",
-            borderCollapse: "separate",
+            height: "32px",
+            position: "sticky",
+            top: "0px",
+            zIndex: "2",
+            color: "white",
           }}
         >
-          <thead
-            className="thead"
-            style={{
-              height: "32px",
-              position: "sticky",
-              top: "0px",
-              zIndex: "2",
-              color: "white",
-            }}
-          >
-            {table
-              .getHeaderGroups()
-              .map((headerGroup: any, mainIndex: number) => (
-                <tr
-                  className="table-row"
-                  key={headerGroup.id}
-                  style={{ border: "1px solid red" }}
-                >
-                  {headerGroup.headers.map((header: any, index: number) => {
-                    return (
-                      <th
-                        className="cell"
-                        key={index}
-                        colSpan={header.colSpan}
-                        style={{
-                          minWidth: getWidth(header.id),
-                          width: getWidth(header.id),
-                          color: "#000",
-                          background: "#dfe1e8",
-                          border: "1px solid #a5a5a5",
-                        }}
-                      >
-                        {header.isPlaceholder ? null : (
-                          <div
-                            // onClick={() => sortAndGetData(header)}
-                            {...{
-                              className: header.column.getCanSort()
-                                ? "cursor-pointer select-none"
-                                : "",
-                              onClick: header.column.getToggleSortingHandler(),
-                            }}
-                            style={{
-                              display: "flex",
-                              gap: "10px",
-                              cursor: "pointer",
-                            }}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                            {{
-                              asc: (
-                                <Image
-                                  src="/core/sort/sort-asc.svg"
-                                  height={15}
-                                  width={15}
-                                  alt="image"
-                                />
-                              ),
-                              desc: (
-                                <Image
-                                  src="/core/sort/sort-desc.svg"
-                                  height={15}
-                                  width={15}
-                                  alt="image"
-                                />
-                              ),
-                            }[header.column.getIsSorted() as string] ?? null}
-                            {/* <SortItems
-                              searchParams={searchParams}
-                              header={header}
-                            /> */}
-                          </div>
-                        )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              ))}
-          </thead>
-          <tbody className="tbody">
-            {data?.length ? (
-              table.getRowModel().rows.map((row: any, mainIndex: number) => {
-                return (
-                  <tr className="table-row" key={mainIndex}>
-                    {row.getVisibleCells().map((cell: any, index: number) => {
-                      return (
-                        <td
-                          className="cell"
-                          key={index}
-                          style={{
-                            backgroundColor: !row?.original?.target_reached
-                              ? "#ffebe9"
+          {table
+            .getHeaderGroups()
+            .map((headerGroup: any, mainIndex: number) => (
+              <tr
+                className="table-row"
+                key={headerGroup.id}
+                style={{ border: "1px solid red" }}
+              >
+                {headerGroup.headers.map((header: any, index: number) => {
+                  return (
+                    <th
+                      className="cell"
+                      key={index}
+                      colSpan={header.colSpan}
+                      style={{
+                        minWidth: getWidth(header.id),
+                        width: getWidth(header.id),
+                        color: "#000",
+                        background: "#dfe1e8",
+                        border: "1px solid #a5a5a5",
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div
+                          // onClick={() => sortAndGetData(header)}
+                          {...{
+                            className: header.column.getCanSort()
+                              ? "cursor-pointer select-none"
                               : "",
+                            onClick: header.column.getToggleSortingHandler(),
+                          }}
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            cursor: "pointer",
+                            minWidth: getWidth(header.id),
+                            width: getWidth(header.id),
                           }}
                         >
                           {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
+                            header.column.columnDef.header,
+                            header.getContext()
                           )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })
-            ) : !loading ? (
-              <tr>
-                <td colSpan={10}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      height: "40vh",
-                    }}
-                  >
-                    {/* <Image src="/" alt="" height={150} width={800} /> */}
-                    No Data
-                  </div>
-                </td>
+                          {{
+                            asc: (
+                              <Image
+                                src="/core/sort/sort-asc.svg"
+                                height={15}
+                                width={15}
+                                alt="image"
+                              />
+                            ),
+                            desc: (
+                              <Image
+                                src="/core/sort/sort-desc.svg"
+                                height={15}
+                                width={15}
+                                alt="image"
+                              />
+                            ),
+                          }[header.column.getIsSorted() as string] ?? null}
+                          {/* <SortItems
+                              searchParams={searchParams}
+                              header={header}
+                            /> */}
+                        </div>
+                      )}
+                    </th>
+                  );
+                })}
               </tr>
-            ) : (
-              ""
-            )}
-          </tbody>
-        </table>
-      </div>
+            ))}
+        </thead>
+        <tbody className="tbody">
+          {data?.length ? (
+            table.getRowModel().rows.map((row: any, mainIndex: number) => {
+              return (
+                <tr className="table-row" key={mainIndex}>
+                  {row.getVisibleCells().map((cell: any, index: number) => {
+                    return (
+                      <td
+                        className="cell"
+                        key={index}
+                        style={{
+                          backgroundColor: !row?.original?.target_reached
+                            ? "#ffebe9"
+                            : "",
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
+          ) : !loading ? (
+            <tr>
+              <td colSpan={10}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "40vh",
+                  }}
+                >
+                  {/* <Image src="/" alt="" height={150} width={800} /> */}
+                  No Data
+                </div>
+              </td>
+            </tr>
+          ) : (
+            ""
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };

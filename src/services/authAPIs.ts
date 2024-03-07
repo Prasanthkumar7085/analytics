@@ -7,7 +7,6 @@ export const signInAPI = async (payload: {
 }) => {
   try {
     const { success, data } = await $globalFetch.post("/signin", payload);
-    console.log(success, data);
 
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -25,10 +24,9 @@ export const getAllUsersAPI = async () => {
       get_all: true,
       order_by: "first_name",
       order_type: "asc",
-      user_type: "HOSPITAL_MARKETING_MANAGER",
     };
     const { success, data } = await $globalFetch.get("/users", queryParams);
-    console.log(success, data);
+    2;
 
     if (!success) {
       return handleAPIErrorResponse(data);

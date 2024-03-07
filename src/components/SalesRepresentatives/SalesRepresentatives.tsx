@@ -1,20 +1,20 @@
 "use client";
-
-import { salesRepsAPI } from "@/services/salesRepsAPIs";
-import TanStackTableComponent from "../../core/Table/Table";
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllUsersAPI } from "@/services/authAPIs";
 import { setAllMarketers } from "@/Redux/Modules/marketers";
 import { mapSalesRepNameWithId } from "@/lib/helpers/mapSalesRepNameWithId";
+import { getAllUsersAPI } from "@/services/authAPIs";
+import { salesRepsAPI } from "@/services/salesRepsAPIs";
+import { useEffect, useMemo, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import TanStackTableComponent from "../core/Table/Table";
+import { useRouter } from "next/navigation";
+import { Button } from "@mui/material";
 
-const SalesRepsTable = () => {
+const SalesRepresentatives = () => {
   const dispatch = useDispatch();
-
+  const router = useRouter()
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [salesReps, setSalesReps] = useState([]);
-
   const getUsersFromLabsquire = async () => {
     try {
       const userData = await getAllUsersAPI();
@@ -25,7 +25,7 @@ const SalesRepsTable = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({}) => {
+  const getAllSalesReps = async ({ }) => {
     try {
       const response = await salesRepsAPI();
 
@@ -47,7 +47,6 @@ const SalesRepsTable = () => {
       console.error(err);
     }
   };
-
   const columnDef = useMemo(
     () => [
       {
@@ -57,9 +56,9 @@ const SalesRepsTable = () => {
           <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>
         ),
         footer: (props: any) => props.column.id,
-        width: "120px",
-        maxWidth: "120px",
-        minWidth: "120px",
+        width: "220px",
+        maxWidth: "220px",
+        minWidth: "220px",
         cell: ({ getValue }: any) => {
           return <span>{getValue()}</span>;
         },
@@ -69,9 +68,9 @@ const SalesRepsTable = () => {
         id: "total_cases",
         header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
         footer: (props: any) => props.column.id,
-        width: "120px",
-        maxWidth: "120px",
-        minWidth: "120px",
+        width: "200px",
+        maxWidth: "200px",
+        minWidth: "200px",
         cell: ({ getValue }: any) => {
           return <span>{getValue()}</span>;
         },
@@ -80,6 +79,7 @@ const SalesRepsTable = () => {
         accessorFn: (row: any) => row._id,
         header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
         id: "revenue",
+        width: "800px",
         columns: [
           {
             accessorFn: (row: any) => row.targeted_amount,
@@ -87,9 +87,9 @@ const SalesRepsTable = () => {
             header: () => (
               <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
             ),
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
+            width: "200px",
+            maxWidth: "200px",
+            minWidth: "200px",
             Cell: ({ getValue }: any) => {
               return <span>{getValue()}</span>;
             },
@@ -98,9 +98,9 @@ const SalesRepsTable = () => {
             accessorFn: (row: any) => row.total_amount,
             header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
             id: "total_amount",
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
+            width: "200px",
+            maxWidth: "200px",
+            minWidth: "200px",
             Cell: ({ getValue }: any) => {
               return <span>{getValue()}</span>;
             },
@@ -111,9 +111,9 @@ const SalesRepsTable = () => {
               <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
             ),
             id: "paid_amount",
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
+            width: "200px",
+            maxWidth: "200px",
+            minWidth: "200px",
             Cell: ({ getValue }: any) => {
               return <span>{getValue()}</span>;
             },
@@ -122,9 +122,9 @@ const SalesRepsTable = () => {
             accessorFn: (row: any) => row.pending_amount,
             header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
             id: "pending_amount",
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
+            width: "200px",
+            maxWidth: "200px",
+            minWidth: "200px",
             Cell: ({ getValue }: any) => {
               return <span>{getValue()}</span>;
             },
@@ -137,11 +137,13 @@ const SalesRepsTable = () => {
         id: "actions",
         header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
         footer: (props: any) => props.column.id,
-        width: "120px",
-        maxWidth: "120px",
-        minWidth: "120px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+        width: "200px",
+        maxWidth: "200px",
+        minWidth: "200px",
+        cell: (info: any) => {
+          return <Button onClick={() => {
+            router.push(`/sales-representatives/${info.row.original.id}`)
+          }}>view</Button>;
         },
       },
     ],
@@ -155,6 +157,7 @@ const SalesRepsTable = () => {
   }, []);
   return (
     <div>
+      {" "}
       <TanStackTableComponent
         data={salesReps}
         columns={columnDef}
@@ -165,4 +168,4 @@ const SalesRepsTable = () => {
   );
 };
 
-export default SalesRepsTable;
+export default SalesRepresentatives;

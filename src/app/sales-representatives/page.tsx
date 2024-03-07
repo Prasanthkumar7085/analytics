@@ -1,7 +1,12 @@
-import SalesRepresentatives from "@/components/SalesRepresentatives";
+import SalesRepresentatives from "@/components/SalesRepresentatives/SalesRepresentatives";
+import { Suspense } from "react";
 
 const SalesRepresentativesPage = () => {
-  return <SalesRepresentatives />;
+  return (
+    <Suspense>
+      <SalesRepresentatives />
+    </Suspense>
+  );
 };
 
 export default SalesRepresentativesPage;
