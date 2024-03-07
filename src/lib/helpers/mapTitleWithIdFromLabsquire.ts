@@ -1,5 +1,4 @@
 import { store } from "@/Redux";
-import { useSelector } from "react-redux";
 
 export const mapSalesRepNameWithId = (id: string) => {
   let marketers = store.getState()?.users?.marketers;
@@ -19,4 +18,18 @@ export const mapSalesRepNameWithId = (id: string) => {
     ? markter?.last_name
     : "";
   return name ? name : "";
+};
+
+export const mapFacilityNameWithId = (id: string) => {
+  let facilities = store.getState()?.users?.facilities;
+  if (!(facilities?.length && id)) {
+    return;
+  }
+
+  let facility = facilities.find(
+    (item: { first_name: string; last_name: string; _id: string }) =>
+      item._id == id
+  );
+
+  return facility?.name ? facility?.name : "";
 };

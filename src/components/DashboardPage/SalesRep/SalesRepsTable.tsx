@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllUsersAPI } from "@/services/authAPIs";
 import { setAllMarketers } from "@/Redux/Modules/marketers";
-import { mapSalesRepNameWithId } from "@/lib/helpers/mapSalesRepNameWithId";
+import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 
 const SalesRepsTable = () => {
   const dispatch = useDispatch();

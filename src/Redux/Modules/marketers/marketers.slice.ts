@@ -6,6 +6,7 @@ const reducerName = "users";
 
 export const initialState: IMarketers.IMarketersInitialState = {
   marketers: [],
+  facilities: [],
 };
 
 export const marketerSlice = createSlice({
@@ -16,10 +17,21 @@ export const marketerSlice = createSlice({
       state.marketers = [...action.payload];
     },
     removeAllMarketers: (state: any) => {
-      state.marketers = {};
+      state.marketers = [];
+    },
+    setAllFacilities: (state: any, action: any) => {
+      state.facilities = [...action.payload];
+    },
+    removeAllFacilities: (state: any, action: any) => {
+      state.facilities = {};
     },
   },
 });
 
-export const { setAllMarketers, removeAllMarketers } = marketerSlice.actions;
+export const {
+  setAllMarketers,
+  removeAllMarketers,
+  setAllFacilities,
+  removeAllFacilities,
+} = marketerSlice.actions;
 export const marketerSliceReducer = { [reducerName]: marketerSlice.reducer };

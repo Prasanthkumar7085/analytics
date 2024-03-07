@@ -11,7 +11,11 @@ import { ChangeEvent, useState } from "react";
 import styles from "./login.module.css";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { getAllUsersAPI, signInAPI } from "@/services/authAPIs";
+import {
+  getAllFacilitiesAPI,
+  getAllUsersAPI,
+  signInAPI,
+} from "@/services/authAPIs";
 import { useDispatch } from "react-redux";
 import { setUserDetails } from "@/Redux/Modules/userlogin";
 import Cookies from "js-cookie";
@@ -19,7 +23,7 @@ import ErrorMessages from "@/components/core/ErrorMessage/ErrorMessages";
 import Image from "next/image";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { setAllMarketers } from "@/Redux/Modules/marketers";
+import { setAllFacilities, setAllMarketers } from "@/Redux/Modules/marketers";
 
 const SignIn: NextPage = () => {
   const dispatch = useDispatch();
@@ -41,6 +45,16 @@ const SignIn: NextPage = () => {
       console.error(err);
     }
   };
+  const getFacilitiesFromLabsquire = async () => {
+    try {
+      const facilitiesData = await getAllFacilitiesAPI();
+      if (facilitiesData?.status == 201 || facilitiesData?.status == 200) {
+        dispatch(setAllFacilities(facilitiesData?.data));
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   const signIn = async (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -56,6 +70,7 @@ const SignIn: NextPage = () => {
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
         getUsersFromLabsquire();
+        getFacilitiesFromLabsquire();
         router.push("/dashboard");
       } else if (response.type == "VALIDATION_ERROR") {
         setErrorMessages(response?.error_data?.details);

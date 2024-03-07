@@ -1,6 +1,6 @@
 "use client";
 import { setAllMarketers } from "@/Redux/Modules/marketers";
-import { mapSalesRepNameWithId } from "@/lib/helpers/mapSalesRepNameWithId";
+import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { getAllUsersAPI } from "@/services/authAPIs";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { useEffect, useMemo, useState } from "react";
