@@ -1,7 +1,7 @@
-import LoginWithEmail from "@/components/Auth/Login";
+import SignIn from "@/components/Auth/Signin";
 
-const LoginPage = () => {
-  return <LoginWithEmail />;
+const SignInPage = () => {
+  return <SignIn />;
 };
 
-export default LoginPage;
+export default SignInPage;

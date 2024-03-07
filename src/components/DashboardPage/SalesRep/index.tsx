@@ -1,5 +1,5 @@
 "use client";
-import SalesRepsTable from "@/components/core/Table/SalesRepsTable";
+import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
 import styles from "./index.module.css";
 import { useEffect } from "react";
 import { toast } from "sonner";

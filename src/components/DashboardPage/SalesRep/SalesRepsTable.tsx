@@ -1,7 +1,7 @@
 "use client";
 
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
-import TanStackTableComponent from "./Table";
+import TanStackTableComponent from "../../core/Table/Table";
 import { useEffect, useMemo, useState } from "react";
 
 const SalesRepsTable = () => {

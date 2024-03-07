@@ -27,12 +27,14 @@ class FetchService {
   }
 
   configureAuthorization(config: any) {
-    const state = store.getState();
+    if (this._isGlobal) {
+      const state = store.getState();
+      console.log(state);
 
-    const accessToken = state?.userLogin?.userDetails?.access_token;
-
-    // IMPLEMENT STORE/COOCIKES DATA HERE
-    config.headers["Authorization"] = accessToken; // we need to
+      const accessToken = state?.auth?.user?.access_token;
+      // IMPLEMENT STORE/COOCIKES DATA HERE
+      config.headers["Authorization"] = accessToken; // we need to
+    }
   }
 
   setDefualtHeaders(config: any, includeHeaders: boolean) {
@@ -61,14 +63,18 @@ class FetchService {
 
     const authReq = this.isAuthRequest(path);
 
-    if (!authReq) {
-      // this.configureAuthorization(config);
+    if (!authReq && this._isGlobal) {
+      this.configureAuthorization(config);
     }
 
     // request interceptor starts
     let url = "";
     if (includeUrlOrNot) {
-      url = process.env.NEXT_PUBLIC_API_URL + path;
+      if (this._isGlobal) {
+        url = process.env.NEXT_PUBLIC_LABSQUIRE_URL + path;
+      } else {
+        url = process.env.NEXT_PUBLIC_API_URL + path;
+      }
     } else {
       url = path;
     }
@@ -81,14 +87,13 @@ class FetchService {
         status: response.status,
         data: { ...(await response.json()), status: response.status },
       };
-
     } else if (
       this.authStatusCodes.includes(response.status) &&
       !this.authErrorURLs.includes(path)
     ) {
-      this.dispatchRemoveUserDetails();
-      Cookies.remove("user");
-      window.location.href = "/";
+      // this.dispatchRemoveUserDetails();
+      // Cookies.remove("user");
+      // window.location.href = "/";
       return {
         success: false,
         status: response.status,

@@ -26,6 +26,15 @@
   align-items: center;
   justify-content: center;
 }
+.activePagename{
+   text-decoration: underline;
+  height: 1rem;
+  position: relative;
+  line-height: 100%;
+  color: inherit;
+  display: inline-block;
+
+}
 .pagename {
   text-decoration: none;
   height: 1rem;
@@ -47,7 +56,7 @@
 }
 .navlinkscontainer {
   margin: 0;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   gap: 0 2.5rem;
   column-gap: clamp(24px, 2.08vw, 80px);
