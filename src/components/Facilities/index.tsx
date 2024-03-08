@@ -4,11 +4,14 @@ import { useSelector } from "react-redux";
 import { facilitiesAPI } from "@/services/facilitiesAPIs";
 import { mapFacilityNameWithId, mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 const FacilitiesList = () => {
+
+    const router = useRouter();
+
     const [facilitiesData, setFacilitiesData] = useState([]);
     const facilities = useSelector((state: any) => state?.users.facilities);
-
 
     //get the list of Facilities
     const getFacilitiesList = async () => {
@@ -127,9 +130,9 @@ const FacilitiesList = () => {
                 width: "200px",
                 maxWidth: "200px",
                 minWidth: "200px",
-                cell: ({ getValue }: any) => {
+                cell: (info: any) => {
                     return (<span>
-                        <Button>View</Button>
+                        <Button onClick={() => router.push(`/facilities/${info.row.original.hospital}`)}>View</Button>
                     </span>)
                 },
             },

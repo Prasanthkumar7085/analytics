@@ -1,6 +1,6 @@
 "use client"
 import type { NextPage } from "next";
-import styles from "./salesRepresentative.module.css"
+import styles from "./index.module.css"
 import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
@@ -8,11 +8,10 @@ import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { useParams } from "next/navigation";
 import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
-import Facilities from "./Facilities";
 import Trends from "@/components/Trends";
 import InsurancePayors from "@/components/InsurancePayors";
-const SalesRepView = () => {
+import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
+const FacilitiesView = () => {
 
     const { id } = useParams();
     const [loading, setLoading] = useState<boolean>(true)
@@ -26,8 +25,8 @@ const SalesRepView = () => {
 
         setLoading(true)
         let urls = [
-            `/sales-reps/${id}/stats-revenue`,
-            `/sales-reps/${id}/stats-volume`
+            `/facilities/${id}/stats-revenue`,
+            `/facilities/${id}/stats-volume`
         ];
         try {
             let tempResult: any = [];
@@ -114,7 +113,7 @@ const SalesRepView = () => {
                     </section>
 
                     <div className={styles.casetypecontainer} >
-                        <SingleSalesRepCaseTypeDetails />
+                        <SingleFacilitieCaseTypeDetails />
                     </div>
 
                     <div className={styles.insurancetrendscontainer}>
@@ -145,21 +144,6 @@ const SalesRepView = () => {
                             <Trends />
                         </div>
                     </div>
-                    <div className={styles.facilitiescontainer}>
-                        <div className={styles.facilitiesdetails}>
-                            <header className={styles.headercontainer}>
-                                <div className={styles.header1}>
-                                    <div className={styles.headingcontainer}>
-                                        <div className={styles.iconcontainer}>
-                                            <img className={styles.icon} alt="" src="/icon.svg" />
-                                        </div>
-                                        <h3 className={styles.heading}>Facilities</h3>
-                                    </div>
-                                </div>
-                            </header>
-                            <Facilities />
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -168,4 +152,4 @@ const SalesRepView = () => {
     );
 };
 
-export default SalesRepView;
+export default FacilitiesView;
