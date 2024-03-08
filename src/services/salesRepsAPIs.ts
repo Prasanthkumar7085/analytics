@@ -74,3 +74,20 @@ export const getFacilitiesBySalesRepId = async ({ id }: { id: string }) => {
     console.error(err);
   }
 };
+
+
+export const getAllInsurancePayorsBySalesRepIdAPI = async ({
+  id,
+}: {
+  id: string;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/insurance`);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};

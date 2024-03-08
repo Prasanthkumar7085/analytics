@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 
 const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
   const [trendsData, setTrendsData] = useState({});
+  console.log(trendsData);
 
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -101,7 +102,13 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
             background: "rgba(256,256,256,0.8)",
           }}
         >
-          <CircularProgress color="inherit" />
+          {/* <CircularProgress color="inherit" /> */}
+          <object
+            type="image/svg+xml"
+            data={"/core/loading.svg"}
+            width={150}
+            height={150}
+          />
         </Backdrop>
       ) : (
         ""

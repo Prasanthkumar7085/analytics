@@ -224,17 +224,15 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
             ""
           )}
         </tbody>
-        <tfoot
-        >
-          <tr style={{
-            background: "#dfe1e8",
-            border: "1px solid #a5a5a5",
-          }}>
+        <tfoot>
+          <tr
+            style={{
+              background: "#dfe1e8",
+              border: "1px solid #a5a5a5",
+            }}
+          >
             {totalSumValues?.map((item: any, index: number) => {
-              return (
-                <td key={index}>{item}</td>
-
-              )
+              return <td key={index}>{item}</td>;
             })}
           </tr>
         </tfoot>
