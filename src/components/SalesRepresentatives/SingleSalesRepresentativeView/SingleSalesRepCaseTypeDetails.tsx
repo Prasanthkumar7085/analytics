@@ -11,7 +11,7 @@ const SingleSalesRepCaseTypeDetails = () => {
     };
 
     return (
-        <div className={styles.casetypedetails}>
+        <div className={styles.casetypedetails} >
             <div className={styles.headercontainer1}>
                 <div className={styles.header2}>
                     <div className={styles.headingcontainer}>
@@ -47,7 +47,7 @@ const SingleSalesRepCaseTypeDetails = () => {
                     <Tab value="Volume" label="Volume" />
                 </Tabs>
             </div>
-            <div>
+            <div >
                 <RevenuVolumeCaseTypesDetails
                     tabValue={value}
                 />

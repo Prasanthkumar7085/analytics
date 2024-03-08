@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import TanStackTableComponent from "../core/Table/Table";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { SmallGraphInTable } from "../core/SmallGraphIntable";
 
 const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
 
@@ -13,6 +14,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
     const [totalSumValues, setTotalSumValues] = useState<any>(["Total"])
 
     const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"]
+    let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8', '#92298f', '#2e3094', '#0071b9']
 
     const tableRef: any = useRef()
     //get details of Revenue or Volume of caseTypes
@@ -56,7 +58,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
                     monthSums.push(monthSum);
 
                 }
-                setTotalSumValues([...totalSumValues, ...monthSums])
+                setTotalSumValues([...totalSumValues, ...monthSums.slice(0, 13)])
+                console.log(formattedData, "34o")
                 setCaseData(formattedData)
             }
         }
@@ -83,6 +86,9 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
         )
     }));
 
+
+
+
     const columnDef = useMemo(
         () => [
 
@@ -103,7 +109,26 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
                 },
             },
 
-            ...Addtionalcolumns
+
+            ...Addtionalcolumns,
+            {
+                accessorFn: (row: any) => row.actions,
+                id: "Actions",
+                header: () => (
+                    <span style={{ whiteSpace: "nowrap" }}>Graph</span>
+                ),
+                footer: (props: any) => props.column.id,
+                width: "330px",
+
+                cell: (info: any) => {
+                    return (
+                        <div style={{ width: "40%" }}>
+                            <SmallGraphInTable color={colors[info.row.index]} graphData={info.row.original} />
+                        </div>)
+                },
+            },
+
+
 
         ],
         []
