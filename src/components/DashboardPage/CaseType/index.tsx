@@ -6,7 +6,7 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Badge } from "@mui/material";
-import TanStackTableComponent from "@/components/core/Table/Table";
+import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenueSum }: any) => {
 
 
@@ -120,7 +120,7 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-          <img className={styles.icon} alt="" src="/navbar/icon.svg" />
+            <img className={styles.icon} alt="" src="/navbar/icon.svg" />
           </div>
           <div className={styles.heading}>Case Types</div>
         </div>
@@ -146,20 +146,23 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
             <HighchartsReact
               highcharts={Highcharts}
               options={options}
-              containerProps={{ style: { height: "280px", width: "280px", background:"none" } }}
+              containerProps={{
+                style: { height: "280px", width: "280px", background: "none" },
+              }}
             />
-          </div>)}
+          </div>
+        )}
 
-        {caseTypesStatsData?.length ?
-         
-            <TanStackTableComponent
-              data={caseTypesStatsData}
-              columns={columns}
-              totalSumValues={totalRevenueSum}
-              loading={false}
-              getData={getCaseTypesStats}
-            />
-           : ""}
+        {caseTypesStatsData?.length ? (
+          <TanStackTableComponent
+            data={caseTypesStatsData}
+            columns={columns}
+            totalSumValues={totalRevenueSum}
+            loading={false}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

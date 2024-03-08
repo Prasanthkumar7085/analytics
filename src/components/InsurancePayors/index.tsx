@@ -1,8 +1,9 @@
 import { getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import TanStackTableComponent from "../core/Table/Table";
+import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import Highcharts from "highcharts";
+import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 
 const InsurancePayors = () => {
   const { id } = useParams();
@@ -111,12 +112,11 @@ const InsurancePayors = () => {
   }, []);
   return (
     <div style={{ overflow: "auto" }}>
-      <TanStackTableComponent
+      <SingleColumnTable
         data={insuranceData}
         columns={columns}
         totalSumValues={totalInsurancePayors}
         loading={false}
-        getData={() => {}}
       />
     </div>
   );

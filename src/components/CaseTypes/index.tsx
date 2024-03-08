@@ -1,8 +1,9 @@
 "use client";
 import { Button } from "@mui/material";
 import { useMemo } from "react";
-import TanStackTableComponent from "../core/Table/Table";
+import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import { useState } from "react";
+import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 
 const CaseTypes = () => {
   const [allCaseTypes, setAllCaseTypes] = useState([]);
@@ -111,11 +112,10 @@ const CaseTypes = () => {
     []
   );
   return (
-    <TanStackTableComponent
+    <MultipleColumnsTable
       data={allCaseTypes}
       columns={columnDef}
       loading={false}
-      getData={getAllCaseTypes}
       totalSumValues={totalCaseTypesSum}
     />
   );
