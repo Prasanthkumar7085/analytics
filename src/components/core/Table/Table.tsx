@@ -79,22 +79,18 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
   };
 
   return (
-    <div
+    <div className="table"
       style={{
         overflow: "auto",
-        width: "94%",
-        height: "440px",
-        margin: "0 auto",
+        width: "100%",
+        borderRadius:"10px",
       }}
-      className="orders-tableContainer scrollbar"
     >
       <table
         className="table"
-        border={0}
-        style={{
-          borderSpacing: " 0 2px !important",
-          borderCollapse: "separate",
-        }}
+        style={{borderSpacing:"0"}}
+
+       
       >
         <thead
           className="thead"
@@ -112,7 +108,7 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
               <tr
                 className="table-row"
                 key={headerGroup.id}
-                style={{ border: "1px solid red" }}
+                
               >
                 {headerGroup.headers.map((header: any, index: number) => {
                   return (
@@ -124,8 +120,8 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
                         minWidth: getWidth(header.id),
                         width: getWidth(header.id),
                         color: "#000",
-                        background: "#dfe1e8",
-                        border: "1px solid #a5a5a5",
+                      background:"#F0EDFF",
+                      
                       }}
                     >
                       {header.isPlaceholder ? null : (
@@ -190,9 +186,9 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
                         className="cell"
                         key={index}
                         style={{
-                          backgroundColor: !row?.original?.target_reached
+                          backgroundColor: row?.original.hasOwnProperty('target_reached') ? !row?.original?.target_reached
                             ? "#ffebe9"
-                            : "",
+                            : "":"",
                         }}
                       >
                         {flexRender(
@@ -225,13 +221,17 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
             ""
           )}
         </tbody>
-        <tfoot>
-          <tr
-            style={{
-              background: "#dfe1e8",
-              border: "1px solid #a5a5a5",
-            }}
-          >
+        <tfoot
+        >
+          <tr style={{
+          fontSize:"clamp(12px, 0.62vw, 14px)",
+            border: "1px solid #a5a5a5",
+            textTransform:"uppercase",
+            fontWeight:"600",
+            color:"#1B2459",
+            background:"#EFF1FA",
+            
+          }}>
             {totalSumValues?.map((item: any, index: number) => {
               return <td key={index}>{item}</td>;
             })}

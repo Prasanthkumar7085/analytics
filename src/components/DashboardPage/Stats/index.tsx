@@ -11,7 +11,7 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-            <img className={styles.icon} alt="" src="/navbar/icon.svg" />
+          <img className={styles.icon} alt="" src="/navbar/icon.svg" />
           </div>
           <div className={styles.heading}>Stats</div>
         </div>

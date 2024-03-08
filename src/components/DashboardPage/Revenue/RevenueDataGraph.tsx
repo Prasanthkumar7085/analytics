@@ -48,6 +48,7 @@ const RevenueDataGraph = () => {
   
   const options = {
     chart: {
+      height:375,
       type: 'column'
     },
     title: {
@@ -102,7 +103,9 @@ const RevenueDataGraph = () => {
     getRevenue();
   }, []);
   return (
-    <HighchartsReact highcharts={Highcharts} options={options} />
+    <div style={{overflowY:"hidden"}}>
+      <HighchartsReact highcharts={Highcharts} options={options} />
+    </div>
   );
 };
 
