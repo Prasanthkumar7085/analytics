@@ -1,24 +1,39 @@
 "use client";
 import { Button } from "@mui/material";
-import { useMemo } from "react";
-import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
+import { getAllCaseTypesAPI } from "@/services/caseTypesAPIs";
+import { useEffect } from "react";
+import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
+import { AreaGraph } from "../core/AreaGraph";
 
 const CaseTypes = () => {
   const [allCaseTypes, setAllCaseTypes] = useState([]);
   const [totalCaseTypesSum, setTotalCaseTypeSum] = useState([]);
 
-  const getAllCaseTypes = async () => {};
+  const getAllCaseTypes = async () => {
+    try {
+      const response = await getAllCaseTypesAPI();
+      if (response?.status == 201 || response?.status == 200) {
+        let mappedData = response?.data?.map((item: any) => {
+          return {
+            ...item,
+            case_name: mapCaseTypeTitleWithCaseType(item?.case_type),
+          };
+        });
+        setAllCaseTypes(mappedData);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const columnDef = useMemo(
     () => [
       {
-        accessorFn: (row: any) => row.marketer_name,
-        id: "marketer_name",
-        header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>
-        ),
+        accessorFn: (row: any) => row.case_name,
+        id: "case_name",
+        header: () => <span style={{ whiteSpace: "nowrap" }}>CASE TYPE</span>,
         footer: (props: any) => props.column.id,
         width: "220px",
         maxWidth: "220px",
@@ -27,6 +42,7 @@ const CaseTypes = () => {
           return <span>{getValue()}</span>;
         },
       },
+
       {
         accessorFn: (row: any) => row.total_cases,
         id: "total_cases",
@@ -97,20 +113,28 @@ const CaseTypes = () => {
       },
 
       {
-        accessorFn: (row: any) => row?._id,
-        id: "actions",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
+        accessorFn: (row: any) => row,
+        id: "graph",
+        header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
         footer: (props: any) => props.column.id,
-        width: "200px",
-        maxWidth: "200px",
-        minWidth: "200px",
-        cell: (info: any) => {
-          return <Button onClick={() => {}}>View</Button>;
+        width: "100px",
+        maxWidth: "100px",
+        minWidth: "100px",
+        cell: ({ getValue }: any) => {
+          return (
+            <span style={{ cursor: "pointer" }}>
+              <AreaGraph getValue={getValue} />
+            </span>
+          );
         },
       },
     ],
     []
   );
+
+  useEffect(() => {
+    getAllCaseTypes();
+  }, []);
   return (
     <MultipleColumnsTable
       data={allCaseTypes}

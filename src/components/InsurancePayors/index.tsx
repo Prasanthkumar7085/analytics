@@ -1,9 +1,9 @@
 import { getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
 import { useParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
-import Highcharts from "highcharts";
+import { useEffect, useMemo, useState } from "react";
+
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
+import { AreaGraph } from "../core/AreaGraph";
 
 const InsurancePayors = () => {
   const { id } = useParams();
@@ -100,7 +100,7 @@ const InsurancePayors = () => {
         maxWidth: "100px",
         minWidth: "100px",
         cell: ({ getValue }: any) => {
-          return <AreaGraphForInsurancePayors getValue={getValue} />;
+          return <AreaGraph getValue={getValue} />;
         },
       },
     ],
@@ -124,131 +124,3 @@ const InsurancePayors = () => {
 
 // "https://live-par-2-cdn-alt.livepush.io/live/bigbuckbunnyclip/index.m3u8"
 export default InsurancePayors;
-
-const AreaGraphForInsurancePayors = ({ getValue }: any) => {
-  const chartRef = useRef(null);
-  const trendsData = {
-    "January 2024": {
-      revenue: 35,
-    },
-    "February 2024": {
-      revenue: 26,
-    },
-    "March 2024": {
-      revenue: 0,
-    },
-    "April 2024": {
-      revenue: 0,
-    },
-    "May 2024": {
-      revenue: 0,
-    },
-    "June 2024": {
-      revenue: 0,
-    },
-    "July 2024": {
-      revenue: 0,
-    },
-    "August 2024": {
-      revenue: 0,
-    },
-    "September 2024": {
-      revenue: 0,
-    },
-    "October 2024": {
-      revenue: 0,
-    },
-    "November 2024": {
-      revenue: 0,
-    },
-    "December 2024": {
-      revenue: 0,
-    },
-  };
-function getRandomBrightColor() {
-  const colors = [
-    "#FF5733",
-    "#33FF57",
-    "#3344FF",
-    "#FFA500",
-    "#FFD700",
-    "#800080",
-    "#E6E6FA",
-  ]; // List of bright colors
-  return colors[Math.floor(Math.random() * colors.length)];
-}
-
-useEffect(() => {
-  if (chartRef && chartRef.current) {
-    // Custom entrance animation for the chart
-    Highcharts.chart(chartRef.current, {
-      chart: {
-        height: 50,
-        width: 100,
-        type: "area",
-        animation: {
-          duration: 1000, // Set the animation duration
-          easing: "easeOutBounce", // Set the easing function for a smoother animation
-        },
-      },
-
-      title: {
-        text: null, // Remove title
-      },
-      xAxis: {
-        labels: {
-          enabled: false, // Disable xAxis labels
-        },
-        title: {
-          text: null, // Remove xAxis title
-        },
-        visible: false, // Hide xAxis
-      },
-      yAxis: {
-        labels: {
-          enabled: false, // Disable yAxis labels
-        },
-        title: {
-          text: null, // Remove yAxis title
-        },
-        visible: false, // Hide yAxis
-      },
-      legend: {
-        enabled: false, // Hide legend
-      },
-      credits: {
-        enabled: false, // Hide credits
-      },
-      plotOptions: {
-        area: {
-          color: getRandomBrightColor(),
-        },
-
-        series: {
-          animation: {
-            enabled: false, // Disable animation
-          },
-        },
-        marker: {
-          enabled: false, // Disable markers
-        },
-        tooltip: {
-          enabled: false, // Disable tooltip
-        },
-      },
-
-      series: [
-        {
-          name: null,
-          data: Object.values(trendsData).map((item: any) => item.revenue),
-          animation: {
-            opacity: 1, // Set opacity animation for smoother entrance
-          },
-        },
-      ],
-    } as any);
-  }
-}, [trendsData]);
-
-  return <div ref={chartRef}></div>;
-};

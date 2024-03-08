@@ -1,0 +1,28 @@
+export const caseTypesOptions: any = [
+  { colorCode: "#ea1d22", value: "CARDIAC", title: "Cardiac" },
+  { colorCode: "#00a752", value: "CGX", title: "CGx" },
+  {
+    colorCode: "#fcf00b",
+    value: "CLINICAL_CHEMISTRY",
+    title: "Clinical Chemistry",
+  },
+  { colorCode: "#f19213", value: "COVID", title: "Covid" },
+  { colorCode: "#00b0ea", value: "COVID_FLU", title: "Covid and Flu" },
+  { colorCode: "#f51059", value: "DIABETES", title: "Diabetes" },
+  { colorCode: "#dc79c8", value: "GASTRO", title: "Gastro" },
+  { colorCode: "#92298f", value: "GTI_STI", title: "GTI STI" },
+  {
+    colorCode: "#2e3094",
+    value: "GTI_WOMENS_HEALTH",
+    title: "GTI WOMEN'S HEALTH",
+  },
+  { colorCode: "#0071b9", value: "PAD", title: "PAD (Alzheimers)" },
+  { colorCode: "", value: "PGX", title: "PGx" },
+  { colorCode: "", value: "PULMONARY", title: "Pulmonary" },
+  { colorCode: "", value: "NAIL", title: "Nail" },
+  { colorCode: "", value: "RESPIRATORY_PATHOGEN_PANEL", title: "Respiratory" },
+  { colorCode: "", value: "TOXICOLOGY", title: "Toxicology" },
+  { colorCode: "", value: "UTI", title: "UTI" },
+  { colorCode: "", value: "WOUND", title: "Wound" },
+  { colorCode: "", value: "URINALYSIS", title: "Urinalysis" },
+];

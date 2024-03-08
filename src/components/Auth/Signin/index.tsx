@@ -23,7 +23,12 @@ import ErrorMessages from "@/components/core/ErrorMessage/ErrorMessages";
 import Image from "next/image";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { setAllFacilities, setAllMarketers } from "@/Redux/Modules/marketers";
+import {
+  setAllFacilities,
+  setAllMarketers,
+  setCaseTypeOptions,
+} from "@/Redux/Modules/marketers";
+import { caseTypesOptions } from "@/lib/constants/caseTypes";
 
 const SignIn: NextPage = () => {
   const dispatch = useDispatch();
@@ -69,6 +74,7 @@ const SignIn: NextPage = () => {
       if (response.success) {
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
+        dispatch(setCaseTypeOptions(caseTypesOptions));
         getUsersFromLabsquire();
         getFacilitiesFromLabsquire();
         router.push("/dashboard");

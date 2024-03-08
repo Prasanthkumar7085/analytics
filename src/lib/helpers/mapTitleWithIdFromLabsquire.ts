@@ -33,3 +33,21 @@ export const mapFacilityNameWithId = (id: string) => {
 
   return facility?.name ? facility?.name : "";
 };
+
+
+export const mapCaseTypeTitleWithCaseType = (
+  caseType: string,
+  returnValue = "title"
+) => {
+  let cases = store.getState()?.users?.caseTypes;
+
+  if (!(cases?.length && caseType)) {
+    return;
+  }
+  let caseTypeObj = cases.find(
+    (item: { title: string; value: string; color: string }) =>
+      item.value == caseType
+  );
+
+  return caseTypeObj ? caseTypeObj[returnValue] : "";
+};

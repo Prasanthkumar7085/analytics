@@ -7,6 +7,7 @@ const reducerName = "users";
 export const initialState: IMarketers.IMarketersInitialState = {
   marketers: [],
   facilities: [],
+  caseTypes: [],
 };
 
 export const marketerSlice = createSlice({
@@ -25,6 +26,9 @@ export const marketerSlice = createSlice({
     removeAllFacilities: (state: any, action: any) => {
       state.facilities = {};
     },
+    setCaseTypeOptions: (state: any, action: any) => {
+      state.caseTypes = [...action.payload];
+    },
   },
 });
 
@@ -33,5 +37,6 @@ export const {
   removeAllMarketers,
   setAllFacilities,
   removeAllFacilities,
+  setCaseTypeOptions,
 } = marketerSlice.actions;
 export const marketerSliceReducer = { [reducerName]: marketerSlice.reducer };

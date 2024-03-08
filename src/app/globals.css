@@ -25,3 +25,8 @@ body{
     background: #888 !important; 
     border-radius: 5px !important; 
   }
+
+
+  .remove-tooltip .highcharts-tooltip{
+    display: none;
+  }
