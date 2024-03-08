@@ -12,9 +12,9 @@
   ;
 }
 .labsquirelogoIcon {
-  width: 10rem;
+  width: 10rem !important;
   position: relative;
-  height: 2rem;
+  height: 2rem !important;
   overflow: hidden;
   flex-shrink: 0;
   object-fit: cover;
@@ -405,6 +405,7 @@
 .salesrepresentative {
   flex: 1;
   border-radius: 12px;
+  gap:1rem;
   background-color: #fff;
   box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),
     0 4px 14px -2px transparent;

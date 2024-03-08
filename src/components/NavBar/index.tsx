@@ -6,6 +6,7 @@ import { Button } from "@mui/material";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { removeUserDetails } from "@/Redux/Modules/userlogin";
+import Image from "next/image";
 
 interface pageProps {
   children: ReactNode;
@@ -26,10 +27,11 @@ const NavBar: FC<pageProps> = ({ children }) => {
       <div className={styles.container}>
         <header className={styles.navbar}>
           <div className={styles.logocontaier}>
-            <img
+            <Image
               className={styles.labsquirelogoIcon}
               alt=""
               src="/navbar/labsquirelogo@2x.png"
+              height={16} width={160}
             />
           </div>
           <ul className={styles.navlinkscontainer}>
@@ -90,7 +92,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
               <a className={styles.pagename}>Reports</a>
             </li>
             <li className={styles.container1}>
-              <Button onClick={logout}>Logout</Button>
+              <Button onClick={logout} sx={{fontSize:"clamp(13px, 0.67vw, 20px)", fontFamily:"'Poppins', sans-serif", color:"#fff", fontWeight:"300"}}>Logout</Button>
             </li>
           </ul>
         </header>

@@ -5,11 +5,9 @@
 body{
     margin: 0 !important;
 }
-.table {
-   
-    overflow: auto !important;
-  }
-  
+
+
+
 
   .table::-webkit-scrollbar {
     width: 5px !important; 

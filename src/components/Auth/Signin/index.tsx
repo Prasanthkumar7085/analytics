@@ -98,7 +98,7 @@ const SignIn: NextPage = () => {
       </section>
       <section className={styles.logincontainer}>
         <div className={styles.logocontainer}>
-          <img className={styles.logoIcon} alt="" src="/auth/login/logo.svg" />
+          <Image className={styles.logoIcon} alt="" src="/auth/login/logo.svg" height={20} width={20} />
         </div>
         <div className={styles.loginform}>
           <div className={styles.textwrapper}>
