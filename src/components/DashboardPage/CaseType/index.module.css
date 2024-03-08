@@ -33,6 +33,38 @@
   color: inherit;
   display: inline-block;
 }
+.caseTypeRow{
+  display: flex;
+   flex-direction: row;
+   align-items: center;
+   color: #404040;
+    gap: 0.5rem;
+     font-size:clamp(12px, 0.62vw, 14px);
+     font-family: "Poppins", sans-serif;
+     font-weight: 400;
+     padding-inline: 1rem;
+}
+.totalCasesRow{
+  font-size:clamp(12px, 0.62vw, 14px);
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  padding-inline: 1rem;
+  
+}
+.revenueBlock{
+  font-size:clamp(12px, 0.62vw, 14px);
+     font-family: "Poppins", sans-serif;
+     font-weight: 400;
+     padding-inline: 1rem;
+     color: #FF9932;
+}
+.tableHeading{
+  font-size:clamp(12px, 0.62vw, 14px);
+   color:#686D75;
+  white-space: nowrap;
+  font-weight: 500 !important;
+  padding-inline: 1rem;
+}
 .container1 {
   align-items: center;
   justify-content: center;
@@ -74,12 +106,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  padding: 0.4rem;
 }
 .heading {
   position: relative;
-  letter-spacing: -0.25px;
-  line-height: 100%;
+  font-size: clamp(14px, 0.72vw, 16px);
+    font-weight: 500;
   font-weight: 500;
 }
 .headingcontainer {
@@ -102,7 +134,7 @@
   line-height: 100%;
 }
 .startDate {
-  width: 4.5rem;
+  font-size: clamp(12px, 0.62vw, 14px);
   display: inline-block;
   flex-shrink: 0;
 }
@@ -126,7 +158,7 @@
   background-color: #fff;
   border: 1px solid #dfe1e8;
   justify-content: center;
-  padding: 0.5rem 0.375rem;
+  padding: 0.3rem 0.2rem;
   gap: 0 0.5rem;
   font-size: 0.875rem;
   color: #828282;
@@ -201,7 +233,7 @@
   align-self: stretch;
   height: 2.25rem;
   position: relative;
-  font-size: clamp(24px, 1.87vw, 72px);
+  font-size: clamp(22px, 1.8vw, 30px);
   line-height: 100%;
   font-weight: 400;
   font-family: inherit;
@@ -435,8 +467,8 @@
   position: relative;
 }
 .dot {
-  height: 5px;
-  width: 5px;
+  height: 10px;
+  width: 10px;
   /* Change the color here */
   border-radius: 50%;
   /* Ensures the dot is round */

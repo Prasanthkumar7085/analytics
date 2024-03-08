@@ -28,11 +28,11 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
     {
       accessorFn: (row: any) => row.case_type,
       id: "case_type",
-      header: () => <span>Case Type</span>,
+      header: () => <span className={styles.tableHeading}>Case Type</span>,
       cell: (info: any, index: number) => {
         console.log(info, "we")
         return (
-          <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem" }}>
+          <span className={styles.caseTypeRow}>
             <div className={styles.dot} style={{ backgroundColor: colors[info.row.index] }}></div>
             {info.getValue()}
           </span>
@@ -47,11 +47,11 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
       cell: (info: any) => (
-        <span style={{ padding: "40px 10px 40px 10px" }}>
+        <span className={styles.totalCasesRow}>
           {info.getValue()}
         </span>
       ),
-      header: () => <span>Total Cases</span>,
+      header: () => <span className={styles.tableHeading}>Total Cases</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -59,11 +59,11 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       accessorFn: (row: any) => row.paid_revenue,
       id: "paid_revenue",
       cell: (info: any) => (
-        <span style={{ padding: "40px 10px 40px 10px" }}>
+        <span className={styles.revenueBlock}>
           {formatMoney(info.getValue())}
         </span>
       ),
-      header: () => <span>Revenue</span>,
+      header: () => <span className={styles.tableHeading}>Revenue</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -121,7 +121,7 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-            <img className={styles.icon} alt="" src="/navbar/icon.svg" />
+          <img className={styles.icon} alt="" src="/navbar/icon.svg" />
           </div>
           <div className={styles.heading}>Case Types</div>
         </div>
@@ -139,7 +139,7 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
         </div>
       </div>
 
-      <div style={{ display: "flex", justifyContent: "space-between", height: "336px" }}>
+      <div style={{ display: "flex", height: "37vh" }}>
         {loading ? (
           ""
         ) : (
@@ -147,12 +147,12 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
             <HighchartsReact
               highcharts={Highcharts}
               options={options}
-              containerProps={{ style: { height: "70%", width: "100%" } }}
+              containerProps={{ style: { height: "280px", width: "280px", background:"none" } }}
             />
           </div>)}
 
         {caseTypesStatsData?.length ?
-          <div style={{ flex: "1", overflow: "auto", width: "50%", overflowX: "hidden" }}>
+         
             <TanStackTableComponent
               data={caseTypesStatsData}
               columns={columns}
@@ -160,7 +160,7 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
               loading={false}
               getData={getCaseTypesStats}
             />
-          </div> : ""}
+           : ""}
       </div>
     </div>
   );

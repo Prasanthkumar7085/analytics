@@ -12,7 +12,7 @@ const SalesRep = () => {
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-            <img className={styles.icon} alt="" src="/navbar/icon.svg" />
+          <img className={styles.icon} alt="" src="/navbar/icon.svg" />
           </div>
           <div className={styles.headinglable}>
             <div className={styles.heading}>Sales Representative</div>
