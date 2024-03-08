@@ -7,6 +7,7 @@ import { getAllUsersAPI } from "@/services/authAPIs";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styles from "./sales-rep.module.css";
 
 const SalesRepsTable = () => {
   const dispatch = useDispatch();
@@ -78,12 +79,12 @@ const SalesRepsTable = () => {
         accessorFn: (row: any) => row.marketer_name,
         id: "marketer_name",
         header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>
+          <span className={styles.salesTableHeading}>MARKETER NAME</span>
         ),
         footer: (props: any) => props.column.id,
-        width: "120px",
-        maxWidth: "120px",
-        minWidth: "120px",
+        width: "170px",
+        maxWidth: "170px",
+        minWidth: "170px",
         cell: ({ getValue }: any) => {
           return <span>{getValue()}</span>;
         },
@@ -91,75 +92,78 @@ const SalesRepsTable = () => {
       {
         accessorFn: (row: any) => row.total_cases,
         id: "total_cases",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+        header: () => <span className={styles.salesTableHeading}>TOTAL CASES</span>,
         footer: (props: any) => props.column.id,
         width: "120px",
         maxWidth: "120px",
         minWidth: "120px",
         cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+          return <span className={styles.totalCasesRow}>{getValue()}</span>;
         },
       },
       {
         accessorFn: (row: any) => row._id,
-        header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
+        header: () => <span className={styles.salesTableHeading}>REVENUE</span>,
         id: "revenue",
+        width: "800",
+        maxWidth: "800",
+        minWidth: "800",
         columns: [
           {
             accessorFn: (row: any) => row.targeted_amount,
             id: "targeted_amount",
             header: () => (
-              <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
+              <span className={styles.salesTableHeading}>TARGETED</span>
             ),
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            width: "200px",
+            maxWidth: "200px",
+            minWidth: "200px",
+            cell: ({ getValue }: any) => {
+              return <span className={styles.targetedRow}>{getValue()}</span>;
             },
           },
           {
             accessorFn: (row: any) => row.total_amount,
-            header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
+            header: () => <span className={styles.salesTableHeading}>BILLED</span>,
             id: "total_amount",
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            width: "200",
+            maxWidth: "200",
+            minWidth: "200",
+            cell: ({ getValue }: any) => {
+              return <span className={styles.billedRow}>{getValue()}</span>;
             },
           },
           {
             accessorFn: (row: any) => row.paid_amount,
             header: () => (
-              <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
+              <span className={styles.salesTableHeading}>RECEIVED</span>
             ),
             id: "paid_amount",
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            width: "200",
+            maxWidth: "200",
+            minWidth: "200",
+            cell: ({ getValue }: any) => {
+              return <span className={styles.receivedRow}>{getValue()}</span>;
             },
           },
           {
             accessorFn: (row: any) => row.pending_amount,
-            header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
+            header: () => <span className={styles.salesTableHeading}>ARREARS</span>,
             id: "pending_amount",
-            width: "120px",
-            maxWidth: "120px",
-            minWidth: "120px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            width: "200",
+            maxWidth: "200",
+            minWidth: "200",
+            cell: ({ getValue }: any) => {
+              return <span className={styles.arrearsRow}>{getValue()}</span>;
             },
           },
         ],
       },
-
+      
       {
         accessorFn: (row: any) => row?._id,
         id: "actions",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
+        header: () => <span className={styles.salesTableHeading}>ACTIONS</span>,
         footer: (props: any) => props.column.id,
         width: "120px",
         maxWidth: "120px",
@@ -168,6 +172,7 @@ const SalesRepsTable = () => {
           return <span>{getValue()}</span>;
         },
       },
+
     ],
     []
   );
@@ -178,7 +183,7 @@ const SalesRepsTable = () => {
     getAllSalesReps({});
   }, []);
   return (
-    <div style={{ height: "386px", overflow: "auto" }}>
+    <div style={{ height: "386px",width:"100%", overflow: "auto" }} className="table">
       <MultipleColumnsTable
         data={salesReps}
         totalSumValues={totalRevenueSum}

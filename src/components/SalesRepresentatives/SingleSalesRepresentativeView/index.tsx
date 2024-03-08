@@ -12,6 +12,7 @@ import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import Facilities from "./Facilities";
 import Trends from "@/components/Trends";
 import InsurancePayors from "@/components/InsurancePayors";
+import Image from "next/image";
 
 
 
@@ -119,7 +120,7 @@ const SalesRepView = () => {
                 <div className={styles.header1}>
                   <div className={styles.headingcontainer}>
                     <div className={styles.iconcontainer}>
-                      <img className={styles.icon} alt="" src="/icon.svg" />
+                      <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20}/>
                     </div>
                     <h3 className={styles.heading}>Insurance Payors</h3>
                   </div>
@@ -132,7 +133,7 @@ const SalesRepView = () => {
                 <div className={styles.header1}>
                   <div className={styles.headingcontainer}>
                     <div className={styles.iconcontainer}>
-                      <img className={styles.icon} alt="" src="/icon.svg" />
+                      <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20} />
                     </div>
                     <h3 className={styles.heading}>Trends</h3>
                   </div>
@@ -147,7 +148,7 @@ const SalesRepView = () => {
                 <div className={styles.header1}>
                   <div className={styles.headingcontainer}>
                     <div className={styles.iconcontainer}>
-                      <img className={styles.icon} alt="" src="/icon.svg" />
+                      <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20} />
                     </div>
                     <h3 className={styles.heading}>Facilities</h3>
                   </div>

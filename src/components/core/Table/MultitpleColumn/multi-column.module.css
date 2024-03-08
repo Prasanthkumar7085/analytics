@@ -1,0 +1,7 @@
+.tableCell{
+    padding-inline:1rem;
+    padding-block:6px;
+     border-top:0.5px solid #EDF2F7;
+      border-bottom:0.5px solid #EDF2F7;
+       font-size:clamp(12px, 0.62vw, 14px);
+}

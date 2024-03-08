@@ -3,6 +3,7 @@ import styles from "./index.module.css";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Skeleton } from "@mui/material";
+import Image from "next/image";
 
 const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
 
@@ -11,15 +12,16 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-          <img className={styles.icon} alt="" src="/navbar/icon.svg" />
+          <Image className={styles.icon} alt="" src="/navbar/icon.svg" height={20} width={20} />
           </div>
           <div className={styles.heading}>Stats</div>
         </div>
         <div className={styles.datepicker}>
-          <img
+          <Image
             className={styles.calendericon}
             alt=""
             src="/navbar/calendericon.svg"
+            height={20} width={20}
           />
           <div className={styles.daterange}>
             <div className={styles.startDate}>Start Date</div>
@@ -34,10 +36,11 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
             <h3 className={styles.title}>$ Revenue</h3>
             <button className={styles.detailsButton}>
               <p className={styles.details}>Details</p>
-              <img
+              <Image
                 className={styles.detailsButtonChild}
                 alt=""
                 src="/navbar/line-19.svg"
+                height={20} width={20}
               />
             </button>
           </div>
@@ -46,10 +49,11 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
               <div className={styles.header}>
                 <label className={styles.lable}>Billed</label>
                 <div className={styles.growthindicator}>
-                  <img
+                  <Image
                     className={styles.indicatorIcon}
                     alt=""
                     src="/navbar/indicator.svg"
+                    height={20} width={20}
                   />
                   <p className={styles.value}>+13.4 %</p>
                 </div>
@@ -62,19 +66,21 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
 
               </h2>
             </div>
-            <img
+            <Image
               className={styles.dividerIcon}
               alt=""
               src="/navbar/divider.svg"
+              height={20} width={20}
             />
             <div className={styles.billed}>
               <div className={styles.header}>
                 <label className={styles.lable}>Collected</label>
                 <div className={styles.growthindicator}>
-                  <img
+                  <Image
                     className={styles.indicatorIcon}
                     alt=""
                     src="/navbar/indicator.svg"
+                    height={20} width={20}
                   />
                   <p className={styles.value}>+13.4 %</p>
                 </div>
@@ -84,19 +90,21 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
                   <Skeleton width={120} height={50} /> :
                   formatMoney(revenueStatsDetails?.collected ? revenueStatsDetails?.collected : 0)}</h2>
             </div>
-            <img
+            <Image
               className={styles.dividerIcon}
               alt=""
               src="/navbar/line-21.svg"
+              height={20} width={20}
             />
             <div className={styles.billed}>
               <div className={styles.header}>
                 <p className={styles.value}>Pending</p>
                 <div className={styles.growthindicator}>
-                  <img
+                  <Image
                     className={styles.indicatorIcon}
                     alt=""
                     src="/navbar/indicator.svg"
+                    height={20} width={20}
                   />
                   <p className={styles.value}>+13.4 %</p>
                 </div>
@@ -116,10 +124,11 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
             <div className={styles.title1}>Volume</div>
             <button className={styles.detailsButton}>
               <p className={styles.details}>Details</p>
-              <img
+              <Image
                 className={styles.detailsButtonChild}
                 alt=""
                 src="/navbar/line-19.svg"
+                height={20} width={20}
               />
             </button>
           </div>
@@ -128,10 +137,11 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
               <div className={styles.header}>
                 <label className={styles.lable}>Total</label>
                 <div className={styles.growthindicator}>
-                  <img
+                  <Image
                     className={styles.indicatorIcon}
                     alt=""
                     src="/navbar/indicator.svg"
+                    height={20} width={20}
                   />
                   <p className={styles.value}>+13.4 %</p>
                 </div>
@@ -142,19 +152,21 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
                   formatMoney(volumeStatsDetails?.total ? volumeStatsDetails?.total : 0)}
               </h2>
             </div>
-            <img
+            <Image
               className={styles.dividerIcon}
               alt=""
               src="/navbar/divider.svg"
+              height={20} width={20}
             />
             <div className={styles.billed}>
               <div className={styles.header}>
                 <label className={styles.lable}>Collected</label>
                 <div className={styles.growthindicator}>
-                  <img
+                  <Image
                     className={styles.indicatorIcon}
                     alt=""
                     src="/navbar/indicator.svg"
+                    height={20} width={20}
                   />
                   <p className={styles.value}>+13.4 %</p>
                 </div>
@@ -166,19 +178,21 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
 
               </h2>
             </div>
-            <img
+            <Image
               className={styles.dividerIcon}
               alt=""
               src="/navbar/line-21.svg"
+              height={20} width={20}
             />
             <div className={styles.billed}>
               <div className={styles.header}>
                 <p className={styles.value}>Pending</p>
                 <div className={styles.growthindicator}>
-                  <img
+                  <Image
                     className={styles.indicatorIcon}
                     alt=""
                     src="/navbar/indicator.svg"
+                    height={20} width={20}
                   />
                   <p className={styles.value}>+13.4 %</p>
                 </div>

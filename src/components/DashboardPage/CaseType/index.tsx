@@ -7,6 +7,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Badge } from "@mui/material";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
+import Image from "next/image";
 const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenueSum }: any) => {
 
 
@@ -120,15 +121,16 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-            <img className={styles.icon} alt="" src="/navbar/icon.svg" />
+            <Image className={styles.icon} alt="" src="/navbar/icon.svg" height={20} width={20}/>
           </div>
           <div className={styles.heading}>Case Types</div>
         </div>
         <div className={styles.datepicker}>
-          <img
+          <Image
             className={styles.calendericon}
             alt=""
             src="//navbarcalendericon.svg"
+            height={20} width={20}
           />
           <div className={styles.daterange}>
             <div className={styles.startDate}>Start Date</div>
