@@ -83,6 +83,7 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
       style={{
         overflow: "auto",
         width: "94%",
+        height: "440px",
         margin: "0 auto",
       }}
       className="orders-tableContainer scrollbar"

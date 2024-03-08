@@ -30,7 +30,6 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       id: "case_type",
       header: () => <span>Case Type</span>,
       cell: (info: any, index: number) => {
-        console.log(info, "we")
         return (
           <span style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0.5rem" }}>
             <div className={styles.dot} style={{ backgroundColor: colors[info.row.index] }}></div>

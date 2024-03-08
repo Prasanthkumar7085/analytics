@@ -112,7 +112,7 @@ const SalesRepView = () => {
                         </div>
                     </section>
 
-                    <div className={styles.casetypecontainer}>
+                    <div className={styles.casetypecontainer} >
                         <SingleSalesRepCaseTypeDetails />
                     </div>
 
