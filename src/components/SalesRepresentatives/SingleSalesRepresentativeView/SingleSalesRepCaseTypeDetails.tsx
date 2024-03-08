@@ -2,6 +2,7 @@ import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCa
 import styles from "./salesCaseTypes.module.css"
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
+import Image from "next/image";
 const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
 
     const [value, setValue] = useState('Volume');
@@ -16,15 +17,16 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
                 <div className={styles.header2}>
                     <div className={styles.headingcontainer}>
                         <div className={styles.iconcontainer}>
-                            <img className={styles.icon} alt="" src="/icon.svg" />
+                            <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20} />
                         </div>
                         <h3 className={styles.heading}>Case Type</h3>
                     </div>
                     <div className={styles.datepicker}>
-                        <img
+                        <Image
                             className={styles.calendericon}
                             alt=""
                             src="/calendericon.svg"
+                            height={20} width={20}
                         />
                         <div className={styles.daterange}>
                             <p className={styles.startDate}>Start Date</p>
