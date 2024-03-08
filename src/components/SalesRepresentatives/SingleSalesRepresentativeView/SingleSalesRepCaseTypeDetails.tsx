@@ -2,7 +2,6 @@ import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCa
 import styles from "./salesCaseTypes.module.css"
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-
 import Image from "next/image";
 const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
 

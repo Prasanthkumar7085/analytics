@@ -8,10 +8,12 @@ import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./sales-rep.module.css";
-
+import { IconButton } from "@mui/material";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { useRouter } from "next/navigation";
 const SalesRepsTable = () => {
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [salesReps, setSalesReps] = useState([]);
@@ -27,7 +29,7 @@ const SalesRepsTable = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({}) => {
+  const getAllSalesReps = async ({ }) => {
     try {
       const response = await salesRepsAPI();
 
@@ -159,7 +161,7 @@ const SalesRepsTable = () => {
           },
         ],
       },
-      
+
       {
         accessorFn: (row: any) => row?._id,
         id: "actions",
@@ -168,8 +170,19 @@ const SalesRepsTable = () => {
         width: "120px",
         maxWidth: "120px",
         minWidth: "120px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+        cell: (info: any) => {
+          return (<span>
+            <IconButton
+              sx={{
+                width: "20px",
+                height: "20px",
+              }}
+              onClick={() => {
+                router.push(`/sales-representatives/${info.row.original.marketer_id}`)
+              }}>
+              <RemoveRedEyeIcon fontSize="small" />
+            </IconButton>
+          </span>);
         },
       },
 
@@ -183,7 +196,7 @@ const SalesRepsTable = () => {
     getAllSalesReps({});
   }, []);
   return (
-    <div style={{ height: "386px",width:"100%", overflow: "auto" }} className="table">
+    <div style={{ height: "386px", width: "100%", overflow: "auto" }} className="table">
       <MultipleColumnsTable
         data={salesReps}
         totalSumValues={totalRevenueSum}

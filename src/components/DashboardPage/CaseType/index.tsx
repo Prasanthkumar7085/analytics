@@ -11,7 +11,9 @@ import Image from "next/image";
 const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenueSum }: any) => {
 
 
-  let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8', '#92298f', '#2e3094', '#0071b9']
+  let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8',
+    '#92298f', '#2e3094', '#0071b9', '#82eedd', '	#eea782',
+    '#000000', '#82a8cd', '#e1dbe4', '#f6dad3', '#87b5af', '	#185a59']
 
 
   //chagedData for pie chart
@@ -71,8 +73,8 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
 
 
   function getSubtitle() {
-    const totalNumber = 43243;
-    return `<span style="font-size: 10px">Total value</span>
+    const totalNumber = totalRevenueSum[1];
+    return `<span style="font-size: 10px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 20px;">
             <b> ${totalNumber}</b> 
@@ -121,7 +123,7 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-            <Image className={styles.icon} alt="" src="/navbar/icon.svg" height={20} width={20}/>
+            <Image className={styles.icon} alt="" src="/navbar/icon.svg" height={20} width={20} />
           </div>
           <div className={styles.heading}>Case Types</div>
         </div>
