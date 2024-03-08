@@ -1,12 +1,12 @@
 "use client";
 
+import { setAllMarketers } from "@/Redux/Modules/marketers";
+import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
+import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
+import { getAllUsersAPI } from "@/services/authAPIs";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
-import TanStackTableComponent from "../../core/Table/Table";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsersAPI } from "@/services/authAPIs";
-import { setAllMarketers } from "@/Redux/Modules/marketers";
-import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 
 const SalesRepsTable = () => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const SalesRepsTable = () => {
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [salesReps, setSalesReps] = useState([]);
-  const [totalRevenueSum, setTotalSumValues] = useState<any>([])
+  const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
 
   const getUsersFromLabsquire = async () => {
     try {
@@ -26,7 +26,7 @@ const SalesRepsTable = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({ }) => {
+  const getAllSalesReps = async ({}) => {
     try {
       const response = await salesRepsAPI();
 
@@ -39,7 +39,7 @@ const SalesRepsTable = () => {
             };
           }
         );
-        let totalCases = 0
+        let totalCases = 0;
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
         let targeted_amount = 0;
@@ -47,16 +47,22 @@ const SalesRepsTable = () => {
         let pendingAmoumnt = 0;
 
         response?.data?.forEach((entry: any) => {
-          totalCases += entry.total_cases,
-            targeted_amount += entry.targeted_amount,
-            paidRevenueSum += entry.paid_amount;
+          (totalCases += entry.total_cases),
+            (targeted_amount += entry.targeted_amount),
+            (paidRevenueSum += entry.paid_amount);
           billedAmoumnt += entry.total_amount;
           pendingAmoumnt += entry.pending_amount;
-
         });
 
-        const result = ["Total", totalCases, targeted_amount, billedAmoumnt, paidRevenueSum, pendingAmoumnt];
-        setTotalSumValues(result)
+        const result = [
+          "Total",
+          totalCases,
+          targeted_amount,
+          billedAmoumnt,
+          paidRevenueSum,
+          pendingAmoumnt,
+        ];
+        setTotalSumValues(result);
         setSalesReps(mappedData);
       } else {
         throw response;
@@ -173,12 +179,11 @@ const SalesRepsTable = () => {
   }, []);
   return (
     <div style={{ height: "386px", overflow: "auto" }}>
-      <TanStackTableComponent
+      <MultipleColumnsTable
         data={salesReps}
         totalSumValues={totalRevenueSum}
         columns={columnDef}
         loading={false}
-        getData={getAllSalesReps}
       />
     </div>
   );

@@ -2,7 +2,7 @@ import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCa
 import styles from "./salesCaseTypes.module.css"
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-const SingleSalesRepCaseTypeDetails = () => {
+const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
 
     const [value, setValue] = useState('Volume');
 
@@ -50,6 +50,7 @@ const SingleSalesRepCaseTypeDetails = () => {
             <div >
                 <RevenuVolumeCaseTypesDetails
                     tabValue={value}
+                    apiUrl={apiUrl}
                 />
             </div>
         </div>

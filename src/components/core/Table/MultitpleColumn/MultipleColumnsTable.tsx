@@ -8,22 +8,19 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
-import { FunctionComponent, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { FC, useEffect, useState } from "react";
 
 interface pageProps {
   columns: any[];
   data: any[];
   totalSumValues?: any;
   loading: boolean;
-  getData: ({ }) => void;
 }
-const TanStackTableComponent: FunctionComponent<pageProps> = ({
+const MultipleColumnsTable: FC<pageProps> = ({
   columns,
   data,
   totalSumValues,
   loading,
-  getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -57,45 +54,16 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
     return width;
   };
 
-  const sortAndGetData = (header: any) => {
-    if (header.id == "select_rows" || header.id == "actions") {
-      return;
-    }
-    let orderBy = header.id;
-    let orderType = "asc";
-    if ((searchParams?.order_by as string) == header.id) {
-      if (searchParams?.order_type == "asc") {
-        orderType = "desc";
-      } else {
-        orderBy = "";
-        orderType = "";
-      }
-    }
-    getData({
-      page: 1,
-      orderBy: orderBy,
-      orderType: orderType,
-    });
-  };
-
   return (
     <div
+      className="table"
       style={{
         overflow: "auto",
-        width: "94%",
-        height: "440px",
-        margin: "0 auto",
+        width: "100%",
+        borderRadius: "10px",
       }}
-      className="orders-tableContainer scrollbar"
     >
-      <table
-        className="table"
-        border={0}
-        style={{
-          borderSpacing: " 0 2px !important",
-          borderCollapse: "separate",
-        }}
-      >
+      <table className="table" style={{ borderSpacing: "0" }}>
         <thead
           className="thead"
           style={{
@@ -109,11 +77,7 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
           {table
             .getHeaderGroups()
             .map((headerGroup: any, mainIndex: number) => (
-              <tr
-                className="table-row"
-                key={headerGroup.id}
-                style={{ border: "1px solid red" }}
-              >
+              <tr className="table-row" key={headerGroup.id}>
                 {headerGroup.headers.map((header: any, index: number) => {
                   return (
                     <th
@@ -124,8 +88,7 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
                         minWidth: getWidth(header.id),
                         width: getWidth(header.id),
                         color: "#000",
-                        background: "#dfe1e8",
-                        border: "1px solid #a5a5a5",
+                        background: "#F0EDFF",
                       }}
                     >
                       {header.isPlaceholder ? null : (
@@ -190,8 +153,12 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
                         className="cell"
                         key={index}
                         style={{
-                          backgroundColor: !row?.original?.target_reached
-                            ? "#ffebe9"
+                          backgroundColor: row?.original.hasOwnProperty(
+                            "target_reached"
+                          )
+                            ? !row?.original?.target_reached
+                              ? "#ffebe9"
+                              : ""
                             : "",
                         }}
                       >
@@ -228,8 +195,12 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
         <tfoot>
           <tr
             style={{
-              background: "#dfe1e8",
+              fontSize: "clamp(12px, 0.62vw, 14px)",
               border: "1px solid #a5a5a5",
+              textTransform: "uppercase",
+              fontWeight: "600",
+              color: "#1B2459",
+              background: "#EFF1FA",
             }}
           >
             {totalSumValues?.map((item: any, index: number) => {
@@ -241,28 +212,4 @@ const TanStackTableComponent: FunctionComponent<pageProps> = ({
     </div>
   );
 };
-export default TanStackTableComponent;
-
-const SortItems = ({
-  searchParams,
-  header,
-}: {
-  searchParams: any;
-  header: any;
-}) => {
-  return (
-    <div>
-      {searchParams.order_by == header.id ? (
-        searchParams.order_type == "asc" ? (
-          <Image src="/sort-asc.svg" height={15} width={15} alt="image" />
-        ) : (
-          <Image src="/sort-desc.svg" height={15} width={15} alt="image" />
-        )
-      ) : header.id == "serial" || header.id == "actions" ? (
-        ""
-      ) : (
-        <Image src="/un-sorted.svg" height={15} width={15} alt="image" />
-      )}
-    </div>
-  );
-};
+export default MultipleColumnsTable;

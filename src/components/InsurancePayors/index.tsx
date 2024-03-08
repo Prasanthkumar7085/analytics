@@ -1,8 +1,9 @@
 import { getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import TanStackTableComponent from "../core/Table/Table";
+import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import Highcharts from "highcharts";
+import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 
 const InsurancePayors = () => {
   const { id } = useParams();
@@ -111,12 +112,11 @@ const InsurancePayors = () => {
   }, []);
   return (
     <div style={{ overflow: "auto" }}>
-      <TanStackTableComponent
+      <SingleColumnTable
         data={insuranceData}
         columns={columns}
         totalSumValues={totalInsurancePayors}
         loading={false}
-        getData={() => {}}
       />
     </div>
   );
@@ -165,74 +165,90 @@ const AreaGraphForInsurancePayors = ({ getValue }: any) => {
       revenue: 0,
     },
   };
+function getRandomBrightColor() {
+  const colors = [
+    "#FF5733",
+    "#33FF57",
+    "#3344FF",
+    "#FFA500",
+    "#FFD700",
+    "#800080",
+    "#E6E6FA",
+  ]; // List of bright colors
+  return colors[Math.floor(Math.random() * colors.length)];
+}
 
-  useEffect(() => {
-    if (chartRef && chartRef.current) {
-      // Custom entrance animation for the chart
-      Highcharts.chart(chartRef.current, {
-        chart: {
-          height: 50,
-          width: 100,
-          type: "area",
-          animation: {
-            duration: 1000, // Set the animation duration
-            easing: "easeOutBounce", // Set the easing function for a smoother animation
-          },
+useEffect(() => {
+  if (chartRef && chartRef.current) {
+    // Custom entrance animation for the chart
+    Highcharts.chart(chartRef.current, {
+      chart: {
+        height: 50,
+        width: 100,
+        type: "area",
+        animation: {
+          duration: 1000, // Set the animation duration
+          easing: "easeOutBounce", // Set the easing function for a smoother animation
         },
+      },
 
+      title: {
+        text: null, // Remove title
+      },
+      xAxis: {
+        labels: {
+          enabled: false, // Disable xAxis labels
+        },
         title: {
-          text: null, // Remove title
+          text: null, // Remove xAxis title
         },
-        xAxis: {
-          labels: {
-            enabled: false, // Disable xAxis labels
-          },
-          title: {
-            text: null, // Remove xAxis title
-          },
-          visible: false, // Hide xAxis
+        visible: false, // Hide xAxis
+      },
+      yAxis: {
+        labels: {
+          enabled: false, // Disable yAxis labels
         },
-        yAxis: {
-          labels: {
-            enabled: false, // Disable yAxis labels
-          },
-          title: {
-            text: null, // Remove yAxis title
-          },
-          visible: false, // Hide yAxis
+        title: {
+          text: null, // Remove yAxis title
         },
-        legend: {
-          enabled: false, // Hide legend
-        },
-        credits: {
-          enabled: false, // Hide credits
-        },
-        plotOptions: {
-          series: {
-            animation: {
-              enabled: false, // Disable animation
-            },
-          },
-          marker: {
-            enabled: false, // Disable markers
-          },
-          tooltip: {
-            enabled: false, // Disable tooltip
-          },
+        visible: false, // Hide yAxis
+      },
+      legend: {
+        enabled: false, // Hide legend
+      },
+      credits: {
+        enabled: false, // Hide credits
+      },
+      plotOptions: {
+        area: {
+          color: getRandomBrightColor(),
         },
 
-        series: [
-          {
-            name: null,
-            data: Object.values(trendsData).map((item: any) => item.revenue),
-            animation: {
-              opacity: 1, // Set opacity animation for smoother entrance
-            },
+        series: {
+          animation: {
+            enabled: false, // Disable animation
           },
-        ],
-      } as any);
-    }
-  }, [trendsData]);
+        },
+        marker: {
+          enabled: false, // Disable markers
+        },
+        tooltip: {
+          enabled: false, // Disable tooltip
+        },
+      },
+
+      series: [
+        {
+          name: null,
+          data: Object.values(trendsData).map((item: any) => item.revenue),
+          animation: {
+            opacity: 1, // Set opacity animation for smoother entrance
+          },
+        },
+      ],
+    } as any);
+  }
+}, [trendsData]);
 
   return <div ref={chartRef}></div>;
 };

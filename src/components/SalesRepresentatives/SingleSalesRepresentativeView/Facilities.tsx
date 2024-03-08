@@ -1,5 +1,6 @@
 import { setAllFacilities } from "@/Redux/Modules/marketers";
-import TanStackTableComponent from "@/components/core/Table/Table";
+import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
+import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import { mapFacilityNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { getAllFacilitiesAPI } from "@/services/authAPIs";
 import { getFacilitiesBySalesRepId } from "@/services/salesRepsAPIs";
@@ -127,11 +128,10 @@ const Facilities = () => {
   }, []);
   return (
     <div>
-      <TanStackTableComponent
+      <MultipleColumnsTable
         data={facilitiesData}
         columns={columnDef}
         loading={false}
-        getData={() => {}}
       />
     </div>
   );

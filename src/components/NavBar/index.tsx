@@ -38,7 +38,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 href={"/dashboard"}
                 className={
                   styles[
-                  pathname == "/dashboard" ? "activePagename" : "pagename"
+                    pathname == "/dashboard" ? "activePagename" : "pagename"
                   ]
                 }
               >
@@ -50,9 +50,9 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 href={"/sales-representatives"}
                 className={
                   styles[
-                  pathname == "/sales-representatives"
-                    ? "activePagename"
-                    : "pagename"
+                    pathname == "/sales-representatives"
+                      ? "activePagename"
+                      : "pagename"
                   ]
                 }
               >
@@ -67,9 +67,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 href={"/facilities"}
                 className={
                   styles[
-                  pathname == "/facilities"
-                    ? "activePagename"
-                    : "pagename"
+                    pathname == "/facilities" ? "activePagename" : "pagename"
                   ]
                 }
               >
@@ -77,7 +75,16 @@ const NavBar: FC<pageProps> = ({ children }) => {
               </Link>
             </li>
             <li className={styles.container1}>
-              <a className={styles.pagename}>Case Types</a>
+              <Link
+                href={"/case-types"}
+                className={
+                  styles[
+                    pathname == "/case-types" ? "activePagename" : "pagename"
+                  ]
+                }
+              >
+                Case Types
+              </Link>
             </li>
             <li className={styles.container1}>
               <a className={styles.pagename}>Reports</a>

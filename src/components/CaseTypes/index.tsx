@@ -1,71 +1,16 @@
 "use client";
-import { setAllMarketers } from "@/Redux/Modules/marketers";
-import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { getAllUsersAPI } from "@/services/authAPIs";
-import { salesRepsAPI } from "@/services/salesRepsAPIs";
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import TanStackTableComponent from "./core/Table/Table";
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useMemo } from "react";
+import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
+import { useState } from "react";
+import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 
-const SalesRepresentatives = () => {
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const marketers = useSelector((state: any) => state?.users.marketers);
+const CaseTypes = () => {
+  const [allCaseTypes, setAllCaseTypes] = useState([]);
+  const [totalCaseTypesSum, setTotalCaseTypeSum] = useState([]);
 
-  const [salesReps, setSalesReps] = useState([]);
-  const [totalRevenueSum, setTotalSumValues] = useState<any>([])
+  const getAllCaseTypes = async () => {};
 
-  const getUsersFromLabsquire = async () => {
-    try {
-      const userData = await getAllUsersAPI();
-      if (userData?.status == 201 || userData?.status == 200) {
-        dispatch(setAllMarketers(userData?.data));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const getAllSalesReps = async ({ }) => {
-    try {
-      const response = await salesRepsAPI();
-
-      if (response.status == 200 || response.status == 201) {
-        let mappedData = response?.data?.map(
-          (item: { marketer_id: string }) => {
-            return {
-              ...item,
-              marketer_name: mapSalesRepNameWithId(item?.marketer_id),
-            };
-          }
-        );
-        let totalCases = 0
-        let paidRevenueSum = 0;
-        let totalRevenueSum = 0;
-        let targeted_amount = 0;
-        let billedAmoumnt = 0;
-        let pendingAmoumnt = 0;
-
-        response?.data?.forEach((entry: any) => {
-          totalCases += entry.total_cases,
-            targeted_amount += entry.targeted_amount,
-            paidRevenueSum += entry.paid_amount;
-          billedAmoumnt += entry.total_amount;
-          pendingAmoumnt += entry.pending_amount;
-
-        });
-
-        const result = ["Total", totalCases, targeted_amount, billedAmoumnt, paidRevenueSum, pendingAmoumnt];
-        setTotalSumValues(result)
-        setSalesReps(mappedData);
-      } else {
-        throw response;
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
   const columnDef = useMemo(
     () => [
       {
@@ -160,34 +105,20 @@ const SalesRepresentatives = () => {
         maxWidth: "200px",
         minWidth: "200px",
         cell: (info: any) => {
-          return (
-            <Button onClick={() => {
-              router.push(`/sales-representatives/${info.row.original.marketer_id}`)
-            }}>View</Button>
-          );
+          return <Button onClick={() => {}}>View</Button>;
         },
       },
     ],
     []
   );
-  useEffect(() => {
-    if (!marketers?.length) {
-      getUsersFromLabsquire();
-    }
-    getAllSalesReps({});
-  }, []);
   return (
-    <div>
-      {" "}
-      <TanStackTableComponent
-        data={salesReps}
-        columns={columnDef}
-        loading={false}
-        getData={getAllSalesReps}
-        totalSumValues={totalRevenueSum}
-      />
-    </div>
+    <MultipleColumnsTable
+      data={allCaseTypes}
+      columns={columnDef}
+      loading={false}
+      totalSumValues={totalCaseTypesSum}
+    />
   );
 };
 
-export default SalesRepresentatives;
+export default CaseTypes;

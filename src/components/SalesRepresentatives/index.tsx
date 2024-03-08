@@ -5,9 +5,10 @@ import { getAllUsersAPI } from "@/services/authAPIs";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TanStackTableComponent from "../core/Table/Table";
+import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
+import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
@@ -166,11 +167,10 @@ const SalesRepresentatives = () => {
   return (
     <div>
       {" "}
-      <TanStackTableComponent
+      <MultipleColumnsTable
         data={salesReps}
         columns={columnDef}
         loading={false}
-        getData={getAllSalesReps}
       />
     </div>
   );

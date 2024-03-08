@@ -113,7 +113,7 @@ const FacilitiesView = () => {
                     </section>
 
                     <div className={styles.casetypecontainer} >
-                        <SingleFacilitieCaseTypeDetails />
+                        <SingleFacilitieCaseTypeDetails apiUrl={"facilities"} />
                     </div>
 
                     <div className={styles.insurancetrendscontainer}>
