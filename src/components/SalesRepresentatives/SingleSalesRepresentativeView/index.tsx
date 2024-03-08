@@ -110,7 +110,7 @@ const SalesRepView = () => {
           </section>
 
           <div className={styles.casetypecontainer}>
-            <SingleSalesRepCaseTypeDetails />
+            <SingleSalesRepCaseTypeDetails apiUrl={"sales-reps"} />
           </div>
 
           <div className={styles.insurancetrendscontainer}>

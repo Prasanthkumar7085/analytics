@@ -26,6 +26,7 @@ export function SmallGraphInTable({ color, graphData }: any) {
                 color: color,
             },
         },
+        toolbar: "none"
     };
 
     return (

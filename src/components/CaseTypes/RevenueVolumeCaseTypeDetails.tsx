@@ -6,12 +6,15 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { SmallGraphInTable } from "../core/SmallGraphIntable";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
+import GraphDialog from "../core/GraphDialog";
 
-const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
+const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>(["Total"]);
+  const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
+  const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
 
   const months = [
     "jan",
@@ -46,9 +49,9 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
     setLoading(true);
     let url;
     if (tabValue == "Revenue") {
-      url = `/sales-reps/${id}/case-types/revenue`;
+      url = `/${apiUrl}/${id}/case-types/revenue`;
     } else {
-      url = `/sales-reps/${id}/case-types/volume`;
+      url = `/${apiUrl}/${id}/case-types/volume`;
     }
     try {
       const response = await getRevenueOrVolumeCaseDetailsAPI(url);
@@ -132,7 +135,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
 
         cell: (info: any) => {
           return (
-            <div style={{ width: "40%" }}>
+            <div style={{ width: "40%" }} onClick={() => {
+              setGraphDialogOpen(true)
+              setSelectedGraphData(info.row.original)
+            }}>
               <SmallGraphInTable
                 color={colors[info.row.index]}
                 graphData={info.row.original}
@@ -180,6 +186,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue }: any) => {
       ) : (
         ""
       )}
+      <GraphDialog
+        graphDialogOpen={graphDialogOpen}
+        setGraphDialogOpen={setGraphDialogOpen}
+        graphData={selectedGrpahData}
+
+      />
     </div>
   );
 };
