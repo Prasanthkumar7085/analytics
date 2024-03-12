@@ -451,7 +451,7 @@
 /* new Coode */
 .primaryNavbar {
   background: #1b2459;
-  padding: 10px 0;
+  padding: 10px 0 40px 0;
 }
 .navigationLinks {
   display: flex;
@@ -477,6 +477,7 @@
   left: 0;
   right: 0;
   top: 0;
-  height: 84px;
+  height: 60px;
   background: #1b2459;
+  z-index: -1;
 }

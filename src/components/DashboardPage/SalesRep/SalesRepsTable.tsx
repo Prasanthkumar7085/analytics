@@ -206,12 +206,14 @@ const SalesRepsTable = () => {
     getAllSalesReps({});
   }, []);
   return (
-    <MultipleColumnsTable
-      data={salesReps}
-      totalSumValues={totalRevenueSum}
-      columns={columnDef}
-      loading={false}
-    />
+    <div>
+      <MultipleColumnsTable
+        data={salesReps}
+        totalSumValues={totalRevenueSum}
+        columns={columnDef}
+        loading={false}
+      />
+    </div>
   );
 };
 
