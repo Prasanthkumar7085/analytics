@@ -5,7 +5,7 @@ import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
@@ -13,16 +13,22 @@ import Facilities from "./Facilities";
 import Trends from "@/components/Trends";
 import InsurancePayors from "@/components/InsurancePayors";
 import Image from "next/image";
-
-
+import {
+  mapCaseTypeTitleWithCaseType,
+  mapSalesRepNameWithId,
+} from "@/lib/helpers/mapTitleWithIdFromLabsquire";
+import { Avatar, Button, IconButton, Typography } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 
 const SalesRepView = () => {
   const { id } = useParams();
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
+  const [salesRepName, setSalesRepName] = useState("");
 
   //get the stats counts
   const getStatsCounts = async () => {
@@ -62,7 +68,16 @@ const SalesRepView = () => {
     try {
       const response = await getSingleRepCaseTypes(id as string);
       if (response.status == 200 || response?.status == 201) {
-        setCaseTypesStatsData(response?.data);
+        let mappedData = response?.data
+          ?.map((item: any) => {
+            return {
+              ...item,
+              case_name: mapCaseTypeTitleWithCaseType(item?.case_type),
+            };
+          })
+          ?.filter((e: { total_cases: string }) => e.total_cases);
+        setCaseTypesStatsData(mappedData);
+
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
 
@@ -81,16 +96,32 @@ const SalesRepView = () => {
     }
   };
 
+  const getMangerDetails = () => {
+    setSalesRepName(mapSalesRepNameWithId(id as string));
+  };
+
   //api call to get stats count
   useEffect(() => {
     if (id) {
       getStatsCounts();
       getCaseTypesStats();
+      getMangerDetails();
+    } else {
+      router.back();
     }
   }, []);
 
   return (
     <div className={styles.salesrepviewpage}>
+      <div className={styles.salesrepDetails}>
+        <IconButton onClick={() => router.back()}>
+          <ArrowBack />
+        </IconButton>
+        <Avatar sx={{ height: "30px", width: "30px" }} />
+        <div>
+          <Typography>{salesRepName}</Typography>
+        </div>
+      </div>
       <div className={styles.container}>
         <div className={styles.detailscontainer}>
           <section className={styles.container7}>
@@ -120,7 +151,13 @@ const SalesRepView = () => {
                 <div className={styles.header1}>
                   <div className={styles.headingcontainer}>
                     <div className={styles.iconcontainer}>
-                      <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20}/>
+                      <Image
+                        className={styles.icon}
+                        alt=""
+                        src="/icon.svg"
+                        height={20}
+                        width={20}
+                      />
                     </div>
                     <h3 className={styles.heading}>Insurance Payors</h3>
                   </div>
@@ -133,7 +170,13 @@ const SalesRepView = () => {
                 <div className={styles.header1}>
                   <div className={styles.headingcontainer}>
                     <div className={styles.iconcontainer}>
-                      <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20} />
+                      <Image
+                        className={styles.icon}
+                        alt=""
+                        src="/icon.svg"
+                        height={20}
+                        width={20}
+                      />
                     </div>
                     <h3 className={styles.heading}>Trends</h3>
                   </div>
@@ -148,7 +191,13 @@ const SalesRepView = () => {
                 <div className={styles.header1}>
                   <div className={styles.headingcontainer}>
                     <div className={styles.iconcontainer}>
-                      <Image className={styles.icon} alt="" src="/icon.svg" height={20} width={20} />
+                      <Image
+                        className={styles.icon}
+                        alt=""
+                        src="/icon.svg"
+                        height={20}
+                        width={20}
+                      />
                     </div>
                     <h3 className={styles.heading}>Facilities</h3>
                   </div>

@@ -17,7 +17,7 @@ export const mapSalesRepNameWithId = (id: string) => {
     : "" + " " + markter?.last_name
     ? markter?.last_name
     : "";
-  return name ? name : "";
+  return name ? name?.slice(0, 1)?.toUpperCase() + name?.slice(1) : "";
 };
 
 export const mapFacilityNameWithId = (id: string) => {

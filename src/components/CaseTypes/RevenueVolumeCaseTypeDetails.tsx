@@ -85,7 +85,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
           monthSums.push(monthSum);
         }
         setTotalSumValues([...totalSumValues, ...monthSums.slice(0, 13)]);
-        console.log(formattedData, "34o");
+
         setCaseData(formattedData);
       }
     } catch (err) {
@@ -95,7 +95,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     }
   };
 
-  const Addtionalcolumns = months?.map((item: any) => ({
+  const addtionalcolumns = months?.map((item: any) => ({
     accessorFn: (row: any) => row[item.toLowerCase()],
     id: item.toLowerCase(),
     header: () => (
@@ -125,7 +125,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
         },
       },
 
-      ...Addtionalcolumns,
+      ...addtionalcolumns,
       {
         accessorFn: (row: any) => row.actions,
         id: "Actions",
@@ -135,10 +135,13 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
 
         cell: (info: any) => {
           return (
-            <div style={{ width: "40%" }} onClick={() => {
-              setGraphDialogOpen(true)
-              setSelectedGraphData(info.row.original)
-            }}>
+            <div
+              style={{ width: "40%" }}
+              onClick={() => {
+                setGraphDialogOpen(true);
+                setSelectedGraphData(info.row.original);
+              }}
+            >
               <SmallGraphInTable
                 color={colors[info.row.index]}
                 graphData={info.row.original}

@@ -27,19 +27,22 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
 
   const columns = [
     {
-      accessorFn: (row: any) => row.case_type,
-      id: "case_type",
+      accessorFn: (row: any) => row.case_name,
+      id: "case_name",
       header: () => <span className={styles.tableHeading}>Case Type</span>,
       cell: (info: any, index: number) => {
         return (
           <span className={styles.caseTypeRow}>
-            <div className={styles.dot} style={{ backgroundColor: colors[info.row.index] }}></div>
+            <div
+              className={styles.dot}
+              style={{ backgroundColor: colors[info.row.index] }}
+            ></div>
             {info.getValue()}
           </span>
-        )
+        );
       },
       footer: (props: any) => props.column.id,
-      width: "60px",
+      width: "200px",
       minWidth: "60px",
       maxWidth: "60px",
     },
@@ -47,9 +50,7 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {info.getValue()}
-        </span>
+        <span className={styles.totalCasesRow}>{info.getValue()}</span>
       ),
       header: () => <span className={styles.tableHeading}>Total Cases</span>,
       footer: (props: any) => props.column.id,
@@ -67,15 +68,14 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
       footer: (props: any) => props.column.id,
       width: "150px",
     },
-  ]
-
+  ];
 
   function getSubtitle() {
-    const totalNumber = 43243;
-    return `<span style="font-size: 10px">Total value</span>
+    const totalNumber = totalRevenueSum[1];
+    return `<span style="font-size: 10px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 20px;">
-            <b> ${totalNumber}</b> 
+            <b> ${totalNumber}</b>
         </span>`;
   }
 

@@ -23,6 +23,8 @@ const MultipleColumnsTable: FC<pageProps> = ({
   totalSumValues,
   loading,
 }) => {
+  console.log(totalSumValues, "asdff");
+  
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({

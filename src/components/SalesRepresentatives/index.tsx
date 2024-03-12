@@ -3,17 +3,20 @@ import { setAllMarketers } from "@/Redux/Modules/marketers";
 import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { getAllUsersAPI } from "@/services/authAPIs";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
-import { useRouter } from "next/navigation";
-import { Button } from "@mui/material";
+import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const marketers = useSelector((state: any) => state?.users.marketers);
+
+  const [loading, setLoading] = useState(false);
+  const [totalSumValues, setTotalSumValues] = useState<(string | number)[]>([]);
 
   const [salesReps, setSalesReps] = useState([]);
   const getUsersFromLabsquire = async () => {
@@ -27,6 +30,7 @@ const SalesRepresentatives = () => {
     }
   };
   const getAllSalesReps = async ({}) => {
+    setLoading(true);
     try {
       const response = await salesRepsAPI();
 
@@ -39,13 +43,38 @@ const SalesRepresentatives = () => {
             };
           }
         );
-
         setSalesReps(mappedData);
+        let totalCases = 0;
+        let paidRevenueSum = 0;
+        let totalRevenueSum = 0;
+        let targeted_amount = 0;
+        let billedAmoumnt = 0;
+        let pendingAmoumnt = 0;
+
+        response?.data?.forEach((entry: any) => {
+          (totalCases += entry.total_cases),
+            (targeted_amount += entry.targeted_amount),
+            (paidRevenueSum += entry.paid_amount);
+          billedAmoumnt += entry.total_amount;
+          pendingAmoumnt += entry.pending_amount;
+        });
+
+        const result = [
+          "Total",
+          totalCases,
+          targeted_amount,
+          billedAmoumnt,
+          paidRevenueSum,
+          pendingAmoumnt,
+        ];
+        setTotalSumValues(result);
       } else {
         throw response;
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
   const columnDef = useMemo(
@@ -132,7 +161,21 @@ const SalesRepresentatives = () => {
           },
         ],
       },
-
+      {
+        accessorFn: (row: any) => row.target_reached,
+        id: "target_reached",
+        header: () => (
+          <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
+        ),
+        footer: (props: any) => props.column.id,
+        width: "220px",
+        maxWidth: "220px",
+        minWidth: "220px",
+        cell: ({ getValue }: any) => {
+          if (getValue()) return <span>Yes</span>;
+          else return <span>No</span>;
+        },
+      },
       {
         accessorFn: (row: any) => row?._id,
         id: "actions",
@@ -170,8 +213,10 @@ const SalesRepresentatives = () => {
       <MultipleColumnsTable
         data={salesReps}
         columns={columnDef}
-        loading={false}
+        loading={loading}
+        totalSumValues={totalSumValues}
       />
+      <LoadingComponent loading={loading} />
     </div>
   );
 };

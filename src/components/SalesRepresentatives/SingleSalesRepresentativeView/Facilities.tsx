@@ -20,8 +20,8 @@ const Facilities = () => {
       const facilitiesData = await getAllFacilitiesAPI();
       if (facilitiesData?.status == 201 || facilitiesData?.status == 200) {
         dispatch(setAllFacilities(facilitiesData?.data));
+        getSalesRepFacilities();
       }
-      const response = await getFacilitiesBySalesRepId({ id: id as string });
     } catch (err) {
       console.error(err);
     }
