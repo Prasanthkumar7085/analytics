@@ -4,22 +4,33 @@ import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire
 import { getAllUsersAPI } from "@/services/authAPIs";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { Button } from "@mui/material";
-import { useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 import SalesRepsFilters from "./SalesRepsFilters";
+import styles from "./salesreps.module.css";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { stat } from "fs";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
   const marketers = useSelector((state: any) => state?.users.marketers);
 
   const [loading, setLoading] = useState(false);
   const [totalSumValues, setTotalSumValues] = useState<(string | number)[]>([]);
 
   const [salesReps, setSalesReps] = useState([]);
+  const [completeData, setCompleteData] = useState([]);
   const getUsersFromLabsquire = async () => {
     try {
       const userData = await getAllUsersAPI();
@@ -45,9 +56,10 @@ const SalesRepresentatives = () => {
           }
         );
         setSalesReps(mappedData);
+        setCompleteData(mappedData);
+        onUpdateData({}, mappedData);
         let totalCases = 0;
         let paidRevenueSum = 0;
-        let totalRevenueSum = 0;
         let targeted_amount = 0;
         let billedAmoumnt = 0;
         let pendingAmoumnt = 0;
@@ -202,6 +214,73 @@ const SalesRepresentatives = () => {
     ],
     []
   );
+
+  const onUpdateData = (
+    {
+      status = params.get("status") as string,
+      search = params.get("search") as string,
+    }: Partial<{
+      status: string;
+      search: string;
+    }>,
+    testData?: any[]
+  ) => {
+    let queryParams: any = {};
+
+    if (status && status != "all") {
+      queryParams["status"] = status;
+    }
+    if (search) {
+      queryParams["search"] = search;
+    }
+    router.push(`${prepareURLEncodedParams(pathname, queryParams)}`);
+
+    let data: any = [...completeData];
+    if (!completeData?.length) {
+      if (testData?.length) {
+        data = [...testData];
+      } else return;
+    }
+    if (status && status !== "all") {
+      let statusValue = status == "yes" ? true : false;
+      data = data.filter((item: any) => item.target_reached == statusValue);
+      setSalesReps(data);
+    }
+    if (search) {
+      data = data.filter((item: any) =>
+        item.marketer_name
+          ?.toLowerCase()
+          ?.includes(search?.toLowerCase()?.trim())
+      );
+    }
+
+    setSalesReps(data);
+
+    let totalCases = 0;
+    let paidRevenueSum = 0;
+    let targeted_amount = 0;
+    let billedAmoumnt = 0;
+    let pendingAmoumnt = 0;
+
+    data?.forEach((entry: any) => {
+      (totalCases += entry.total_cases),
+        (targeted_amount += entry.targeted_amount),
+        (paidRevenueSum += entry.paid_amount);
+      billedAmoumnt += entry.total_amount;
+      pendingAmoumnt += entry.pending_amount;
+    });
+
+    const result = [
+      "Total",
+      totalCases,
+      targeted_amount,
+      billedAmoumnt,
+      paidRevenueSum,
+      pendingAmoumnt,
+    ];
+    setTotalSumValues(result);
+  };
+
   useEffect(() => {
     if (!marketers?.length) {
       getUsersFromLabsquire();
@@ -209,8 +288,8 @@ const SalesRepresentatives = () => {
     getAllSalesReps({});
   }, []);
   return (
-    <div>
-      <SalesRepsFilters />
+    <div className={styles.salesRepsContainer}>
+      <SalesRepsFilters onUpdateData={onUpdateData} />
       <MultipleColumnsTable
         data={salesReps}
         columns={columnDef}

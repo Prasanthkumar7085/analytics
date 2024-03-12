@@ -1,0 +1,7 @@
+.filterContainer{
+    display: flex;
+    border: 1px solid;
+    width: 100%;
+    justify-content: flex-end;
+   
+}
