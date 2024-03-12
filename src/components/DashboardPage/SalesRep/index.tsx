@@ -6,14 +6,18 @@ import { toast } from "sonner";
 import Image from "next/image";
 
 const SalesRep = () => {
-
-
   return (
-    <div className={styles.salesrepresentative} >
+    <div className={styles.salesrepresentative}>
       <div className={styles.header}>
         <div className={styles.headingcontainer}>
           <div className={styles.iconcontainer}>
-          <Image className={styles.icon} alt="" src="/navbar/icon.svg" height={20} width={20} />
+            <Image
+              className={styles.icon}
+              alt=""
+              src="/navbar/icon.svg"
+              height={20}
+              width={20}
+            />
           </div>
           <div className={styles.headinglable}>
             <div className={styles.heading}>Sales Representative</div>
@@ -24,7 +28,8 @@ const SalesRep = () => {
             className={styles.calendericon}
             alt=""
             src="/navbar/calendericon.svg"
-            height={20} width={20}
+            height={20}
+            width={20}
           />
           <div className={styles.daterange}>
             <div className={styles.startDate}>Start Date</div>
@@ -33,6 +38,7 @@ const SalesRep = () => {
           </div>
         </div>
       </div>
+      <div className="salesRepFilters"></div>
       <SalesRepsTable />
     </div>
   );

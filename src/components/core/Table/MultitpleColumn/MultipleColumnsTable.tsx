@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
-import styles from './multi-column.module.css';
+import styles from "./multi-column.module.css";
 
 interface pageProps {
   columns: any[];
@@ -49,51 +49,41 @@ const MultipleColumnsTable: FC<pageProps> = ({
     );
   }, [useParams]);
 
-  function findObjectById(array:any[], id:string) {
+  function findObjectById(array: any[], id: string) {
     // Iterate through the array
     for (let i = 0; i < array.length; i++) {
-        const element = array[i];
+      const element = array[i];
 
-        // If the current element is an object and has the desired ID, return it
-        if (typeof element === 'object' && element.id === id) {
-            return element;
-        }
+      // If the current element is an object and has the desired ID, return it
+      if (typeof element === "object" && element.id === id) {
+        return element;
+      }
 
-        // If the current element is an array, recursively search through it
-        if (Array.isArray(element)) {
-            const foundObject:any = findObjectById(element, id);
-            if (foundObject) {
-                return foundObject;
-            }
+      // If the current element is an array, recursively search through it
+      if (Array.isArray(element)) {
+        const foundObject: any = findObjectById(element, id);
+        if (foundObject) {
+          return foundObject;
         }
+      }
     }
 
     // If no object with the desired ID is found, return null
     return null;
-}
+  }
 
   const getWidth = (id: string) => {
-    
-    const widthObj = findObjectById(columns,id);
-    
-    if(widthObj){
+    const widthObj = findObjectById(columns, id);
 
+    if (widthObj) {
       const width = widthObj?.width;
       return width;
-    }else return '100px'
-    
+    } else return "100px";
   };
 
   return (
-    <div
-      className="table"
-      style={{
-        overflow: "auto",
-        width: "100%",
-        borderRadius: "10px",
-      }}
-    >
-      <table className="table" style={{ borderSpacing: "0" }}>
+    <div className={styles.customTable}>
+      <table style={{ borderSpacing: "0" }}>
         <thead
           className="thead"
           style={{
@@ -179,7 +169,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                 <tr className="table-row" key={mainIndex}>
                   {row.getVisibleCells().map((cell: any, index: number) => {
                     return (
-                      <td 
+                      <td
                         className={styles.tableCell}
                         key={index}
                         style={{
