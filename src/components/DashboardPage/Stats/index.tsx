@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import styles from "./index.module.css";
-import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Skeleton } from "@mui/material";
 import Image from "next/image";
+import styles from "./index.module.css";
 
-const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
-
+const Stats = ({
+  revenueStatsDetails,
+  volumeStatsDetails,
+  loading,
+  onChange,
+}: any) => {
   return (
     <div className={styles.stats}>
       <div className={styles.header}>
@@ -22,20 +25,7 @@ const Stats = ({ revenueStatsDetails, volumeStatsDetails, loading }: any) => {
           </div>
           <div className={styles.heading}>Stats</div>
         </div>
-        <div className={styles.datepicker}>
-          <Image
-            className={styles.calendericon}
-            alt=""
-            src="/navbar/calendericon.svg"
-            height={20}
-            width={20}
-          />
-          <div className={styles.daterange}>
-            <div className={styles.startDate}>Start Date</div>
-            <div className={styles.div}>-</div>
-            <div className={styles.startDate}>End Date</div>
-          </div>
-        </div>
+        <GlobalDateRangeFilter onChange={onChange} />
       </div>
       <div className={styles.cardscontainer}>
         <div className={styles.revenuecard}>

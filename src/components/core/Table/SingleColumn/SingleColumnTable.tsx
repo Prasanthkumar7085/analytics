@@ -61,6 +61,7 @@ const SingleColumnTable: FC<pageProps> = ({
         overflow: "auto",
         width: "100%",
         borderRadius: "10px",
+        padding: "1rem",
       }}
     >
       <table className="table" style={{ borderSpacing: "0" }}>

@@ -103,6 +103,7 @@ const FacilitiesView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
+                onChange={() => {}}
               />
             </div>
             <div style={{ width: "60%" }}>

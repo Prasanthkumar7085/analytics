@@ -16,6 +16,7 @@ import Image from "next/image";
 import {
   mapCaseTypeTitleWithCaseType,
   mapSalesRepNameWithId,
+  mapSalesRepWithId,
 } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
@@ -97,6 +98,8 @@ const SalesRepView = () => {
   };
 
   const getMangerDetails = () => {
+    console.log(mapSalesRepWithId(id as string), "okpl");
+
     setSalesRepName(mapSalesRepNameWithId(id as string));
   };
 
@@ -130,6 +133,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
+                onChange={() => {}}
               />
             </div>
             <div style={{ width: "60%" }}>

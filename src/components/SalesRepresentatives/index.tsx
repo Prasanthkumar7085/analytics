@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
+import SalesRepsFilters from "./SalesRepsFilters";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
@@ -209,7 +210,7 @@ const SalesRepresentatives = () => {
   }, []);
   return (
     <div>
-      {" "}
+      <SalesRepsFilters />
       <MultipleColumnsTable
         data={salesReps}
         columns={columnDef}

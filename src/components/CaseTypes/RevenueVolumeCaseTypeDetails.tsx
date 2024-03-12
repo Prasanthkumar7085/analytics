@@ -16,6 +16,9 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
 
+  useEffect(() => {
+    addtionalcolumns = [];
+  }, [tabValue]);
   const months = [
     "jan",
     "feb",
@@ -95,7 +98,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     }
   };
 
-  const addtionalcolumns = months?.map((item: any) => ({
+  let addtionalcolumns = months?.map((item: any) => ({
     accessorFn: (row: any) => row[item.toLowerCase()],
     id: item.toLowerCase(),
     header: () => (
@@ -106,7 +109,9 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     maxWidth: "220px",
     minWidth: "220px",
     cell: (info: any) => (
-      <span>{tabValue == "Revenue" ? info.getValue() : info.getValue()}</span>
+      <span>
+        {tabValue == "Revenue" ? formatMoney(info.getValue()) : info.getValue()}
+      </span>
     ),
   }));
 
