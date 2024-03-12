@@ -9,4 +9,24 @@
     align-items: center;
     padding: 0 15px;
   }
+
+  table {
+    tr {
+      th {
+        height: auto;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 10px 20px;
+        border: 0.5px solid #fff;
+      }
+
+      td {
+        height: auto;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 10px 20px;
+        border: 0.5px solid #d5d5d5;
+      }
+    }
+  }
 }
