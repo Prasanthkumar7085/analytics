@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { AreaGraph } from "../core/AreaGraph";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 
 const InsurancePayors = () => {
   const { id } = useParams();
@@ -64,7 +65,7 @@ const InsurancePayors = () => {
         maxWidth: "100px",
         minWidth: "100px",
         cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+          return <span>{formatMoney(getValue())}</span>;
         },
       },
       {
@@ -76,7 +77,7 @@ const InsurancePayors = () => {
         maxWidth: "100px",
         minWidth: "100px",
         cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+          return <span>{formatMoney(getValue())}</span>;
         },
       },
       {
@@ -88,7 +89,7 @@ const InsurancePayors = () => {
         maxWidth: "100px",
         minWidth: "100px",
         cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+          return <span>{formatMoney(getValue())}</span>;
         },
       },
       {

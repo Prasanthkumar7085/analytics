@@ -17,7 +17,20 @@ export const mapSalesRepNameWithId = (id: string) => {
     : "" + " " + markter?.last_name
     ? markter?.last_name
     : "";
-  return name ? name : "";
+  return name ? name?.slice(0, 1)?.toUpperCase() + name?.slice(1) : "";
+};
+export const mapSalesRepWithId = (id: string) => {
+  let marketers = store.getState()?.users?.marketers;
+  if (!(marketers?.length && id)) {
+    return;
+  }
+
+  let markter = marketers.find(
+    (item: { first_name: string; last_name: string; _id: string }) =>
+      item._id == id
+  );
+
+  return markter ? markter : "";
 };
 
 export const mapFacilityNameWithId = (id: string) => {

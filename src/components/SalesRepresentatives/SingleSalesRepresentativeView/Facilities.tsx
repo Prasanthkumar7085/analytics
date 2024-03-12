@@ -1,6 +1,7 @@
 import { setAllFacilities } from "@/Redux/Modules/marketers";
 import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 import { mapFacilityNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { getAllFacilitiesAPI } from "@/services/authAPIs";
 import { getFacilitiesBySalesRepId } from "@/services/salesRepsAPIs";
@@ -12,16 +13,19 @@ const Facilities = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
-  const [facilitiesData, setFacilitiesData] = useState([]);
   const facilities = useSelector((state: any) => state?.users.facilities);
+  const [facilitiesData, setFacilitiesData] = useState([]);
+  const [totalSumFacilityValues, setTotalSumFacilityValues] = useState<
+    (string | number)[]
+  >([]);
 
   const getFacilitiesFromLabsquire = async () => {
     try {
       const facilitiesData = await getAllFacilitiesAPI();
       if (facilitiesData?.status == 201 || facilitiesData?.status == 200) {
         dispatch(setAllFacilities(facilitiesData?.data));
+        getSalesRepFacilities();
       }
-      const response = await getFacilitiesBySalesRepId({ id: id as string });
     } catch (err) {
       console.error(err);
     }
@@ -30,6 +34,28 @@ const Facilities = () => {
     try {
       const response = await getFacilitiesBySalesRepId({ id: id as string });
       if (response?.status == 200 || response.status == 201) {
+        let totalCases = 0;
+        let totalAmount = 0;
+        let totalPaid = 0;
+        let totalPending = 0;
+
+        response?.combinedArray?.forEach((entry: any) => {
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          totalAmount += entry.total_amount ? +entry.total_amount : 0;
+          totalPaid += entry.paid_amount ? +entry.paid_amount : 0;
+          totalPending += entry.pending_amount ? +entry.pending_amount : 0;
+        });
+
+        const result = [
+          "Total",
+          totalCases,
+          totalAmount,
+          totalPaid,
+          totalPending,
+          "",
+        ];
+        setTotalSumFacilityValues(result);
+
         let mappedData = response?.combinedArray?.map(
           (item: { hospital: string }) => {
             return {
@@ -87,8 +113,8 @@ const Facilities = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            cell: ({ getValue }: any) => {
+              return <span>{formatMoney(getValue())}</span>;
             },
           },
           {
@@ -100,8 +126,8 @@ const Facilities = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            cell: ({ getValue }: any) => {
+              return <span>{formatMoney(getValue())}</span>;
             },
           },
           {
@@ -111,8 +137,8 @@ const Facilities = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            cell: ({ getValue }: any) => {
+              return <span>{formatMoney(getValue())}</span>;
             },
           },
         ],
@@ -132,6 +158,7 @@ const Facilities = () => {
         data={facilitiesData}
         columns={columnDef}
         loading={false}
+        totalSumValues={totalSumFacilityValues}
       />
     </div>
   );

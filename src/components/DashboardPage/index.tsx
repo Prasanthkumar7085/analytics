@@ -7,22 +7,18 @@ import Stats from "./Stats";
 import styles from "./index.module.css";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
+import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 
 const DashboardPage = () => {
-
-  const [loading, setLoading] = useState<boolean>(true)
-  const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>()
-  const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>()
-  const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([])
-  const [totalRevenueSum, setTotalSumValues] = useState<any>([])
+  const [loading, setLoading] = useState<boolean>(true);
+  const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
+  const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
+  const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
+  const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   //get the stats counts
   const getStatsCounts = async () => {
-
-    setLoading(true)
-    let urls = [
-      "/overview/stats-revenue",
-      "/overview/stats-volume"
-    ];
+    setLoading(true);
+    let urls = ["/overview/stats-revenue", "/overview/stats-volume"];
     try {
       let tempResult: any = [];
 
@@ -39,24 +35,20 @@ const DashboardPage = () => {
         if (result.status === "rejected") {
         }
       });
-      setRevenueStatsDetails(tempResult[0]?.data)
-      setVolumeStatsDetails(tempResult[1]?.data)
-
+      setRevenueStatsDetails(tempResult[0]?.data);
+      setVolumeStatsDetails(tempResult[1]?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
     }
-    finally {
-      setLoading(false)
-
-    }
-  }
-
+  };
 
   //get the caseTypes data
   const getCaseTypesStats = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const response = await getCaseTypesStatsAPI()
+      const response = await getCaseTypesStatsAPI();
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -67,26 +59,30 @@ const DashboardPage = () => {
         });
 
         const result = ["Total", paidRevenueSum, totalRevenueSum];
-        setTotalSumValues(result)
-        setCaseTypesStatsData(response?.data)
+        setTotalSumValues(result);
 
+        let mappedData = response?.data
+          ?.map((item: any) => {
+            return {
+              ...item,
+              case_name: mapCaseTypeTitleWithCaseType(item?.case_type),
+            };
+          })
+          ?.filter((e: { total_cases: string }) => e.total_cases);
+        setCaseTypesStatsData(mappedData);
       }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-    catch (err) {
-      console.error(err)
-    }
-    finally {
-      setLoading(false)
-    }
-  }
-
-
+  };
 
   //api call to get stats count
   useEffect(() => {
-    getStatsCounts()
-    getCaseTypesStats()
-  }, [])
+    getStatsCounts();
+    getCaseTypesStats();
+  }, []);
 
   return (
     <main className={styles.overviewdetails}>
@@ -95,7 +91,9 @@ const DashboardPage = () => {
           <Stats
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
-            loading={loading} />
+            loading={loading}
+            onChange={() => {}}
+          />
         </div>
         <div style={{ width: "60%" }}>
           <CaseType
@@ -108,7 +106,6 @@ const DashboardPage = () => {
       </section>
       <section className={styles.container8}>
         <div style={{ width: "40%" }}>
-
           <RevenueBlock />
         </div>
         <div style={{ width: "60%" }}>

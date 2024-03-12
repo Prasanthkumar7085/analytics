@@ -10,7 +10,6 @@ import { useEffect, useRef, useState } from "react";
 
 const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
   const [trendsData, setTrendsData] = useState({});
-  console.log(trendsData);
 
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -28,7 +27,6 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
           id: id as string,
         });
       }
-      console.log(response, "asdf");
 
       setTrendsData(response?.data);
     } catch (err) {
@@ -52,7 +50,7 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
           },
         },
         title: {
-          text: "Total Revenue",
+          text: graphType == "volume" ? "Total Volume" : "Total Revenue",
         },
         xAxis: {
           categories: Object.keys(trendsData).map((item: string) =>
@@ -66,7 +64,10 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
         },
         series: [
           {
-            name: "Total Revenue Billed",
+            name:
+              graphType == "volume"
+                ? "Total Volume Billed"
+                : "Total Revenue Billed",
             data: Object.values(trendsData).map((item: any) => item.revenue),
             animation: {
               opacity: 1, // Set opacity animation for smoother entrance

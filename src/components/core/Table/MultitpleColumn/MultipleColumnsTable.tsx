@@ -38,50 +38,29 @@ const MultipleColumnsTable: FC<pageProps> = ({
     debugTable: true,
   });
 
-  const useParams = useSearchParams();
-  const [searchParams, setSearchParams] = useState(
-    Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
-  );
-
-  useEffect(() => {
-    setSearchParams(
-      Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
-    );
-  }, [useParams]);
-
-  function findObjectById(array:any[], id:string) {
-    // Iterate through the array
+  function findObjectById(array: any[], id: string) {
     for (let i = 0; i < array.length; i++) {
-        const element = array[i];
-
-        // If the current element is an object and has the desired ID, return it
-        if (typeof element === 'object' && element.id === id) {
-            return element;
+      const element = array[i];
+      if (typeof element === "object" && element.id === id) {
+        return element;
+      }
+      if (Array.isArray(element)) {
+        const foundObject: any = findObjectById(element, id);
+        if (foundObject) {
+          return foundObject;
         }
-
-        // If the current element is an array, recursively search through it
-        if (Array.isArray(element)) {
-            const foundObject:any = findObjectById(element, id);
-            if (foundObject) {
-                return foundObject;
-            }
-        }
+      }
     }
-
-    // If no object with the desired ID is found, return null
     return null;
-}
+  }
 
   const getWidth = (id: string) => {
-    
-    const widthObj = findObjectById(columns,id);
-    
-    if(widthObj){
+    const widthObj = findObjectById(columns, id);
 
+    if (widthObj) {
       const width = widthObj?.width;
       return width;
-    }else return '100px'
-    
+    } else return "100px";
   };
 
   return (
@@ -160,10 +139,6 @@ const MultipleColumnsTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? null}
-                          {/* <SortItems
-                              searchParams={searchParams}
-                              header={header}
-                            /> */}
                         </div>
                       )}
                     </th>
@@ -179,7 +154,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                 <tr className="table-row" key={mainIndex}>
                   {row.getVisibleCells().map((cell: any, index: number) => {
                     return (
-                      <td 
+                      <td
                         className={styles.tableCell}
                         key={index}
                         style={{
