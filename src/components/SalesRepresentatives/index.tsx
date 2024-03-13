@@ -200,6 +200,7 @@ const SalesRepresentatives = () => {
         cell: (info: any) => {
           return (
             <Button
+              className="actionButton"
               onClick={() => {
                 router.push(
                   `/sales-representatives/${info.row.original.marketer_id}`

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 import CaseType from "./CaseType";
 import RevenueBlock from "./Revenue";

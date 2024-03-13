@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
-import styles from './multi-column.module.css';
+import styles from "./multi-column.module.css";
 
 interface pageProps {
   columns: any[];
@@ -64,15 +64,8 @@ const MultipleColumnsTable: FC<pageProps> = ({
   };
 
   return (
-    <div
-      className="table"
-      style={{
-        overflow: "auto",
-        width: "100%",
-        borderRadius: "10px",
-      }}
-    >
-      <table className="table" style={{ borderSpacing: "0" }}>
+    <div className={styles.customTable}>
+      <table style={{ borderSpacing: "0" }}>
         <thead
           className="thead"
           style={{

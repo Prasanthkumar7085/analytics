@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./sales-rep.module.css";
 import { IconButton } from "@mui/material";
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/navigation";
 const SalesRepsTable = () => {
   const dispatch = useDispatch();
