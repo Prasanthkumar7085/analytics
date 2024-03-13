@@ -126,19 +126,19 @@ const SalesRepView = () => {
           <Typography>{salesRepName}</Typography>
         </div>
         <Grid container spacing={2}>
-          <Grid item xs={8}>
-            <CaseTypes
-              caseTypesStatsData={caseTypesStatsData}
-              loading={loading}
-              totalRevenueSum={totalRevenueSum}
-            />
-          </Grid>
           <Grid item xs={4}>
             <Stats
               revenueStatsDetails={revenueStatsDetails}
               volumeStatsDetails={volumeStatsDetails}
               loading={loading}
               onChange={() => {}}
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <CaseTypes
+              caseTypesStatsData={caseTypesStatsData}
+              loading={loading}
+              totalRevenueSum={totalRevenueSum}
             />
           </Grid>
 

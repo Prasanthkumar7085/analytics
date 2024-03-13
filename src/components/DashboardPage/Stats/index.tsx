@@ -112,7 +112,7 @@ const Stats = ({
                         volumeStatsDetails?.total
                           ? volumeStatsDetails?.total
                           : 0
-                      )
+                      ).replace("$", "")
                     )}
                   </h2>
                 </div>
@@ -135,7 +135,7 @@ const Stats = ({
                         volumeStatsDetails?.completed
                           ? volumeStatsDetails?.completed
                           : 0
-                      )
+                      ).replace("$", "")
                     )}
                   </h2>
                 </div>
@@ -156,9 +156,9 @@ const Stats = ({
                     ) : (
                       formatMoney(
                         volumeStatsDetails?.pending
-                          ? volumeStatsDetails?.pending
+                          ? volumeStatsDetails.pending
                           : 0
-                      )
+                      ).replace("$", "")
                     )}
                   </h2>
                 </div>

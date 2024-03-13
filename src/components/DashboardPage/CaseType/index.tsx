@@ -146,7 +146,7 @@ const CaseTypes = ({
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Case Types / Graphs
+            Case Types Volumes
           </h3>
           <GlobalDateRangeFilter onChange={() => {}} />
         </div>
