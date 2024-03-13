@@ -28,6 +28,8 @@ ul {
     }
 
     tfoot {
+      background: #EFF1FA;
+
       td {
         height: auto;
         font-size: 13px;
@@ -160,9 +162,30 @@ ul {
   font-size: 12px;
 }
 
-// #customTable {
-//   width: 100%;
-//   height: 80vh;
-//   overflow: auto;
-//   margin: 0 auto;
-// }
+.tableContainer {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  position: relative;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead,
+  tfoot {
+    position: sticky;
+    background-color: #FFF;
+    top: 0;
+    z-index: 1;
+  }
+
+  tfoot {
+    bottom: 0;
+  }
+
+  tbody {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
