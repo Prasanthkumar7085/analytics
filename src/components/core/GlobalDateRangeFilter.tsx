@@ -87,6 +87,7 @@ const GlobalDateRangeFilter = ({
   return (
     <div>
       <DateRangePicker
+        className="inputItemDate"
         placement="bottomEnd"
         ranges={predefinedRanges}
         size="lg"

@@ -25,7 +25,7 @@ const SalesRepsFilters = ({
   }, [params]);
   return (
     <div className="tableFiltersContainer">
-      <Grid container spacing={2} alignItems="center">
+      <Grid container alignItems="center">
         <Grid item xs={3}>
           <h4>Sales Representatives</h4>
         </Grid>
@@ -38,6 +38,7 @@ const SalesRepsFilters = ({
                   onUpdateData({ status: e.target.value });
                 }}
                 value={status}
+                className="targetFilter"
               >
                 <MenuItem value={"all"}>All</MenuItem>
                 <MenuItem value={"yes"}>Yes</MenuItem>
@@ -52,6 +53,7 @@ const SalesRepsFilters = ({
                 placeholder="Search"
                 type="search"
                 value={search}
+                className="formItemInput"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   setSearch(e.target.value);
                   onUpdateData({ search: e.target.value });

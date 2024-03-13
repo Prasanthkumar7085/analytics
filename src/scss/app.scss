@@ -1,6 +1,6 @@
 ul {
-  margin: 0;
-  padding: 0;
+  margin: 0 !important;
+  padding: 0 !important;
   list-style: none;
 }
 
@@ -87,12 +87,11 @@ ul {
 
 .tableFiltersContainer {
   background: #ffffff;
-  height: 60px;
   overflow: hidden;
-  padding: 0 1.25rem;
+  padding: 10px 2rem;
 
   h4 {
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: 500;
   }
 
@@ -105,12 +104,58 @@ ul {
       &:not(:last-child) {
         margin-right: 2em;
       }
-      .MuiSelect-select {
-        padding: 10px;
-      }
 
     }
   }
+
+  @mixin formItem {
+    padding: 3px 15px;
+    min-width: 80px;
+    border: 1px solid rgba(99, 99, 99, 0.05);
+    height: 25px !important;
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  .formItemInput {
+    input {
+      @include formItem();
+    }
+  }
+
+  .inputItemDate {
+    overflow: hidden;
+    border: 1px solid #d5d5d5;
+    border-radius: 7px !important;
+    max-width: 230px;
+
+    .rs-input-group-addon {
+      height: 25px !important;
+    }
+
+    .rs-input-group {
+      height: 25px;
+
+      input {
+        padding: 0;
+        height: 25px;
+        @include formItem();
+        border: none !important;
+        border-radius: 0 !important;
+      }
+    }
+  }
+
+  .targetFilter {
+    .MuiSelect-select {
+      @include formItem();
+    }
+  }
+}
+
+.MuiMenuItem-root {
+  font-size: 12px;
 }
 
 #customTable {
