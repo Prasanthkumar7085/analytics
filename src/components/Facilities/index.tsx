@@ -11,7 +11,6 @@ import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsT
 import { useRouter } from "next/navigation";
 
 const FacilitiesList = () => {
-
   const router = useRouter();
   const [facilitiesData, setFacilitiesData] = useState([]);
   const facilities = useSelector((state: any) => state?.users.facilities);
@@ -130,7 +129,13 @@ const FacilitiesList = () => {
         cell: (info: any) => {
           return (
             <span>
-              <Button onClick={() => router.push(`/facilities/${info.row.original.hospital}`)}>View</Button>
+              <Button
+                onClick={() =>
+                  router.push(`/facilities/${info.row.original.hospital}`)
+                }
+              >
+                View
+              </Button>
             </span>
           );
         },
