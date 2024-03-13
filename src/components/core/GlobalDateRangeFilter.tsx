@@ -94,7 +94,7 @@ const GlobalDateRangeFilter = ({
         disabledDate={(date: any) => {
           return date.getTime() > new Date().getTime();
         }}
-        placeholder={"Select date range"}
+        placeholder={"Start Date - End Date"}
         onChange={(newDate: any) => {
           if (newDate) {
             let date1 = new Date(

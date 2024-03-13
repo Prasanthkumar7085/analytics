@@ -9,7 +9,6 @@ ul {
   overflow: hidden;
 
   table {
-
     thead {
       tr {
         th {
@@ -29,15 +28,15 @@ ul {
     }
 
     tfoot {
-      background: #EFF1FA;
+      background: #eff1fa;
 
       td {
         height: auto;
         font-size: 13px;
         font-weight: 600;
         padding: 5px 20px;
-        border: 1px solid #EDF2F7;
-        background: #EFF1FA;
+        border: 1px solid #edf2f7;
+        background: #eff1fa;
       }
     }
 
@@ -48,7 +47,7 @@ ul {
           font-size: 13px;
           font-weight: 500;
           padding: 5px 20px;
-          border-bottom: 1px solid #EDF2F7;
+          border-bottom: 1px solid #edf2f7;
 
           &:nth-child(3) {
             color: #477593;
@@ -100,23 +99,22 @@ ul {
 .tableFiltersContainer {
   background: #ffffff;
   overflow: hidden;
-  padding: 10px 2rem;
-
+  padding: 15px 2rem 10px;
   h4 {
     font-size: 1.1em;
+    color: #425466;
     font-weight: 500;
   }
 
-  ul {
+  .filterLists {
     display: flex;
     align-items: center;
     justify-content: flex-end;
 
-    li {
+    .eachFilterLists {
       &:not(:last-child) {
         margin-right: 2em;
       }
-
     }
   }
 
@@ -124,44 +122,67 @@ ul {
     padding: 3px 15px;
     min-width: 80px;
     border: 1px solid rgba(99, 99, 99, 0.05);
-    height: 25px !important;
+    height: 28px !important;
     display: flex;
     align-items: center;
     font-size: 13px;
   }
 
   .formItemInput {
+    .MuiInputBase-root {
+      padding-left: 5px !important;
+    }
+    .MuiInputAdornment-root {
+      margin-right: 0px !important;
+    }
     input {
       @include formItem();
+      border: none;
+      padding: 3px 5px;
+    }
+    fieldset {
+      border-color: #e4e4e4;
+      border-radius: 10px;
     }
   }
 
   .inputItemDate {
     overflow: hidden;
     border: 1px solid #d5d5d5;
-    border-radius: 7px !important;
+    border-radius: 5px !important;
     max-width: 230px;
-
-    .rs-input-group-addon {
-      height: 25px !important;
+    &:hover {
+      border: 1px solid #000000 !important;
+      border-radius: 5px;
     }
-
     .rs-input-group {
-      height: 25px;
+      height: 32px;
+      border: none;
 
       input {
-        padding: 0;
-        height: 25px;
         @include formItem();
+        padding: 3px 10px 3px 35px;
+        height: 32px !important;
         border: none !important;
-        border-radius: 0 !important;
+        border-color: #e4e4e4;
+        border-radius: 5px;
       }
+    }
+
+    .rs-input-group-addon {
+      height: 32px !important;
+      position: absolute;
+      left: -5px !important;
     }
   }
 
   .targetFilter {
     .MuiSelect-select {
       @include formItem();
+    }
+    fieldset {
+      border-color: #e4e4e4;
+      border-radius: 5px;
     }
   }
 }
@@ -174,7 +195,27 @@ ul {
   max-height: calc(100vh - 200px);
   overflow-y: auto;
   position: relative;
+  /* width */
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 8px;
+  }
 
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -183,7 +224,7 @@ ul {
   thead,
   tfoot {
     position: sticky;
-    background-color: #FFF;
+    background-color: #fff;
     top: 0;
     z-index: 1;
   }

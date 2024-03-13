@@ -4,6 +4,8 @@ import styles from "./salesreps-filters.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
 const SalesRepsFilters = ({
   onUpdateData,
 }: {
@@ -30,8 +32,8 @@ const SalesRepsFilters = ({
           <h4>Sales Representatives</h4>
         </Grid>
         <Grid item xs={9}>
-          <ul>
-            <li>
+          <ul className="filterLists">
+            <li className="eachFilterLists">
               <Select
                 onChange={(e: any) => {
                   setStatus(e.target.value);
@@ -39,19 +41,27 @@ const SalesRepsFilters = ({
                 }}
                 value={status}
                 className="targetFilter"
+                placeholder="Target Reached"
               >
                 <MenuItem value={"all"}>All</MenuItem>
                 <MenuItem value={"yes"}>Yes</MenuItem>
                 <MenuItem value={"no"}>No</MenuItem>
               </Select>
             </li>
-            <li>
+            <li className="eachFilterLists">
               <GlobalDateRangeFilter onChange={() => {}} />
             </li>
-            <li>
+            <li className="eachFilterLists">
               <TextField
                 placeholder="Search"
                 type="search"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
                 value={search}
                 className="formItemInput"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
