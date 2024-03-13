@@ -65,7 +65,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
 
   return (
     <div className={styles.customTable}>
-      <div style={{ maxHeight: "calc(100vh - 200px)", overflow: "auto" }}>
+      <div style={{ maxHeight: "calc(100vh - 200px)", overflowY: "auto" }}>
         <table
           style={{ borderSpacing: "0", width: "100%", tableLayout: "fixed" }}
         >
