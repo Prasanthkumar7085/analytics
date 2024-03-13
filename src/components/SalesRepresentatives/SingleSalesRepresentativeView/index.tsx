@@ -143,7 +143,7 @@ const SalesRepView = () => {
           <Grid item xs={12}>
             <SingleSalesRepCaseTypeDetails apiUrl={"sales-reps"} />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div className="eachDataCard" id="InsurancePayorsData">
               <div className="cardHeader">
                 <h3>
@@ -161,7 +161,7 @@ const SalesRepView = () => {
               </div>
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <div className="eachDataCard" id="TrendsData">
               <div className="cardHeader">
                 <h3>

@@ -278,6 +278,7 @@ table {
     box-shadow: 0px 6px 8px -6px #18274B0F;
     box-shadow: 0px -4px 17px 0px #0000000A;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 
     .cardHeader {
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -302,6 +303,13 @@ table {
     .cardBody {
       padding: 20px;
 
+    }
+  }
+
+  #InsurancePayorsData {
+    .customTableContainer {
+      height: 500px;
+      overflow: auto;
     }
   }
 }
