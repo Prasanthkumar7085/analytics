@@ -12,13 +12,16 @@ const Stats = ({
 }: any) => {
   return (
     <>
-      <div className="eachDataCard" id="FacilitiesData">
+      <div className="eachDataCard" id="StatsData">
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Stats
           </h3>
-          <GlobalDateRangeFilter onChange={onChange} />
+          <GlobalDateRangeFilter
+            onChange={onChange}
+            classNamee="global-date-range-filter"
+          />
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>

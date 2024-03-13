@@ -11,6 +11,7 @@ import {
 } from "rsuite/esm/utils/dateUtils";
 const GlobalDateRangeFilter = ({
   onChange,
+  classNamee,
 }: {
   onChange: (fromDate: string, toDate: string) => void;
 }) => {
@@ -85,7 +86,7 @@ const GlobalDateRangeFilter = ({
     },
   ];
   return (
-    <div>
+    <div className={classNamee}>
       <DateRangePicker
         className="inputItemDate"
         placement="bottomEnd"

@@ -118,13 +118,21 @@ const SalesRepView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <IconButton onClick={() => router.back()}>
+          <div className="backButton" onClick={() => router.back()}>
             <ArrowBack />
-          </IconButton>
+            Back
+          </div>
           <Avatar sx={{ height: "30px", width: "30px" }} />
           <Typography>{salesRepName}</Typography>
         </div>
         <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <CaseTypes
+              caseTypesStatsData={caseTypesStatsData}
+              loading={loading}
+              totalRevenueSum={totalRevenueSum}
+            />
+          </Grid>
           <Grid item xs={4}>
             <Stats
               revenueStatsDetails={revenueStatsDetails}
@@ -133,13 +141,7 @@ const SalesRepView = () => {
               onChange={() => {}}
             />
           </Grid>
-          <Grid item xs={8}>
-            <CaseTypes
-              caseTypesStatsData={caseTypesStatsData}
-              loading={loading}
-              totalRevenueSum={totalRevenueSum}
-            />
-          </Grid>
+
           <Grid item xs={12}>
             <SingleSalesRepCaseTypeDetails apiUrl={"sales-reps"} />
           </Grid>
