@@ -3,19 +3,38 @@ import styles from "./index.module.css";
 import { Chart } from "react-google-charts";
 import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import { Badge } from "@mui/material";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenueSum }: any) => {
-
-
-  let colors = ['#ea1d22', '#00a752', '#fcf00b', '#f19213', '#00b0ea', '#f51059', '#dc79c8',
-    '#92298f', '#2e3094', '#0071b9', '#82eedd', '	#eea782',
-    '#000000', '#82a8cd', '#e1dbe4', '#f6dad3', '#87b5af', '	#185a59']
-
+const CaseTypes = ({
+  caseTypesStatsData,
+  loading,
+  getCaseTypesStats,
+  totalRevenueSum,
+}: any) => {
+  let colors = [
+    "#ea1d22",
+    "#00a752",
+    "#fcf00b",
+    "#f19213",
+    "#00b0ea",
+    "#f51059",
+    "#dc79c8",
+    "#92298f",
+    "#2e3094",
+    "#0071b9",
+    "#82eedd",
+    "	#eea782",
+    "#000000",
+    "#82a8cd",
+    "#e1dbe4",
+    "#f6dad3",
+    "#87b5af",
+    "	#185a59",
+  ];
 
   //chagedData for pie chart
   const modifyData = (array: Array<any>) => {
@@ -122,42 +141,47 @@ const CaseTypes = ({ caseTypesStatsData, loading, getCaseTypesStats, totalRevenu
   };
 
   return (
-    <div className={styles.stats1}>
-      <div className={styles.header}>
-        <div className={styles.headingcontainer}>
-          <div className={styles.iconcontainer}>
-            <Image className={styles.icon} alt="" src="/navbar/icon.svg" height={20} width={20} />
-          </div>
-          <div className={styles.heading}>Case Types</div>
+    <div>
+      <div className="eachDataCard" id="CaseTypesData">
+        <div className="cardHeader">
+          <h3>
+            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+            Case Types / Graphs
+          </h3>
+          <GlobalDateRangeFilter onChange={() => {}} />
         </div>
-        <GlobalDateRangeFilter onChange={() => {}} />
-      </div>
+        <div className="cardBody">
+          <div style={{ display: "flex", height: "37vh" }}>
+            {loading ? (
+              ""
+            ) : (
+              <div style={{ width: "35%" }}>
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={options}
+                  containerProps={{
+                    style: {
+                      height: "280px",
+                      width: "280px",
+                      background: "none",
+                    },
+                  }}
+                />
+              </div>
+            )}
 
-      <div style={{ display: "flex", height: "37vh" }}>
-        {loading ? (
-          ""
-        ) : (
-          <div style={{ width: "35%" }}>
-            <HighchartsReact
-              highcharts={Highcharts}
-              options={options}
-              containerProps={{
-                style: { height: "280px", width: "280px", background: "none" },
-              }}
-            />
+            {caseTypesStatsData?.length ? (
+              <TanStackTableComponent
+                data={caseTypesStatsData}
+                columns={columns}
+                totalSumValues={totalRevenueSum}
+                loading={false}
+              />
+            ) : (
+              ""
+            )}
           </div>
-        )}
-
-        {caseTypesStatsData?.length ? (
-          <TanStackTableComponent
-            data={caseTypesStatsData}
-            columns={columns}
-            totalSumValues={totalRevenueSum}
-            loading={false}
-          />
-        ) : (
-          ""
-        )}
+        </div>
       </div>
     </div>
   );

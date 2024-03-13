@@ -8,90 +8,92 @@ ul {
   border-radius: 40px;
   overflow: hidden;
 
-  table {
-    thead {
-      tr {
-        th {
-          height: auto;
-          font-size: 11px;
-          font-weight: 500;
-          padding: 15px 20px;
-          border-left: 1px solid #fff;
-          border-right: 1px solid #fff;
-          border-top: 1px solid #fff;
 
-          &:nth-child(3) {
-            border-bottom: 0.5px solid #fff;
-          }
+}
+
+table {
+  thead {
+    tr {
+      th {
+        height: auto;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 15px 20px;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        border-top: 1px solid #fff;
+
+        &:nth-child(3) {
+          border-bottom: 0.5px solid #fff;
         }
       }
     }
+  }
 
-    tfoot {
+  tfoot {
+    background: #eff1fa;
+
+    td {
+      height: auto;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 5px 20px;
+      border: 1px solid #edf2f7;
       background: #eff1fa;
+    }
+  }
 
+  tbody {
+    tr {
       td {
         height: auto;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 500;
         padding: 5px 20px;
-        border: 1px solid #edf2f7;
-        background: #eff1fa;
-      }
-    }
+        border-bottom: 1px solid #edf2f7;
 
-    tbody {
-      tr {
-        td {
-          height: auto;
-          font-size: 13px;
-          font-weight: 500;
-          padding: 5px 20px;
-          border-bottom: 1px solid #edf2f7;
-
-          &:nth-child(3) {
-            color: #477593;
-            background-color: #f9feff;
-          }
-
-          &:nth-child(4) {
-            color: #ff9932;
-            background-color: #ffffff;
-          }
-
-          &:nth-child(5) {
-            color: #36c24d;
-            background-color: #f5fff7;
-          }
-
-          &:nth-child(6) {
-            color: #fe5046;
-            background-color: #fff9f9;
-          }
+        &:nth-child(3) {
+          color: #477593;
+          background-color: #f9feff;
         }
 
-        .actionButton {
-          color: #000000;
-          height: 28px;
-          font-size: 12px;
-          font-weight: 500;
+        &:nth-child(4) {
+          color: #ff9932;
           background-color: #ffffff;
-          padding: 0;
-          border: 1px solid #edf2f7;
-          border-radius: 5px;
+        }
 
-          &:hover {
-            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-          }
+        &:nth-child(5) {
+          color: #36c24d;
+          background-color: #f5fff7;
+        }
+
+        &:nth-child(6) {
+          color: #fe5046;
+          background-color: #fff9f9;
+        }
+      }
+
+      .actionButton {
+        color: #000000;
+        height: 28px;
+        font-size: 12px;
+        font-weight: 500;
+        background-color: #ffffff;
+        padding: 0;
+        border: 1px solid #edf2f7;
+        border-radius: 5px;
+
+        &:hover {
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         }
       }
     }
+  }
 
-    tfoot {
-      td {
-        padding: 10px 20px;
-        border-top: 1px solid #222 !important;
-      }
+  tfoot {
+    td {
+      padding: 10px 20px;
+      border-top: 1px solid #222 !important;
     }
   }
 }
@@ -100,6 +102,7 @@ ul {
   background: #ffffff;
   overflow: hidden;
   padding: 15px 2rem 10px;
+
   h4 {
     font-size: 1.1em;
     color: #425466;
@@ -132,14 +135,17 @@ ul {
     .MuiInputBase-root {
       padding-left: 5px !important;
     }
+
     .MuiInputAdornment-root {
       margin-right: 0px !important;
     }
+
     input {
       @include formItem();
       border: none;
       padding: 3px 5px;
     }
+
     fieldset {
       border-color: #e4e4e4;
       border-radius: 10px;
@@ -151,10 +157,12 @@ ul {
     border: 1px solid #d5d5d5;
     border-radius: 5px !important;
     max-width: 230px;
+
     &:hover {
       border: 1px solid #000000 !important;
       border-radius: 5px;
     }
+
     .rs-input-group {
       height: 32px;
       border: none;
@@ -180,6 +188,7 @@ ul {
     .MuiSelect-select {
       @include formItem();
     }
+
     fieldset {
       border-color: #e4e4e4;
       border-radius: 5px;
@@ -195,9 +204,10 @@ ul {
   max-height: calc(100vh - 200px);
   overflow-y: auto;
   position: relative;
+
   /* width */
   &::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
     height: 8px;
   }
 
@@ -216,8 +226,9 @@ ul {
   &::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
   table {
-    width: 100%;
+    // width: 100%;
     border-collapse: collapse;
   }
 
@@ -236,5 +247,61 @@ ul {
   tbody {
     max-height: 300px;
     overflow-y: auto;
+  }
+}
+
+
+.salesPersonDataDetails {
+
+  .grid-40-60 {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    column-gap: 20px;
+  }
+
+  .mb-20 {
+    margin-bottom: 20px;
+  }
+
+  .personDetails {
+    background: #fff;
+    height: 62px;
+    display: flex;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .eachDataCard {
+    border-radius: 16px;
+    background-color: #fff;
+    height: 100%;
+    box-shadow: 0px 8px 16px -6px #18274B05;
+    box-shadow: 0px 6px 8px -6px #18274B0F;
+    box-shadow: 0px -4px 17px 0px #0000000A;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+
+    .cardHeader {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+
+      h3 {
+        font-size: 1.1em;
+        font-weight: 500;
+        color: #000;
+
+        img {
+          margin-right: 10px;
+          margin-top: -2px;
+        }
+      }
+    }
+
+    .cardBody {
+      padding: 20px;
+
+    }
   }
 }
