@@ -56,7 +56,7 @@ const SingleColumnTable: FC<pageProps> = ({
 
   return (
     <div
-      className="table customTableContainer"
+      className="table customTableContainer tableContainer"
       style={{
         overflow: "auto",
         width: "100%",
