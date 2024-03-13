@@ -1,71 +1,24 @@
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 #salesRepresentativesPage {
   border-radius: 40px;
+  overflow: hidden;
 
-  .salesRepFilters {
-    height: 60px;
-    background: #fff;
-    border-radius: 10px 10px 0 0;
-    display: flex;
-    align-items: center;
-    padding: 0 15px;
-    .subNav {
-      align-items: center;
-      justify-content: space-between;
-      .leftSide {
-        .tableHeader {
-          color: #425466;
-          font-weight: 500;
-        }
-      }
-      .rightSide {
-        .filterLists {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          .eachFilterLists {
-            list-style: none;
-            .selectInput {
-              .Mui-focused {
-                top: 0px;
-                color: #000000;
-              }
-              label {
-                top: -10px;
-              }
-              .MuiSelect-select {
-                padding: 5px !important;
-              }
-              fieldset {
-                border-color: #e4e4e4;
-                border-radius: 6px;
-              }
-            }
-            .searchInput {
-              background-color: #ffffff;
-              padding: 8px 12px;
-              .MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
-                padding-left: 5px !important;
-              }
-              .MuiInputAdornment-root {
-                margin-right: 5px !important;
-              }
-              input {
-                padding: 6px;
-                padding-left: 0;
-                border-radius: 10px;
-              }
-              fieldset {
-                border-color: #e4e4e4;
-                border-radius: 10px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  // .filtersNavbar {
+  //   height: 60px;
+  //   background: #fff;
+  //   border-radius: 10px 10px 0 0;
+  //   display: flex;
+  //   align-items: center;
+  //   padding: 0 1.25rem;
+  // }
 
   table {
+
     thead {
       tr {
         th {
@@ -75,12 +28,14 @@
           padding: 15px 20px;
           border-left: 0.5px solid #fff;
           border-right: 0.5px solid #fff;
+
           &:nth-child(3) {
             border-bottom: 0.5px solid #fff;
           }
         }
       }
     }
+
     tbody {
       tr {
         td {
@@ -89,23 +44,28 @@
           font-weight: 500;
           padding: 5px 20px;
           border: 0.5px solid #fff;
+
           &:nth-child(3) {
             color: #477593;
             background-color: #f9feff;
           }
+
           &:nth-child(4) {
             color: #ff9932;
             background-color: #ffffff;
           }
+
           &:nth-child(5) {
             color: #36c24d;
             background-color: #f5fff7;
           }
+
           &:nth-child(6) {
             color: #fe5046;
             background-color: #fff9f9;
           }
         }
+
         .actionButton {
           color: #000000;
           height: 28px;
@@ -115,6 +75,7 @@
           padding: 0;
           border: 1px solid #edf2f7;
           border-radius: 5px;
+
           &:hover {
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
           }
@@ -122,4 +83,39 @@
       }
     }
   }
+}
+
+.tableFiltersContainer {
+  background: #ffffff;
+  height: 60px;
+  overflow: hidden;
+  padding: 0 1.25rem;
+
+  h4 {
+    font-size: 1.3em;
+    font-weight: 500;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    li {
+      &:not(:last-child) {
+        margin-right: 2em;
+      }
+      .MuiSelect-select {
+        padding: 10px;
+      }
+
+    }
+  }
+}
+
+#customTable {
+  width: 100%;
+  height: 500px;
+  overflow: auto;
+  margin: 0 auto;
 }

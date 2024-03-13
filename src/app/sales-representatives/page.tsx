@@ -13,55 +13,6 @@ const SalesRepresentativesPage = () => {
   return (
     <Suspense>
       <section id="salesRepresentativesPage">
-        <div className="salesRepFilters">
-          <Grid container spacing={2} className="subNav">
-            <Grid item xs={5}>
-              <div className="leftSide">
-                <h4 className="tableHeader">Sales Representatives</h4>
-              </div>
-            </Grid>
-            <Grid item xs={7}>
-              <div className="rightSide">
-                <ul className="filterLists">
-                  <li className="eachFilterLists">
-                    <FormControl
-                      sx={{ m: 1, width: 300 }}
-                      className="selectInput"
-                    >
-                      <InputLabel id="demo-simple-select-label">
-                        Target Reached
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        label="Target Reached"
-                        className="customSelect"
-                      >
-                        <MenuItem>Target One</MenuItem>
-                        <MenuItem>Target One</MenuItem>
-                        <MenuItem>Target One</MenuItem>
-                        <MenuItem>Target One</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </li>
-                  <li className="eachFilterLists">
-                    <TextField
-                      placeholder="Search"
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <SearchIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                      className="searchInput"
-                    />
-                  </li>
-                </ul>
-              </div>
-            </Grid>
-          </Grid>
-        </div>
         <SalesRepresentatives />
       </section>
     </Suspense>

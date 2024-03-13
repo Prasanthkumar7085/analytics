@@ -291,12 +291,14 @@ const SalesRepresentatives = () => {
   return (
     <div className={styles.salesRepsContainer}>
       <SalesRepsFilters onUpdateData={onUpdateData} />
-      <MultipleColumnsTable
-        data={salesReps}
-        columns={columnDef}
-        loading={loading}
-        totalSumValues={totalSumValues}
-      />
+      <div id="customTable">
+        <MultipleColumnsTable
+          data={salesReps}
+          columns={columnDef}
+          loading={loading}
+          totalSumValues={totalSumValues}
+        />
+      </div>
       <LoadingComponent loading={loading} />
     </div>
   );

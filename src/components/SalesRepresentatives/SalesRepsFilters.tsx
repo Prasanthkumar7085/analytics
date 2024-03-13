@@ -3,7 +3,7 @@ import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import styles from "./salesreps-filters.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
+import Grid from "@mui/material/Grid";
 const SalesRepsFilters = ({
   onUpdateData,
 }: {
@@ -24,28 +24,43 @@ const SalesRepsFilters = ({
     setStatus(params.get("status") ? (params.get("status") as string) : "all");
   }, [params]);
   return (
-    <div className={styles.filterContainer}>
-      <Select
-        onChange={(e: any) => {
-          setStatus(e.target.value);
-          onUpdateData({ status: e.target.value });
-        }}
-        value={status}
-      >
-        <MenuItem value={"all"}>All</MenuItem>
-        <MenuItem value={"yes"}>Yes</MenuItem>
-        <MenuItem value={"no"}>No</MenuItem>
-      </Select>
-      <GlobalDateRangeFilter onChange={() => {}} />
-      <TextField
-        placeholder="Search"
-        type="search"
-        value={search}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          setSearch(e.target.value);
-          onUpdateData({ search: e.target.value });
-        }}
-      />
+    <div className="tableFiltersContainer">
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={3}>
+          <h4>Sales Representatives</h4>
+        </Grid>
+        <Grid item xs={9}>
+          <ul>
+            <li>
+              <Select
+                onChange={(e: any) => {
+                  setStatus(e.target.value);
+                  onUpdateData({ status: e.target.value });
+                }}
+                value={status}
+              >
+                <MenuItem value={"all"}>All</MenuItem>
+                <MenuItem value={"yes"}>Yes</MenuItem>
+                <MenuItem value={"no"}>No</MenuItem>
+              </Select>
+            </li>
+            <li>
+              <GlobalDateRangeFilter onChange={() => {}} />
+            </li>
+            <li>
+              <TextField
+                placeholder="Search"
+                type="search"
+                value={search}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  setSearch(e.target.value);
+                  onUpdateData({ search: e.target.value });
+                }}
+              />
+            </li>
+          </ul>
+        </Grid>
+      </Grid>
     </div>
   );
 };
