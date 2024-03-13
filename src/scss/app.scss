@@ -93,7 +93,10 @@ table {
   tfoot {
     td {
       padding: 10px 20px;
-      border-top: 1px solid #222 !important;
+
+      &:not(:last-child) {
+        border-right: 1px solid rgba(0, 0, 0, 0.05);
+      }
     }
   }
 }
@@ -328,8 +331,8 @@ table {
     overflow: hidden;
 
     .cardHeader {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 8px 20px;
+      // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 5px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -348,7 +351,7 @@ table {
     }
 
     .cardBody {
-      padding: 20px;
+      padding: 10px 20px 20px 20px;
 
     }
   }
@@ -399,6 +402,19 @@ table {
     height: 300px;
     overflow: auto;
     padding: 0 !important;
+  }
+
+  tfoot {
+    tr {
+      td {
+
+        &:nth-child(6),
+        &:nth-child(7),
+        &:nth-child(8) {
+          display: none;
+        }
+      }
+    }
   }
 }
 

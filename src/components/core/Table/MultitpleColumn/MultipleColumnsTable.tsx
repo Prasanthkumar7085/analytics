@@ -204,6 +204,8 @@ const MultipleColumnsTable: FC<pageProps> = ({
             {totalSumValues?.map((item: any, index: number) => {
               return <td key={index}>{item}</td>;
             })}
+            <td></td>
+            <td></td>
           </tr>
         </tfoot>
       </table>
