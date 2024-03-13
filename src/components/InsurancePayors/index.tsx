@@ -112,7 +112,7 @@ const InsurancePayors = () => {
     getAllInsrancePayors();
   }, []);
   return (
-    <div style={{ overflow: "auto" }}>
+    <div>
       <SingleColumnTable
         data={insuranceData}
         columns={columns}

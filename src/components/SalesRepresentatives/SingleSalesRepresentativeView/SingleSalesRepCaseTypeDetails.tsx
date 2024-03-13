@@ -21,7 +21,13 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
         <GlobalDateRangeFilter onChange={() => {}} />
       </div>
       <div className="cardBody">
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            background: "rgb(240, 237, 255)",
+          }}
+        >
           <Tabs
             value={value}
             onChange={handleChange}

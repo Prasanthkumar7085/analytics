@@ -98,6 +98,16 @@ table {
   }
 }
 
+@mixin formItem {
+  padding: 3px 15px;
+  min-width: 80px;
+  border: 1px solid rgba(99, 99, 99, 0.05);
+  height: 28px !important;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+}
+
 .tableFiltersContainer {
   background: #ffffff;
   overflow: hidden;
@@ -121,15 +131,7 @@ table {
     }
   }
 
-  @mixin formItem {
-    padding: 3px 15px;
-    min-width: 80px;
-    border: 1px solid rgba(99, 99, 99, 0.05);
-    height: 28px !important;
-    display: flex;
-    align-items: center;
-    font-size: 13px;
-  }
+
 
   .formItemInput {
     .MuiInputBase-root {
@@ -250,6 +252,38 @@ table {
   }
 }
 
+.inputItemDate {
+  overflow: hidden;
+  border: 1px solid #d5d5d5;
+  border-radius: 5px !important;
+  max-width: 230px;
+
+  &:hover {
+    border: 1px solid #000000 !important;
+    border-radius: 5px;
+  }
+
+  .rs-input-group {
+    height: 32px;
+    border: none;
+
+    input {
+      @include formItem();
+      padding: 3px 10px 3px 35px;
+      height: 32px !important;
+      border: none !important;
+      border-color: #e4e4e4;
+      border-radius: 5px;
+    }
+  }
+
+  .rs-input-group-addon {
+    height: 32px !important;
+    position: absolute;
+    left: -5px !important;
+  }
+}
+
 
 .salesPersonDataDetails {
 
@@ -307,9 +341,55 @@ table {
   }
 
   #InsurancePayorsData {
+    .table {
+      padding: 0;
+    }
+
     .customTableContainer {
-      height: 500px;
+      height: 450px;
       overflow: auto;
+      padding: 0 !important;
     }
   }
+}
+
+#caseTypesData {
+  .table {
+    padding: 0;
+  }
+
+  .customTableContainer {
+    height: 450px;
+    overflow: auto;
+    padding: 0 !important;
+  }
+}
+
+#CaseTypesGraphsData {
+  .table {
+    padding: 0;
+  }
+
+  .customTableContainer {
+    height: 300px;
+    overflow: auto;
+    padding: 0 !important;
+  }
+}
+
+#FacilitiesData {
+  .table {
+    padding: 0;
+  }
+
+  .customTableContainer {
+    height: 300px;
+    overflow: auto;
+    padding: 0 !important;
+  }
+}
+
+.Stats_totalvalue__y0659 {
+  font-size: 1.5em !important;
+  font-weight: 600 !important;
 }

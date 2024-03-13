@@ -142,7 +142,7 @@ const CaseTypes = ({
 
   return (
     <div>
-      <div className="eachDataCard" id="CaseTypesData">
+      <div className="eachDataCard" id="CaseTypesGraphsData">
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
