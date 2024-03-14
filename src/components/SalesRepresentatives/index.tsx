@@ -18,6 +18,7 @@ import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { stat } from "fs";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
@@ -142,7 +143,7 @@ const SalesRepresentatives = () => {
             maxWidth: "200px",
             minWidth: "200px",
             Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+              return <span>{formatMoney(getValue())}</span>;
             },
           },
           {
@@ -154,8 +155,8 @@ const SalesRepresentatives = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            Cell: (info: any) => {
+              return <span>{formatMoney(info.getValue())}</span>;
             },
           },
           {
