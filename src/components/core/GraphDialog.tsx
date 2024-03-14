@@ -3,11 +3,9 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CloseIcon from '@mui/icons-material/Close';
 
-const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData }: any) => {
+const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, dataPoints }: any) => {
 
-    const dataPoints = Object.entries(graphData)
-        .filter(([key]) => key !== 'caseType')
-        .map(([month, value]) => [month, value]);
+
 
 
     const options = {

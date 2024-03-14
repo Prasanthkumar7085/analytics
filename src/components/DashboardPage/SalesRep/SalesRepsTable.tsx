@@ -39,10 +39,10 @@ const SalesRepsTable = () => {
         setSalesReps(response?.data);
 
 
-        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total), 0);
+        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
         const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
 
-        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.total_amount), 0);
+        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
         const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
         const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
 
@@ -83,8 +83,8 @@ const SalesRepsTable = () => {
         },
       },
       {
-        accessorFn: (row: any) => row.total,
-        id: "total",
+        accessorFn: (row: any) => row.total_cases,
+        id: "total_cases",
         header: () => (
           <span className={styles.salesTableHeading}>TOTAL CASES</span>
         ),
@@ -118,11 +118,11 @@ const SalesRepsTable = () => {
             },
           },
           {
-            accessorFn: (row: any) => row.total_amount,
+            accessorFn: (row: any) => row.generated_amount,
             header: () => (
               <span className={styles.salesTableHeading}>BILLED</span>
             ),
-            id: "total_amount",
+            id: "generated_amount",
             width: "200",
             maxWidth: "200",
             minWidth: "200",

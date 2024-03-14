@@ -15,11 +15,24 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const [totalSumValues, setTotalSumValues] = useState<any>(["Total"]);
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
-  const [headerMoths, setHeaderMonths] = useState<any>([])
+  const [headerMonths, setHeaderMonths] = useState<any>([])
   useEffect(() => {
     addtionalcolumns = [];
   }, [tabValue]);
-
+  const months = [
+    "jan",
+    "feb",
+    "mar",
+    "apr",
+    "may",
+    "jun",
+    "jul",
+    "aug",
+    "sep",
+    "oct",
+    "nov",
+    "dec",
+  ];
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -46,12 +59,27 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     try {
       const response = await getRevenueOrVolumeCaseDetailsAPI(url);
       if (response.status == 200 || response.status == 201) {
-        const formattedData = [];
         const monthSums: number[] = [];
         let monthArray = response?.data?.map((item: any) => item.month)
         let uniqueMonths = Array.from(new Set(monthArray));
         setHeaderMonths(uniqueMonths)
-        setCaseData(response?.data);
+        const groupedData = response?.data.reduce((acc: any, curr: any) => {
+          const { case_type_name, month, total_cases } = curr;
+
+          if (!acc[case_type_name]) {
+            acc[case_type_name] = {};
+          }
+
+          acc[case_type_name][month] = total_cases;
+
+          return acc;
+        }, {});
+
+        console.log(groupedData, "p0032")
+
+        setTotalSumValues([...totalSumValues, ...monthSums.slice(0, 13)]);
+
+        setCaseData(groupedData);
       }
     } catch (err) {
       console.error(err);
@@ -60,11 +88,11 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     }
   };
 
-  let addtionalcolumns = headerMoths?.map((item: any) => ({
-    accessorFn: (row: any) => row[caseData[item.total_cases]],
-    id: caseData[item.total_cases],
+  let addtionalcolumns = headerMonths?.map((item: any) => ({
+    accessorFn: (row: any) => row[item.toLowerCase()],
+    id: item.toLowerCase(),
     header: () => (
-      <span style={{ whiteSpace: "nowrap" }}>{item.month}</span>
+      <span style={{ whiteSpace: "nowrap" }}>{item.toUpperCase()}</span>
     ),
     footer: (props: any) => props.column.id,
     width: "80px",
@@ -80,8 +108,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const columnDef = useMemo(
     () => [
       {
-        accessorFn: (row: any) => row.case_type_name,
-        id: "case_type_name",
+        accessorFn: (row: any) => row.caseType,
+        id: "caseType",
         header: () => <span style={{ whiteSpace: "nowrap" }}>Case Types</span>,
         footer: (props: any) => props.column.id,
         width: "220px",
@@ -127,12 +155,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <SingleColumnTable
+      {/* <SingleColumnTable
         data={caseData}
         columns={columnDef}
         totalSumValues={totalSumValues}
         loading={false}
-      />
+      /> */}
 
       {loading ? (
         <Backdrop

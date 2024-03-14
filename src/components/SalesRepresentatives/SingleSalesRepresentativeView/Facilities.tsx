@@ -39,9 +39,9 @@ const Facilities = () => {
         let totalPaid = 0;
         let totalPending = 0;
 
-        response?.combinedArray?.forEach((entry: any) => {
+        response?.data?.forEach((entry: any) => {
           totalCases += entry.total_cases ? +entry.total_cases : 0;
-          totalAmount += entry.total_amount ? +entry.total_amount : 0;
+          totalAmount += entry.generated_amount ? +entry.generated_amount : 0;
           totalPaid += entry.paid_amount ? +entry.paid_amount : 0;
           totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
@@ -56,16 +56,9 @@ const Facilities = () => {
         ];
         setTotalSumFacilityValues(result);
 
-        let mappedData = response?.combinedArray?.map(
-          (item: { hospital: string }) => {
-            return {
-              ...item,
-              facility_name: mapFacilityNameWithId(item?.hospital),
-            };
-          }
-        );
 
-        setFacilitiesData(mappedData);
+
+        setFacilitiesData(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -107,8 +100,8 @@ const Facilities = () => {
         width: "800px",
         columns: [
           {
-            accessorFn: (row: any) => row.total_amount,
-            id: "total_amount",
+            accessorFn: (row: any) => row.generated_amount,
+            id: "generated_amount",
             header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
             width: "200px",
             maxWidth: "200px",

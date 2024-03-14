@@ -5,11 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { AreaGraph } from "../core/AreaGraph";
 import formatMoney from "@/lib/Pipes/moneyFormat";
+import GraphDialog from "../core/GraphDialog";
 
 const InsurancePayors = () => {
   const { id } = useParams();
   const [insuranceData, setInsuranceData] = useState([]);
   const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
+  const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
+  const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
 
   const getAllInsrancePayors = async () => {
     try {
@@ -24,9 +27,9 @@ const InsurancePayors = () => {
         let totalPending = 0;
 
         response?.data?.forEach((entry: any) => {
-          totalAmount += entry.total_amount ? +entry.total_amount : 0;
-          totalPaid += entry.total_paid ? +entry.total_paid : 0;
-          totalPending += entry.total_pending ? +entry.total_pending : 0;
+          totalAmount += entry.generated_amount ? +entry.generated_amount : 0;
+          totalPaid += entry.paid_amount ? +entry.paid_amount : 0;
+          totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
         const result = ["Total", totalAmount, totalPaid, totalPending, ""];
@@ -41,8 +44,8 @@ const InsurancePayors = () => {
   const columns = useMemo(
     () => [
       {
-        accessorFn: (row: any) => row.name,
-        id: "name",
+        accessorFn: (row: any) => row.insurance_name,
+        id: "insurance_name",
         header: () => (
           <span style={{ whiteSpace: "nowrap" }}>INSURANCE NAME</span>
         ),
@@ -55,37 +58,37 @@ const InsurancePayors = () => {
         },
       },
       {
-        accessorFn: (row: any) => row.total_amount,
-        id: "total_amount",
+        accessorFn: (row: any) => row.generated_amount,
+        id: "generated_amount",
         header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
         footer: (props: any) => props.column.id,
-        width: "100px",
+        width: "70px",
         maxWidth: "100px",
-        minWidth: "100px",
+        minWidth: "70px",
         cell: ({ getValue }: any) => {
           return <span>{formatMoney(getValue())}</span>;
         },
       },
       {
-        accessorFn: (row: any) => row.total_paid,
-        id: "total_paid",
+        accessorFn: (row: any) => row.paid_amount,
+        id: "paid_amount",
         header: () => <span style={{ whiteSpace: "nowrap" }}>PAID</span>,
         footer: (props: any) => props.column.id,
-        width: "100px",
+        width: "70px",
         maxWidth: "100px",
-        minWidth: "100px",
+        minWidth: "70px",
         cell: ({ getValue }: any) => {
           return <span>{formatMoney(getValue())}</span>;
         },
       },
       {
-        accessorFn: (row: any) => row.total_pending,
-        id: "total_pending",
+        accessorFn: (row: any) => row.pending_amount,
+        id: "pending_amount",
         header: () => <span style={{ whiteSpace: "nowrap" }}>PENDING</span>,
         footer: (props: any) => props.column.id,
-        width: "100px",
+        width: "70px",
         maxWidth: "100px",
-        minWidth: "100px",
+        minWidth: "70px",
         cell: ({ getValue }: any) => {
           return <span>{formatMoney(getValue())}</span>;
         },
@@ -98,8 +101,19 @@ const InsurancePayors = () => {
         width: "100px",
         maxWidth: "100px",
         minWidth: "100px",
-        cell: ({ getValue }: any) => {
-          return <AreaGraph getValue={getValue} />;
+        cell: (info: any) => {
+
+          const dataPoints = Object.entries(info.row.original)
+            .filter(([key]) => key !== 'caseType')
+            .map(([month, value]) => [month, value]);
+          return (
+            <div onClick={() => {
+              // setGraphDialogOpen(true);
+              // setSelectedGraphData(info.row.original);
+            }}>
+              <AreaGraph getValue={info.getValue} />
+            </div>
+          )
         },
       },
     ],
@@ -116,6 +130,12 @@ const InsurancePayors = () => {
         columns={columns}
         totalSumValues={totalInsurancePayors}
         loading={false}
+      />
+      <GraphDialog
+        graphDialogOpen={graphDialogOpen}
+        setGraphDialogOpen={setGraphDialogOpen}
+        graphData={selectedGrpahData}
+
       />
     </div>
   );

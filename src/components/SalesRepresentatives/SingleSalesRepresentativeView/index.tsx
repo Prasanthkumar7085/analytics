@@ -6,7 +6,7 @@ import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { useParams, useRouter } from "next/navigation";
-import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
+import { getSingleRepCaseTypes, getSingleRepDeatilsAPI } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import Facilities from "./Facilities";
@@ -29,7 +29,7 @@ const SalesRepView = () => {
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
-  const [salesRepName, setSalesRepName] = useState("");
+  const [salesRepDetails, setSalesRepDetails] = useState<any>();
 
   //get the stats counts
   const getStatsCounts = async () => {
@@ -90,8 +90,21 @@ const SalesRepView = () => {
     }
   };
 
-  const getMangerDetails = () => {
-    setSalesRepName(mapSalesRepNameWithId(id as string));
+  //get to know the sale reep details
+  const getSignleSalesRepDetails = async () => {
+    setLoading(true);
+    try {
+      const response = await getSingleRepDeatilsAPI(id as string);
+      if (response.status == 200 || response?.status == 201) {
+        setSalesRepDetails(response?.data);
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+      setLoading(false)
+    }
   };
 
   //api call to get stats count
@@ -99,7 +112,7 @@ const SalesRepView = () => {
     if (id) {
       getStatsCounts();
       getCaseTypesStats();
-      getMangerDetails();
+      getSignleSalesRepDetails();
     } else {
       router.back();
     }
@@ -114,7 +127,12 @@ const SalesRepView = () => {
             Back
           </div>
           <Avatar sx={{ height: "30px", width: "30px" }} />
-          <Typography>{salesRepName}</Typography>
+          <div>
+            <Typography>{salesRepDetails?.[0]?.sales_rep}</Typography>
+            <div>
+              <p>{salesRepDetails?.[0]?.manager ? +"Manager:" + salesRepDetails?.[0]?.manager : ""}</p>
+            </div>
+          </div>
         </div>
         <Grid container spacing={2}>
           <Grid item xs={4}>

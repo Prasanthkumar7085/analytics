@@ -60,10 +60,10 @@ const SalesRepresentatives = () => {
         setCompleteData(response?.data);
         onUpdateData({}, response?.data);
 
-        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total), 0);
+        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
         const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
 
-        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.total_amount), 0);
+        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
         const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
         const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
 
@@ -105,8 +105,8 @@ const SalesRepresentatives = () => {
         },
       },
       {
-        accessorFn: (row: any) => row.total,
-        id: "total",
+        accessorFn: (row: any) => row.total_cases,
+        id: "total_cases",
         header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
         footer: (props: any) => props.column.id,
         width: "200px",
@@ -136,9 +136,9 @@ const SalesRepresentatives = () => {
             },
           },
           {
-            accessorFn: (row: any) => row.total_amount,
+            accessorFn: (row: any) => row.generated_amount,
             header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-            id: "total_amount",
+            id: "generated_amount",
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
