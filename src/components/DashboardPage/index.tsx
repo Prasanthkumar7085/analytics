@@ -8,7 +8,7 @@ import styles from "./index.module.css";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-
+import Grid from "@mui/material/Grid";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -85,34 +85,32 @@ const DashboardPage = () => {
   }, []);
 
   return (
-    <main className={styles.overviewdetails}>
-      <section className={styles.container7}>
-        <div style={{ width: "40%" }}>
+    <>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
           <Stats
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
             onChange={() => {}}
           />
-        </div>
-        <div style={{ width: "60%" }}>
+        </Grid>
+        <Grid item xs={8}>
           <CaseType
             caseTypesStatsData={caseTypesStatsData}
             loading={loading}
             getCaseTypesStats={getCaseTypesStats}
             totalRevenueSum={totalRevenueSum}
           />
-        </div>
-      </section>
-      <section className={styles.container8}>
-        <div style={{ width: "40%" }}>
-          <RevenueBlock />
-        </div>
-        <div style={{ width: "60%" }}>
-          <SalesRep />
-        </div>
-      </section>
-    </main>
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <RevenueBlock />
+      </Grid>
+      <Grid item xs={8}>
+        <SalesRep />
+      </Grid>
+    </>
   );
 };
 export default DashboardPage;
