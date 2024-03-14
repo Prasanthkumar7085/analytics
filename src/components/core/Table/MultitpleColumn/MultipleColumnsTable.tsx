@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import styles from "./multi-column.module.css";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 
 interface pageProps {
   columns: any[];
@@ -202,7 +203,11 @@ const MultipleColumnsTable: FC<pageProps> = ({
         >
           <tr>
             {totalSumValues?.map((item: any, index: number) => {
-              return <td key={index}>{item}</td>;
+              return (
+
+                <td key={index}>
+                  {index == 0 || index == 1 ? item : formatMoney(item)}</td>
+              );
             })}
             <td></td>
             <td></td>

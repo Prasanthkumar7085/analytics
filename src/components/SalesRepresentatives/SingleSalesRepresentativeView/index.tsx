@@ -6,7 +6,7 @@ import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { useParams, useRouter } from "next/navigation";
-import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
+import { getSingleRepCaseTypes, getSingleRepDeatilsAPI } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import Facilities from "./Facilities";
@@ -29,7 +29,7 @@ const SalesRepView = () => {
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
-  const [salesRepName, setSalesRepName] = useState("");
+  const [salesRepDetails, setSalesRepDetails] = useState<any>();
 
   //get the stats counts
   const getStatsCounts = async () => {
@@ -69,25 +69,18 @@ const SalesRepView = () => {
     try {
       const response = await getSingleRepCaseTypes(id as string);
       if (response.status == 200 || response?.status == 201) {
-        let mappedData = response?.data
-          ?.map((item: any) => {
-            return {
-              ...item,
-              case_name: mapCaseTypeTitleWithCaseType(item?.case_type),
-            };
-          })
-          ?.filter((e: { total_cases: string }) => e.total_cases);
-        setCaseTypesStatsData(mappedData);
+
+        setCaseTypesStatsData(response?.data);
 
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.paid_revenue;
-          totalRevenueSum += entry.total_cases ? entry.total_cases : 0;
+          paidRevenueSum += entry.revenue ? +entry.revenue : 0;
+          totalRevenueSum += entry.volume ? +entry.volume : 0;
         });
 
-        const result = ["Total", paidRevenueSum, totalRevenueSum];
+        const result = ["Total", totalRevenueSum, paidRevenueSum];
         setTotalSumValues(result);
       }
     } catch (err) {
@@ -97,10 +90,21 @@ const SalesRepView = () => {
     }
   };
 
-  const getMangerDetails = () => {
-    console.log(mapSalesRepWithId(id as string), "okpl");
-
-    setSalesRepName(mapSalesRepNameWithId(id as string));
+  //get to know the sale reep details
+  const getSignleSalesRepDetails = async () => {
+    setLoading(true);
+    try {
+      const response = await getSingleRepDeatilsAPI(id as string);
+      if (response.status == 200 || response?.status == 201) {
+        setSalesRepDetails(response?.data);
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+    finally {
+      setLoading(false)
+    }
   };
 
   //api call to get stats count
@@ -108,7 +112,7 @@ const SalesRepView = () => {
     if (id) {
       getStatsCounts();
       getCaseTypesStats();
-      getMangerDetails();
+      getSignleSalesRepDetails();
     } else {
       router.back();
     }
@@ -123,7 +127,10 @@ const SalesRepView = () => {
             Back
           </div>
           <Avatar sx={{ height: "30px", width: "30px" }} />
-          <Typography>{salesRepName}</Typography>
+          <div>
+            <Typography>{salesRepDetails?.[0]?.sales_rep}</Typography>
+
+          </div>
         </div>
         <Grid container spacing={2}>
           <Grid item xs={4}>
@@ -131,7 +138,7 @@ const SalesRepView = () => {
               revenueStatsDetails={revenueStatsDetails}
               volumeStatsDetails={volumeStatsDetails}
               loading={loading}
-              onChange={() => {}}
+              onChange={() => { }}
             />
           </Grid>
           <Grid item xs={8}>

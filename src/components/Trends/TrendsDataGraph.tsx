@@ -1,4 +1,4 @@
-import {} from "@/services/getRevenueAPIs";
+import { } from "@/services/getRevenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
-  const [trendsData, setTrendsData] = useState({});
+  const [trendsData, setTrendsData] = useState<any>([]);
 
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -53,8 +53,8 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
           text: graphType == "volume" ? "Total Volume" : "Total Revenue",
         },
         xAxis: {
-          categories: Object.keys(trendsData).map((item: string) =>
-            item?.slice(0, 3)
+          categories: trendsData.map((item: any) =>
+            item?.month
           ),
         },
         yAxis: {
@@ -68,7 +68,7 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
               graphType == "volume"
                 ? "Total Volume Billed"
                 : "Total Revenue Billed",
-            data: Object.values(trendsData).map((item: any) => item.revenue),
+            data: graphType == "volume" ? trendsData.map((item: any) => +item.volume) : trendsData.map((item: any) => +item.revenue),
             animation: {
               opacity: 1, // Set opacity animation for smoother entrance
             },

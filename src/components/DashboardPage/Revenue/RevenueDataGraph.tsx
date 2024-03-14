@@ -11,26 +11,19 @@ const RevenueDataGraph = () => {
   const [totalRevenueData, setTotalRevenueData] = useState<any>([])
 
   const updateTheResponseForGraph = (data: any) => {
+    console.log(data, "data")
     if (!data) {
       return;
     }
-    let dataKeys = Object.keys(data);
-    let XLabelData = [];
-    let billedData = [];
+
     let totalRevenue: any = [];
 
-    for (let i = 0; i < dataKeys?.length + 1; i++) {
-      if (dataKeys[i]) {
-        XLabelData.push([
-          dataKeys[i]?.split(" ")[0]?.slice(0, 3),
-        ]);
-        billedData.push([data[dataKeys[i]]?.total_revenue_billed])
-        totalRevenue.push([data[dataKeys[i]]?.total_revenue_collected])
-      }
-    }
-    setLablesData(XLabelData);
-    setBilledData(billedData);
-    setTotalRevenueData(totalRevenue);
+    const months = data.map((item: any) => item.month);
+    const generatedAmounts = data.map((item: any) => +item.generated_amount);
+    const paidAmounts = data.map((item: any) => +item.paid_amount);
+    setLablesData(months);
+    setBilledData(generatedAmounts);
+    setTotalRevenueData(paidAmounts);
   };
   const getRevenue = async () => {
     try {
@@ -44,11 +37,10 @@ const RevenueDataGraph = () => {
     }
   };
 
-  console.log(billedData, "aass");
-  
+
   const options = {
     chart: {
-      height:375,
+      height: 375,
       type: 'column'
     },
     title: {
@@ -103,7 +95,7 @@ const RevenueDataGraph = () => {
     getRevenue();
   }, []);
   return (
-    <div style={{overflowY:"hidden"}}>
+    <div style={{ overflowY: "hidden" }}>
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

@@ -15,6 +15,8 @@ const CaseTypes = ({
   getCaseTypesStats,
   totalRevenueSum,
 }: any) => {
+
+
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -42,8 +44,8 @@ const CaseTypes = ({
       let tempArray: any = [];
       array.map((item: any) => {
         tempArray.push({
-          name: item["case_type"],
-          y: item["total_cases"] ? +item["total_cases"] : 0,
+          name: item["case_type_name"],
+          y: item["volume"] ? +item["volume"] : 0,
         });
       });
       return tempArray;
@@ -52,8 +54,8 @@ const CaseTypes = ({
 
   const columns = [
     {
-      accessorFn: (row: any) => row.case_name,
-      id: "case_name",
+      accessorFn: (row: any) => row.case_type_name,
+      id: "case_type_name",
       header: () => <span className={styles.tableHeading}>Case Type</span>,
       cell: (info: any, index: number) => {
         return (
@@ -72,8 +74,8 @@ const CaseTypes = ({
       maxWidth: "60px",
     },
     {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
+      accessorFn: (row: any) => row.volume,
+      id: "volume",
       cell: (info: any) => (
         <span className={styles.totalCasesRow}>{info.getValue()}</span>
       ),
@@ -82,8 +84,8 @@ const CaseTypes = ({
       width: "150px",
     },
     {
-      accessorFn: (row: any) => row.paid_revenue,
-      id: "paid_revenue",
+      accessorFn: (row: any) => row.revenue,
+      id: "revenue",
       cell: (info: any) => (
         <span className={styles.revenueBlock}>
           {formatMoney(info.getValue())}
@@ -148,7 +150,7 @@ const CaseTypes = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Case Types Volumes
           </h3>
-          <GlobalDateRangeFilter onChange={() => {}} />
+          <GlobalDateRangeFilter onChange={() => { }} />
         </div>
         <div className="cardBody">
           <div style={{ display: "flex", height: "37vh" }}>

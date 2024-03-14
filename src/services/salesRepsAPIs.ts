@@ -1,9 +1,9 @@
 import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
-export const salesRepsAPI = async () => {
+export const salesRepsAPI = async (params: any) => {
   try {
-    const { success, data } = await $fetch.get("/sales-reps");
+    const { success, data } = await $fetch.get("/sales-reps", params);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -16,6 +16,18 @@ export const salesRepsAPI = async () => {
 export const getSingleRepCaseTypes = async (salerep_id: string) => {
   try {
     const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}/case-types`);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
+  try {
+    const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}`);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -82,7 +94,7 @@ export const getAllInsurancePayorsBySalesRepIdAPI = async ({
   id: string;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/insurance`);
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/insurance-payors`);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

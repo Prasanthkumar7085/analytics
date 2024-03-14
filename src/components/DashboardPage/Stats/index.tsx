@@ -10,6 +10,7 @@ const Stats = ({
   loading,
   onChange,
 }: any) => {
+
   return (
     <>
       <div className="eachDataCard" id="StatsData">
@@ -36,8 +37,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       formatMoney(
-                        revenueStatsDetails?.generated
-                          ? revenueStatsDetails?.generated
+                        revenueStatsDetails?.[0]?.generated_amount
+                          ? revenueStatsDetails?.[0]?.generated_amount
                           : 0
                       )
                     )}
@@ -59,8 +60,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       formatMoney(
-                        revenueStatsDetails?.collected
-                          ? revenueStatsDetails?.collected
+                        revenueStatsDetails?.[0]?.paid_amount
+                          ? revenueStatsDetails?.[0]?.paid_amount
                           : 0
                       )
                     )}
@@ -82,8 +83,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       formatMoney(
-                        revenueStatsDetails?.pending
-                          ? revenueStatsDetails?.pending
+                        revenueStatsDetails?.[0]?.pending_amount
+                          ? revenueStatsDetails?.[0]?.pending_amount
                           : 0
                       )
                     )}
@@ -106,8 +107,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       formatMoney(
-                        volumeStatsDetails?.total
-                          ? volumeStatsDetails?.total
+                        volumeStatsDetails?.[0]?.total_cases
+                          ? volumeStatsDetails?.[0]?.total_cases
                           : 0
                       ).replace("$", "")
                     )}
@@ -129,8 +130,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       formatMoney(
-                        volumeStatsDetails?.completed
-                          ? volumeStatsDetails?.completed
+                        volumeStatsDetails?.[0]?.completed_cases
+                          ? volumeStatsDetails?.[0]?.completed_cases
                           : 0
                       ).replace("$", "")
                     )}
@@ -152,8 +153,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       formatMoney(
-                        volumeStatsDetails?.pending
-                          ? volumeStatsDetails.pending
+                        volumeStatsDetails?.[0]?.pending_cases
+                          ? volumeStatsDetails?.[0]?.pending_cases
                           : 0
                       ).replace("$", "")
                     )}

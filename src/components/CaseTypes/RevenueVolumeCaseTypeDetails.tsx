@@ -15,7 +15,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const [totalSumValues, setTotalSumValues] = useState<any>(["Total"]);
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
-
+  const [headerMonths, setHeaderMonths] = useState<any>([])
   useEffect(() => {
     addtionalcolumns = [];
   }, [tabValue]);
@@ -59,37 +59,27 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     try {
       const response = await getRevenueOrVolumeCaseDetailsAPI(url);
       if (response.status == 200 || response.status == 201) {
-        const formattedData = [];
         const monthSums: number[] = [];
+        let monthArray = response?.data?.map((item: any) => item.month)
+        let uniqueMonths = Array.from(new Set(monthArray));
+        setHeaderMonths(uniqueMonths)
+        const groupedData = response?.data.reduce((acc: any, curr: any) => {
+          const { case_type_name, month, total_cases } = curr;
 
-        // Loop through each month in the data
-        for (const month in response?.data) {
-          const monthData = response?.data[month].case_type_wise_counts;
-          let monthSum = 0;
-
-          // Loop through each case type in the month data
-          for (const caseType in monthData) {
-            let caseObj: any = formattedData.find(
-              (obj) => obj.caseType === caseType
-            );
-            monthSum += monthData[caseType];
-            if (!caseObj) {
-              caseObj = { caseType: caseType };
-              for (const monthName in response?.data) {
-                caseObj[monthName.slice(0, 3).toLowerCase()] = 0;
-              }
-              // Add the case object to the formatted data array
-              formattedData.push(caseObj);
-            }
-
-            // Set the count for the current month
-            caseObj[month.slice(0, 3).toLowerCase()] = monthData[caseType];
+          if (!acc[case_type_name]) {
+            acc[case_type_name] = {};
           }
-          monthSums.push(monthSum);
-        }
+
+          acc[case_type_name][month] = total_cases;
+
+          return acc;
+        }, {});
+
+        console.log(groupedData, "p0032")
+
         setTotalSumValues([...totalSumValues, ...monthSums.slice(0, 13)]);
 
-        setCaseData(formattedData);
+        setCaseData(groupedData);
       }
     } catch (err) {
       console.error(err);
@@ -98,7 +88,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     }
   };
 
-  let addtionalcolumns = months?.map((item: any) => ({
+  let addtionalcolumns = headerMonths?.map((item: any) => ({
     accessorFn: (row: any) => row[item.toLowerCase()],
     id: item.toLowerCase(),
     header: () => (
@@ -165,12 +155,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
 
   return (
     <div style={{ position: "relative" }}>
-      <SingleColumnTable
+      {/* <SingleColumnTable
         data={caseData}
         columns={columnDef}
         totalSumValues={totalSumValues}
         loading={false}
-      />
+      /> */}
 
       {loading ? (
         <Backdrop
