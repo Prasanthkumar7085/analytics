@@ -18,7 +18,7 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
           Case Type
         </h3>
-        <GlobalDateRangeFilter onChange={() => { }} />
+        <GlobalDateRangeFilter onChangeData={() => { }} />
       </div>
       <div className="cardBody">
         <div

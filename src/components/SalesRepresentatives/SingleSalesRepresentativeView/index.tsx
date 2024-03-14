@@ -129,9 +129,7 @@ const SalesRepView = () => {
           <Avatar sx={{ height: "30px", width: "30px" }} />
           <div>
             <Typography>{salesRepDetails?.[0]?.sales_rep}</Typography>
-            <div>
-              <p>{salesRepDetails?.[0]?.manager ? +"Manager:" + salesRepDetails?.[0]?.manager : ""}</p>
-            </div>
+
           </div>
         </div>
         <Grid container spacing={2}>

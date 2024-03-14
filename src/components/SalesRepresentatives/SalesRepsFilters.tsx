@@ -8,15 +8,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 const SalesRepsFilters = ({
   onUpdateData,
-}: {
-  onUpdateData: ({
-    status,
-    search,
-  }: Partial<{
-    status: string;
-    search: string;
-  }>) => void;
-}) => {
+  getAllSalesReps
+}: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -25,6 +18,11 @@ const SalesRepsFilters = ({
     setSearch(params.get("search") ? (params.get("search") as string) : "");
     setStatus(params.get("status") ? (params.get("status") as string) : "all");
   }, [params]);
+
+
+  const onChangeData = (fromDate: any, toDate: any) => {
+    getAllSalesReps(fromDate, toDate)
+  }
   return (
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
@@ -34,7 +32,7 @@ const SalesRepsFilters = ({
         <Grid item xs={9}>
           <ul className="filterLists">
             <li className="eachFilterLists">
-              <Select
+              {/* <Select
                 onChange={(e: any) => {
                   setStatus(e.target.value);
                   onUpdateData({ status: e.target.value });
@@ -46,10 +44,11 @@ const SalesRepsFilters = ({
                 <MenuItem value={"all"}>All</MenuItem>
                 <MenuItem value={"yes"}>Yes</MenuItem>
                 <MenuItem value={"no"}>No</MenuItem>
-              </Select>
+              </Select> */}
+
             </li>
             <li className="eachFilterLists">
-              <GlobalDateRangeFilter onChange={() => {}} />
+              <GlobalDateRangeFilter onChangeData={onChangeData} />
             </li>
             <li className="eachFilterLists">
               <TextField

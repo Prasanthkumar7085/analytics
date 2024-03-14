@@ -1,3 +1,4 @@
+import formatMoney from "@/lib/Pipes/moneyFormat";
 import {
   SortingState,
   flexRender,
@@ -205,7 +206,11 @@ const SingleColumnTable: FC<pageProps> = ({
             }}
           >
             {totalSumValues?.map((item: any, index: number) => {
-              return <td key={index}>{item}</td>;
+
+
+              return <td key={index}>
+                {item ? (index == 0 || index == 1 ? item : formatMoney(item)) : ""}
+              </td>;
             })}
           </tr>
         </tfoot>

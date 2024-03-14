@@ -42,23 +42,30 @@ const SalesRepresentatives = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({ }) => {
+  const getAllSalesReps = async (fromDate: any, toDate: any) => {
     setLoading(true);
     try {
-      const response = await salesRepsAPI();
+
+      let queryParams: any = {
+
+      };
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+      let queryString = prepareURLEncodedParams("", queryParams);
+
+      router.push(`${pathname}${queryString}`);
+
+      const response = await salesRepsAPI(queryParams);
 
       if (response.status == 200 || response.status == 201) {
-        // let mappedData = response?.data?.map(
-        //   (item: { marketer_id: string }) => {
-        //     return {
-        //       ...item,
-        //       marketer_name: mapSalesRepNameWithId(item?.marketer_id),
-        //     };
-        //   }
-        // );
         setSalesReps(response?.data);
         setCompleteData(response?.data);
-        onUpdateData({}, response?.data);
+        // onUpdateData({}, response?.data);
 
         const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
         const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
@@ -71,13 +78,10 @@ const SalesRepresentatives = () => {
         const result = [
           "Total",
           totalCases,
-          targeted_amount,
           billedAmoumnt,
           paidRevenueSum,
           pendingAmoumnt,
         ];
-
-
         setTotalSumValues(result);
       } else {
         throw response;
@@ -122,19 +126,19 @@ const SalesRepresentatives = () => {
         id: "revenue",
         width: "800px",
         columns: [
-          {
-            accessorFn: (row: any) => row.expected_amount,
-            id: "expected_amount",
-            header: () => (
-              <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
-            ),
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
-            },
-          },
+          // {
+          //   accessorFn: (row: any) => row.expected_amount,
+          //   id: "expected_amount",
+          //   header: () => (
+          //     <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
+          //   ),
+          //   width: "200px",
+          //   maxWidth: "200px",
+          //   minWidth: "200px",
+          //   Cell: ({ getValue }: any) => {
+          //     return <span>{getValue()}</span>;
+          //   },
+          // },
           {
             accessorFn: (row: any) => row.generated_amount,
             header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
@@ -142,7 +146,7 @@ const SalesRepresentatives = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: ({ getValue }: any) => {
+            cell: ({ getValue }: any) => {
               return <span>{formatMoney(getValue())}</span>;
             },
           },
@@ -155,7 +159,7 @@ const SalesRepresentatives = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: (info: any) => {
+            cell: (info: any) => {
               return <span>{formatMoney(info.getValue())}</span>;
             },
           },
@@ -166,27 +170,29 @@ const SalesRepresentatives = () => {
             width: "200px",
             maxWidth: "200px",
             minWidth: "200px",
-            Cell: ({ getValue }: any) => {
-              return <span>{getValue()}</span>;
+            cell: (info: any) => {
+              return <span>{formatMoney(info.getValue())}</span>;
             },
           },
         ],
       },
-      {
-        accessorFn: (row: any) => row.target_reached,
-        id: "target_reached",
-        header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
-        ),
-        footer: (props: any) => props.column.id,
-        width: "120px",
-        maxWidth: "120px",
-        minWidth: "120px",
-        cell: ({ getValue }: any) => {
-          if (getValue()) return <span>Yes</span>;
-          else return <span>No</span>;
-        },
-      },
+      // {
+      //   accessorFn: (row: any) => row.target_reached,
+      //   id: "target_reached",
+      //   header: () => (
+      //     <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
+      //   ),
+      //   footer: (props: any) => props.column.id,
+      //   width: "120px",
+      //   maxWidth: "120px",
+      //   minWidth: "120px",
+      //   cell: (info: any) => {
+      //     if (info.row.original.paid_amount == info.row.original.expected_amount) {
+      //       return <span>Yes</span>;
+      //     }
+      //     else return <span>No</span>;
+      //   },
+      // },
       {
         accessorFn: (row: any) => row?._id,
         id: "actions",
@@ -241,13 +247,10 @@ const SalesRepresentatives = () => {
   ) => {
     let queryParams: any = {};
 
-    if (status && status != "all") {
-      queryParams["status"] = status;
-    }
+
     if (search) {
       queryParams["search"] = search;
     }
-    router.push(`${prepareURLEncodedParams(pathname, queryParams)}`);
 
     let data: any = [...completeData];
     if (!completeData?.length) {
@@ -255,14 +258,10 @@ const SalesRepresentatives = () => {
         data = [...testData];
       } else return;
     }
-    if (status && status !== "all") {
-      let statusValue = status == "yes" ? true : false;
-      data = data.filter((item: any) => item.target_reached == statusValue);
-      setSalesReps(data);
-    }
+
     if (search) {
       data = data.filter((item: any) =>
-        item.marketer_name
+        item.sales_rep_name
           ?.toLowerCase()
           ?.includes(search?.toLowerCase()?.trim())
       );
@@ -270,40 +269,33 @@ const SalesRepresentatives = () => {
 
     setSalesReps(data);
 
-    let totalCases = 0;
-    let paidRevenueSum = 0;
-    let targeted_amount = 0;
-    let billedAmoumnt = 0;
-    let pendingAmoumnt = 0;
 
-    data?.forEach((entry: any) => {
-      (totalCases += entry.total),
-        (targeted_amount += entry.targeted_amount),
-        (paidRevenueSum += entry.paid_amount);
-      billedAmoumnt += entry.total_amount;
-      pendingAmoumnt += entry.pending_amount;
-    });
+    const totalCases = data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
+    const targeted_amount = data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
+
+    const billedAmoumnt = data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
+    const paidRevenueSum = data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
+    const pendingAmoumnt = data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
+
 
     const result = [
       "Total",
       totalCases,
-      targeted_amount,
       billedAmoumnt,
       paidRevenueSum,
       pendingAmoumnt,
     ];
+
+
     setTotalSumValues(result);
   };
 
   useEffect(() => {
-    if (!marketers?.length) {
-      getUsersFromLabsquire();
-    }
-    getAllSalesReps({});
+    getAllSalesReps("", "");
   }, []);
   return (
     <div className={styles.salesRepsContainer}>
-      <SalesRepsFilters onUpdateData={onUpdateData} />
+      <SalesRepsFilters onUpdateData={onUpdateData} getAllSalesReps={getAllSalesReps} />
       <div id="customTable">
         <MultipleColumnsTable
           data={salesReps}

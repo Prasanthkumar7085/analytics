@@ -10,9 +10,9 @@ import {
   subDays,
 } from "rsuite/esm/utils/dateUtils";
 const GlobalDateRangeFilter = ({
-  onChange,
+  onChangeData,
 }: {
-  onChange: (fromDate: string, toDate: string) => void;
+  onChangeData: any
 }) => {
   const predefinedRanges: any = [
     {
@@ -89,6 +89,7 @@ const GlobalDateRangeFilter = ({
       <DateRangePicker
         className="inputItemDate"
         placement="bottomEnd"
+        editable
         ranges={predefinedRanges}
         size="lg"
         disabledDate={(date: any) => {
@@ -108,9 +109,9 @@ const GlobalDateRangeFilter = ({
               .toISOString()
               .substring(0, 10);
 
-            onChange(date1, date2);
+            onChangeData(date1, date2);
           } else {
-            onChange("", "");
+            onChangeData("", "");
           }
         }}
       />

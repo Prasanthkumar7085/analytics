@@ -32,7 +32,7 @@ const InsurancePayors = () => {
           totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = ["Total", totalAmount, totalPaid, totalPending, ""];
+        const result = ["Total", totalAmount, totalPaid, totalPending, null];
 
         setTortalInsurancePayors(result);
       }
