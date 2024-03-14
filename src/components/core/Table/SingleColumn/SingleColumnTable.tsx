@@ -56,8 +56,11 @@ const SingleColumnTable: FC<pageProps> = ({
   };
 
   return (
-    <div className="tableContainer">
-      <table className="table" style={{ borderSpacing: "0" }}>
+    <div
+      className="tableContainer"
+      style={{ width: "100%", overflowX: "auto" }}
+    >
+      <table style={{ width: "100%" }}>
         <thead
           className="thead"
           style={{
@@ -147,6 +150,7 @@ const SingleColumnTable: FC<pageProps> = ({
                         className="cell"
                         key={index}
                         style={{
+                          width: "100%",
                           backgroundColor: row?.original.hasOwnProperty(
                             "target_reached"
                           )

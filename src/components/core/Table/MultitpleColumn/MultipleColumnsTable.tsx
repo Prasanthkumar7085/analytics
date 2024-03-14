@@ -65,8 +65,11 @@ const MultipleColumnsTable: FC<pageProps> = ({
   };
 
   return (
-    <div className="tableContainer">
-      <table>
+    <div
+      className="tableContainer"
+      style={{ width: "100%", overflowX: "auto" }}
+    >
+      <table style={{ width: "100%" }}>
         <thead
           className="thead"
           style={{
@@ -152,6 +155,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                         className={styles.tableCell}
                         key={index}
                         style={{
+                          width: "100%",
                           backgroundColor: row?.original.hasOwnProperty(
                             "target_reached"
                           )
@@ -204,9 +208,9 @@ const MultipleColumnsTable: FC<pageProps> = ({
           <tr>
             {totalSumValues?.map((item: any, index: number) => {
               return (
-
                 <td key={index}>
-                  {index == 0 || index == 1 ? item : formatMoney(item)}</td>
+                  {index == 0 || index == 1 ? item : formatMoney(item)}
+                </td>
               );
             })}
             <td></td>
