@@ -19,7 +19,7 @@ const RevenueBlock = () => {
           </div>
           <div className={styles.heading}>Revenue</div>
         </div>
-        <GlobalDateRangeFilter onChange={() => {}} />
+        <GlobalDateRangeFilter onChangeData={() => { }} />
       </div>
       <div style={{ width: "98%" }}>
         <RevenueDataGraph />

@@ -1,10 +1,7 @@
 "use client";
 import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
-import styles from "./index.module.css";
-import { useEffect } from "react";
-import { toast } from "sonner";
 import Image from "next/image";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import styles from "./index.module.css";
 
 const SalesRep = () => {
   return (

@@ -21,7 +21,7 @@ const SingleFacilitieCaseTypeDetails = ({ apiUrl }: any) => {
             <h3 className={styles.heading}>Case Type</h3>
           </div>
         </div>
-        <GlobalDateRangeFilter onChange={() => {}} />
+        <GlobalDateRangeFilter onChangeData={() => { }} />
       </div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <Tabs

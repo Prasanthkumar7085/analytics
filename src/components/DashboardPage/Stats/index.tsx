@@ -20,7 +20,7 @@ const Stats = ({
             Stats
           </h3>
           <GlobalDateRangeFilter
-            onChange={onChange}
+            onChangeData={onChange}
           />
         </div>
         <div className="cardBody">
