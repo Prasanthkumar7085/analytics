@@ -18,27 +18,19 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl }: any) => {
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
           Case Type
         </h3>
-        <GlobalDateRangeFilter onChangeData={() => { }} />
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          textColor="secondary"
+          indicatorColor="secondary"
+          aria-label="secondary tabs example"
+        >
+          <Tab value="Revenue" label="Revenue" />
+          <Tab value="Volume" label="Volume" />
+        </Tabs>
+        <GlobalDateRangeFilter onChangeData={() => {}} />
       </div>
       <div className="cardBody">
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            background: "rgb(240, 237, 255)",
-          }}
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            textColor="secondary"
-            indicatorColor="secondary"
-            aria-label="secondary tabs example"
-          >
-            <Tab value="Revenue" label="Revenue" />
-            <Tab value="Volume" label="Volume" />
-          </Tabs>
-        </div>
         <RevenuVolumeCaseTypesDetails tabValue={value} apiUrl={apiUrl} />
       </div>
     </div>

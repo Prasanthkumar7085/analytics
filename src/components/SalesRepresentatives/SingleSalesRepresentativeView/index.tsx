@@ -135,7 +135,7 @@ const SalesRepView = () => {
         </div>
         <div className="personData">
           <Grid container spacing={2}>
-            <Grid item xs={5}>
+            <Grid item xs={4}>
               <Stats
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
@@ -143,7 +143,7 @@ const SalesRepView = () => {
                 onChange={() => {}}
               />
             </Grid>
-            <Grid item xs={7}>
+            <Grid item xs={8}>
               <CaseTypes
                 caseTypesStatsData={caseTypesStatsData}
                 loading={loading}
@@ -173,22 +173,7 @@ const SalesRepView = () => {
               </div>
             </Grid>
             <Grid item xs={5}>
-              <div className="eachDataCard" id="TrendsData">
-                <div className="cardHeader">
-                  <h3>
-                    <Image
-                      alt=""
-                      src="/tableDataIcon.svg"
-                      height={20}
-                      width={20}
-                    />
-                    Trends
-                  </h3>
-                </div>
-                <div className="cardBody">
-                  <Trends />
-                </div>
-              </div>
+              <Trends />
             </Grid>
             <Grid item xs={12}>
               <div className="eachDataCard" id="FacilitiesData">

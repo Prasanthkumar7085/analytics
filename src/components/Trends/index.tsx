@@ -1,7 +1,7 @@
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import TrendsDataGraph from "./TrendsDataGraph";
-
+import Image from "next/image";
 const Trends = () => {
   const [tabValue, setTabValue] = useState<string>("revenue");
 
@@ -10,17 +10,28 @@ const Trends = () => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
-      <Tabs onChange={handleChange} value={tabValue}>
-        <Tab value={"revenue"} label={"Revenue"} />
-        <Tab value={"volume"} label={"Volume"} />
-      </Tabs>
-      {tabValue == "volume" ? (
-        <TrendsDataGraph graphType={"volume"} />
-      ) : (
-        <TrendsDataGraph graphType={"revenue"} />
-      )}
-    </div>
+    <>
+      <div className="eachDataCard" id="TrendsData">
+        <div className="cardHeader">
+          <h3>
+            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+            Trends
+          </h3>
+          <Tabs onChange={handleChange} value={tabValue}>
+            <Tab value={"revenue"} label={"Revenue"} />
+            <Tab value={"volume"} label={"Volume"} />
+          </Tabs>
+        </div>
+        <div className="cardBody">
+          {tabValue == "volume" ? (
+            <TrendsDataGraph graphType={"volume"} />
+          ) : (
+            <TrendsDataGraph graphType={"revenue"} />
+          )}
+        </div>
+      </div>
+      <div style={{ width: "100%" }}></div>
+    </>
   );
 };
 
