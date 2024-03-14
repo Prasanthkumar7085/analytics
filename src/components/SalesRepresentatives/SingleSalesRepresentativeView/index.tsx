@@ -190,7 +190,7 @@ const SalesRepView = () => {
                 </div>
               </div>
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12}>
               <div className="eachDataCard" id="FacilitiesData">
                 <div className="cardHeader">
                   <h3>
