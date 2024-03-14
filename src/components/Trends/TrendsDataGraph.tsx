@@ -39,7 +39,7 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    if (chartRef && chartRef.current) {
+    if (chartRef && chartRef.current && trendsData?.length) {
       // Custom entrance animation for the chart
       Highcharts.chart(chartRef.current, {
         chart: {
@@ -53,7 +53,7 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
           text: graphType == "volume" ? "Total Volume" : "Total Revenue",
         },
         xAxis: {
-          categories: trendsData.map((item: any) =>
+          categories: trendsData?.map((item: any) =>
             item?.month
           ),
         },
@@ -68,7 +68,7 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
               graphType == "volume"
                 ? "Total Volume Billed"
                 : "Total Revenue Billed",
-            data: graphType == "volume" ? trendsData.map((item: any) => +item.volume) : trendsData.map((item: any) => +item.revenue),
+            data: graphType == "volume" ? trendsData?.map((item: any) => +item.volume) : trendsData?.map((item: any) => +item.revenue),
             animation: {
               opacity: 1, // Set opacity animation for smoother entrance
             },
