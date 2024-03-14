@@ -6,7 +6,10 @@ import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { useParams, useRouter } from "next/navigation";
-import { getSingleRepCaseTypes, getSingleRepDeatilsAPI } from "@/services/salesRepsAPIs";
+import {
+  getSingleRepCaseTypes,
+  getSingleRepDeatilsAPI,
+} from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import Facilities from "./Facilities";
@@ -69,7 +72,6 @@ const SalesRepView = () => {
     try {
       const response = await getSingleRepCaseTypes(id as string);
       if (response.status == 200 || response?.status == 201) {
-
         setCaseTypesStatsData(response?.data);
 
         let paidRevenueSum = 0;
@@ -98,12 +100,10 @@ const SalesRepView = () => {
       if (response.status == 200 || response?.status == 201) {
         setSalesRepDetails(response?.data);
       }
-    }
-    catch (err) {
-      console.log(err)
-    }
-    finally {
-      setLoading(false)
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,91 +122,94 @@ const SalesRepView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div className="backButton" onClick={() => router.back()}>
-            <ArrowBack />
-            Back
+          <div
+            onClick={() => router.back()}
+            className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
+          >
+            <ArrowBack className="w-[20px] text-[#bf1b39]" />
           </div>
-          <Avatar sx={{ height: "30px", width: "30px" }} />
-          <div>
-            <Typography>{salesRepDetails?.[0]?.sales_rep}</Typography>
-
+          <div className="person flex items-center">
+            <Avatar sx={{ height: "30px", width: "30px" }} />
+            <p className="pl-3">{salesRepDetails?.[0]?.sales_rep}</p>
           </div>
         </div>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
-            <Stats
-              revenueStatsDetails={revenueStatsDetails}
-              volumeStatsDetails={volumeStatsDetails}
-              loading={loading}
-              onChange={() => { }}
-            />
-          </Grid>
-          <Grid item xs={8}>
-            <CaseTypes
-              caseTypesStatsData={caseTypesStatsData}
-              loading={loading}
-              totalRevenueSum={totalRevenueSum}
-            />
-          </Grid>
+        <div className="personData">
+          <Grid container spacing={2}>
+            <Grid item xs={5}>
+              <Stats
+                revenueStatsDetails={revenueStatsDetails}
+                volumeStatsDetails={volumeStatsDetails}
+                loading={loading}
+                onChange={() => {}}
+              />
+            </Grid>
+            <Grid item xs={7}>
+              <CaseTypes
+                caseTypesStatsData={caseTypesStatsData}
+                loading={loading}
+                totalRevenueSum={totalRevenueSum}
+              />
+            </Grid>
 
-          <Grid item xs={12}>
-            <SingleSalesRepCaseTypeDetails apiUrl={"sales-reps"} />
+            <Grid item xs={12}>
+              <SingleSalesRepCaseTypeDetails apiUrl={"sales-reps"} />
+            </Grid>
+            <Grid item xs={7}>
+              <div className="eachDataCard" id="InsurancePayorsData">
+                <div className="cardHeader">
+                  <h3>
+                    <Image
+                      alt=""
+                      src="/tableDataIcon.svg"
+                      height={20}
+                      width={20}
+                    />
+                    Insurance Payors
+                  </h3>
+                </div>
+                <div className="cardBody">
+                  <InsurancePayors />
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={5}>
+              <div className="eachDataCard" id="TrendsData">
+                <div className="cardHeader">
+                  <h3>
+                    <Image
+                      alt=""
+                      src="/tableDataIcon.svg"
+                      height={20}
+                      width={20}
+                    />
+                    Trends
+                  </h3>
+                </div>
+                <div className="cardBody">
+                  <Trends />
+                </div>
+              </div>
+            </Grid>
+            <Grid item xs={8}>
+              <div className="eachDataCard" id="FacilitiesData">
+                <div className="cardHeader">
+                  <h3>
+                    <Image
+                      alt=""
+                      src="/tableDataIcon.svg"
+                      height={20}
+                      width={20}
+                    />
+                    Facilities
+                  </h3>
+                </div>
+                <div className="cardBody">
+                  <Facilities />
+                </div>
+              </div>
+            </Grid>
           </Grid>
-          <Grid item xs={7}>
-            <div className="eachDataCard" id="InsurancePayorsData">
-              <div className="cardHeader">
-                <h3>
-                  <Image
-                    alt=""
-                    src="/tableDataIcon.svg"
-                    height={20}
-                    width={20}
-                  />
-                  Insurance Payors
-                </h3>
-              </div>
-              <div className="cardBody">
-                <InsurancePayors />
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={5}>
-            <div className="eachDataCard" id="TrendsData">
-              <div className="cardHeader">
-                <h3>
-                  <Image
-                    alt=""
-                    src="/tableDataIcon.svg"
-                    height={20}
-                    width={20}
-                  />
-                  Trends
-                </h3>
-              </div>
-              <div className="cardBody">
-                <Trends />
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={8}>
-            <div className="eachDataCard" id="FacilitiesData">
-              <div className="cardHeader">
-                <h3>
-                  <Image
-                    alt=""
-                    src="/tableDataIcon.svg"
-                    height={20}
-                    width={20}
-                  />
-                  Facilities
-                </h3>
-              </div>
-              <div className="cardBody">
-                <Facilities />
-              </div>
-            </div>
-          </Grid>
-        </Grid>
+        </div>
       </div>
     </div>
   );
