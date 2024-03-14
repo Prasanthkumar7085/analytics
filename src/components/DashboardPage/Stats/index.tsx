@@ -10,7 +10,6 @@ const Stats = ({
   loading,
   onChange,
 }: any) => {
-
   return (
     <>
       <div className="eachDataCard" id="StatsData">
@@ -19,7 +18,7 @@ const Stats = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Stats
           </h3>
-          <GlobalDateRangeFilter onChange={onChange} />
+          <GlobalDateRangeFilter onChangeData={onChange} />
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>

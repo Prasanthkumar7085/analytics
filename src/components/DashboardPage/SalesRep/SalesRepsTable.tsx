@@ -33,7 +33,7 @@ const SalesRepsTable = () => {
 
   const getAllSalesReps = async ({ }) => {
     try {
-      const response = await salesRepsAPI();
+      const response = await salesRepsAPI({});
 
       if (response.status == 200 || response.status == 201) {
         setSalesReps(response?.data);
