@@ -18,9 +18,7 @@ const Stats = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Stats
           </h3>
-          <GlobalDateRangeFilter
-            onChange={onChange}
-          />
+          <GlobalDateRangeFilter onChange={onChange} />
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>

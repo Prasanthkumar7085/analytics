@@ -288,84 +288,83 @@ table {
 }
 
 
-.salesPersonDataDetails {
 
-  .personDetails {
-    background: #fff;
-    height: 62px;
+.personDetails {
+  background: #fff;
+  height: 62px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px 8px 0 0;
+  padding: 0 20px;
+
+  .backButton {
+    background: #efedfe;
+    margin-right: 20px;
+    padding: 1px 15px;
+    border-radius: 30px;
+    height: 25px;
     display: flex;
     align-items: center;
-    border-radius: 8px 8px 0 0;
-    padding: 0 20px;
-
-    .backButton {
-      background: #efedfe;
-      margin-right: 20px;
-      padding: 1px 15px;
-      border-radius: 30px;
-      height: 25px;
-      display: flex;
-      align-items: center;
-      font-weight: 600;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-
-      svg {
-        margin-right: 5px;
-        font-size: 19px;
-      }
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-
-  .eachDataCard {
-    border-radius: 16px;
-    background-color: #fff;
-    height: 100%;
-    box-shadow: 0px 8px 16px -6px #18274B05;
-    box-shadow: 0px 6px 8px -6px #18274B0F;
-    box-shadow: 0px -4px 17px 0px #0000000A;
+    font-weight: 600;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    overflow: hidden;
 
-    .cardHeader {
-      // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 5px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-
-      h3 {
-        font-size: 1.1em;
-        font-weight: 500;
-        color: #000;
-
-        img {
-          margin-right: 10px;
-          margin-top: -2px;
-        }
-      }
+    svg {
+      margin-right: 5px;
+      font-size: 19px;
     }
 
-    .cardBody {
-      padding: 10px 20px 20px 20px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
 
+
+#InsurancePayorsData {
+  .table {
+    padding: 0;
+  }
+
+  .customTableContainer {
+    height: 450px;
+    overflow: auto;
+    padding: 0 !important;
+  }
+}
+
+.eachDataCard {
+  border-radius: 16px;
+  background-color: #fff;
+  height: 100%;
+  box-shadow: 0px 8px 16px -6px #18274B05;
+  box-shadow: 0px 6px 8px -6px #18274B0F;
+  box-shadow: 0px -4px 17px 0px #0000000A;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+
+  .cardHeader {
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    h3 {
+      font-size: 1.1em;
+      font-weight: 500;
+      color: #000;
+
+      img {
+        margin-right: 10px;
+        margin-top: -2px;
+      }
     }
   }
 
-  #InsurancePayorsData {
-    .table {
-      padding: 0;
-    }
+  .cardBody {
+    padding: 10px 20px 20px 20px;
 
-    .customTableContainer {
-      height: 450px;
-      overflow: auto;
-      padding: 0 !important;
-    }
   }
 }
 
