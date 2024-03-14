@@ -1,4 +1,4 @@
-import {} from "@/services/getRevenueAPIs";
+import { } from "@/services/getRevenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
@@ -38,45 +38,45 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
 
   const chartRef = useRef(null);
 
-  useEffect(() => {
-    if (chartRef && chartRef.current) {
-      // Custom entrance animation for the chart
-      Highcharts.chart(chartRef.current, {
-        chart: {
-          type: "spline",
-          animation: {
-            duration: 1000, // Set the animation duration
-            easing: "easeOutBounce", // Set the easing function for a smoother animation
-          },
-        },
-        title: {
-          text: graphType == "volume" ? "Total Volume" : "Total Revenue",
-        },
-        xAxis: {
-          categories: Object.keys(trendsData).map((item: string) =>
-            item?.slice(0, 3)
-          ),
-        },
-        yAxis: {
-          title: {
-            text: "Amount",
-          },
-        },
-        series: [
-          {
-            name:
-              graphType == "volume"
-                ? "Total Volume Billed"
-                : "Total Revenue Billed",
-            data: Object.values(trendsData).map((item: any) => item.revenue),
-            animation: {
-              opacity: 1, // Set opacity animation for smoother entrance
-            },
-          },
-        ],
-      } as any);
-    }
-  }, [trendsData]);
+  // useEffect(() => {
+  //   if (chartRef && chartRef.current) {
+  //     // Custom entrance animation for the chart
+  //     Highcharts.chart(chartRef.current, {
+  //       chart: {
+  //         type: "spline",
+  //         animation: {
+  //           duration: 1000, // Set the animation duration
+  //           easing: "easeOutBounce", // Set the easing function for a smoother animation
+  //         },
+  //       },
+  //       title: {
+  //         text: graphType == "volume" ? "Total Volume" : "Total Revenue",
+  //       },
+  //       xAxis: {
+  //         categories: Object.keys(trendsData).map((item: string) =>
+  //           item?.slice(0, 3)
+  //         ),
+  //       },
+  //       yAxis: {
+  //         title: {
+  //           text: "Amount",
+  //         },
+  //       },
+  //       series: [
+  //         {
+  //           name:
+  //             graphType == "volume"
+  //               ? "Total Volume Billed"
+  //               : "Total Revenue Billed",
+  //           data: Object.values(trendsData).map((item: any) => item.revenue),
+  //           animation: {
+  //             opacity: 1, // Set opacity animation for smoother entrance
+  //           },
+  //         },
+  //       ],
+  //     } as any);
+  //   }
+  // }, [trendsData]);
 
   useEffect(() => {
     // setTrendsData({});

@@ -15,24 +15,11 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const [totalSumValues, setTotalSumValues] = useState<any>(["Total"]);
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
-
+  const [headerMoths, setHeaderMonths] = useState<any>([])
   useEffect(() => {
     addtionalcolumns = [];
   }, [tabValue]);
-  const months = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
-    "may",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "oct",
-    "nov",
-    "dec",
-  ];
+
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -61,35 +48,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
       if (response.status == 200 || response.status == 201) {
         const formattedData = [];
         const monthSums: number[] = [];
-
-        // Loop through each month in the data
-        for (const month in response?.data) {
-          const monthData = response?.data[month].case_type_wise_counts;
-          let monthSum = 0;
-
-          // Loop through each case type in the month data
-          for (const caseType in monthData) {
-            let caseObj: any = formattedData.find(
-              (obj) => obj.caseType === caseType
-            );
-            monthSum += monthData[caseType];
-            if (!caseObj) {
-              caseObj = { caseType: caseType };
-              for (const monthName in response?.data) {
-                caseObj[monthName.slice(0, 3).toLowerCase()] = 0;
-              }
-              // Add the case object to the formatted data array
-              formattedData.push(caseObj);
-            }
-
-            // Set the count for the current month
-            caseObj[month.slice(0, 3).toLowerCase()] = monthData[caseType];
-          }
-          monthSums.push(monthSum);
-        }
-        setTotalSumValues([...totalSumValues, ...monthSums.slice(0, 13)]);
-
-        setCaseData(formattedData);
+        let monthArray = response?.data?.map((item: any) => item.month)
+        let uniqueMonths = Array.from(new Set(monthArray));
+        setHeaderMonths(uniqueMonths)
+        setCaseData(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -98,11 +60,11 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     }
   };
 
-  let addtionalcolumns = months?.map((item: any) => ({
-    accessorFn: (row: any) => row[item.toLowerCase()],
-    id: item.toLowerCase(),
+  let addtionalcolumns = headerMoths?.map((item: any) => ({
+    accessorFn: (row: any) => row[caseData[item.total_cases]],
+    id: caseData[item.total_cases],
     header: () => (
-      <span style={{ whiteSpace: "nowrap" }}>{item.toUpperCase()}</span>
+      <span style={{ whiteSpace: "nowrap" }}>{item.month}</span>
     ),
     footer: (props: any) => props.column.id,
     width: "80px",
@@ -118,8 +80,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const columnDef = useMemo(
     () => [
       {
-        accessorFn: (row: any) => row.caseType,
-        id: "caseType",
+        accessorFn: (row: any) => row.case_type_name,
+        id: "case_type_name",
         header: () => <span style={{ whiteSpace: "nowrap" }}>Case Types</span>,
         footer: (props: any) => props.column.id,
         width: "220px",

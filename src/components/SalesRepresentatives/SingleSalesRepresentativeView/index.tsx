@@ -69,25 +69,18 @@ const SalesRepView = () => {
     try {
       const response = await getSingleRepCaseTypes(id as string);
       if (response.status == 200 || response?.status == 201) {
-        let mappedData = response?.data
-          ?.map((item: any) => {
-            return {
-              ...item,
-              case_name: mapCaseTypeTitleWithCaseType(item?.case_type),
-            };
-          })
-          ?.filter((e: { total_cases: string }) => e.total_cases);
-        setCaseTypesStatsData(mappedData);
+
+        setCaseTypesStatsData(response?.data);
 
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.paid_revenue;
-          totalRevenueSum += entry.total_cases ? entry.total_cases : 0;
+          paidRevenueSum += entry.revenue ? +entry.revenue : 0;
+          totalRevenueSum += entry.volume ? +entry.volume : 0;
         });
 
-        const result = ["Total", paidRevenueSum, totalRevenueSum];
+        const result = ["Total", totalRevenueSum, paidRevenueSum];
         setTotalSumValues(result);
       }
     } catch (err) {
@@ -98,8 +91,6 @@ const SalesRepView = () => {
   };
 
   const getMangerDetails = () => {
-    console.log(mapSalesRepWithId(id as string), "okpl");
-
     setSalesRepName(mapSalesRepNameWithId(id as string));
   };
 
@@ -131,7 +122,7 @@ const SalesRepView = () => {
               revenueStatsDetails={revenueStatsDetails}
               volumeStatsDetails={volumeStatsDetails}
               loading={loading}
-              onChange={() => {}}
+              onChange={() => { }}
             />
           </Grid>
           <Grid item xs={8}>

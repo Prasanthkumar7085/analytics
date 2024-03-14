@@ -54,21 +54,21 @@ const DashboardPage = () => {
         let totalRevenueSum = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.paid_revenue;
-          totalRevenueSum += entry.total_cases ? entry.total_cases : 0;
+          paidRevenueSum += entry.revenue ? +entry.revenue : 0;
+          totalRevenueSum += entry.volume ? +entry.volume : 0;
         });
 
-        const result = ["Total", paidRevenueSum, totalRevenueSum];
+        const result = ["Total", totalRevenueSum, paidRevenueSum];
         setTotalSumValues(result);
 
         let mappedData = response?.data
           ?.map((item: any) => {
             return {
               ...item,
-              case_name: mapCaseTypeTitleWithCaseType(item?.case_type),
+              case_name: mapCaseTypeTitleWithCaseType(item?.case_type_name),
             };
           })
-          ?.filter((e: { total_cases: string }) => e.total_cases);
+          ?.filter((e: { volume: string }) => e.volume);
         setCaseTypesStatsData(mappedData);
       }
     } catch (err) {
@@ -92,7 +92,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => {}}
+            onChange={() => { }}
           />
         </div>
         <div style={{ width: "60%" }}>

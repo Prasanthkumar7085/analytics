@@ -41,36 +41,31 @@ const SalesRepresentatives = () => {
       console.error(err);
     }
   };
-  const getAllSalesReps = async ({}) => {
+  const getAllSalesReps = async ({ }) => {
     setLoading(true);
     try {
       const response = await salesRepsAPI();
 
       if (response.status == 200 || response.status == 201) {
-        let mappedData = response?.data?.map(
-          (item: { marketer_id: string }) => {
-            return {
-              ...item,
-              marketer_name: mapSalesRepNameWithId(item?.marketer_id),
-            };
-          }
-        );
-        setSalesReps(mappedData);
-        setCompleteData(mappedData);
-        onUpdateData({}, mappedData);
-        let totalCases = 0;
-        let paidRevenueSum = 0;
-        let targeted_amount = 0;
-        let billedAmoumnt = 0;
-        let pendingAmoumnt = 0;
+        // let mappedData = response?.data?.map(
+        //   (item: { marketer_id: string }) => {
+        //     return {
+        //       ...item,
+        //       marketer_name: mapSalesRepNameWithId(item?.marketer_id),
+        //     };
+        //   }
+        // );
+        setSalesReps(response?.data);
+        setCompleteData(response?.data);
+        onUpdateData({}, response?.data);
 
-        response?.data?.forEach((entry: any) => {
-          (totalCases += entry.total_cases),
-            (targeted_amount += entry.targeted_amount),
-            (paidRevenueSum += entry.paid_amount);
-          billedAmoumnt += entry.total_amount;
-          pendingAmoumnt += entry.pending_amount;
-        });
+        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total), 0);
+        const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
+
+        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.total_amount), 0);
+        const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
+        const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
+
 
         const result = [
           "Total",
@@ -80,6 +75,8 @@ const SalesRepresentatives = () => {
           paidRevenueSum,
           pendingAmoumnt,
         ];
+
+
         setTotalSumValues(result);
       } else {
         throw response;
@@ -93,8 +90,8 @@ const SalesRepresentatives = () => {
   const columnDef = useMemo(
     () => [
       {
-        accessorFn: (row: any) => row.marketer_name,
-        id: "marketer_name",
+        accessorFn: (row: any) => row.sales_rep_name,
+        id: "sales_rep_name",
         header: () => (
           <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>
         ),
@@ -107,8 +104,8 @@ const SalesRepresentatives = () => {
         },
       },
       {
-        accessorFn: (row: any) => row.total_cases,
-        id: "total_cases",
+        accessorFn: (row: any) => row.total,
+        id: "total",
         header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
         footer: (props: any) => props.column.id,
         width: "200px",
@@ -125,8 +122,8 @@ const SalesRepresentatives = () => {
         width: "800px",
         columns: [
           {
-            accessorFn: (row: any) => row.targeted_amount,
-            id: "targeted_amount",
+            accessorFn: (row: any) => row.expected_amount,
+            id: "expected_amount",
             header: () => (
               <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
             ),
@@ -181,9 +178,9 @@ const SalesRepresentatives = () => {
           <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
         ),
         footer: (props: any) => props.column.id,
-        width: "220px",
-        maxWidth: "220px",
-        minWidth: "220px",
+        width: "120px",
+        maxWidth: "120px",
+        minWidth: "120px",
         cell: ({ getValue }: any) => {
           if (getValue()) return <span>Yes</span>;
           else return <span>No</span>;
@@ -194,16 +191,16 @@ const SalesRepresentatives = () => {
         id: "actions",
         header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
         footer: (props: any) => props.column.id,
-        width: "200px",
-        maxWidth: "200px",
-        minWidth: "200px",
+        width: "120px",
+        maxWidth: "120px",
+        minWidth: "120px",
         cell: (info: any) => {
           return (
             <Button
               className="actionButton"
               onClick={() => {
                 router.push(
-                  `/sales-representatives/${info.row.original.marketer_id}`
+                  `/sales-representatives/${info.row.original.sales_rep_id}`
                 );
               }}
             >
@@ -215,6 +212,21 @@ const SalesRepresentatives = () => {
     ],
     []
   );
+
+
+
+  function formatNumber(amount: any) {
+    if (amount >= 10000000) {
+      return (amount / 10000000).toFixed(2) + ' Cr';
+    } else if (amount >= 100000) {
+      return (amount / 100000).toFixed(2) + ' L';
+    } else if (amount >= 1000) {
+      return (amount / 1000).toFixed(2) + ' K';
+    } else {
+      return amount.toFixed(2);
+    }
+  }
+
 
   const onUpdateData = (
     {
@@ -264,7 +276,7 @@ const SalesRepresentatives = () => {
     let pendingAmoumnt = 0;
 
     data?.forEach((entry: any) => {
-      (totalCases += entry.total_cases),
+      (totalCases += entry.total),
         (targeted_amount += entry.targeted_amount),
         (paidRevenueSum += entry.paid_amount);
       billedAmoumnt += entry.total_amount;

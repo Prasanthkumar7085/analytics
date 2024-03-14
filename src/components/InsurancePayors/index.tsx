@@ -18,7 +18,6 @@ const InsurancePayors = () => {
       });
       if (response?.status == 200 || response?.status == 201) {
         setInsuranceData(response?.data);
-        console.log(response, "asdfasdf");
 
         let totalAmount = 0;
         let totalPaid = 0;
@@ -31,7 +30,6 @@ const InsurancePayors = () => {
         });
 
         const result = ["Total", totalAmount, totalPaid, totalPending, ""];
-        console.log(result, "asdfasdf");
 
         setTortalInsurancePayors(result);
       }
