@@ -86,13 +86,13 @@ const DashboardPage = () => {
 
   return (
     <>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} className="mb-5">
         <Grid item xs={4}>
           <Stats
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => { }}
+            onChange={() => {}}
           />
         </Grid>
         <Grid item xs={8}>
@@ -104,7 +104,7 @@ const DashboardPage = () => {
           />
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} className="mb-5">
         <RevenueBlock />
       </Grid>
       <Grid item xs={8}>

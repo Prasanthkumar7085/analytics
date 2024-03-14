@@ -420,7 +420,7 @@ table {
 }
 
 .Stats_totalvalue__y0659 {
-  font-size: 1.5em !important;
+  font-size: 1.15em !important;
   font-weight: 600 !important;
 }
 
@@ -430,4 +430,17 @@ table {
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
     repeating-radial-gradient(circle at center center, #444cf7, #444cf7, 10px, transparent 20px, transparent 10px);
   background-blend-mode: multiply;
+}
+
+#salesRepresentatives,
+#salesRepresentativesPage {
+  tfoot {
+    tr {
+      td {
+        &:last-child {
+          display: none;
+        }
+      }
+    }
+  }
 }
