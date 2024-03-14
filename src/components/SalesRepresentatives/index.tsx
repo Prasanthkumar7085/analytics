@@ -45,10 +45,7 @@ const SalesRepresentatives = () => {
   const getAllSalesReps = async (fromDate: any, toDate: any) => {
     setLoading(true);
     try {
-
-      let queryParams: any = {
-
-      };
+      let queryParams: any = {};
 
       if (fromDate) {
         queryParams["from_date"] = fromDate;
@@ -67,13 +64,27 @@ const SalesRepresentatives = () => {
         setCompleteData(response?.data);
         // onUpdateData({}, response?.data);
 
-        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
-        const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
+        const totalCases = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.total_cases,
+          0
+        );
+        const targeted_amount = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.expected_amount,
+          0
+        );
 
-        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
-        const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
-        const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
-
+        const billedAmoumnt = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.generated_amount,
+          0
+        );
+        const paidRevenueSum = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.paid_amount,
+          0
+        );
+        const pendingAmoumnt = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.pending_amount,
+          0
+        );
 
         const result = [
           "Total",
@@ -220,20 +231,17 @@ const SalesRepresentatives = () => {
     []
   );
 
-
-
   function formatNumber(amount: any) {
     if (amount >= 10000000) {
-      return (amount / 10000000).toFixed(2) + ' Cr';
+      return (amount / 10000000).toFixed(2) + " Cr";
     } else if (amount >= 100000) {
-      return (amount / 100000).toFixed(2) + ' L';
+      return (amount / 100000).toFixed(2) + " L";
     } else if (amount >= 1000) {
-      return (amount / 1000).toFixed(2) + ' K';
+      return (amount / 1000).toFixed(2) + " K";
     } else {
       return amount.toFixed(2);
     }
   }
-
 
   const onUpdateData = (
     {
@@ -246,7 +254,6 @@ const SalesRepresentatives = () => {
     testData?: any[]
   ) => {
     let queryParams: any = {};
-
 
     if (search) {
       queryParams["search"] = search;
@@ -269,14 +276,27 @@ const SalesRepresentatives = () => {
 
     setSalesReps(data);
 
+    const totalCases = data.reduce(
+      (sum: any, item: any) => sum + +item.total_cases,
+      0
+    );
+    const targeted_amount = data.reduce(
+      (sum: any, item: any) => sum + +item.expected_amount,
+      0
+    );
 
-    const totalCases = data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
-    const targeted_amount = data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
-
-    const billedAmoumnt = data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
-    const paidRevenueSum = data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
-    const pendingAmoumnt = data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
-
+    const billedAmoumnt = data.reduce(
+      (sum: any, item: any) => sum + +item.generated_amount,
+      0
+    );
+    const paidRevenueSum = data.reduce(
+      (sum: any, item: any) => sum + +item.paid_amount,
+      0
+    );
+    const pendingAmoumnt = data.reduce(
+      (sum: any, item: any) => sum + +item.pending_amount,
+      0
+    );
 
     const result = [
       "Total",
@@ -286,7 +306,6 @@ const SalesRepresentatives = () => {
       pendingAmoumnt,
     ];
 
-
     setTotalSumValues(result);
   };
 
@@ -295,15 +314,16 @@ const SalesRepresentatives = () => {
   }, []);
   return (
     <div className={styles.salesRepsContainer}>
-      <SalesRepsFilters onUpdateData={onUpdateData} getAllSalesReps={getAllSalesReps} />
-      <div id="customTable">
-        <MultipleColumnsTable
-          data={salesReps}
-          columns={columnDef}
-          loading={loading}
-          totalSumValues={totalSumValues}
-        />
-      </div>
+      <SalesRepsFilters
+        onUpdateData={onUpdateData}
+        getAllSalesReps={getAllSalesReps}
+      />
+      <MultipleColumnsTable
+        data={salesReps}
+        columns={columnDef}
+        loading={loading}
+        totalSumValues={totalSumValues}
+      />
       <LoadingComponent loading={loading} />
     </div>
   );

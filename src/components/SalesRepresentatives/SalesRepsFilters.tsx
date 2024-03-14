@@ -6,10 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-const SalesRepsFilters = ({
-  onUpdateData,
-  getAllSalesReps
-}: any) => {
+const SalesRepsFilters = ({ onUpdateData, getAllSalesReps }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -19,10 +16,9 @@ const SalesRepsFilters = ({
     setStatus(params.get("status") ? (params.get("status") as string) : "all");
   }, [params]);
 
-
   const onChangeData = (fromDate: any, toDate: any) => {
-    getAllSalesReps(fromDate, toDate)
-  }
+    getAllSalesReps(fromDate, toDate);
+  };
   return (
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
@@ -31,8 +27,8 @@ const SalesRepsFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-            <li className="eachFilterLists">
-              {/* <Select
+            {/* <li className="eachFilterLists">
+              <Select
                 onChange={(e: any) => {
                   setStatus(e.target.value);
                   onUpdateData({ status: e.target.value });
@@ -44,9 +40,8 @@ const SalesRepsFilters = ({
                 <MenuItem value={"all"}>All</MenuItem>
                 <MenuItem value={"yes"}>Yes</MenuItem>
                 <MenuItem value={"no"}>No</MenuItem>
-              </Select> */}
-
-            </li>
+              </Select>
+            </li> */}
             <li className="eachFilterLists">
               <GlobalDateRangeFilter onChangeData={onChangeData} />
             </li>

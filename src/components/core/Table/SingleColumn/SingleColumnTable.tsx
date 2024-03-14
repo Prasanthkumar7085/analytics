@@ -56,15 +56,7 @@ const SingleColumnTable: FC<pageProps> = ({
   };
 
   return (
-    <div
-      className="table customTableContainer tableContainer"
-      style={{
-        overflow: "auto",
-        width: "100%",
-        borderRadius: "10px",
-        padding: "1rem",
-      }}
-    >
+    <div className="tableContainer">
       <table className="table" style={{ borderSpacing: "0" }}>
         <thead
           className="thead"
@@ -206,11 +198,15 @@ const SingleColumnTable: FC<pageProps> = ({
             }}
           >
             {totalSumValues?.map((item: any, index: number) => {
-
-
-              return <td key={index}>
-                {item ? (index == 0 || index == 1 ? item : formatMoney(item)) : ""}
-              </td>;
+              return (
+                <td key={index}>
+                  {item
+                    ? index == 0 || index == 1
+                      ? item
+                      : formatMoney(item)
+                    : ""}
+                </td>
+              );
             })}
           </tr>
         </tfoot>
