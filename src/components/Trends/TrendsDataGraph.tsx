@@ -1,4 +1,4 @@
-import { } from "@/services/getRevenueAPIs";
+import {} from "@/services/getRevenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
@@ -53,9 +53,7 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
           text: graphType == "volume" ? "Total Volume" : "Total Revenue",
         },
         xAxis: {
-          categories: trendsData.map((item: any) =>
-            item?.month
-          ),
+          categories: trendsData?.map((item: any) => item?.month),
         },
         yAxis: {
           title: {
@@ -68,7 +66,10 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
               graphType == "volume"
                 ? "Total Volume Billed"
                 : "Total Revenue Billed",
-            data: graphType == "volume" ? trendsData.map((item: any) => +item.volume) : trendsData.map((item: any) => +item.revenue),
+            data:
+              graphType == "volume"
+                ? trendsData.map((item: any) => +item.volume)
+                : trendsData.map((item: any) => +item.revenue),
             animation: {
               opacity: 1, // Set opacity animation for smoother entrance
             },

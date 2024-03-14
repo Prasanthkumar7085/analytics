@@ -95,19 +95,21 @@ const SignIn: NextPage = () => {
   };
   return (
     <section id="loginPage" className="flex h-screen overflow-hidden">
-      <div className="hidden md:block w-1/2 bg-indigo-900 text-white flex items-center justify-center"></div>
+      <div className="hidden md:block w-1/2 bg-indigo-900 text-white flex items-center justify-center">
+        <div className="logo">
+          <Image
+            className="w-[250px]"
+            alt=""
+            src="/auth/login/logo.svg"
+            height={20}
+            width={20}
+          />
+        </div>
+      </div>
       <div className="w-full md:w-1/2 p-8 md:p-16 flex items-center justify-center">
         <div className="max-w-md w-full">
           <div className="mb-8">
-            <div className="flex items-center justify-center mb-10">
-              <Image
-                className="w-[250px]"
-                alt=""
-                src="/auth/login/logo.svg"
-                height={20}
-                width={20}
-              />
-            </div>
+            <div className="flex items-center justify-center mb-10"></div>
 
             <h1 className="text-3xl md:text-4xl font-bold text-center text-gray-900">
               Welcome back
