@@ -4,6 +4,7 @@ import NavBar from "@/components/NavBar";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
+import "./index.css";
 import "./globals.css";
 import "../scss/app.scss";
 
