@@ -47,16 +47,22 @@ const SalesRepresentatives = () => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
+      let searchValue = params.get("search");
+      if (searchValue) {
+        queryParams["search"] = searchValue;
+      }
+
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
 
-      const response = await salesRepsAPI(queryParams);
+      const { search, ...updatedQueyParams } = queryParams;
+      const response = await salesRepsAPI(updatedQueyParams);
 
       if (response.status == 200 || response.status == 201) {
         setSalesReps(response?.data);
         setCompleteData(response?.data);
-        // onUpdateData({}, response?.data);
+        onUpdateData({ queryData: queryParams }, response?.data);
 
         const totalCases = response?.data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
@@ -97,151 +103,167 @@ const SalesRepresentatives = () => {
       setLoading(false);
     }
   };
-  const columnDef = useMemo(
-    () => [
-      {
-        accessorFn: (row: any) => row.sales_rep_name,
-        id: "sales_rep_name",
-        header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>
-        ),
-        footer: (props: any) => props.column.id,
-        width: "220px",
-        maxWidth: "220px",
-        minWidth: "220px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
-        },
-      },
-      {
-        accessorFn: (row: any) => row.total_cases,
-        id: "total_cases",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
-        footer: (props: any) => props.column.id,
-        width: "200px",
-        maxWidth: "200px",
-        minWidth: "200px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
-        },
-      },
-      {
-        accessorFn: (row: any) => row._id,
-        header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
-        id: "revenue",
-        width: "800px",
-        columns: [
-          // {
-          //   accessorFn: (row: any) => row.expected_amount,
-          //   id: "expected_amount",
-          //   header: () => (
-          //     <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
-          //   ),
-          //   width: "200px",
-          //   maxWidth: "200px",
-          //   minWidth: "200px",
-          //   Cell: ({ getValue }: any) => {
-          //     return <span>{getValue()}</span>;
-          //   },
-          // },
-          {
-            accessorFn: (row: any) => row.generated_amount,
-            header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-            id: "generated_amount",
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            cell: ({ getValue }: any) => {
-              return <span>{formatMoney(getValue())}</span>;
-            },
-          },
-          {
-            accessorFn: (row: any) => row.paid_amount,
-            header: () => (
-              <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
-            ),
-            id: "paid_amount",
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            cell: (info: any) => {
-              return <span>{formatMoney(info.getValue())}</span>;
-            },
-          },
-          {
-            accessorFn: (row: any) => row.pending_amount,
-            header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
-            id: "pending_amount",
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            cell: (info: any) => {
-              return <span>{formatMoney(info.getValue())}</span>;
-            },
-          },
-        ],
-      },
-      // {
-      //   accessorFn: (row: any) => row.target_reached,
-      //   id: "target_reached",
-      //   header: () => (
-      //     <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
-      //   ),
-      //   footer: (props: any) => props.column.id,
-      //   width: "120px",
-      //   maxWidth: "120px",
-      //   minWidth: "120px",
-      //   cell: (info: any) => {
-      //     if (info.row.original.paid_amount == info.row.original.expected_amount) {
-      //       return <span>Yes</span>;
-      //     }
-      //     else return <span>No</span>;
-      //   },
-      // },
-      {
-        accessorFn: (row: any) => row?._id,
-        id: "actions",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
-        footer: (props: any) => props.column.id,
-        width: "120px",
-        maxWidth: "120px",
-        minWidth: "120px",
-        cell: (info: any) => {
-          return (
-            <Button
-              className="actionButton"
-              onClick={() => {
-                let queryString = prepareURLEncodedParams("", Object.fromEntries(new URLSearchParams(Array.from(params.entries()))));
-                router.push(
-                  `/sales-representatives/${info.row.original.sales_rep_id}${queryString}`
-                );
-              }}
-            >
-              view
-            </Button>
-          );
-        },
-      },
-    ],
-    [searchParams]
-  );
 
 
+  const goToSingleRepPage = (repId: string) => {
 
+    let queryString = '';
+    const queryParams: any = {}
+    if (params.get('from_date')) {
+      queryParams['from_date'] = params.get('from_date')
+    }
+    if (params.get('to_date')) {
+      queryParams['to_date'] = params.get('to_date')
+    }
+    if (Object.keys(queryParams)?.length) {
+      queryString = prepareURLEncodedParams('', queryParams)
+    }
+
+    router.push(
+      `/sales-representatives/${repId}${queryString}`
+    );
+
+  }
+  const columnDef = [
+    {
+      accessorFn: (row: any) => row.sales_rep_name,
+      id: "sales_rep_name",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.total_cases,
+      id: "total_cases",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row._id,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
+      id: "revenue",
+      width: "800px",
+      columns: [
+        // {
+        //   accessorFn: (row: any) => row.expected_amount,
+        //   id: "expected_amount",
+        //   header: () => (
+        //     <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
+        //   ),
+        //   width: "200px",
+        //   maxWidth: "200px",
+        //   minWidth: "200px",
+        //   Cell: ({ getValue }: any) => {
+        //     return <span>{getValue()}</span>;
+        //   },
+        // },
+        {
+          accessorFn: (row: any) => row.generated_amount,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
+          id: "generated_amount",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
+          },
+        },
+        {
+          accessorFn: (row: any) => row.paid_amount,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
+          id: "paid_amount",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: (info: any) => {
+            return <span>{formatMoney(info.getValue())}</span>;
+          },
+        },
+        {
+          accessorFn: (row: any) => row.pending_amount,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
+          id: "pending_amount",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: (info: any) => {
+            return <span>{formatMoney(info.getValue())}</span>;
+          },
+        },
+      ],
+    },
+    // {
+    //   accessorFn: (row: any) => row.target_reached,
+    //   id: "target_reached",
+    //   header: () => (
+    //     <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
+    //   ),
+    //   footer: (props: any) => props.column.id,
+    //   width: "120px",
+    //   maxWidth: "120px",
+    //   minWidth: "120px",
+    //   cell: (info: any) => {
+    //     if (info.row.original.paid_amount == info.row.original.expected_amount) {
+    //       return <span>Yes</span>;
+    //     }
+    //     else return <span>No</span>;
+    //   },
+    // },
+    {
+      accessorFn: (row: any) => row?._id,
+      id: "actions",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
+      footer: (props: any) => props.column.id,
+      width: "120px",
+      maxWidth: "120px",
+      minWidth: "120px",
+      cell: (info: any) => {
+        return (
+          <Button
+            className="actionButton"
+            onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
+          >
+            view
+          </Button>
+        );
+      },
+    },
+  ];
   const onUpdateData = (
     {
-      status = params.get("status") as string,
       search = params.get("search") as string,
+      queryData,
     }: Partial<{
-      status: string;
       search: string;
+      queryData?: any;
     }>,
     testData?: any[]
   ) => {
     let queryParams: any = {};
 
-    if (search) {
-      queryParams["search"] = search;
+    if (queryData) {
+      queryParams = { ...queryData };
+    } else {
+      if (search) {
+        queryParams["search"] = search;
+      }
+      if (params.get("from_date")) {
+        queryParams["from_date"] = params.get("from_date");
+      }
+      if (params.get("to_date")) {
+        queryParams["to_date"] = params.get("to_date");
+      }
     }
 
     let data: any = [...completeData];
@@ -258,6 +280,7 @@ const SalesRepresentatives = () => {
           ?.includes(search?.toLowerCase()?.trim())
       );
     }
+    router.push(`${prepareURLEncodedParams(pathname, queryParams)}`);
 
     setSalesReps(data);
 
