@@ -48,6 +48,13 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
 
   const chartRef = useRef(null);
 
+  function formatMonthYear(monthYear: string) {
+    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
+    let year = monthYear.substring(monthYear.length - 4); // Extract the last 4 characters (year)
+    return month + year; // Concatenate month abbreviation and year
+  }
+
+
   useEffect(() => {
     if (chartRef && chartRef.current && trendsData?.length) {
       // Custom entrance animation for the chart
@@ -63,7 +70,7 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
           text: graphType == "volume" ? "Total Volume" : "Total Revenue",
         },
         xAxis: {
-          categories: trendsData?.map((item: any) => item?.month),
+          categories: trendsData?.map((item: any) => formatMonthYear(item?.month)),
         },
         yAxis: {
           title: {

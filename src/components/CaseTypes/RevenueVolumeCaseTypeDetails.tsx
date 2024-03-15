@@ -10,7 +10,7 @@ import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
 import AreaGraph from "../core/AreaGraph";
 
-const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) => {
+const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selectedDate }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
@@ -169,12 +169,17 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
   };
 
 
+  function formatMonthYear(monthYear: string) {
+    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
+    let year = monthYear.substring(monthYear.length - 4); // Extract the last 4 characters (year)
+    return month + year; // Concatenate month abbreviation and year
+  }
 
   let addtionalcolumns = headerMonths?.map((item: any) => ({
     accessorFn: (row: any) => row[item],
     id: item,
     header: () => (
-      <span style={{ whiteSpace: "nowrap" }}>{item}</span>
+      <span style={{ whiteSpace: "nowrap" }}>{formatMonthYear(item)}</span>
     ),
     footer: (props: any) => props.column.id,
     width: "80px",
@@ -238,13 +243,25 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
   const addAddtionalColoumns = [...columnDef, ...addtionalcolumns, ...graphColoumn]
   //api call to get details of case types
   useEffect(() => {
-    if (tabValue == "Revenue") {
+    if (tabValue == "Revenue" && selectedDate?.length == 0) {
       getDetailsOfCaseTypesOfRevenue(searchParams?.from_date, searchParams?.to_date)
     }
     else {
       getDetailsOfCaseTypesOfVolume(searchParams?.from_date, searchParams?.to_date)
     }
   }, [tabValue, searchParams]);
+
+
+  useEffect(() => {
+    if (tabValue == "Revenue") {
+      getDetailsOfCaseTypesOfRevenue(selectedDate[0], selectedDate[1])
+    }
+    else {
+      getDetailsOfCaseTypesOfVolume(selectedDate[0], selectedDate[1])
+    }
+  }, [tabValue, selectedDate])
+
+
 
   return (
     <div style={{ position: "relative" }}>

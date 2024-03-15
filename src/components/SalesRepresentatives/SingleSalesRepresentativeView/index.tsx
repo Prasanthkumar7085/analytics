@@ -158,7 +158,7 @@ const SalesRepView = () => {
     } else {
       router.back();
     }
-  }, []);
+  }, [searchParams]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
