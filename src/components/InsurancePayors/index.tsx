@@ -75,7 +75,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       {
         accessorFn: (row: any) => row.generated_amount,
         id: "generated_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
         footer: (props: any) => props.column.id,
         width: "70px",
         maxWidth: "100px",
@@ -87,7 +87,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       {
         accessorFn: (row: any) => row.paid_amount,
         id: "paid_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>PAID</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
         footer: (props: any) => props.column.id,
         width: "70px",
         maxWidth: "100px",
@@ -99,7 +99,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       {
         accessorFn: (row: any) => row.pending_amount,
         id: "pending_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>PENDING</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
         footer: (props: any) => props.column.id,
         width: "70px",
         maxWidth: "100px",
@@ -108,29 +108,29 @@ const InsurancePayors = ({ searchParams }: any) => {
           return <span>{formatMoney(getValue())}</span>;
         },
       },
-      {
-        accessorFn: (row: any) => row,
-        id: "graph",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
-        footer: (props: any) => props.column.id,
-        width: "100px",
-        maxWidth: "100px",
-        minWidth: "100px",
-        cell: (info: any) => {
+      // {
+      //   accessorFn: (row: any) => row,
+      //   id: "graph",
+      //   header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
+      //   footer: (props: any) => props.column.id,
+      //   width: "100px",
+      //   maxWidth: "100px",
+      //   minWidth: "100px",
+      //   cell: (info: any) => {
 
-          const dataPoints = Object.entries(info.row.original)
-            .filter(([key]) => key !== 'caseType')
-            .map(([month, value]) => [month, value]);
-          return (
-            <div onClick={() => {
-              // setGraphDialogOpen(true);
-              // setSelectedGraphData(info.row.original);
-            }}>
-              <AreaGraph getValue={info.getValue} />
-            </div>
-          )
-        },
-      },
+      //     const dataPoints = Object.entries(info.row.original)
+      //       .filter(([key]) => key !== 'caseType')
+      //       .map(([month, value]) => [month, value]);
+      //     return (
+      //       <div onClick={() => {
+      //         // setGraphDialogOpen(true);
+      //         // setSelectedGraphData(info.row.original);
+      //       }}>
+      //         <AreaGraph getValue={info.getValue} />
+      //       </div>
+      //     )
+      //   },
+      // },
     ],
     []
   );

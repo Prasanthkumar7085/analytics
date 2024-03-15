@@ -27,6 +27,7 @@
     "next": "14.1.2",
     "next-redux-wrapper": "^8.1.0",
     "node": "^21.7.1",
+    "pnpm": "^8.15.4",
     "postcss": "^8.4.35",
     "react": "^18",
     "react-chartjs-2": "^5.2.0",
