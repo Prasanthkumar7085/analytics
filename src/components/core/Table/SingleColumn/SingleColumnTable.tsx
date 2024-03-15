@@ -181,8 +181,7 @@ const SingleColumnTable: FC<pageProps> = ({
                     height: "40vh",
                   }}
                 >
-                  {/* <Image src="/" alt="" height={150} width={800} /> */}
-                  No Data
+                  <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
                 </div>
               </td>
             </tr>

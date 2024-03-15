@@ -192,16 +192,14 @@ const CaseTypes = ({
             </div>
 
 
-            {caseTypesStatsData?.length ? (
-              <TanStackTableComponent
-                data={caseTypesStatsData}
-                columns={columns}
-                totalSumValues={totalRevenueSum}
-                loading={false}
-              />
-            ) : (
-              ""
-            )}
+
+            <TanStackTableComponent
+              data={caseTypesStatsData}
+              columns={columns}
+              totalSumValues={totalRevenueSum}
+              loading={false}
+            />
+
 
             {loading ? (
               <Backdrop
