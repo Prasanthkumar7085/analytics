@@ -38,15 +38,11 @@ const NavBar: FC<pageProps> = ({ children }) => {
               />
             </Grid>
             <Grid item xs={9}>
-              <ul className={styles.navigationLinks}>
+              <ul className="flex items-center justify-end space-x-7">
                 <li>
                   <Link
                     href={"/dashboard"}
-                    className={
-                      styles[
-                        pathname == "/dashboard" ? "activePagename" : "pagename"
-                      ]
-                    }
+                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
                   >
                     Overview
                   </Link>
@@ -54,60 +50,41 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/sales-representatives"}
-                    className={
-                      styles[
-                        pathname == "/sales-representatives"
-                          ? "activePagename"
-                          : "pagename"
-                      ]
-                    }
+                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
                   >
                     Sales Representatives
                   </Link>
                 </li>
                 <li>
-                  <a className={styles.pagename}>Insurances</a>
+                  <a className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md">
+                    Insurances
+                  </a>
                 </li>
-                <li className={styles.container1}>
+                <li>
                   <Link
                     href={"/facilities"}
-                    className={
-                      styles[
-                        pathname == "/facilities"
-                          ? "activePagename"
-                          : "pagename"
-                      ]
-                    }
+                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
                   >
                     Facilities
                   </Link>
                 </li>
-                <li className={styles.container1}>
+                <li>
                   <Link
                     href={"/case-types"}
-                    className={
-                      styles[
-                        pathname == "/case-types"
-                          ? "activePagename"
-                          : "pagename"
-                      ]
-                    }
+                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
                   >
                     Case Types
                   </Link>
                 </li>
-                <li className={styles.container1}>
-                  <a className={styles.pagename}>Reports</a>
+                <li>
+                  <a className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md">
+                    Reports
+                  </a>
                 </li>
-                <li className={styles.container1}>
+                <li>
                   <Button
                     onClick={logout}
-                    sx={{
-                      fontSize: "clamp(13px, 0.67vw, 20px)",
-                      fontFamily: "'Poppins', sans-serif",
-                      color: "#fff",
-                      fontWeight: "300",
-                    }}
+                    className="p-0 text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
                   >
                     Logout
                   </Button>
