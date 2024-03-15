@@ -32,7 +32,7 @@ const FacilitiesView = () => {
 
       const responses = await Promise.allSettled(
         urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, '');
+          const response = await getStatsDetailsAPI(url, "");
           return response;
         })
       );
@@ -56,7 +56,7 @@ const FacilitiesView = () => {
   const getCaseTypesStats = async () => {
     setLoading(true);
     try {
-      const response = await getSingleRepCaseTypes(id as string, '');
+      const response = await getSingleRepCaseTypes(id as string, "");
       if (response.status == 200 || response?.status == 201) {
         let mappedData = response?.data
           ?.map((item: any) => {

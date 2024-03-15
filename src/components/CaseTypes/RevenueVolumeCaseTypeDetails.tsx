@@ -18,7 +18,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
   const [headerMonths, setHeaderMonths] = useState<any>([])
-
+  const [graphValuesData, setGraphValuesData] = useState<any>({})
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -185,15 +185,18 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
     width: "100px",
 
     cell: (info: any) => {
-
+      let data = { ...info.row.original }
+      delete data?.case_type_id;
+      delete data?.case_type_name;
       return (
         <div
           onClick={() => {
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
+            setGraphValuesData(data)
           }}
         >
-          <AreaGraph graphData={info.row.original} />
+          <AreaGraph data={data} />
         </div>
       );
     },
@@ -268,6 +271,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
+        graphValuesData={graphValuesData}
 
       />
     </div>

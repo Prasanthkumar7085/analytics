@@ -3,7 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CloseIcon from '@mui/icons-material/Close';
 
-const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, dataPoints }: any) => {
+const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, graphValuesData }: any) => {
 
 
 
@@ -11,14 +11,16 @@ const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, dataPoint
     const options = {
 
         title: {
-            text: graphData?.caseType,
+            text: graphData?.case_type_name,
             align: 'left'
         },
 
         xAxis: {
             title: {
                 text: 'Months'
-            }
+            },
+            categories: Object.keys(graphValuesData).map((item: any) => item),
+
         },
         yAxis: {
             title: {
@@ -29,8 +31,8 @@ const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, dataPoint
             enabled: false
         },
         series: [{
-            name: graphData.caseType,
-            data: dataPoints,
+            name: graphData.case_type_name,
+            data: Object.values(graphValuesData).map((item: any) => +item),
             type: 'area'
         }]
     };
@@ -55,7 +57,7 @@ const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, dataPoint
                 },
             }}
         >
-            <div >
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "flex-end" }}>
                 <IconButton onClick={() => {
                     setGraphDialogOpen(false)
 

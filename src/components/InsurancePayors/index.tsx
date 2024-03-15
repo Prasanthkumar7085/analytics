@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
-import AreaGraph from "../core/AreaGraph";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 const InsurancePayors = ({ searchParams }: any) => {
@@ -44,7 +43,7 @@ const InsurancePayors = ({ searchParams }: any) => {
           totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = ["Total", totalAmount, totalPaid, totalPending, null];
+        const result = ["Total", totalAmount, totalPaid, totalPending];
 
         setTortalInsurancePayors(result);
       }
@@ -147,12 +146,12 @@ const InsurancePayors = ({ searchParams }: any) => {
         totalSumValues={totalInsurancePayors}
         loading={false}
       />
-      <GraphDialog
+      {/* <GraphDialog
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
 
-      />
+      /> */}
 
 
       {loading ? (
