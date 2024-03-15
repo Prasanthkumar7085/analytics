@@ -26,23 +26,17 @@ const SalesRepresentatives = () => {
   const pathname = usePathname();
   const params = useSearchParams();
   const marketers = useSelector((state: any) => state?.users.marketers);
-
+  const [searchParams, setSearchParams] = useState(
+    Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+  );
   const [loading, setLoading] = useState(false);
   const [totalSumValues, setTotalSumValues] = useState<(string | number)[]>([]);
 
   const [salesReps, setSalesReps] = useState([]);
   const [completeData, setCompleteData] = useState([]);
-  const getUsersFromLabsquire = async () => {
-    try {
-      const userData = await getAllUsersAPI();
-      if (userData?.status == 201 || userData?.status == 200) {
-        dispatch(setAllMarketers(userData?.data));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const getAllSalesReps = async (fromDate: any, toDate: any) => {
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
+
+  const getAllSalesReps = async ({ fromDate, toDate }: any) => {
     setLoading(true);
     try {
       let queryParams: any = {};
@@ -217,8 +211,9 @@ const SalesRepresentatives = () => {
             <Button
               className="actionButton"
               onClick={() => {
+                let queryString = prepareURLEncodedParams("", Object.fromEntries(new URLSearchParams(Array.from(params.entries()))));
                 router.push(
-                  `/sales-representatives/${info.row.original.sales_rep_id}`
+                  `/sales-representatives/${info.row.original.sales_rep_id}${queryString}`
                 );
               }}
             >
@@ -231,17 +226,7 @@ const SalesRepresentatives = () => {
     []
   );
 
-  function formatNumber(amount: any) {
-    if (amount >= 10000000) {
-      return (amount / 10000000).toFixed(2) + " Cr";
-    } else if (amount >= 100000) {
-      return (amount / 100000).toFixed(2) + " L";
-    } else if (amount >= 1000) {
-      return (amount / 1000).toFixed(2) + " K";
-    } else {
-      return amount.toFixed(2);
-    }
-  }
+
 
   const onUpdateData = (
     {
@@ -310,13 +295,26 @@ const SalesRepresentatives = () => {
   };
 
   useEffect(() => {
-    getAllSalesReps("", "");
+    getAllSalesReps({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date });
+    if (searchParams?.from_date) {
+      setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+    }
   }, []);
+
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
+
   return (
     <div className={styles.salesRepsContainer}>
       <SalesRepsFilters
         onUpdateData={onUpdateData}
         getAllSalesReps={getAllSalesReps}
+        dateFilterDefaultValue={dateFilterDefaultValue}
+        setDateFilterDefaultValue={setDateFilterDefaultValue}
       />
       <MultipleColumnsTable
         data={salesReps}

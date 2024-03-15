@@ -5,7 +5,7 @@ import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   getSingleRepCaseTypes,
   getSingleRepDeatilsAPI,
@@ -25,29 +25,51 @@ import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
+  const pathName = usePathname();
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [salesRepDetails, setSalesRepDetails] = useState<any>();
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
+  const params = useSearchParams();
+  const [searchParams, setSearchParams] = useState(
+    Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+  );
+  const [caseTypeLoading, setCaseTypeLoading] = useState(true)
 
   //get the stats counts
-  const getStatsCounts = async () => {
+  const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
     let urls = [
       `/sales-reps/${id}/stats-revenue`,
       `/sales-reps/${id}/stats-volume`,
     ];
     try {
+
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      let queryString = prepareURLEncodedParams("", queryParams);
+
+      router.push(`${pathName}${queryString}`);
+
       let tempResult: any = [];
 
       const responses = await Promise.allSettled(
         urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url);
+          const response = await getStatsDetailsAPI(url, queryParams);
           return response;
         })
       );
@@ -68,10 +90,19 @@ const SalesRepView = () => {
   };
 
   //get the caseTypes data
-  const getCaseTypesStats = async () => {
-    setLoading(true);
+  const getCaseTypesStats = async (fromDate: any, toDate: any) => {
+    setCaseTypeLoading(true);
     try {
-      const response = await getSingleRepCaseTypes(id as string);
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      const response = await getSingleRepCaseTypes(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         setCaseTypesStatsData(response?.data);
 
@@ -89,7 +120,7 @@ const SalesRepView = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setCaseTypeLoading(false);
     }
   };
 
@@ -108,16 +139,41 @@ const SalesRepView = () => {
     }
   };
 
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
+
   //api call to get stats count
   useEffect(() => {
     if (id) {
-      getStatsCounts();
-      getCaseTypesStats();
+      getStatsCounts(searchParams?.from_date, searchParams?.to_date);
+      getCaseTypesStats(searchParams?.from_date, searchParams?.to_date);
       getSignleSalesRepDetails();
+      if (searchParams?.from_date) {
+        setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+      }
     } else {
       router.back();
     }
   }, []);
+
+  const onChangeData = (fromDate: any, toDate: any) => {
+    if (fromDate) {
+      getStatsCounts(fromDate, toDate);
+      getCaseTypesStats(fromDate, toDate);
+
+      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
+    }
+    else {
+      setDateFilterDefaultValue("")
+      getStatsCounts("", "");
+      getCaseTypesStats("", "");
+      router.push(`/sales-representatives/${id}`)
+    }
+  };
 
   return (
     <div>
@@ -134,7 +190,7 @@ const SalesRepView = () => {
             <p className="pl-3">{salesRepDetails?.[0]?.sales_rep}</p>
           </div>
           <div style={{ marginLeft: "70%" }}>
-            <GlobalDateRangeFilter onChangeData={() => { }} />
+            <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
           </div>
         </div>
         <div className="personData">
@@ -150,7 +206,7 @@ const SalesRepView = () => {
             <Grid item xs={8}>
               <CaseTypes
                 caseTypesStatsData={caseTypesStatsData}
-                loading={loading}
+                loading={caseTypeLoading}
                 totalRevenueSum={totalRevenueSum}
               />
             </Grid>
@@ -172,7 +228,7 @@ const SalesRepView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors />
+                  <InsurancePayors searchParams={searchParams} />
                 </div>
               </div>
             </Grid>
@@ -193,7 +249,7 @@ const SalesRepView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <Facilities />
+                  <Facilities searchParams={searchParams} />
                 </div>
               </div>
             </Grid>

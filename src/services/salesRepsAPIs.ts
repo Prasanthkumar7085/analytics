@@ -13,9 +13,9 @@ export const salesRepsAPI = async (params: any) => {
   }
 };
 
-export const getSingleRepCaseTypes = async (salerep_id: string) => {
+export const getSingleRepCaseTypes = async (salerep_id: string, queryParams: any) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}/case-types`);
+    const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}/case-types`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -75,9 +75,9 @@ export const getTrendsForVolumeBySalesRepIdAPI = async ({
   }
 };
 
-export const getFacilitiesBySalesRepId = async ({ id }: { id: string }) => {
+export const getFacilitiesBySalesRepId = async ({ id, queryParams }: { id: string, queryParams: any }) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/facilities`);
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/facilities`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -90,11 +90,13 @@ export const getFacilitiesBySalesRepId = async ({ id }: { id: string }) => {
 
 export const getAllInsurancePayorsBySalesRepIdAPI = async ({
   id,
+  queryParams
 }: {
   id: string;
+  queryParams: any;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/insurance-payors`);
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/insurance-payors`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

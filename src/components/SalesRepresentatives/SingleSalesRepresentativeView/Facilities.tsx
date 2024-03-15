@@ -5,11 +5,12 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { mapFacilityNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { getAllFacilitiesAPI } from "@/services/authAPIs";
 import { getFacilitiesBySalesRepId } from "@/services/salesRepsAPIs";
+import { Backdrop, CircularProgress } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const Facilities = () => {
+const Facilities = ({ searchParams }: any) => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
@@ -18,21 +19,22 @@ const Facilities = () => {
   const [totalSumFacilityValues, setTotalSumFacilityValues] = useState<
     (string | number)[]
   >([]);
+  const [loading, setLoading] = useState(true)
 
-  const getFacilitiesFromLabsquire = async () => {
+
+  const getSalesRepFacilities = async (fromDate: any, toDate: any) => {
     try {
-      const facilitiesData = await getAllFacilitiesAPI();
-      if (facilitiesData?.status == 201 || facilitiesData?.status == 200) {
-        dispatch(setAllFacilities(facilitiesData?.data));
-        getSalesRepFacilities();
+      setLoading(true)
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
       }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const getSalesRepFacilities = async () => {
-    try {
-      const response = await getFacilitiesBySalesRepId({ id: id as string });
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      const response = await getFacilitiesBySalesRepId({ id: id as string, queryParams });
       if (response?.status == 200 || response.status == 201) {
         let totalCases = 0;
         let totalAmount = 0;
@@ -62,6 +64,9 @@ const Facilities = () => {
       }
     } catch (err) {
       console.error(err);
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -140,19 +145,39 @@ const Facilities = () => {
     []
   );
   useEffect(() => {
-    if (!facilities?.length) {
-      getFacilitiesFromLabsquire();
-    }
-    getSalesRepFacilities();
-  }, []);
+    getSalesRepFacilities(searchParams?.from_date, searchParams?.to_date);
+  }, [searchParams]);
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <MultipleColumnsTable
         data={facilitiesData}
         columns={columnDef}
         loading={false}
         totalSumValues={totalSumFacilityValues}
       />
+
+      {loading ? (
+        <Backdrop
+          open={true}
+          style={{
+            zIndex: 999,
+            color: "red",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(256,256,256,0.8)",
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

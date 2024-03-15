@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-const SalesRepsFilters = ({ onUpdateData, getAllSalesReps }: any) => {
+const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -17,7 +17,15 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps }: any) => {
   }, [params]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
-    getAllSalesReps(fromDate, toDate);
+    if (fromDate) {
+      getAllSalesReps({ fromDate, toDate });
+      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
+    }
+    else {
+      setDateFilterDefaultValue("", "")
+      getAllSalesReps({});
+
+    }
   };
   return (
     <div className="tableFiltersContainer">
@@ -43,7 +51,7 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps }: any) => {
               </Select>
             </li> */}
             <li className="eachFilterLists">
-              <GlobalDateRangeFilter onChangeData={onChangeData} />
+              <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
             </li>
             <li className="eachFilterLists">
               <TextField

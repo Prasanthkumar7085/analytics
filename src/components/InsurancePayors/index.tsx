@@ -6,18 +6,30 @@ import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
 import AreaGraph from "../core/AreaGraph";
+import { Backdrop, CircularProgress } from "@mui/material";
 
-const InsurancePayors = () => {
+const InsurancePayors = ({ searchParams }: any) => {
   const { id } = useParams();
   const [insuranceData, setInsuranceData] = useState([]);
   const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
-
-  const getAllInsrancePayors = async () => {
+  const [loading, setLoading] = useState(true)
+  const getAllInsrancePayors = async (fromDate: any, toDate: any) => {
+    setLoading(true)
     try {
+
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
       const response = await getAllInsurancePayorsBySalesRepIdAPI({
-        id: id as string,
+        id: id as string, queryParams
       });
       if (response?.status == 200 || response?.status == 201) {
         setInsuranceData(response?.data);
@@ -38,6 +50,9 @@ const InsurancePayors = () => {
       }
     } catch (err) {
       console.error(err);
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -121,10 +136,11 @@ const InsurancePayors = () => {
   );
 
   useEffect(() => {
-    getAllInsrancePayors();
-  }, []);
+    getAllInsrancePayors(searchParams?.from_date, searchParams?.to_date);
+  }, [searchParams]);
+
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <SingleColumnTable
         data={insuranceData}
         columns={columns}
@@ -137,6 +153,30 @@ const InsurancePayors = () => {
         graphData={selectedGrpahData}
 
       />
+
+
+      {loading ? (
+        <Backdrop
+          open={true}
+          style={{
+            zIndex: 999,
+            color: "red",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            background: "rgba(256,256,256,0.8)",
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
