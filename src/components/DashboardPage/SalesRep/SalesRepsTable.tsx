@@ -11,60 +11,8 @@ import styles from "./sales-rep.module.css";
 import { IconButton } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/navigation";
-const SalesRepsTable = () => {
-  const dispatch = useDispatch();
+const SalesRepsTable = ({ salesReps, totalRevenueSum }: any) => {
   const router = useRouter();
-  const marketers = useSelector((state: any) => state?.users.marketers);
-
-  const [salesReps, setSalesReps] = useState([]);
-  const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
-
-  const getUsersFromLabsquire = async () => {
-    try {
-      const userData = await getAllUsersAPI();
-      if (userData?.status == 201 || userData?.status == 200) {
-        dispatch(setAllMarketers(userData?.data));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-
-  const getAllSalesReps = async ({ }) => {
-    try {
-      const response = await salesRepsAPI({});
-
-      if (response.status == 200 || response.status == 201) {
-        setSalesReps(response?.data);
-
-
-        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
-        const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
-
-        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
-        const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
-        const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
-
-
-        const result = [
-          "Total",
-          totalCases,
-          targeted_amount,
-          billedAmoumnt,
-          paidRevenueSum,
-          pendingAmoumnt,
-        ];
-
-
-        setTotalSumValues(result);
-      } else {
-        throw response;
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const columnDef = useMemo(
     () => [
@@ -180,12 +128,7 @@ const SalesRepsTable = () => {
     ],
     []
   );
-  useEffect(() => {
-    if (!marketers?.length) {
-      getUsersFromLabsquire();
-    }
-    getAllSalesReps({});
-  }, []);
+
   return (
     <div
       style={{ height: "386px", width: "100%", overflow: "auto" }}

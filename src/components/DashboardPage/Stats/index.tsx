@@ -10,9 +10,15 @@ const Stats = ({
   volumeStatsDetails,
   loading,
   onChange,
+  getStatsCounts
 }: any) => {
 
   const pathName = usePathname();
+
+  const onChangeData = (fromDate: any, toDate: any) => {
+    getStatsCounts(fromDate, toDate);
+  };
+
   return (
     <>
       <div className="eachDataCard" id="StatsData">
@@ -22,7 +28,7 @@ const Stats = ({
             Stats
           </h3>
           {pathName?.includes("dashboard") ?
-            <GlobalDateRangeFilter onChangeData={() => { }} /> : ""}
+            <GlobalDateRangeFilter onChangeData={onChangeData} DatePickerplacement={"bottomStart"} /> : ""}
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>

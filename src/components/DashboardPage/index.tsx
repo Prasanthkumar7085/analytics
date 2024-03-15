@@ -15,16 +15,28 @@ const DashboardPage = () => {
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
+  const [caseTypeLoading, setCaseTypeLoading] = useState(true)
   //get the stats counts
-  const getStatsCounts = async () => {
+  const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
     let urls = ["/overview/stats-revenue", "/overview/stats-volume"];
+
+
+    let queryParams: any = {};
+
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+
     try {
       let tempResult: any = [];
 
       const responses = await Promise.allSettled(
         urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url);
+          const response = await getStatsDetailsAPI(url, queryParams);
           return response;
         })
       );
@@ -45,10 +57,19 @@ const DashboardPage = () => {
   };
 
   //get the caseTypes data
-  const getCaseTypesStats = async () => {
-    setLoading(true);
+  const getCaseTypesStats = async (fromDate: any, toDate: any) => {
+    setCaseTypeLoading(true);
     try {
-      const response = await getCaseTypesStatsAPI();
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      const response = await getCaseTypesStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -74,14 +95,14 @@ const DashboardPage = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setCaseTypeLoading(false);
     }
   };
 
   //api call to get stats count
   useEffect(() => {
-    getStatsCounts();
-    getCaseTypesStats();
+    getStatsCounts("", "");
+    getCaseTypesStats("", "");
   }, []);
 
   return (
@@ -92,13 +113,14 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => {}}
+            onChange={() => { }}
+            getStatsCounts={getStatsCounts}
           />
         </Grid>
         <Grid item xs={8}>
           <CaseType
             caseTypesStatsData={caseTypesStatsData}
-            loading={loading}
+            loading={caseTypeLoading}
             getCaseTypesStats={getCaseTypesStats}
             totalRevenueSum={totalRevenueSum}
           />

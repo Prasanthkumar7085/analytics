@@ -13,26 +13,26 @@ export const getAllCaseTypesAPI = async () => {
     console.error(err);
   }
 };
-export const getCaseTypesStatsAPI = async () => {
-    try {
-        const { data, success } = await $fetch.get("/overview/case-types");
-        if (!success) {
-            return handleAPIErrorResponse(data);
-        }
-        return data;
-    } catch (err) {
-        throw err;
+export const getCaseTypesStatsAPI = async (params: any) => {
+  try {
+    const { data, success } = await $fetch.get("/overview/case-types", params);
+    if (!success) {
+      return handleAPIErrorResponse(data);
     }
+    return data;
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const getRevenueOrVolumeCaseDetailsAPI = async (url: string) => {
-    try {
-        const { data, success } = await $fetch.get(url);
-        if (!success) {
-            return handleAPIErrorResponse(data);
-        }
-        return data;
-    } catch (err) {
-        throw err;
+  try {
+    const { data, success } = await $fetch.get(url);
+    if (!success) {
+      return handleAPIErrorResponse(data);
     }
+    return data;
+  } catch (err) {
+    throw err;
+  }
 };
