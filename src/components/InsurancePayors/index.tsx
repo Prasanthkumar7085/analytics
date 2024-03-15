@@ -107,7 +107,29 @@ const InsurancePayors = ({ searchParams }: any) => {
           return <span>{formatMoney(getValue())}</span>;
         },
       },
+      // {
+      //   accessorFn: (row: any) => row,
+      //   id: "graph",
+      //   header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
+      //   footer: (props: any) => props.column.id,
+      //   width: "100px",
+      //   maxWidth: "100px",
+      //   minWidth: "100px",
+      //   cell: (info: any) => {
 
+      //     const dataPoints = Object.entries(info.row.original)
+      //       .filter(([key]) => key !== 'caseType')
+      //       .map(([month, value]) => [month, value]);
+      //     return (
+      //       <div onClick={() => {
+      //         // setGraphDialogOpen(true);
+      //         // setSelectedGraphData(info.row.original);
+      //       }}>
+      //         <AreaGraph getValue={info.getValue} />
+      //       </div>
+      //     )
+      //   },
+      // },
     ],
     []
   );
