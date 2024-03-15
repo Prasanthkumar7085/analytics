@@ -41,12 +41,14 @@ export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
 
 export const getTrendsForRevenueBySalesRepIdAPI = async ({
   id,
+  queryParams
 }: {
   id: string;
+  queryParams: any
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/sales-reps/${id}/trends/revenue`
+      `/sales-reps/${id}/trends/revenue`, queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -59,12 +61,14 @@ export const getTrendsForRevenueBySalesRepIdAPI = async ({
 
 export const getTrendsForVolumeBySalesRepIdAPI = async ({
   id,
+  queryParams
 }: {
   id: string;
+  queryParams: any
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/sales-reps/${id}/trends/volume`
+      `/sales-reps/${id}/trends/volume`, queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);

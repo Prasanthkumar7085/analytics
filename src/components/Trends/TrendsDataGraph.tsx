@@ -1,4 +1,4 @@
-import {} from "@/services/getRevenueAPIs";
+import { } from "@/services/getRevenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
@@ -8,23 +8,33 @@ import Highcharts from "highcharts";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
+const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searchParams: any }) => {
   const [trendsData, setTrendsData] = useState<any>([]);
 
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
-  const getSalesRepRevenue = async () => {
+  const getSalesRepRevenue = async (fromDate: any, toDate: any) => {
     setLoading(true);
     try {
+
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
       let response;
       if (graphType == "revenue") {
         response = await getTrendsForRevenueBySalesRepIdAPI({
-          id: id as string,
+          id: id as string, queryParams
         });
       } else if (graphType == "volume") {
         response = await getTrendsForVolumeBySalesRepIdAPI({
-          id: id as string,
+          id: id as string, queryParams
         });
       }
 
@@ -81,8 +91,8 @@ const TrendsDataGraph = ({ graphType }: { graphType: string }) => {
 
   useEffect(() => {
     // setTrendsData({});
-    getSalesRepRevenue();
-  }, [graphType]);
+    getSalesRepRevenue(searchParams?.from_date, searchParams?.to_date);
+  }, [graphType, searchParams]);
 
   return (
     <div style={{ position: "relative" }}>

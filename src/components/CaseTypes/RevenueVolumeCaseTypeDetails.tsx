@@ -10,7 +10,7 @@ import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
 import AreaGraph from "../core/AreaGraph";
 
-const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
+const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
@@ -34,12 +34,22 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
 
   const tableRef: any = useRef();
   //get details Volume of caseTypes
-  const getDetailsOfCaseTypesOfVolume = async () => {
+  const getDetailsOfCaseTypesOfVolume = async (fromDate: any, toDate: any) => {
     setLoading(true);
     let url = `/${apiUrl}/${id}/case-types/volume`;
 
     try {
-      const response = await getRevenueOrVolumeCaseDetailsAPI(url);
+
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      const response = await getRevenueOrVolumeCaseDetailsAPI(url, queryParams);
       if (response.status == 200 || response.status == 201) {
         let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
         let uniqueMonths = Array.from(new Set(monthArray));
@@ -85,12 +95,22 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   };
 
   //get details Revenue of caseTypes
-  const getDetailsOfCaseTypesOfRevenue = async () => {
+  const getDetailsOfCaseTypesOfRevenue = async (fromDate: any, toDate: any) => {
     setLoading(true);
     let url = `/${apiUrl}/${id}/case-types/revenue`;
 
     try {
-      const response = await getRevenueOrVolumeCaseDetailsAPI(url);
+
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      const response = await getRevenueOrVolumeCaseDetailsAPI(url, queryParams);
       if (response.status == 200 || response.status == 201) {
         const monthSums: number[] = [];
         let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
@@ -204,12 +224,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   //api call to get details of case types
   useEffect(() => {
     if (tabValue == "Revenue") {
-      getDetailsOfCaseTypesOfRevenue()
+      getDetailsOfCaseTypesOfRevenue(searchParams?.from_date, searchParams?.to_date)
     }
     else {
-      getDetailsOfCaseTypesOfVolume()
+      getDetailsOfCaseTypesOfVolume(searchParams?.from_date, searchParams?.to_date)
     }
-  }, [tabValue]);
+  }, [tabValue, searchParams]);
 
   return (
     <div style={{ position: "relative" }}>

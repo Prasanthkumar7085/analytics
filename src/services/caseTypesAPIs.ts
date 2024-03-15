@@ -25,9 +25,9 @@ export const getCaseTypesStatsAPI = async (params: any) => {
   }
 };
 
-export const getRevenueOrVolumeCaseDetailsAPI = async (url: string) => {
+export const getRevenueOrVolumeCaseDetailsAPI = async (url: string, queryParams: any) => {
   try {
-    const { data, success } = await $fetch.get(url);
+    const { data, success } = await $fetch.get(url, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

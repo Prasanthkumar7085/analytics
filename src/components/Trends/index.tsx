@@ -2,7 +2,7 @@ import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import TrendsDataGraph from "./TrendsDataGraph";
 import Image from "next/image";
-const Trends = () => {
+const Trends = ({ searchParams }: any) => {
   const [tabValue, setTabValue] = useState<string>("revenue");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -24,9 +24,9 @@ const Trends = () => {
         </div>
         <div className="cardBody">
           {tabValue == "volume" ? (
-            <TrendsDataGraph graphType={"volume"} />
+            <TrendsDataGraph graphType={"volume"} searchParams={searchParams} />
           ) : (
-            <TrendsDataGraph graphType={"revenue"} />
+            <TrendsDataGraph graphType={"revenue"} searchParams={searchParams} />
           )}
         </div>
       </div>
