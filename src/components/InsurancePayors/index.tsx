@@ -3,9 +3,9 @@ import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
-import { AreaGraph } from "../core/AreaGraph";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
+import AreaGraph from "../core/AreaGraph";
 
 const InsurancePayors = () => {
   const { id } = useParams();

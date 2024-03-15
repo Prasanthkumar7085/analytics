@@ -8,6 +8,7 @@ import { SmallGraphInTable } from "../core/SmallGraphIntable";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
+import AreaGraph from "../core/AreaGraph";
 
 const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const { id } = useParams();
@@ -164,18 +165,15 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     width: "100px",
 
     cell: (info: any) => {
+
       return (
         <div
-          style={{ width: "40%" }}
           onClick={() => {
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
           }}
         >
-          <SmallGraphInTable
-            color={colors[info.row.index]}
-            graphData={info.row.original}
-          />
+          <AreaGraph graphData={info.row.original} />
         </div>
       );
     },

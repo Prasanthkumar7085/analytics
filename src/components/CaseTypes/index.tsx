@@ -5,7 +5,7 @@ import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsT
 import { getAllCaseTypesAPI } from "@/services/caseTypesAPIs";
 import { useEffect } from "react";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { AreaGraph } from "../core/AreaGraph";
+import AreaGraph from "../core/AreaGraph";
 
 const CaseTypes = () => {
   const [allCaseTypes, setAllCaseTypes] = useState([]);
@@ -123,7 +123,7 @@ const CaseTypes = () => {
         cell: ({ getValue }: any) => {
           return (
             <span style={{ cursor: "pointer" }}>
-              <AreaGraph getValue={getValue} />
+              <AreaGraph graphData={getValue} />
             </span>
           );
         },

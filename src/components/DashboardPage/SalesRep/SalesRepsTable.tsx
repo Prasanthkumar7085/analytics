@@ -167,8 +167,14 @@ const SalesRepsTable = () => {
         width: "120px",
         maxWidth: "120px",
         minWidth: "120px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+        cell: (info: any) => {
+          return (
+            <IconButton onClick={() => {
+              router.push(`/sales-representatives/${info.row.original.sales_rep_id}`)
+            }}>
+              <RemoveRedEyeIcon />
+            </IconButton>
+          )
         },
       },
     ],

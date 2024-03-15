@@ -206,7 +206,7 @@ const SingleColumnTable: FC<pageProps> = ({
                 <td key={index}>
                   {item
                     ? index == 0 || index == 1
-                      ? item
+                      ? item == "Total" ? item : formatMoney(item).replace("$", "")
                       : formatMoney(item)
                     : ""}
                 </td>

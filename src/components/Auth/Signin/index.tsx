@@ -23,7 +23,6 @@ import ErrorMessages from "@/components/core/ErrorMessage/ErrorMessages";
 import Image from "next/image";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { EyeIcon, EyeOffIcon, Spinner } from "@heroicons/react/outline";
 
 import {
   setAllFacilities,

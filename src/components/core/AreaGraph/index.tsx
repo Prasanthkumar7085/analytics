@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import Highcharts from "highcharts";
 
-export const AreaGraph = ({ getValue }: any) => {
+const AreaGraph = ({ getValue }: any) => {
   const chartRef = useRef(null);
   const trendsData = {
     "January 2024": {
@@ -137,3 +137,4 @@ export const AreaGraph = ({ getValue }: any) => {
 
   return <div ref={chartRef} className="remove-tooltip"></div>;
 };
+export default AreaGraph;
