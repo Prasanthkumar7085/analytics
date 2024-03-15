@@ -7,32 +7,17 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import { SmallGraphInTable } from "../core/SmallGraphIntable";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import GraphDialog from "../core/GraphDialog";
+import CaseTypesColumnTable from "./caseTypesColumnTable";
 
 const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
-  const [totalSumValues, setTotalSumValues] = useState<any>(["Total"]);
+  const [totalSumValues, setTotalSumValues] = useState<any>();
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
   const [headerMonths, setHeaderMonths] = useState<any>([])
-  useEffect(() => {
-    addtionalcolumns = [];
-  }, [tabValue]);
-  const months = [
-    "jan",
-    "feb",
-    "mar",
-    "apr",
-    "may",
-    "jun",
-    "jul",
-    "aug",
-    "sep",
-    "oct",
-    "nov",
-    "dec",
-  ];
+
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -47,39 +32,49 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
   ];
 
   const tableRef: any = useRef();
-  //get details of Revenue or Volume of caseTypes
-  const getDetailsOfCaseTypes = async () => {
+  //get details Volume of caseTypes
+  const getDetailsOfCaseTypesOfVolume = async () => {
     setLoading(true);
-    let url;
-    if (tabValue == "Revenue") {
-      url = `/${apiUrl}/${id}/case-types/revenue`;
-    } else {
-      url = `/${apiUrl}/${id}/case-types/volume`;
-    }
+    let url = `/${apiUrl}/${id}/case-types/volume`;
+
     try {
       const response = await getRevenueOrVolumeCaseDetailsAPI(url);
       if (response.status == 200 || response.status == 201) {
-        const monthSums: number[] = [];
-        let monthArray = response?.data?.map((item: any) => item.month)
+        let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
         let uniqueMonths = Array.from(new Set(monthArray));
         setHeaderMonths(uniqueMonths)
-        const groupedData = response?.data.reduce((acc: any, curr: any) => {
-          const { case_type_name, month, total_cases } = curr;
 
-          if (!acc[case_type_name]) {
-            acc[case_type_name] = {};
+        const groupedData: any = {};
+        // Grouping the data by case_type_id and then by month
+        response?.data?.forEach((item: any) => {
+          const { case_type_id, case_type_name, month, total_cases } = item;
+          if (!groupedData[case_type_id]) {
+            groupedData[case_type_id] = { case_type_id, case_type_name };
           }
 
-          acc[case_type_name][month] = total_cases;
+          const formattedMonth = month.replace(/\s/g, '');
 
-          return acc;
-        }, {});
+          groupedData[case_type_id][formattedMonth] = total_cases;
+        });
+        // Converting object to array
+        const result = Object.values(groupedData);
+        setCaseData(result);
 
-        console.log(groupedData, "p0032")
 
-        setTotalSumValues([...totalSumValues, ...monthSums.slice(0, 13)]);
-
-        setCaseData(groupedData);
+        const groupedDataSum: any = {};
+        // Grouping the data by month sum
+        response?.data?.forEach((item: any) => {
+          const { month, total_cases } = item;
+          const formattedMonth = month.replace(/\s/g, '');
+          const amount = parseFloat(total_cases);
+          if (!groupedDataSum[formattedMonth]) {
+            groupedDataSum[formattedMonth] = 0;
+          }
+          // Add amount to the total_sum for the respective month
+          groupedDataSum[formattedMonth] += amount;
+        });
+        // Convert the object to an array
+        setTotalSumValues(groupedDataSum);
       }
     } catch (err) {
       console.error(err);
@@ -88,11 +83,67 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     }
   };
 
+  //get details Revenue of caseTypes
+  const getDetailsOfCaseTypesOfRevenue = async () => {
+    setLoading(true);
+    let url = `/${apiUrl}/${id}/case-types/revenue`;
+
+    try {
+      const response = await getRevenueOrVolumeCaseDetailsAPI(url);
+      if (response.status == 200 || response.status == 201) {
+        const monthSums: number[] = [];
+        let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
+        let uniqueMonths = Array.from(new Set(monthArray));
+        setHeaderMonths(uniqueMonths)
+
+        const groupedData: any = {};
+        // Grouping the data by case_type_id and then by month
+        response?.data?.forEach((item: any) => {
+          const { case_type_id, case_type_name, month, paid_amount } = item;
+          if (!groupedData[case_type_id]) {
+            groupedData[case_type_id] = { case_type_id, case_type_name };
+          }
+
+          const formattedMonth = month.replace(/\s/g, '');
+
+          groupedData[case_type_id][formattedMonth] = paid_amount;
+        });
+        // Converting object to array
+        const result = Object.values(groupedData);
+        setCaseData(result);
+
+
+
+        const groupedDataSum: any = {};
+        // Grouping the data by month sum
+        response?.data?.forEach((item: any) => {
+          const { month, paid_amount } = item;
+          const formattedMonth = month.replace(/\s/g, '');
+          const amount = parseFloat(paid_amount);
+          if (!groupedDataSum[formattedMonth]) {
+            groupedDataSum[formattedMonth] = 0;
+          }
+          // Add amount to the total_sum for the respective month
+          groupedDataSum[formattedMonth] += amount;
+        });
+        console.log(groupedDataSum, "223-32-")
+        // Convert the object to an array
+        setTotalSumValues(groupedDataSum);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
   let addtionalcolumns = headerMonths?.map((item: any) => ({
-    accessorFn: (row: any) => row[item.toLowerCase()],
-    id: item.toLowerCase(),
+    accessorFn: (row: any) => row[item],
+    id: item,
     header: () => (
-      <span style={{ whiteSpace: "nowrap" }}>{item.toUpperCase()}</span>
+      <span style={{ whiteSpace: "nowrap" }}>{item}</span>
     ),
     footer: (props: any) => props.column.id,
     width: "80px",
@@ -105,11 +156,36 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
     ),
   }));
 
+  const graphColoumn = [{
+    accessorFn: (row: any) => row.actions,
+    id: "Actions",
+    header: () => <span style={{ whiteSpace: "nowrap" }}>Graph</span>,
+    footer: (props: any) => props.column.id,
+    width: "100px",
+
+    cell: (info: any) => {
+      return (
+        <div
+          style={{ width: "40%" }}
+          onClick={() => {
+            setGraphDialogOpen(true);
+            setSelectedGraphData(info.row.original);
+          }}
+        >
+          <SmallGraphInTable
+            color={colors[info.row.index]}
+            graphData={info.row.original}
+          />
+        </div>
+      );
+    },
+  },]
+
   const columnDef = useMemo(
     () => [
       {
-        accessorFn: (row: any) => row.caseType,
-        id: "caseType",
+        accessorFn: (row: any) => row.case_type_name,
+        id: "case_type_name",
         header: () => <span style={{ whiteSpace: "nowrap" }}>Case Types</span>,
         footer: (props: any) => props.column.id,
         width: "220px",
@@ -120,47 +196,33 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl }: any) => {
         },
       },
 
-      ...addtionalcolumns,
-      {
-        accessorFn: (row: any) => row.actions,
-        id: "Actions",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>Graph</span>,
-        footer: (props: any) => props.column.id,
-        width: "330px",
-
-        cell: (info: any) => {
-          return (
-            <div
-              style={{ width: "40%" }}
-              onClick={() => {
-                setGraphDialogOpen(true);
-                setSelectedGraphData(info.row.original);
-              }}
-            >
-              <SmallGraphInTable
-                color={colors[info.row.index]}
-                graphData={info.row.original}
-              />
-            </div>
-          );
-        },
-      },
     ],
     []
   );
+
+
+
+  const addAddtionalColoumns = [...columnDef, ...addtionalcolumns, ...graphColoumn]
   //api call to get details of case types
   useEffect(() => {
-    getDetailsOfCaseTypes();
+    if (tabValue == "Revenue") {
+      getDetailsOfCaseTypesOfRevenue()
+    }
+    else {
+      getDetailsOfCaseTypesOfVolume()
+    }
   }, [tabValue]);
 
   return (
     <div style={{ position: "relative" }}>
-      {/* <SingleColumnTable
+      <CaseTypesColumnTable
         data={caseData}
-        columns={columnDef}
+        columns={addAddtionalColoumns}
         totalSumValues={totalSumValues}
         loading={false}
-      /> */}
+        headerMonths={headerMonths}
+        tabValue={tabValue}
+      />
 
       {loading ? (
         <Backdrop

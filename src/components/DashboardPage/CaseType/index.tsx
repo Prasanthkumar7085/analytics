@@ -9,6 +9,7 @@ import { Badge } from "@mui/material";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import { usePathname } from "next/navigation";
 const CaseTypes = ({
   caseTypesStatsData,
   loading,
@@ -16,6 +17,7 @@ const CaseTypes = ({
   totalRevenueSum,
 }: any) => {
 
+  const pathName = usePathname();
 
   let colors = [
     "#ea1d22",
@@ -150,7 +152,8 @@ const CaseTypes = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Case Types Volumes
           </h3>
-          <GlobalDateRangeFilter onChangeData={() => { }} />
+          {pathName?.includes("dashboard") ?
+            <GlobalDateRangeFilter onChangeData={() => { }} /> : ""}
         </div>
         <div className="cardBody">
           <div style={{ display: "flex", height: "37vh" }}>

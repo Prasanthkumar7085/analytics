@@ -24,6 +24,7 @@ import {
 import { Avatar, Button, IconButton, Typography } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
+import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -132,6 +133,9 @@ const SalesRepView = () => {
             <Avatar sx={{ height: "30px", width: "30px" }} />
             <p className="pl-3">{salesRepDetails?.[0]?.sales_rep}</p>
           </div>
+          <div style={{ marginLeft: "70%" }}>
+            <GlobalDateRangeFilter onChangeData={() => { }} />
+          </div>
         </div>
         <div className="personData">
           <Grid container spacing={2}>
@@ -140,7 +144,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </Grid>
             <Grid item xs={8}>

@@ -3,6 +3,7 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Skeleton } from "@mui/material";
 import Image from "next/image";
 import styles from "./index.module.css";
+import { usePathname } from "next/navigation";
 
 const Stats = ({
   revenueStatsDetails,
@@ -10,6 +11,8 @@ const Stats = ({
   loading,
   onChange,
 }: any) => {
+
+  const pathName = usePathname();
   return (
     <>
       <div className="eachDataCard" id="StatsData">
@@ -18,7 +21,8 @@ const Stats = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Stats
           </h3>
-          <GlobalDateRangeFilter onChangeData={onChange} />
+          {pathName?.includes("dashboard") ?
+            <GlobalDateRangeFilter onChangeData={() => { }} /> : ""}
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>
