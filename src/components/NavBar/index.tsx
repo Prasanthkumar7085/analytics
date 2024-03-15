@@ -42,7 +42,11 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/dashboard"}
-                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/dashboard" ? "activePagename" : "active"
+                      ]
+                    }`}
                   >
                     Overview
                   </Link>
@@ -50,20 +54,36 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/sales-representatives"}
-                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/sales-representatives"
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Sales Representatives
                   </Link>
                 </li>
                 <li>
-                  <a className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md">
+                  <a
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/insurance" ? "activePagename" : "active"
+                      ]
+                    }`}
+                  >
                     Insurances
                   </a>
                 </li>
                 <li>
                   <Link
                     href={"/facilities"}
-                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/facilities" ? "activePagename" : "active"
+                      ]
+                    }`}
                   >
                     Facilities
                   </Link>
@@ -71,13 +91,23 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/case-types"}
-                    className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md"
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/case-types" ? "activePagename" : "active"
+                      ]
+                    }`}
                   >
                     Case Types
                   </Link>
                 </li>
                 <li>
-                  <a className="text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md">
+                  <a
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/reports" ? "activePagename" : "active"
+                      ]
+                    }`}
+                  >
                     Reports
                   </a>
                 </li>

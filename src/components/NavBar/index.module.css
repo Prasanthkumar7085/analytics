@@ -32,8 +32,8 @@
   position: relative;
   font-family: "Poppins", sans-serif;
   font-size: clamp(13px, 0.67vw, 20px);
-  color: inherit;
   display: inline-block;
+  color: #DD5050 !important;
 }
 .pagename {
   text-decoration: none;
