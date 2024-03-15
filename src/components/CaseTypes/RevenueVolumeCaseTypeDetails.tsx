@@ -243,21 +243,25 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   const addAddtionalColoumns = [...columnDef, ...addtionalcolumns, ...graphColoumn]
   //api call to get details of case types
   useEffect(() => {
-    if (tabValue == "Revenue" && selectedDate?.length == 0) {
-      getDetailsOfCaseTypesOfRevenue(searchParams?.from_date, searchParams?.to_date)
+    if (selectedDate?.length == 0) {
+      if (tabValue == "Revenue") {
+        getDetailsOfCaseTypesOfRevenue(searchParams?.from_date, searchParams?.to_date)
+      }
+      else {
+        getDetailsOfCaseTypesOfVolume(searchParams?.from_date, searchParams?.to_date)
+      }
     }
-    else {
-      getDetailsOfCaseTypesOfVolume(searchParams?.from_date, searchParams?.to_date)
-    }
-  }, [tabValue, searchParams]);
+  }, [tabValue, searchParams, selectedDate]);
 
 
   useEffect(() => {
-    if (tabValue == "Revenue") {
-      getDetailsOfCaseTypesOfRevenue(selectedDate[0], selectedDate[1])
-    }
-    else {
-      getDetailsOfCaseTypesOfVolume(selectedDate[0], selectedDate[1])
+    if (selectedDate?.length) {
+      if (tabValue == "Revenue") {
+        getDetailsOfCaseTypesOfRevenue(selectedDate[0], selectedDate[1])
+      }
+      else {
+        getDetailsOfCaseTypesOfVolume(selectedDate[0], selectedDate[1])
+      }
     }
   }, [tabValue, selectedDate])
 

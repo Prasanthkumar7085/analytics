@@ -2,7 +2,7 @@ import { MenuItem, Select, TextField } from "@mui/material";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import styles from "./salesreps-filters.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
@@ -10,7 +10,7 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValu
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
-
+  const router: any = useRouter();
   useEffect(() => {
     setSearch(params.get("search") ? (params.get("search") as string) : "");
     setStatus(params.get("status") ? (params.get("status") as string) : "all");
