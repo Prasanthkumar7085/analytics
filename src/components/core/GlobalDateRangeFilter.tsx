@@ -11,8 +11,10 @@ import {
 } from "rsuite/esm/utils/dateUtils";
 const GlobalDateRangeFilter = ({
   onChangeData,
+  DatePickerplacement
 }: {
-  onChangeData: any
+  onChangeData: any,
+  DatePickerplacement?: any
 }) => {
   const predefinedRanges: any = [
     {
@@ -88,7 +90,7 @@ const GlobalDateRangeFilter = ({
     <div>
       <DateRangePicker
         className="inputItemDate"
-        placement="bottomEnd"
+        placement={DatePickerplacement ? DatePickerplacement : "bottomEnd"}
         editable
         ranges={predefinedRanges}
         size="lg"

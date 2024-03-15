@@ -5,7 +5,7 @@ import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Badge } from "@mui/material";
+import { Backdrop, Badge, CircularProgress } from "@mui/material";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
@@ -100,7 +100,7 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[1];
+    const totalNumber = totalRevenueSum[1] ? totalRevenueSum[1] : 0;
     return `<span style="font-size: 10px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 20px;">
@@ -144,8 +144,13 @@ const CaseTypes = ({
     ],
   };
 
+
+  const onChangeData = (fromDate: any, toDate: any) => {
+    getCaseTypesStats(fromDate, toDate);
+  };
+
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <div className="eachDataCard" id="CaseTypesGraphsData">
         <div className="cardHeader">
           <h3>
@@ -153,27 +158,25 @@ const CaseTypes = ({
             Case Types Volumes
           </h3>
           {pathName?.includes("dashboard") ?
-            <GlobalDateRangeFilter onChangeData={() => { }} /> : ""}
+            <GlobalDateRangeFilter onChangeData={onChangeData} /> : ""}
         </div>
         <div className="cardBody">
           <div style={{ display: "flex", height: "37vh" }}>
-            {loading ? (
-              ""
-            ) : (
-              <div style={{ width: "35%" }}>
-                <HighchartsReact
-                  highcharts={Highcharts}
-                  options={options}
-                  containerProps={{
-                    style: {
-                      height: "280px",
-                      width: "280px",
-                      background: "none",
-                    },
-                  }}
-                />
-              </div>
-            )}
+
+            <div style={{ width: "35%" }}>
+              <HighchartsReact
+                highcharts={Highcharts}
+                options={options}
+                containerProps={{
+                  style: {
+                    height: "280px",
+                    width: "280px",
+                    background: "none",
+                  },
+                }}
+              />
+            </div>
+
 
             {caseTypesStatsData?.length ? (
               <TanStackTableComponent
@@ -182,6 +185,29 @@ const CaseTypes = ({
                 totalSumValues={totalRevenueSum}
                 loading={false}
               />
+            ) : (
+              ""
+            )}
+
+            {loading ? (
+              <Backdrop
+                open={true}
+                style={{
+                  zIndex: 999,
+                  color: "red",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(256,256,256,0.8)",
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Backdrop>
             ) : (
               ""
             )}
