@@ -117,16 +117,16 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                                                         asc: (
                                                             <Image
                                                                 src="/core/sort/sort-asc.svg"
-                                                                height={15}
-                                                                width={15}
+                                                                height={10}
+                                                                width={10}
                                                                 alt="image"
                                                             />
                                                         ),
                                                         desc: (
                                                             <Image
                                                                 src="/core/sort/sort-desc.svg"
-                                                                height={15}
-                                                                width={15}
+                                                                height={10}
+                                                                width={10}
                                                                 alt="image"
                                                             />
                                                         ),

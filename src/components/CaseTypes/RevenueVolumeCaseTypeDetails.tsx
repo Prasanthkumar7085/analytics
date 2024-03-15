@@ -19,6 +19,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({})
   const [headerMonths, setHeaderMonths] = useState<any>([])
   const [graphValuesData, setGraphValuesData] = useState<any>({})
+  const [graphColor, setGraphColor] = useState("")
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -30,7 +31,16 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
     "#92298f",
     "#2e3094",
     "#0071b9",
+    "#82eedd",
+    "	#eea782",
+    "#000000",
+    "#82a8cd",
+    "#e1dbe4",
+    "#f6dad3",
+    "#87b5af",
+    "	#185a59",
   ];
+
 
   const tableRef: any = useRef();
   //get details Volume of caseTypes
@@ -185,6 +195,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
     width: "100px",
 
     cell: (info: any) => {
+      console.log(info, "p000")
       let data = { ...info.row.original }
       delete data?.case_type_id;
       delete data?.case_type_name;
@@ -194,9 +205,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
             setGraphValuesData(data)
+            setGraphColor(colors[info.row.index])
           }}
         >
-          <AreaGraph data={data} />
+          <AreaGraph data={data} graphColor={colors[info.row.index]} />
         </div>
       );
     },
@@ -262,7 +274,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
             background: "rgba(256,256,256,0.8)",
           }}
         >
-          <CircularProgress color="inherit" />
+          <object
+            type="image/svg+xml"
+            data={"/core/loading.svg"}
+            width={150}
+            height={150}
+          />
         </Backdrop>
       ) : (
         ""
@@ -272,6 +289,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams }: any) =
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
         graphValuesData={graphValuesData}
+        graphColor={graphColor}
 
       />
     </div>

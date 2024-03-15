@@ -6,9 +6,19 @@ import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
   const [value, setValue] = useState("Volume");
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+
+
+  const onChangeData = (fromDate: any, toDate: any) => {
+    if (fromDate) {
+    }
+    else {
+
+    }
   };
 
   return (
@@ -28,7 +38,7 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
           <Tab value="Revenue" label="Revenue" />
           <Tab value="Volume" label="Volume" />
         </Tabs>
-        <GlobalDateRangeFilter onChangeData={() => { }} />
+        <GlobalDateRangeFilter onChangeData={onChangeData} />
       </div>
       <div className="cardBody">
         <RevenuVolumeCaseTypesDetails tabValue={value} apiUrl={apiUrl} searchParams={searchParams} />

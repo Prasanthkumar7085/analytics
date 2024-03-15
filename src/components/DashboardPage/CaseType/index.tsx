@@ -220,8 +220,14 @@ const CaseTypes = ({
                   background: "rgba(256,256,256,0.8)",
                 }}
               >
-                <CircularProgress color="inherit" />
+                <object
+                  type="image/svg+xml"
+                  data={"/core/loading.svg"}
+                  width={150}
+                  height={150}
+                />
               </Backdrop>
+
             ) : (
               ""
             )}

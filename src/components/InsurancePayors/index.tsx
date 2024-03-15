@@ -74,7 +74,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       {
         accessorFn: (row: any) => row.generated_amount,
         id: "generated_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
         footer: (props: any) => props.column.id,
         width: "70px",
         maxWidth: "100px",
@@ -86,7 +86,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       {
         accessorFn: (row: any) => row.paid_amount,
         id: "paid_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>PAID</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
         footer: (props: any) => props.column.id,
         width: "70px",
         maxWidth: "100px",
@@ -98,7 +98,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       {
         accessorFn: (row: any) => row.pending_amount,
         id: "pending_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>PENDING</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
         footer: (props: any) => props.column.id,
         width: "70px",
         maxWidth: "100px",
@@ -149,7 +149,12 @@ const InsurancePayors = ({ searchParams }: any) => {
             background: "rgba(256,256,256,0.8)",
           }}
         >
-          <CircularProgress color="inherit" />
+          <object
+            type="image/svg+xml"
+            data={"/core/loading.svg"}
+            width={150}
+            height={150}
+          />
         </Backdrop>
       ) : (
         ""

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import Highcharts from "highcharts";
 
-const AreaGraph = ({ data }: any) => {
+const AreaGraph = ({ data, graphColor }: any) => {
 
   const chartRef = useRef(null);
   const trendsData = {
@@ -98,7 +98,7 @@ const AreaGraph = ({ data }: any) => {
         },
         plotOptions: {
           area: {
-            color: getRandomBrightColor(),
+            color: graphColor,
           },
 
           series: {

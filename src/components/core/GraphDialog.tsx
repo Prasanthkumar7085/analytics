@@ -3,7 +3,7 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import CloseIcon from '@mui/icons-material/Close';
 
-const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, graphValuesData }: any) => {
+const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, graphValuesData, graphColor }: any) => {
 
 
 
@@ -21,6 +21,11 @@ const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, graphValu
             },
             categories: Object.keys(graphValuesData).map((item: any) => item),
 
+        },
+        plotOptions: {
+            area: {
+                color: graphColor,
+            },
         },
         yAxis: {
             title: {
