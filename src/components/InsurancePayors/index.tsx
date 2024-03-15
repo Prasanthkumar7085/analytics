@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
-import AreaGraph from "../core/AreaGraph";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 const InsurancePayors = ({ searchParams }: any) => {
@@ -44,7 +43,7 @@ const InsurancePayors = ({ searchParams }: any) => {
           totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = ["Total", totalAmount, totalPaid, totalPending, null];
+        const result = ["Total", totalAmount, totalPaid, totalPending];
 
         setTortalInsurancePayors(result);
       }
@@ -108,29 +107,7 @@ const InsurancePayors = ({ searchParams }: any) => {
           return <span>{formatMoney(getValue())}</span>;
         },
       },
-      {
-        accessorFn: (row: any) => row,
-        id: "graph",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
-        footer: (props: any) => props.column.id,
-        width: "100px",
-        maxWidth: "100px",
-        minWidth: "100px",
-        cell: (info: any) => {
 
-          const dataPoints = Object.entries(info.row.original)
-            .filter(([key]) => key !== 'caseType')
-            .map(([month, value]) => [month, value]);
-          return (
-            <div onClick={() => {
-              // setGraphDialogOpen(true);
-              // setSelectedGraphData(info.row.original);
-            }}>
-              <AreaGraph getValue={info.getValue} />
-            </div>
-          )
-        },
-      },
     ],
     []
   );
@@ -147,12 +124,12 @@ const InsurancePayors = ({ searchParams }: any) => {
         totalSumValues={totalInsurancePayors}
         loading={false}
       />
-      <GraphDialog
+      {/* <GraphDialog
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
 
-      />
+      /> */}
 
 
       {loading ? (

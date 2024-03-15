@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import Highcharts from "highcharts";
 
-const AreaGraph = ({ getValue }: any) => {
+const AreaGraph = ({ data }: any) => {
+
   const chartRef = useRef(null);
   const trendsData = {
     "January 2024": {
@@ -56,7 +57,7 @@ const AreaGraph = ({ getValue }: any) => {
   }
 
   useEffect(() => {
-    if (chartRef && chartRef.current) {
+    if (chartRef && chartRef.current && Object?.keys(data)?.length) {
       Highcharts.chart(chartRef.current, {
         chart: {
           height: 50,
@@ -125,7 +126,7 @@ const AreaGraph = ({ getValue }: any) => {
         series: [
           {
             name: null,
-            data: Object.values(trendsData).map((item: any) => item.revenue),
+            data: Object?.values(data)?.length ? Object.values(data).map((item: any) => +item) : [],
             animation: {
               opacity: 0.4,
             },
@@ -133,7 +134,7 @@ const AreaGraph = ({ getValue }: any) => {
         ],
       } as any);
     }
-  }, [trendsData]);
+  }, [data]);
 
   return <div ref={chartRef} className="remove-tooltip"></div>;
 };
