@@ -1,25 +1,17 @@
 "use client";
-import { setAllMarketers } from "@/Redux/Modules/marketers";
-import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { getAllUsersAPI } from "@/services/authAPIs";
+import { addSerial } from "@/lib/Pipes/addSerial";
+import formatMoney from "@/lib/Pipes/moneyFormat";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { Button } from "@mui/material";
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { stat } from "fs";
-import formatMoney from "@/lib/Pipes/moneyFormat";
-import { addSerial } from "@/lib/Pipes/addSerial";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
@@ -35,14 +27,15 @@ const SalesRepresentatives = () => {
 
   const [salesReps, setSalesReps] = useState([]);
   const [completeData, setCompleteData] = useState([]);
-  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
 
   const getAllSalesReps = async ({
     fromDate,
     toDate,
-    searchValue,
+    searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type, }: any) => {
+    orderType = searchParams?.order_type,
+  }: any) => {
     setLoading(true);
     try {
       let queryParams: any = {};
@@ -57,11 +50,10 @@ const SalesRepresentatives = () => {
         queryParams["search"] = searchValue;
       }
       if (orderBy) {
-        queryParams["order_by"] = orderBy
+        queryParams["order_by"] = orderBy;
       }
       if (orderType) {
-        queryParams["order_type"] = orderType
-
+        queryParams["order_type"] = orderType;
       }
 
       let queryString = prepareURLEncodedParams("", queryParams);
@@ -71,6 +63,7 @@ const SalesRepresentatives = () => {
       const response = await salesRepsAPI(queryParams);
 
       if (response.status == 200 || response.status == 201) {
+        setCompleteData(response?.data);
         let data = response?.data;
         if (searchValue) {
           data = data.filter((item: any) =>
@@ -79,19 +72,14 @@ const SalesRepresentatives = () => {
               ?.includes(searchValue?.toLowerCase()?.trim())
           );
         }
-        const modifieData = addSerial(
-          data,
-          1,
-          data?.length
-        );
+        data = sortAndGetData(data, orderBy, orderType);
+        const modifieData = addSerial(data, 1, data?.length);
         setSalesReps(modifieData);
-        setCompleteData(modifieData);
 
         const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
           0
         );
-
 
         const billedAmoumnt = data.reduce(
           (sum: any, item: any) => sum + +item.generated_amount,
@@ -107,7 +95,6 @@ const SalesRepresentatives = () => {
         );
 
         const result = [
-
           "Total",
           null,
           totalCases,
@@ -116,7 +103,6 @@ const SalesRepresentatives = () => {
           pendingAmoumnt,
         ];
         setTotalSumValues(result);
-
       } else {
         throw response;
       }
@@ -127,26 +113,21 @@ const SalesRepresentatives = () => {
     }
   };
 
-
   const goToSingleRepPage = (repId: string) => {
-
-    let queryString = '';
-    const queryParams: any = {}
-    if (params.get('from_date')) {
-      queryParams['from_date'] = params.get('from_date')
+    let queryString = "";
+    const queryParams: any = {};
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
     }
-    if (params.get('to_date')) {
-      queryParams['to_date'] = params.get('to_date')
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
     }
     if (Object.keys(queryParams)?.length) {
-      queryString = prepareURLEncodedParams('', queryParams)
+      queryString = prepareURLEncodedParams("", queryParams);
     }
 
-    router.push(
-      `/sales-representatives/${repId}${queryString}`
-    );
-
-  }
+    router.push(`/sales-representatives/${repId}${queryString}`);
+  };
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
@@ -187,7 +168,6 @@ const SalesRepresentatives = () => {
       id: "revenue",
       width: "800px",
       columns: [
-
         {
           accessorFn: (row: any) => row.generated_amount,
           header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
@@ -243,28 +223,99 @@ const SalesRepresentatives = () => {
       },
     },
   ];
-  const onUpdateData = (
-    {
-      search,
-      queryData,
-    }: Partial<{
-      search: string;
-      queryData?: any;
-    }>,
-    testData?: any[]
-  ) => {
+  const onUpdateData = ({
+    search = searchParams?.search,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type as "asc" | "desc",
+  }: Partial<{
+    search: string;
+    orderBy: string;
+    orderType: "asc" | "desc";
+  }>) => {
+    let queryParams: any = {};
+    if (search) {
+      queryParams["search"] = search;
+    }
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
+    }
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
+    }
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
+    }
 
-    getAllSalesReps({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: search });
+    router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
+    let data = [...completeData];
 
+    if (orderBy && orderType) {
+      data = sortAndGetData(data, orderBy, orderType);
+      if (search) {
+        data = data.filter((item: any) =>
+          item.sales_rep_name
+            ?.toLowerCase()
+            ?.includes(search?.toLowerCase()?.trim())
+        );
+      }
+    } else {
+      data = [...completeData];
+      if (search) {
+        data = data.filter((item: any) =>
+          item.sales_rep_name
+            ?.toLowerCase()
+            ?.includes(search?.toLowerCase()?.trim())
+        );
+      }
+    }
+    const modifieData = addSerial(data, 1, data?.length);
+    setSalesReps(modifieData);
+
+    const totalCases = data.reduce(
+      (sum: any, item: any) => sum + +item.total_cases,
+      0
+    );
+
+    const billedAmoumnt = data.reduce(
+      (sum: any, item: any) => sum + +item.generated_amount,
+      0
+    );
+    const paidRevenueSum = data.reduce(
+      (sum: any, item: any) => sum + +item.paid_amount,
+      0
+    );
+    const pendingAmoumnt = data.reduce(
+      (sum: any, item: any) => sum + +item.pending_amount,
+      0
+    );
+
+    const result = [
+      "Total",
+      null,
+      totalCases,
+      billedAmoumnt,
+      paidRevenueSum,
+      pendingAmoumnt,
+    ];
+    setTotalSumValues(result);
   };
 
   useEffect(() => {
-    getAllSalesReps({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: searchParams?.search });
+    getAllSalesReps({
+      fromDate: searchParams?.from_date,
+      toDate: searchParams?.to_date,
+      searchValue: searchParams?.search,
+    });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+      setDateFilterDefaultValue([
+        new Date(searchParams?.from_date),
+        new Date(searchParams?.to_date),
+      ]);
     }
   }, []);
-
 
   useEffect(() => {
     setSearchParams(
@@ -287,7 +338,7 @@ const SalesRepresentatives = () => {
         loading={loading}
         totalSumValues={totalSumValues}
         searchParams={searchParams}
-        getAllSalesReps={getAllSalesReps}
+        getData={onUpdateData}
       />
       <LoadingComponent loading={loading} />
     </div>
