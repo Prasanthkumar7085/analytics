@@ -17,12 +17,16 @@ interface pageProps {
   data: any[];
   totalSumValues?: any;
   loading: boolean;
+  searchParams?: any;
+  getAllSalesReps?: any
 }
 const MultipleColumnsTable: FC<pageProps> = ({
   columns,
   data,
   totalSumValues,
   loading,
+  searchParams,
+  getAllSalesReps
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -55,6 +59,34 @@ const MultipleColumnsTable: FC<pageProps> = ({
     return null;
   }
 
+  const SortItems = ({
+    searchParams,
+    header,
+    removeSortingForColumnIds,
+  }: {
+    searchParams: any;
+    header: any;
+    removeSortingForColumnIds?: string[];
+  }) => {
+    return (
+      <div>
+        {searchParams?.order_by == header?.id ? (
+          searchParams?.order_type == "asc" ? (
+            <Image src="/core/sort/sort-asc.svg"
+              height={8} width={8} alt="image" />
+          ) : (
+            <Image src="/core/sort/sort-desc.svg"
+              height={8} width={8} alt="image" />
+          )
+        ) : removeSortingForColumnIds?.includes(header.id) ? (
+          ""
+        ) : (
+          <Image src="/core/sort/un-sort.svg" height={8} width={8} alt="image" />
+        )}
+      </div>
+    );
+  };
+
   const getWidth = (id: string) => {
     const widthObj = findObjectById(columns, id);
 
@@ -62,6 +94,27 @@ const MultipleColumnsTable: FC<pageProps> = ({
       const width = widthObj?.width;
       return width;
     } else return "100px";
+  };
+
+  const sortAndGetData = (header: any) => {
+    if (header.id == "select_rows" || header.id == "actions") {
+      return;
+    }
+    let orderBy = header.id;
+    let orderType = "asc";
+    if ((searchParams?.order_by as string) == header.id) {
+      if (searchParams?.order_type == "asc") {
+        orderType = "desc";
+      } else {
+        orderBy = "";
+        orderType = "";
+      }
+    }
+
+    getAllSalesReps({
+      orderBy: orderBy,
+      orderType: orderType,
+    });
   };
 
   return (
@@ -99,13 +152,13 @@ const MultipleColumnsTable: FC<pageProps> = ({
                     >
                       {header.isPlaceholder ? null : (
                         <div
-                          // onClick={() => sortAndGetData(header)}
                           {...{
                             className: header.column.getCanSort()
                               ? "cursor-pointer select-none"
                               : "",
-                            onClick: header.column.getToggleSortingHandler(),
+                            onClick: header.column.getToggleSortingHandler()
                           }}
+
                           style={{
                             display: "flex",
                             gap: "10px",
@@ -118,24 +171,11 @@ const MultipleColumnsTable: FC<pageProps> = ({
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                          {{
-                            asc: (
-                              <Image
-                                src="/core/sort/sort-asc.svg"
-                                height={10}
-                                width={10}
-                                alt="image"
-                              />
-                            ),
-                            desc: (
-                              <Image
-                                src="/core/sort/sort-desc.svg"
-                                height={10}
-                                width={10}
-                                alt="image"
-                              />
-                            ),
-                          }[header.column.getIsSorted() as string] ?? null}
+                          <SortItems
+                            searchParams={searchParams}
+                            header={header}
+
+                          />
                         </div>
                       )}
                     </th>
@@ -204,7 +244,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
             background: "#EFF1FA",
           }}
         >
-          <tr>
+          <tr >
             {totalSumValues?.map((item: any, index: number) => {
               return (
                 <td key={index}>

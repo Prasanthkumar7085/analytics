@@ -130,14 +130,14 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         const groupedData: any = {};
         // Grouping the data by case_type_id and then by month
         response?.data?.forEach((item: any) => {
-          const { case_type_id, case_type_name, month, revenue } = item;
+          const { case_type_id, case_type_name, month, paid_amount } = item;
           if (!groupedData[case_type_id]) {
             groupedData[case_type_id] = { case_type_id, case_type_name };
           }
 
           const formattedMonth = month.replace(/\s/g, '');
 
-          groupedData[case_type_id][formattedMonth] = revenue;
+          groupedData[case_type_id][formattedMonth] = paid_amount;
         });
         // Converting object to array
         const result = Object.values(groupedData);
@@ -148,9 +148,9 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         const groupedDataSum: any = {};
         // Grouping the data by month sum
         response?.data?.forEach((item: any) => {
-          const { month, revenue } = item;
+          const { month, paid_amount } = item;
           const formattedMonth = month.replace(/\s/g, '');
-          const amount = parseFloat(revenue);
+          const amount = parseFloat(paid_amount);
           if (!groupedDataSum[formattedMonth]) {
             groupedDataSum[formattedMonth] = 0;
           }
@@ -199,7 +199,6 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     width: "100px",
 
     cell: (info: any) => {
-      console.log(info, "p000")
       let data = { ...info.row.original }
       delete data?.case_type_id;
       delete data?.case_type_name;

@@ -19,6 +19,7 @@ import styles from "./salesreps.module.css";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { stat } from "fs";
 import formatMoney from "@/lib/Pipes/moneyFormat";
+import { addSerial } from "@/lib/Pipes/addSerial";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,12 @@ const SalesRepresentatives = () => {
   const [completeData, setCompleteData] = useState([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
 
-  const getAllSalesReps = async ({ fromDate, toDate, searchValue }: any) => {
+  const getAllSalesReps = async ({
+    fromDate,
+    toDate,
+    searchValue,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type, }: any) => {
     setLoading(true);
     try {
       let queryParams: any = {};
@@ -49,6 +55,13 @@ const SalesRepresentatives = () => {
       }
       if (searchValue) {
         queryParams["search"] = searchValue;
+      }
+      if (orderBy) {
+        queryParams["order_by"] = orderBy
+      }
+      if (orderType) {
+        queryParams["order_type"] = orderType
+
       }
 
       let queryString = prepareURLEncodedParams("", queryParams);
@@ -66,9 +79,13 @@ const SalesRepresentatives = () => {
               ?.includes(searchValue?.toLowerCase()?.trim())
           );
         }
-
-        setSalesReps(data);
-        setCompleteData(data);
+        const modifieData = addSerial(
+          data,
+          1,
+          data?.length
+        );
+        setSalesReps(modifieData);
+        setCompleteData(modifieData);
 
         const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
@@ -90,7 +107,9 @@ const SalesRepresentatives = () => {
         );
 
         const result = [
+
           "Total",
+          null,
           totalCases,
           billedAmoumnt,
           paidRevenueSum,
@@ -129,6 +148,15 @@ const SalesRepresentatives = () => {
 
   }
   const columnDef = [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
     {
       accessorFn: (row: any) => row.sales_rep_name,
       id: "sales_rep_name",
@@ -258,6 +286,8 @@ const SalesRepresentatives = () => {
         columns={columnDef}
         loading={loading}
         totalSumValues={totalSumValues}
+        searchParams={searchParams}
+        getAllSalesReps={getAllSalesReps}
       />
       <LoadingComponent loading={loading} />
     </div>

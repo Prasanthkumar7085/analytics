@@ -81,8 +81,8 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
           {
             name:
               graphType == "volume"
-                ? "Total Volume Billed"
-                : "Total Revenue Billed",
+                ? "Total Volume"
+                : "Total Revenue",
             data:
               graphType == "volume"
                 ? trendsData?.map((item: any) => +item.volume)

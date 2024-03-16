@@ -10,6 +10,8 @@ import {
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
+import AreaGraph from "../core/AreaGraph";
+import GraphDialog from "../core/GraphDialog";
 
 interface pageProps {
     columns: any[];
@@ -27,6 +29,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
     headerMonths,
     tabValue
 }) => {
+    const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
     const [sorting, setSorting] = useState<SortingState>([]);
 
     const table = useReactTable({
@@ -193,8 +196,9 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                         ""
                     )}
                 </tbody>
-                <tfoot>
-                    <tr
+                <tfoot className="tfoot"
+                >
+                    <tr className="table-row"
                         style={{
                             fontSize: "clamp(12px, 0.62vw, 14px)",
                             border: "1px solid #a5a5a5",
@@ -204,23 +208,32 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                             background: "#EFF1FA",
                         }}
                     >
-                        <td>Total</td>
+                        <td className="cell">Total</td>
                         {headerMonths?.map((item: any, index: number) => {
 
                             return (
 
-                                <td key={index}>
+                                <td key={index} className="cell">
                                     {tabValue == "Revenue" ?
                                         formatMoney(totalSumValues[item]) :
                                         totalSumValues[item]}
                                 </td>
                             );
                         })}
-                        <td></td>
+                        <td className="cell" onClick={() => setGraphDialogOpen(true)}> <AreaGraph data={totalSumValues} graphColor={"blue"} />
+                        </td>
 
                     </tr>
                 </tfoot>
             </table>
+            <GraphDialog
+                graphDialogOpen={graphDialogOpen}
+                setGraphDialogOpen={setGraphDialogOpen}
+                graphData={totalSumValues}
+                graphValuesData={totalSumValues}
+                graphColor={"blue"}
+
+            />
         </div>
     );
 };
