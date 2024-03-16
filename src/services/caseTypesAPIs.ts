@@ -13,9 +13,9 @@ export const getAllCaseTypesAPI = async () => {
     console.error(err);
   }
 };
-export const getCaseTypesStatsAPI = async (params: any) => {
+export const getCaseTypesStatsAPI = async (url: string, params: any) => {
   try {
-    const { data, success } = await $fetch.get("/overview/case-types", params);
+    const { data, success } = await $fetch.get(url, params);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

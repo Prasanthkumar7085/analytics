@@ -46,7 +46,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   //get details Volume of caseTypes
   const getDetailsOfCaseTypesOfVolume = async (fromDate: any, toDate: any) => {
     setLoading(true);
-    let url = `/${apiUrl}/${id}/case-types/volume`;
+    let url = `/${apiUrl}/${id}/case-types/months/volume`;
 
     try {
 
@@ -107,7 +107,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   //get details Revenue of caseTypes
   const getDetailsOfCaseTypesOfRevenue = async (fromDate: any, toDate: any) => {
     setLoading(true);
-    let url = `/${apiUrl}/${id}/case-types/revenue`;
+    let url = `/${apiUrl}/${id}/case-types/months/revenue`;
 
     try {
 

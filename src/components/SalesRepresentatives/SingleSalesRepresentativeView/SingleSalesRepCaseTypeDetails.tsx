@@ -28,7 +28,7 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-          Case Type
+          Month Wise Case Type Data
         </h3>
         <Tabs
           value={value}

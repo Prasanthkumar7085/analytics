@@ -16,6 +16,8 @@ const DashboardPage = () => {
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [caseTypeLoading, setCaseTypeLoading] = useState(true)
+  const [tabValue, setTabValue] = useState("Revenue");
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
@@ -56,9 +58,10 @@ const DashboardPage = () => {
     }
   };
 
-  //get the caseTypes data
-  const getCaseTypesStats = async (fromDate: any, toDate: any) => {
+  //get the caseTypesVolume data
+  const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
     setCaseTypeLoading(true);
+    let url = "/overview/case-types-volume"
     try {
       let queryParams: any = {};
 
@@ -69,28 +72,21 @@ const DashboardPage = () => {
         queryParams["to_date"] = toDate;
       }
 
-      const response = await getCaseTypesStatsAPI(queryParams);
+      const response = await getCaseTypesStatsAPI(url, queryParams);
       if (response.status == 200 || response?.status == 201) {
-        let paidRevenueSum = 0;
-        let totalRevenueSum = 0;
+        let totalCases = 0;
+        let completedCases = 0;
+        let pendingCases = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
-          totalRevenueSum += entry.volume ? +entry.volume : 0;
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          completedCases += entry.completed_cases ? +entry.completed_cases : 0;
+          pendingCases += entry.pending_cases ? +entry.pending_cases : 0
         });
 
-        const result = ["Total", totalRevenueSum, paidRevenueSum];
+        const result = ["Total", totalCases, completedCases, pendingCases];
         setTotalSumValues(result);
-
-        let mappedData = response?.data
-          ?.map((item: any) => {
-            return {
-              ...item,
-              case_name: mapCaseTypeTitleWithCaseType(item?.case_type_name),
-            };
-          })
-          ?.filter((e: { volume: string }) => e.volume);
-        setCaseTypesStatsData(mappedData);
+        setCaseTypesStatsData(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -99,10 +95,47 @@ const DashboardPage = () => {
     }
   };
 
+  const getCaseTypesRevenueStats = async (fromDate: any, toDate: any) => {
+    setCaseTypeLoading(true);
+    let url = "/overview/case-types-revenue";
+    try {
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+      const response = await getCaseTypesStatsAPI(url, queryParams);
+      if (response.status == 200 || response?.status == 201) {
+        let paidRevenueSum = 0;
+        let totalRevenueSum = 0;
+        let pendingRevenueSum = 0;
+
+        response?.data?.forEach((entry: any) => {
+          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
+          totalRevenueSum += entry.generated_amount ? +entry.generated_amount : 0;
+          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0
+        });
+
+        const result = ["Total", totalRevenueSum, paidRevenueSum, pendingRevenueSum];
+        setTotalSumValues(result);
+        setCaseTypesStatsData(response?.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCaseTypeLoading(false);
+    }
+  };
+
+
+
   //api call to get stats count
   useEffect(() => {
-    getStatsCounts("", "");
-    getCaseTypesStats("", "");
+    getStatsCounts("", "")
+    getCaseTypesRevenueStats("", "");
   }, []);
 
   return (
@@ -121,8 +154,11 @@ const DashboardPage = () => {
           <CaseType
             caseTypesStatsData={caseTypesStatsData}
             loading={caseTypeLoading}
-            getCaseTypesStats={getCaseTypesStats}
+            getCaseTypesRevenueStats={getCaseTypesRevenueStats}
+            getCaseTypesVolumeStats={getCaseTypesVolumeStats}
             totalRevenueSum={totalRevenueSum}
+            setTabValue={setTabValue}
+            tabValue={tabValue}
           />
         </Grid>
       </Grid>

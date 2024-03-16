@@ -13,9 +13,9 @@ export const salesRepsAPI = async (params: any) => {
   }
 };
 
-export const getSingleRepCaseTypes = async (salerep_id: string, queryParams: any) => {
+export const getSingleRepCaseTypes = async (url: string, queryParams: any) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}/case-types`, queryParams);
+    const { success, data } = await $fetch.get(url, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

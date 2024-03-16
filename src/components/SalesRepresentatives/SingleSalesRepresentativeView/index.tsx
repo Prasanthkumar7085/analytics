@@ -42,6 +42,7 @@ const SalesRepView = () => {
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
   const [caseTypeLoading, setCaseTypeLoading] = useState(true)
+  const [tabValue, setTabValue] = useState("Revenue");
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -89,9 +90,46 @@ const SalesRepView = () => {
     }
   };
 
-  //get the caseTypes data
-  const getCaseTypesStats = async (fromDate: any, toDate: any) => {
+  //get the caseTypesRevenue data
+  const getCaseTypesRevenueStats = async (fromDate: any, toDate: any) => {
     setCaseTypeLoading(true);
+    let url = `/sales-reps/${id}/case-types-revenue`;
+    try {
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+      const response = await getSingleRepCaseTypes(url, queryParams);
+      if (response.status == 200 || response?.status == 201) {
+        let paidRevenueSum = 0;
+        let totalRevenueSum = 0;
+        let pendingRevenueSum = 0;
+
+        response?.data?.forEach((entry: any) => {
+          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
+          totalRevenueSum += entry.generated_amount ? +entry.generated_amount : 0;
+          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0
+        });
+
+        const result = ["Total", totalRevenueSum, paidRevenueSum, pendingRevenueSum];
+        setTotalSumValues(result);
+        setCaseTypesStatsData(response?.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCaseTypeLoading(false);
+    }
+  };
+
+  //get volumn case types data
+  const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
+    setCaseTypeLoading(true);
+    let url = `/sales-reps/${id}/case-types-volume`;
     try {
       let queryParams: any = {};
 
@@ -102,20 +140,21 @@ const SalesRepView = () => {
         queryParams["to_date"] = toDate;
       }
 
-      const response = await getSingleRepCaseTypes(id as string, queryParams);
+      const response = await getSingleRepCaseTypes(url, queryParams);
       if (response.status == 200 || response?.status == 201) {
-        setCaseTypesStatsData(response?.data);
-
-        let paidRevenueSum = 0;
-        let totalRevenueSum = 0;
+        let totalCases = 0;
+        let completedCases = 0;
+        let pendingCases = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
-          totalRevenueSum += entry.volume ? +entry.volume : 0;
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          completedCases += entry.completed_cases ? +entry.completed_cases : 0;
+          pendingCases += entry.pending_cases ? +entry.pending_cases : 0
         });
 
-        const result = ["Total", totalRevenueSum, paidRevenueSum];
+        const result = ["Total", totalCases, completedCases, pendingCases];
         setTotalSumValues(result);
+        setCaseTypesStatsData(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -150,7 +189,7 @@ const SalesRepView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      getCaseTypesStats(searchParams?.from_date, searchParams?.to_date);
+      getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
         setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
@@ -158,20 +197,29 @@ const SalesRepView = () => {
     } else {
       router.back();
     }
-  }, [searchParams]);
+  }, []);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
-      getCaseTypesStats(fromDate, toDate);
-
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
+      if (tabValue == "Revenue") {
+        getCaseTypesRevenueStats(fromDate, toDate);
+      }
+      else {
+        getCaseTypesVolumeStats(fromDate, toDate)
+      }
     }
     else {
       setDateFilterDefaultValue("")
       getStatsCounts("", "");
-      getCaseTypesStats("", "");
       router.push(`/sales-representatives/${id}`)
+      if (tabValue == "Revenue") {
+        getCaseTypesRevenueStats("", "");
+      }
+      else {
+        getCaseTypesVolumeStats("", "")
+      }
     }
   };
 
@@ -207,7 +255,11 @@ const SalesRepView = () => {
               <CaseTypes
                 caseTypesStatsData={caseTypesStatsData}
                 loading={caseTypeLoading}
+                getCaseTypesRevenueStats={getCaseTypesRevenueStats}
+                getCaseTypesVolumeStats={getCaseTypesVolumeStats}
                 totalRevenueSum={totalRevenueSum}
+                setTabValue={setTabValue}
+                tabValue={tabValue}
               />
             </Grid>
 

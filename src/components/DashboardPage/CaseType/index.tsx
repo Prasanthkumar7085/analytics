@@ -9,18 +9,38 @@ import { Backdrop, Badge, CircularProgress } from "@mui/material";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import CountUp from 'react-countup';
+import { Tab, Tabs } from "@mui/material";
 
 const CaseTypes = ({
   caseTypesStatsData,
   loading,
-  getCaseTypesStats,
+  getCaseTypesVolumeStats,
+  getCaseTypesRevenueStats,
   totalRevenueSum,
+  tabValue,
+  setTabValue,
+
 }: any) => {
 
+  const params = useSearchParams();
   const pathName = usePathname();
+  const [selectedDates, setSelectedDates] = useState<any>([])
 
+  useEffect(() => {
+    setSelectedDates([params.get("from_date"), params.get("to_date")]);
+  }, [params]);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+    if (newValue == "Revenue") {
+      getCaseTypesRevenueStats(selectedDates[0], selectedDates[1])
+    }
+    else {
+      getCaseTypesVolumeStats(selectedDates[0], selectedDates[1])
+    }
+  };
   let colors = [
     "#ea1d22",
     "#00a752",
@@ -63,14 +83,14 @@ const CaseTypes = ({
       array.map((item: any) => {
         tempArray.push({
           name: item["case_type_name"],
-          y: item["volume"] ? +item["volume"] : 0,
+          y: tabValue == "Revenue" ? item["generated_amount"] ? +item["generated_amount"] : 0 : item["total_cases"] ? +item["total_cases"] : 0,
         });
       });
       return tempArray;
     } else return [];
   };
 
-  const columns = [
+  const Volumecolumns = [
     {
       accessorFn: (row: any) => row.case_type_name,
       id: "case_type_name",
@@ -92,12 +112,67 @@ const CaseTypes = ({
       maxWidth: "60px",
     },
     {
-      accessorFn: (row: any) => row.volume,
-      id: "volume",
+      accessorFn: (row: any) => row.total_cases,
+      id: "total_cases",
       cell: (info: any) => (
         <span className={styles.totalCasesRow}>{info.getValue()}</span>
       ),
-      header: () => <span className={styles.tableHeading}>Total Cases</span>,
+      header: () => <span className={styles.tableHeading}>Total</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.completed_cases,
+      id: "completed_cases",
+      cell: (info: any) => (
+        <span className={styles.totalCasesRow}>{info.getValue()}</span>
+      ),
+      header: () => <span className={styles.tableHeading}>Finalised</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.pending_cases,
+      id: "pending_cases",
+      cell: (info: any) => (
+        <span className={styles.revenueBlock}>
+          {info.getValue()}
+        </span>
+      ),
+      header: () => <span className={styles.tableHeading}>Pending</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+  ];
+
+  const Revenuecolumns = [
+    {
+      accessorFn: (row: any) => row.case_type_name,
+      id: "case_type_name",
+      header: () => <span className={styles.tableHeading}>Case Type</span>,
+      cell: (info: any, index: number) => {
+        return (
+          <span className={styles.caseTypeRow}>
+            <div
+              className={styles.dot}
+              style={{ backgroundColor: colors[info.row.index] }}
+            ></div>
+            {info.getValue()}
+          </span>
+        );
+      },
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
+    {
+      accessorFn: (row: any) => row.generated_amount,
+      id: "generated_amount",
+      cell: (info: any) => (
+        <span className={styles.totalCasesRow}>{formatMoney(info.getValue())}</span>
+      ),
+      header: () => <span className={styles.tableHeading}>Billed</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -105,11 +180,21 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.paid_amount,
       id: "paid_amount",
       cell: (info: any) => (
+        <span className={styles.totalCasesRow}>{formatMoney(info.getValue())}</span>
+      ),
+      header: () => <span className={styles.tableHeading}>Collected</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.pending_amount,
+      id: "pending_amount",
+      cell: (info: any) => (
         <span className={styles.revenueBlock}>
           {formatMoney(info.getValue())}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Revenue</span>,
+      header: () => <span className={styles.tableHeading}>Pending</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -122,7 +207,7 @@ const CaseTypes = ({
         <br>
         <span style="font-size: 20px;">
             <b> 
-            ${totalNumber}</b>
+            ${totalNumber.toFixed(2)}</b>
         </span>`;
   }
 
@@ -164,7 +249,13 @@ const CaseTypes = ({
 
 
   const onChangeData = (fromDate: any, toDate: any) => {
-    getCaseTypesStats(fromDate, toDate);
+    setSelectedDates([fromDate, toDate])
+    if (tabValue == "Revenue") {
+      getCaseTypesRevenueStats(fromDate, toDate)
+    } else {
+      getCaseTypesVolumeStats(fromDate, toDate)
+
+    }
   };
 
   return (
@@ -177,6 +268,19 @@ const CaseTypes = ({
           </h3>
           {pathName?.includes("dashboard") ?
             <GlobalDateRangeFilter onChangeData={onChangeData} /> : ""}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Tabs
+              value={tabValue}
+              onChange={handleChange}
+              textColor="secondary"
+              indicatorColor="secondary"
+              aria-label="secondary tabs example"
+            >
+              <Tab value="Revenue" label="Revenue" />
+              <Tab value="Volume" label="Volume" />
+            </Tabs>
+          </div>
+
         </div>
         <div className="cardBody">
           <div style={{ display: "flex", height: "37vh" }}>
@@ -199,7 +303,7 @@ const CaseTypes = ({
 
             <TanStackTableComponent
               data={caseTypesStatsData}
-              columns={columns}
+              columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
               totalSumValues={totalRevenueSum}
               loading={false}
             />
