@@ -170,8 +170,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
 
   function formatMonthYear(monthYear: string) {
     let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 4); // Extract the last 4 characters (year)
-    return month + year; // Concatenate month abbreviation and year
+    let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
+    return month + " '" + year; // Concatenate month abbreviation and year
   }
 
   let addtionalcolumns = headerMonths?.map((item: any) => ({

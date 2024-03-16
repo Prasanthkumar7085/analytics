@@ -75,7 +75,7 @@ const DashboardPage = () => {
         let totalRevenueSum = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.revenue ? +entry.revenue : 0;
+          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
           totalRevenueSum += entry.volume ? +entry.volume : 0;
         });
 

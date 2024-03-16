@@ -10,6 +10,8 @@ import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleC
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { usePathname } from "next/navigation";
+import CountUp from 'react-countup';
+
 const CaseTypes = ({
   caseTypesStatsData,
   loading,
@@ -114,11 +116,13 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[1] ? totalRevenueSum[1] : 0;
+    const totalNumber = totalRevenueSum[1] ?
+      totalRevenueSum[1] : 0;
     return `<span style="font-size: 10px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 20px;">
-            <b> ${totalNumber}</b>
+            <b> 
+            ${totalNumber}</b>
         </span>`;
   }
 
