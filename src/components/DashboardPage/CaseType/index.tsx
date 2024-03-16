@@ -207,7 +207,7 @@ const CaseTypes = ({
         <br>
         <span style="font-size: 20px;">
             <b> 
-            ${totalNumber.toFixed(2)}</b>
+            ${formatNumber(totalNumber)}</b>
         </span>`;
   }
 

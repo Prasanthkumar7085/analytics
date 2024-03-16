@@ -97,9 +97,6 @@ const AreaGraph = ({ data, graphColor }: any) => {
           enabled: false,
         },
         plotOptions: {
-          area: {
-            color: graphColor,
-          },
 
           series: {
             animation: false,
@@ -121,6 +118,31 @@ const AreaGraph = ({ data, graphColor }: any) => {
           tooltip: {
             enabled: false,
           },
+          area: {
+            color: graphColor,
+            fillColor: {
+              linearGradient: {
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 1
+              },
+              stops: [
+                [0, graphColor],
+                [1, Highcharts.color('white').setOpacity(0).get('rgba')]
+              ]
+            },
+            marker: {
+              radius: 2
+            },
+            lineWidth: 1,
+            states: {
+              hover: {
+                lineWidth: 1
+              }
+            },
+            threshold: null
+          }
         },
 
         series: [

@@ -85,8 +85,8 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
                 : "Total Revenue",
             data:
               graphType == "volume"
-                ? trendsData?.map((item: any) => +item.volume)
-                : trendsData?.map((item: any) => +item.revenue),
+                ? trendsData?.map((item: any) => +item.total_cases)
+                : trendsData?.map((item: any) => +item.paid_amount),
             animation: {
               opacity: 1, // Set opacity animation for smoother entrance
             },
