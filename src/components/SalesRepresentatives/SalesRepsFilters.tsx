@@ -1,12 +1,17 @@
-import { MenuItem, Select, TextField } from "@mui/material";
-import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-import styles from "./salesreps-filters.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import SearchIcon from "@mui/icons-material/Search";
+import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
-const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValue, setDateFilterDefaultValue, searchParams }: any) => {
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
+import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
+const SalesRepsFilters = ({
+  onUpdateData,
+  getAllSalesReps,
+  dateFilterDefaultValue,
+  setDateFilterDefaultValue,
+  searchParams,
+}: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -14,18 +19,15 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValu
 
   useEffect(() => {
     setSearch(params.get("search") ? (params.get("search") as string) : "");
-    setStatus(params.get("status") ? (params.get("status") as string) : "all");
   }, [params]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getAllSalesReps({ fromDate, toDate, searchValue: params.get("search") });
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
-    }
-    else {
-      setDateFilterDefaultValue("", "")
-      getAllSalesReps({ searchValue: params.get("search") });
-
+      getAllSalesReps({ fromDate, toDate });
+      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+    } else {
+      setDateFilterDefaultValue("", "");
+      getAllSalesReps({});
     }
   };
   return (
@@ -36,9 +38,11 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValu
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-
             <li className="eachFilterLists">
-              <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
             </li>
             <li className="eachFilterLists">
               <TextField

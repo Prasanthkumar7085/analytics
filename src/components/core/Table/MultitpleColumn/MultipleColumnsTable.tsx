@@ -1,3 +1,4 @@
+import formatMoney from "@/lib/Pipes/moneyFormat";
 import {
   SortingState,
   flexRender,
@@ -7,10 +8,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import styles from "./multi-column.module.css";
-import formatMoney from "@/lib/Pipes/moneyFormat";
 
 interface pageProps {
   columns: any[];
@@ -18,7 +17,7 @@ interface pageProps {
   totalSumValues?: any;
   loading: boolean;
   searchParams?: any;
-  getAllSalesReps?: any
+  getData?: any;
 }
 const MultipleColumnsTable: FC<pageProps> = ({
   columns,
@@ -26,7 +25,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
   totalSumValues,
   loading,
   searchParams,
-  getAllSalesReps
+  getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
 
@@ -72,16 +71,29 @@ const MultipleColumnsTable: FC<pageProps> = ({
       <div>
         {searchParams?.order_by == header?.id ? (
           searchParams?.order_type == "asc" ? (
-            <Image src="/core/sort/sort-asc.svg"
-              height={8} width={8} alt="image" />
+            <Image
+              src="/core/sort/sort-asc.svg"
+              height={8}
+              width={8}
+              alt="image"
+            />
           ) : (
-            <Image src="/core/sort/sort-desc.svg"
-              height={8} width={8} alt="image" />
+            <Image
+              src="/core/sort/sort-desc.svg"
+              height={8}
+              width={8}
+              alt="image"
+            />
           )
         ) : removeSortingForColumnIds?.includes(header.id) ? (
           ""
         ) : (
-          <Image src="/core/sort/un-sort.svg" height={8} width={8} alt="image" />
+          <Image
+            src="/core/sort/un-sort.svg"
+            height={8}
+            width={8}
+            alt="image"
+          />
         )}
       </div>
     );
@@ -111,7 +123,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
       }
     }
 
-    getAllSalesReps({
+    getData({
       orderBy: orderBy,
       orderType: orderType,
     });
@@ -152,13 +164,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                     >
                       {header.isPlaceholder ? null : (
                         <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler()
-                          }}
-
+                          onClick={() => sortAndGetData(header)}
                           style={{
                             display: "flex",
                             gap: "10px",
@@ -175,7 +181,6 @@ const MultipleColumnsTable: FC<pageProps> = ({
                           <SortItems
                             searchParams={searchParams}
                             header={header}
-
                           />
                         </div>
                       )}
@@ -227,7 +232,12 @@ const MultipleColumnsTable: FC<pageProps> = ({
                     height: "40vh",
                   }}
                 >
-                  <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
+                  <Image
+                    src="/NoDataImageAnalytics.svg"
+                    alt=""
+                    height={150}
+                    width={250}
+                  />
                 </div>
               </td>
             </tr>
@@ -245,7 +255,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
             background: "#EFF1FA",
           }}
         >
-          <tr >
+          <tr>
             {totalSumValues?.map((item: any, index: number) => {
               return (
                 <td key={index}>
