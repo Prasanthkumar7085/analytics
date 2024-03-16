@@ -4,6 +4,7 @@ import { Skeleton } from "@mui/material";
 import Image from "next/image";
 import styles from "./index.module.css";
 import { usePathname } from "next/navigation";
+import CountUp from 'react-countup';
 
 const Stats = ({
   revenueStatsDetails,
@@ -45,11 +46,12 @@ const Stats = ({
                     {loading ? (
                       <Skeleton width={120} height={50} />
                     ) : (
-                      formatMoney(
-                        revenueStatsDetails?.[0]?.generated_amount
-                          ? revenueStatsDetails?.[0]?.generated_amount
-                          : 0
-                      )
+                      <CountUp start={0}
+                        decimal=","
+                        prefix="$"
+                        end={revenueStatsDetails?.[0]?.generated_amount}
+                      />
+
                     )}
                   </h2>
                 </div>
@@ -68,11 +70,18 @@ const Stats = ({
                     {loading ? (
                       <Skeleton width={120} height={50} />
                     ) : (
-                      formatMoney(
-                        revenueStatsDetails?.[0]?.paid_amount
-                          ? revenueStatsDetails?.[0]?.paid_amount
-                          : 0
-                      )
+
+                      <CountUp start={0}
+                        decimal=","
+                        prefix="$"
+                        end={revenueStatsDetails?.[0]?.paid_amount
+                        }
+                      />
+                      // formatMoney(
+                      //   revenueStatsDetails?.[0]?.paid_amount
+                      //     ? revenueStatsDetails?.[0]?.paid_amount
+                      //     : 0
+                      // )
                     )}
                   </h2>
                 </div>
@@ -91,11 +100,17 @@ const Stats = ({
                     {loading ? (
                       <Skeleton width={120} height={50} />
                     ) : (
-                      formatMoney(
-                        revenueStatsDetails?.[0]?.pending_amount
-                          ? revenueStatsDetails?.[0]?.pending_amount
-                          : 0
-                      )
+                      <CountUp start={0}
+                        decimal=","
+                        prefix="$"
+                        end={revenueStatsDetails?.[0]?.pending_amount
+                        }
+                      />
+                      // formatMoney(
+                      //   revenueStatsDetails?.[0]?.pending_amount
+                      //     ? revenueStatsDetails?.[0]?.pending_amount
+                      //     : 0
+                      // )
                     )}
                   </h2>
                 </div>
@@ -115,11 +130,16 @@ const Stats = ({
                     {loading ? (
                       <Skeleton width={120} height={50} />
                     ) : (
-                      formatMoney(
-                        volumeStatsDetails?.[0]?.total_cases
-                          ? volumeStatsDetails?.[0]?.total_cases
-                          : 0
-                      ).replace("$", "")
+                      <CountUp start={0}
+                        decimal=","
+                        prefix="$"
+                        end={volumeStatsDetails?.[0]?.total_cases
+                        } />
+                      // formatMoney(
+                      //   volumeStatsDetails?.[0]?.total_cases
+                      //     ? volumeStatsDetails?.[0]?.total_cases
+                      //     : 0
+                      // ).replace("$", "")
                     )}
                   </h2>
                 </div>
@@ -138,11 +158,16 @@ const Stats = ({
                     {loading ? (
                       <Skeleton width={120} height={50} />
                     ) : (
-                      formatMoney(
-                        volumeStatsDetails?.[0]?.completed_cases
-                          ? volumeStatsDetails?.[0]?.completed_cases
-                          : 0
-                      ).replace("$", "")
+                      <CountUp start={0}
+                        decimal=","
+                        prefix="$"
+                        end={volumeStatsDetails?.[0]?.completed_cases
+                        } />
+                      // formatMoney(
+                      //   volumeStatsDetails?.[0]?.completed_cases
+                      //     ? volumeStatsDetails?.[0]?.completed_cases
+                      //     : 0
+                      // ).replace("$", "")
                     )}
                   </h2>
                 </div>
@@ -161,11 +186,16 @@ const Stats = ({
                     {loading ? (
                       <Skeleton width={120} height={50} />
                     ) : (
-                      formatMoney(
-                        volumeStatsDetails?.[0]?.pending_cases
-                          ? volumeStatsDetails?.[0]?.pending_cases
-                          : 0
-                      ).replace("$", "")
+                      <CountUp start={0}
+                        decimal=","
+                        prefix="$"
+                        end={volumeStatsDetails?.[0]?.pending_cases
+                        } />
+                      // formatMoney(
+                      //   volumeStatsDetails?.[0]?.pending_cases
+                      //     ? volumeStatsDetails?.[0]?.pending_cases
+                      //     : 0
+                      // ).replace("$", "")
                     )}
                   </h2>
                 </div>

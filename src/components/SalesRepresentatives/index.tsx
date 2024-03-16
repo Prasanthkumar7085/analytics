@@ -150,7 +150,7 @@ const SalesRepresentatives = () => {
       },
     },
     {
-      accessorFn: (row: any) => row._id,
+      accessorFn: (row: any) => row.revenue,
       header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
       id: "revenue",
       width: "800px",
