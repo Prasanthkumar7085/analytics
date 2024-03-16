@@ -147,6 +147,8 @@ const Facilities = ({ searchParams }: any) => {
   useEffect(() => {
     getSalesRepFacilities(searchParams?.from_date, searchParams?.to_date);
   }, [searchParams]);
+
+
   return (
     <div style={{ position: "relative" }}>
       <MultipleColumnsTable

@@ -100,8 +100,8 @@ const CaseTypes = ({
       width: "150px",
     },
     {
-      accessorFn: (row: any) => row.revenue,
-      id: "revenue",
+      accessorFn: (row: any) => row.paid_amount,
+      id: "paid_amount",
       cell: (info: any) => (
         <span className={styles.revenueBlock}>
           {formatMoney(info.getValue())}

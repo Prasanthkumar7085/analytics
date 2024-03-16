@@ -68,10 +68,7 @@ const SalesRepresentatives = () => {
           (sum: any, item: any) => sum + +item.total_cases,
           0
         );
-        const targeted_amount = response?.data.reduce(
-          (sum: any, item: any) => sum + +item.expected_amount,
-          0
-        );
+
 
         const billedAmoumnt = response?.data.reduce(
           (sum: any, item: any) => sum + +item.generated_amount,
@@ -94,6 +91,7 @@ const SalesRepresentatives = () => {
           pendingAmoumnt,
         ];
         setTotalSumValues(result);
+
       } else {
         throw response;
       }
@@ -155,19 +153,7 @@ const SalesRepresentatives = () => {
       id: "revenue",
       width: "800px",
       columns: [
-        // {
-        //   accessorFn: (row: any) => row.expected_amount,
-        //   id: "expected_amount",
-        //   header: () => (
-        //     <span style={{ whiteSpace: "nowrap" }}>TARGETED</span>
-        //   ),
-        //   width: "200px",
-        //   maxWidth: "200px",
-        //   minWidth: "200px",
-        //   Cell: ({ getValue }: any) => {
-        //     return <span>{getValue()}</span>;
-        //   },
-        // },
+
         {
           accessorFn: (row: any) => row.generated_amount,
           header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
@@ -203,23 +189,6 @@ const SalesRepresentatives = () => {
         },
       ],
     },
-    // {
-    //   accessorFn: (row: any) => row.target_reached,
-    //   id: "target_reached",
-    //   header: () => (
-    //     <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
-    //   ),
-    //   footer: (props: any) => props.column.id,
-    //   width: "120px",
-    //   maxWidth: "120px",
-    //   minWidth: "120px",
-    //   cell: (info: any) => {
-    //     if (info.row.original.paid_amount == info.row.original.expected_amount) {
-    //       return <span>Yes</span>;
-    //     }
-    //     else return <span>No</span>;
-    //   },
-    // },
     {
       accessorFn: (row: any) => row?._id,
       id: "actions",
@@ -282,7 +251,6 @@ const SalesRepresentatives = () => {
     }
     router.push(`${prepareURLEncodedParams(pathname, queryParams)}`);
 
-    setSalesReps(data);
 
     const totalCases = data.reduce(
       (sum: any, item: any) => sum + +item.total_cases,

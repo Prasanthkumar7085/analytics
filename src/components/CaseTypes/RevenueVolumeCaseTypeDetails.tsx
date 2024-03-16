@@ -130,14 +130,14 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         const groupedData: any = {};
         // Grouping the data by case_type_id and then by month
         response?.data?.forEach((item: any) => {
-          const { case_type_id, case_type_name, month, paid_amount } = item;
+          const { case_type_id, case_type_name, month, revenue } = item;
           if (!groupedData[case_type_id]) {
             groupedData[case_type_id] = { case_type_id, case_type_name };
           }
 
           const formattedMonth = month.replace(/\s/g, '');
 
-          groupedData[case_type_id][formattedMonth] = paid_amount;
+          groupedData[case_type_id][formattedMonth] = revenue;
         });
         // Converting object to array
         const result = Object.values(groupedData);
@@ -148,16 +148,15 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         const groupedDataSum: any = {};
         // Grouping the data by month sum
         response?.data?.forEach((item: any) => {
-          const { month, paid_amount } = item;
+          const { month, revenue } = item;
           const formattedMonth = month.replace(/\s/g, '');
-          const amount = parseFloat(paid_amount);
+          const amount = parseFloat(revenue);
           if (!groupedDataSum[formattedMonth]) {
             groupedDataSum[formattedMonth] = 0;
           }
           // Add amount to the total_sum for the respective month
           groupedDataSum[formattedMonth] += amount;
         });
-        console.log(groupedDataSum, "223-32-")
         // Convert the object to an array
         setTotalSumValues(groupedDataSum);
       }

@@ -132,7 +132,6 @@ const Stats = ({
                     ) : (
                       <CountUp start={0}
                         decimal=","
-                        prefix="$"
                         end={volumeStatsDetails?.[0]?.total_cases
                         } />
                       // formatMoney(
@@ -160,7 +159,6 @@ const Stats = ({
                     ) : (
                       <CountUp start={0}
                         decimal=","
-                        prefix="$"
                         end={volumeStatsDetails?.[0]?.completed_cases
                         } />
                       // formatMoney(
@@ -188,7 +186,6 @@ const Stats = ({
                     ) : (
                       <CountUp start={0}
                         decimal=","
-                        prefix="$"
                         end={volumeStatsDetails?.[0]?.pending_cases
                         } />
                       // formatMoney(
