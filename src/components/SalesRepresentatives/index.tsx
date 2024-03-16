@@ -36,7 +36,7 @@ const SalesRepresentatives = () => {
   const [completeData, setCompleteData] = useState([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
 
-  const getAllSalesReps = async ({ fromDate, toDate }: any) => {
+  const getAllSalesReps = async ({ fromDate, toDate, searchValue }: any) => {
     setLoading(true);
     try {
       let queryParams: any = {};
@@ -47,7 +47,6 @@ const SalesRepresentatives = () => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
-      let searchValue = params.get("search");
       if (searchValue) {
         queryParams["search"] = searchValue;
       }
@@ -56,29 +55,36 @@ const SalesRepresentatives = () => {
 
       router.push(`${pathname}${queryString}`);
 
-      const { search, ...updatedQueyParams } = queryParams;
-      const response = await salesRepsAPI(updatedQueyParams);
+      const response = await salesRepsAPI(queryParams);
 
       if (response.status == 200 || response.status == 201) {
-        setSalesReps(response?.data);
-        setCompleteData(response?.data);
-        onUpdateData({ queryData: queryParams }, response?.data);
+        let data = response?.data;
+        if (searchValue) {
+          data = data.filter((item: any) =>
+            item.sales_rep_name
+              ?.toLowerCase()
+              ?.includes(searchValue?.toLowerCase()?.trim())
+          );
+        }
 
-        const totalCases = response?.data.reduce(
+        setSalesReps(data);
+        setCompleteData(data);
+
+        const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
           0
         );
 
 
-        const billedAmoumnt = response?.data.reduce(
+        const billedAmoumnt = data.reduce(
           (sum: any, item: any) => sum + +item.generated_amount,
           0
         );
-        const paidRevenueSum = response?.data.reduce(
+        const paidRevenueSum = data.reduce(
           (sum: any, item: any) => sum + +item.paid_amount,
           0
         );
-        const pendingAmoumnt = response?.data.reduce(
+        const pendingAmoumnt = data.reduce(
           (sum: any, item: any) => sum + +item.pending_amount,
           0
         );
@@ -211,7 +217,7 @@ const SalesRepresentatives = () => {
   ];
   const onUpdateData = (
     {
-      search = params.get("search") as string,
+      search,
       queryData,
     }: Partial<{
       search: string;
@@ -219,74 +225,13 @@ const SalesRepresentatives = () => {
     }>,
     testData?: any[]
   ) => {
-    let queryParams: any = {};
 
-    if (queryData) {
-      queryParams = { ...queryData };
-    } else {
-      if (search) {
-        queryParams["search"] = search;
-      }
-      if (params.get("from_date")) {
-        queryParams["from_date"] = params.get("from_date");
-      }
-      if (params.get("to_date")) {
-        queryParams["to_date"] = params.get("to_date");
-      }
-    }
+    getAllSalesReps({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: search });
 
-    let data: any = [...completeData];
-    if (!completeData?.length) {
-      if (testData?.length) {
-        data = [...testData];
-      } else return;
-    }
-
-    if (search) {
-      data = data.filter((item: any) =>
-        item.sales_rep_name
-          ?.toLowerCase()
-          ?.includes(search?.toLowerCase()?.trim())
-      );
-    }
-    router.push(`${prepareURLEncodedParams(pathname, queryParams)}`);
-
-
-    const totalCases = data.reduce(
-      (sum: any, item: any) => sum + +item.total_cases,
-      0
-    );
-    const targeted_amount = data.reduce(
-      (sum: any, item: any) => sum + +item.expected_amount,
-      0
-    );
-
-    const billedAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.generated_amount,
-      0
-    );
-    const paidRevenueSum = data.reduce(
-      (sum: any, item: any) => sum + +item.paid_amount,
-      0
-    );
-    const pendingAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.pending_amount,
-      0
-    );
-
-    const result = [
-      "Total",
-      totalCases,
-      billedAmoumnt,
-      paidRevenueSum,
-      pendingAmoumnt,
-    ];
-
-    setTotalSumValues(result);
   };
 
   useEffect(() => {
-    getAllSalesReps({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date });
+    getAllSalesReps({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: searchParams?.search });
     if (searchParams?.from_date) {
       setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
     }
@@ -306,6 +251,7 @@ const SalesRepresentatives = () => {
         getAllSalesReps={getAllSalesReps}
         dateFilterDefaultValue={dateFilterDefaultValue}
         setDateFilterDefaultValue={setDateFilterDefaultValue}
+        searchParams={searchParams}
       />
       <MultipleColumnsTable
         data={salesReps}

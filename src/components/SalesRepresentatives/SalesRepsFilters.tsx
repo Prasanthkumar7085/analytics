@@ -6,11 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
+const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValue, setDateFilterDefaultValue, searchParams }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
   const router: any = useRouter();
+
   useEffect(() => {
     setSearch(params.get("search") ? (params.get("search") as string) : "");
     setStatus(params.get("status") ? (params.get("status") as string) : "all");
@@ -18,12 +19,12 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValu
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getAllSalesReps({ fromDate, toDate });
+      getAllSalesReps({ fromDate, toDate, searchValue: params.get("search") });
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
     }
     else {
       setDateFilterDefaultValue("", "")
-      getAllSalesReps({});
+      getAllSalesReps({ searchValue: params.get("search") });
 
     }
   };
@@ -35,21 +36,7 @@ const SalesRepsFilters = ({ onUpdateData, getAllSalesReps, dateFilterDefaultValu
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-            {/* <li className="eachFilterLists">
-              <Select
-                onChange={(e: any) => {
-                  setStatus(e.target.value);
-                  onUpdateData({ status: e.target.value });
-                }}
-                value={status}
-                className="targetFilter"
-                placeholder="Target Reached"
-              >
-                <MenuItem value={"all"}>All</MenuItem>
-                <MenuItem value={"yes"}>Yes</MenuItem>
-                <MenuItem value={"no"}>No</MenuItem>
-              </Select>
-            </li> */}
+
             <li className="eachFilterLists">
               <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
             </li>
