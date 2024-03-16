@@ -204,7 +204,7 @@ const SingleColumnTable: FC<pageProps> = ({
               return (
                 <td key={index}>
                   {item
-                    ? index == 0 || index == 1
+                    ? index == 0
                       ? item
                       : formatMoney(item)
                     : ""}

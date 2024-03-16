@@ -171,6 +171,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+
                           <SortItems
                             searchParams={searchParams}
                             header={header}

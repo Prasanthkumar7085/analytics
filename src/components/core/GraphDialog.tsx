@@ -19,7 +19,7 @@ const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, graphValu
             title: {
                 text: 'Months'
             },
-            categories: Object.keys(graphValuesData).map((item: any) => item),
+            categories: Object?.values(graphValuesData)?.length ? Object?.keys(graphValuesData).map((item: any) => item) : [],
 
         },
         plotOptions: {
@@ -37,7 +37,7 @@ const GraphDialog = ({ graphDialogOpen, setGraphDialogOpen, graphData, graphValu
         },
         series: [{
             name: graphData.case_type_name,
-            data: Object.values(graphValuesData).map((item: any) => +item),
+            data: Object?.values(graphValuesData)?.length ? Object.values(graphValuesData).map((item: any) => +item) : [],
             type: 'area'
         }]
     };
