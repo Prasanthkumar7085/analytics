@@ -512,7 +512,7 @@ table {
 }
 
 .Stats_totalvalue__y0659 {
-  font-size: 1.35em !important;
+  font-size: 1.15em !important;
   font-weight: 600 !important;
 }
 
@@ -554,7 +554,64 @@ table {
         }
       }
     }
+
+    td {
+      background: #fff !important;
+    }
+
+    thead,
+    tfoot {
+      z-index: 99;
+    }
+
+    tbody td:first-child {
+      z-index: 9;
+    }
+
+    thead th:first-child,
+    tbody td:first-child,
+    tfoot td:first-child {
+      position: sticky;
+      left: 0;
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    thead th:last-child,
+    tbody td:last-child,
+    tfoot td:last-child {
+      position: sticky;
+      right: 0;
+      border-left: 1px solid rgba(0, 0, 0, 0.05);
+
+      svg {
+        height: 30px;
+      }
+    }
+
+    .remove-tooltip>div {
+      height: 20px !important;
+    }
+
+    tfoot {
+      td {
+        background: #eff1fa !important;
+      }
+    }
+
+    thead th {
+      z-index: 999;
+    }
+
+    tbody th,
+    tbody td {
+      position: sticky;
+      left: 0;
+      background: white;
+      z-index: 1;
+    }
   }
+
+
 }
 
 #SalesRepresentativeTableData {
