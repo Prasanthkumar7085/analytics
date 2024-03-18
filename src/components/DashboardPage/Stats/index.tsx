@@ -47,7 +47,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       <CountUp start={0}
-                        decimal=","
+                        decimal="."
+                        decimals={2}
                         prefix="$"
                         end={revenueStatsDetails?.[0]?.generated_amount}
                       />
@@ -72,7 +73,8 @@ const Stats = ({
                     ) : (
 
                       <CountUp start={0}
-                        decimal=","
+                        decimal="."
+                        decimals={2}
                         prefix="$"
                         end={revenueStatsDetails?.[0]?.paid_amount
                         }
@@ -101,7 +103,8 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       <CountUp start={0}
-                        decimal=","
+                        decimal="."
+                        decimals={2}
                         prefix="$"
                         end={revenueStatsDetails?.[0]?.pending_amount
                         }
@@ -131,7 +134,7 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       <CountUp start={0}
-                        decimal=","
+                        decimal="."
                         end={volumeStatsDetails?.[0]?.total_cases
                         } />
                       // formatMoney(
@@ -158,7 +161,7 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       <CountUp start={0}
-                        decimal=","
+                        decimal="."
                         end={volumeStatsDetails?.[0]?.completed_cases
                         } />
                       // formatMoney(
@@ -185,7 +188,7 @@ const Stats = ({
                       <Skeleton width={120} height={50} />
                     ) : (
                       <CountUp start={0}
-                        decimal=","
+                        decimal="."
                         end={volumeStatsDetails?.[0]?.pending_cases
                         } />
                       // formatMoney(

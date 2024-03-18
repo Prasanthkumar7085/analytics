@@ -211,8 +211,8 @@ const SingleColumnTable: FC<pageProps> = ({
                 <td key={index}>
                   {item
                     ? index == 0
-                      ? item
-                      : formatMoney(item)
+                      ? item.value
+                      : item?.dolorSymbol ? formatMoney(item.value) : item.value?.toLocaleString()
                     : ""}
                 </td>
               );

@@ -24,7 +24,7 @@ const SalesRepresentatives = () => {
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
   const [loading, setLoading] = useState(false);
-  const [totalSumValues, setTotalSumValues] = useState<(string | number)[]>([]);
+  const [totalSumValues, setTotalSumValues] = useState<any>([]);
 
   const [salesReps, setSalesReps] = useState([]);
   const [completeData, setCompleteData] = useState([]);
@@ -95,14 +95,14 @@ const SalesRepresentatives = () => {
           0
         );
 
-        const result = [
-          "Total",
-          null,
-          null,
-          totalCases,
-          billedAmoumnt,
-          paidRevenueSum,
-          pendingAmoumnt,
+        const result: any = [
+          { value: "Total", dolorSymbol: false },
+          { value: null, dolorSymbol: false },
+          { value: null, dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+          { value: billedAmoumnt, dolorSymbol: true },
+          { value: paidRevenueSum, dolorSymbol: true },
+          { value: pendingAmoumnt, dolorSymbol: true },
         ];
         setTotalSumValues(result);
       } else {
@@ -161,7 +161,7 @@ const SalesRepresentatives = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+        return <span>{getValue()?.toLocaleString()}</span>;
       },
     },
     {
@@ -173,7 +173,7 @@ const SalesRepresentatives = () => {
       maxWidth: "200px",
       minWidth: "200px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+        return <span>{getValue()?.toLocaleString()}</span>;
       },
     },
     {
@@ -306,13 +306,14 @@ const SalesRepresentatives = () => {
       0
     );
 
-    const result = [
-      "Total",
-      null,
-      totalCases,
-      billedAmoumnt,
-      paidRevenueSum,
-      pendingAmoumnt,
+    const result: any = [
+      { value: "Total", dolorSymbol: false },
+      { value: null, dolorSymbol: false },
+      { value: null, dolorSymbol: false },
+      { value: totalCases, dolorSymbol: false },
+      { value: billedAmoumnt, dolorSymbol: true },
+      { value: paidRevenueSum, dolorSymbol: true },
+      { value: pendingAmoumnt, dolorSymbol: true },
     ];
     setTotalSumValues(result);
   };

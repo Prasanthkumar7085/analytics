@@ -115,7 +115,7 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>{info.getValue()}</span>
+        <span className={styles.totalCasesRow}>{info.getValue()?.toLocaleString()}</span>
       ),
       header: () => <span className={styles.tableHeading}>Total</span>,
       footer: (props: any) => props.column.id,
@@ -125,7 +125,7 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.completed_cases,
       id: "completed_cases",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>{info.getValue()}</span>
+        <span className={styles.totalCasesRow}>{info.getValue()?.toLocaleString()}</span>
       ),
       header: () => <span className={styles.tableHeading}>Finalised</span>,
       footer: (props: any) => props.column.id,
@@ -136,7 +136,7 @@ const CaseTypes = ({
       id: "pending_cases",
       cell: (info: any) => (
         <span className={styles.revenueBlock}>
-          {info.getValue()}
+          {info.getValue()?.toLocaleString()}
         </span>
       ),
       header: () => <span className={styles.tableHeading}>Pending</span>,
@@ -201,13 +201,13 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[1] ?
-      totalRevenueSum[1] : 0;
+    const totalNumber = totalRevenueSum[1]?.value ?
+      totalRevenueSum[1]?.value : 0;
     return `<span style="font-size: 6px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 13px;">
             <b> 
-            ${tabValue == "Revenue" ? formatMoney(totalNumber) : totalNumber.toFixed(2)}</b>
+            ${tabValue == "Revenue" ? formatMoney(totalNumber) : totalNumber?.toLocaleString()}</b>
         </span>`;
   }
 
