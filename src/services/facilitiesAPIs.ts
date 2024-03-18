@@ -25,4 +25,16 @@ export const getSingleFacilityCaseTypes = async (facility_id: string, queryParam
     }
 };
 
+export const getSingleFacilityDetailsAPI = async (id: string) => {
+    try {
+        const { success, data } = await $fetch.get(`/facilities/${id}`);
+        if (!success) {
+            return handleAPIErrorResponse(data);
+        }
+        return data;
+    } catch (err) {
+        throw err;
+    }
+};
+
 

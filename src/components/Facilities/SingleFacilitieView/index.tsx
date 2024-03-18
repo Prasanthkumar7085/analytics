@@ -13,10 +13,11 @@ import InsurancePayors from "@/components/InsurancePayors";
 import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { getSingleFacilityCaseTypes } from "@/services/facilitiesAPIs";
+import { getSingleFacilityCaseTypes, getSingleFacilityDetailsAPI } from "@/services/facilitiesAPIs";
 import { ArrowBack } from "@mui/icons-material";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { Avatar } from "@mui/material";
+import { Avatar, Grid } from "@mui/material";
+import Image from "next/image";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -32,7 +33,9 @@ const FacilitiesView = () => {
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
-  const [caseTypeLoading, setCaseTypeLoading] = useState(true)
+  const [caseTypeLoading, setCaseTypeLoading] = useState(true);
+  const [tabValue, setTabValue] = useState("Revenue");
+  const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>()
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
@@ -78,9 +81,10 @@ const FacilitiesView = () => {
     }
   };
 
-  //get the caseTypes data
-  const getCaseTypesStats = async (fromDate: any, toDate: any) => {
+  //get the caseTypesRevenue data
+  const getCaseTypesRevenueStats = async (fromDate: any, toDate: any) => {
     setCaseTypeLoading(true);
+    let url = `/facilities/${id}/case-types-revenue`;
     try {
       let queryParams: any = {};
 
@@ -90,21 +94,70 @@ const FacilitiesView = () => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
-      const response = await getSingleFacilityCaseTypes(id as string, "");
+      const response = await getSingleRepCaseTypes(url, queryParams);
       if (response.status == 200 || response?.status == 201) {
-
-        setCaseTypesStatsData(response?.data);
-
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
+        let pendingRevenueSum = 0;
 
         response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.revenue ? +entry.revenue : 0;
-          totalRevenueSum += entry.volume ? +entry.volume : 0;
+          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
+          totalRevenueSum += entry.generated_amount
+            ? +entry.generated_amount
+            : 0;
+          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = ["Total", totalRevenueSum, paidRevenueSum];
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalRevenueSum, dolorSymbol: true },
+          { value: paidRevenueSum, dolorSymbol: true },
+          { value: pendingRevenueSum, dolorSymbol: true },
+        ];
         setTotalSumValues(result);
+        setCaseTypesStatsData(response?.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCaseTypeLoading(false);
+    }
+  };
+
+  //get volumn case types data
+  const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
+    setCaseTypeLoading(true);
+    let url = `/facilities/${id}/case-types-volume`;
+    try {
+      let queryParams: any = {};
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
+      const response = await getSingleRepCaseTypes(url, queryParams);
+      if (response.status == 200 || response?.status == 201) {
+        let totalCases = 0;
+        let completedCases = 0;
+        let pendingCases = 0;
+
+        response?.data?.forEach((entry: any) => {
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          completedCases += entry.completed_cases ? +entry.completed_cases : 0;
+          pendingCases += entry.pending_cases ? +entry.pending_cases : 0;
+        });
+
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+          { value: completedCases, dolorSymbol: false },
+          { value: pendingCases, dolorSymbol: false },
+        ];
+        setTotalSumValues(result);
+        setCaseTypesStatsData(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -122,14 +175,37 @@ const FacilitiesView = () => {
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
-      getCaseTypesStats(fromDate, toDate);
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
+      if (tabValue == "Revenue") {
+        getCaseTypesRevenueStats(fromDate, toDate);
+      } else {
+        getCaseTypesVolumeStats(fromDate, toDate);
+      }
     }
     else {
       setDateFilterDefaultValue("")
       getStatsCounts("", "");
-      getCaseTypesStats("", "");
       router.push(`/facilities/${id}`)
+      if (tabValue == "Revenue") {
+        getCaseTypesRevenueStats("", "");
+      } else {
+        getCaseTypesVolumeStats("", "");
+      }
+    }
+  };
+
+  //get single facility details
+  const getSignleSalesRepDetails = async () => {
+    setLoading(true);
+    try {
+      const response = await getSingleFacilityDetailsAPI(id as string);
+      if (response.status == 200 || response?.status == 201) {
+        setSingleFacilityDetails(response?.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,7 +213,8 @@ const FacilitiesView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      getCaseTypesStats(searchParams?.from_date, searchParams?.to_date);
+      getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
+      getSignleSalesRepDetails()
     }
     if (searchParams?.from_date) {
       setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
@@ -145,76 +222,94 @@ const FacilitiesView = () => {
   }, []);
 
   return (
-    <div className={styles.salesrepviewpage}>
+    <div>
+      <div className="salesPersonDataDetails">
+        <div className="personDetails">
+          <div className="flex items-center w-[250px]">
+            <div>
+              <div
+                onClick={() => router.back()}
+                className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
+              >
+                <ArrowBack className="w-[20px] text-[#bf1b39]" />
+              </div>
+            </div>
+            <div style={{ width: "40%", display: "flex", flexDirection: "row" }}>
+              <div className="person flex items-center">
+                <Avatar sx={{ height: "30px", width: "30px" }} />
+                <div className="pl-3">
+                  <p>Facility Name</p>
+                  <p>{singleFacilityDetails?.[0]?.facility_name}</p>
+                </div>
+              </div>
+              <div className="person flex items-center">
+                <Avatar sx={{ height: "30px", width: "30px" }} />
+                <div className="pl-3">
+                  <p>Marketer Name</p>
+                  <p>{singleFacilityDetails?.[0]?.sales_rep_name}</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <div className={styles.container}>
-        <div className="personDetails" style={{ width: "100%" }}>
-          <div
-            onClick={() => router.back()}
-            className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
-          >
-            <ArrowBack className="w-[20px] text-[#bf1b39]" />
-          </div>
-          <div className="person flex items-center">
-            <Avatar sx={{ height: "30px", width: "30px" }} />
-            <p className="pl-3">{"fd"}</p>
-          </div>
+
           <div style={{ marginLeft: "70%" }}>
-            <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
+            <GlobalDateRangeFilter
+              onChangeData={onChangeData}
+              dateFilterDefaultValue={dateFilterDefaultValue}
+            />
           </div>
         </div>
-        <div className={styles.detailscontainer}>
-
-          <section className={styles.container7}>
-            <div style={{ width: "40%" }}>
+        <div className="personData">
+          <Grid container spacing={2}>
+            <Grid item xs={4}>
               <Stats
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
                 onChange={() => { }}
               />
-            </div>
-            <div style={{ width: "60%" }}>
+            </Grid>
+            <Grid item xs={8}>
               <CaseTypes
                 caseTypesStatsData={caseTypesStatsData}
                 loading={caseTypeLoading}
+                getCaseTypesRevenueStats={getCaseTypesRevenueStats}
+                getCaseTypesVolumeStats={getCaseTypesVolumeStats}
                 totalRevenueSum={totalRevenueSum}
+                setTabValue={setTabValue}
+                tabValue={tabValue}
               />
-            </div>
-          </section>
+            </Grid>
 
-          <div className={styles.casetypecontainer}>
-            <SingleFacilitieCaseTypeDetails apiUrl={"facilities"} />
-          </div>
-
-          <div className={styles.insurancetrendscontainer}>
-            <div className={styles.casetypedetails}>
-              <header className={styles.headercontainer}>
-                <div className={styles.header1}>
-                  <div className={styles.headingcontainer}>
-                    <div className={styles.iconcontainer}>
-                      <img className={styles.icon} alt="" src="/icon.svg" />
-                    </div>
-                    <h3 className={styles.heading}>Insurance Payors</h3>
-                  </div>
+            <Grid item xs={12}>
+              <SingleFacilitieCaseTypeDetails
+                apiUrl={"facilities"}
+                searchParams={searchParams}
+              />
+            </Grid>
+            <Grid item xs={7}>
+              <div className="eachDataCard" id="InsurancePayorsData">
+                <div className="cardHeader">
+                  <h3>
+                    <Image
+                      alt=""
+                      src="/tableDataIcon.svg"
+                      height={20}
+                      width={20}
+                    />
+                    Insurance Payors
+                  </h3>
                 </div>
-              </header>
-              <InsurancePayors />
-            </div>
-            <div className={styles.revenuedetails}>
-              <header className={styles.headercontainer3}>
-                <div className={styles.header1}>
-                  <div className={styles.headingcontainer}>
-                    <div className={styles.iconcontainer}>
-                      <img className={styles.icon} alt="" src="/icon.svg" />
-                    </div>
-                    <h3 className={styles.heading}>Trends</h3>
-                  </div>
+                <div className="cardBody">
+                  <InsurancePayors searchParams={searchParams} />
                 </div>
-              </header>
-              <Trends />
-            </div>
-          </div>
+              </div>
+            </Grid>
+            <Grid item xs={5}>
+              <Trends searchParams={searchParams} />
+            </Grid>
+          </Grid>
         </div>
       </div>
     </div>

@@ -12,6 +12,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import FacilitiesFilters from "./FacilitiesFilters";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import LoadingComponent from "../core/LoadingComponent";
+import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { addSerial } from "@/lib/Pipes/addSerial";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 
 const FacilitiesList = () => {
   const router = useRouter();
@@ -21,13 +25,17 @@ const FacilitiesList = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
-  const [totalSumValues, setTotalSumValues] = useState<(string | number)[]>([]);
+  const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [completeData, setCompleteData] = useState([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
   const [loading, setLoading] = useState<boolean>(true)
 
   //get the list of Facilities
-  const getFacilitiesList = async ({ fromDate, toDate }: any) => {
+  const getFacilitiesList = async ({
+    fromDate, toDate,
+    searchValue = searchParams?.search,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type, }: any) => {
     setLoading(true)
     try {
       let queryParams: any = {};
@@ -38,10 +46,16 @@ const FacilitiesList = () => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
-      let searchValue = params.get("search");
       if (searchValue) {
         queryParams["search"] = searchValue;
       }
+      if (orderBy) {
+        queryParams["order_by"] = orderBy;
+      }
+      if (orderType) {
+        queryParams["order_type"] = orderType;
+      }
+
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
@@ -50,33 +64,44 @@ const FacilitiesList = () => {
 
       const response = await facilitiesAPI(updatedQueyParams);
       if (response?.status == 200 || response.status == 201) {
-        setFacilitiesData(response?.data)
         setCompleteData(response?.data);
-        onUpdateData({ queryData: queryParams }, response?.data);
-        const totalCases = response?.data.reduce(
+
+        let data = response?.data;
+        if (searchValue) {
+          data = data.filter((item: any) =>
+            item.sales_rep_name
+              ?.toLowerCase()
+              ?.includes(searchValue?.toLowerCase()?.trim())
+          );
+        }
+        data = sortAndGetData(data, orderBy, orderType);
+        const modifieData = addSerial(data, 1, data?.length);
+        setFacilitiesData(modifieData)
+        const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
           0
         );
-        const billedAmoumnt = response?.data.reduce(
+        const billedAmoumnt = data.reduce(
           (sum: any, item: any) => sum + +item.generated_amount,
           0
         );
-        const paidRevenueSum = response?.data.reduce(
+        const paidRevenueSum = data.reduce(
           (sum: any, item: any) => sum + +item.paid_amount,
           0
         );
-        const pendingAmoumnt = response?.data.reduce(
+        const pendingAmoumnt = data.reduce(
           (sum: any, item: any) => sum + +item.pending_amount,
           0
         );
 
         const result = [
-          "Total",
-          null,
-          totalCases,
-          billedAmoumnt,
-          paidRevenueSum,
-          pendingAmoumnt,
+          { value: "Total", dolorSymbol: false },
+          { value: null, dolorSymbol: false },
+          { value: null, dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+          { value: billedAmoumnt, dolorSymbol: true },
+          { value: paidRevenueSum, dolorSymbol: true },
+          { value: pendingAmoumnt, dolorSymbol: true },
         ];
         setTotalSumValues(result);
 
@@ -112,6 +137,15 @@ const FacilitiesList = () => {
 
   const columnDef = [
     {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
+    {
       accessorFn: (row: any) => row.facility_name,
       id: "facility_name",
       header: () => (
@@ -126,8 +160,8 @@ const FacilitiesList = () => {
       },
     },
     {
-      accessorFn: (row: any) => row.sales_rep,
-      id: "sales_rep",
+      accessorFn: (row: any) => row.sales_rep_name,
+      id: "sales_rep_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>SALES REP</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
@@ -146,7 +180,7 @@ const FacilitiesList = () => {
       maxWidth: "200px",
       minWidth: "200px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+        return <span>{getValue().toLocaleString()}</span>;
       },
     },
     {
@@ -162,8 +196,8 @@ const FacilitiesList = () => {
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
-          Cell: ({ getValue }: any) => {
-            return <span>{getValue()}</span>;
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
           },
         },
         {
@@ -175,8 +209,8 @@ const FacilitiesList = () => {
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
-          Cell: ({ getValue }: any) => {
-            return <span>{getValue()}</span>;
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
           },
         },
         {
@@ -186,8 +220,8 @@ const FacilitiesList = () => {
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
-          Cell: ({ getValue }: any) => {
-            return <span>{getValue()}</span>;
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
           },
         },
       ],
@@ -217,56 +251,59 @@ const FacilitiesList = () => {
   ]
 
 
-  const onUpdateData = (
-    {
-      search = params.get("search") as string,
-      queryData,
-    }: Partial<{
-      search: string;
-      queryData?: any;
-    }>,
-    testData?: any[]
-  ) => {
+  const onUpdateData = ({
+    search = searchParams?.search,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type as "asc" | "desc",
+  }: Partial<{
+    search: string;
+    orderBy: string;
+    orderType: "asc" | "desc";
+  }>) => {
     let queryParams: any = {};
-
-    if (queryData) {
-      queryParams = { ...queryData };
-    } else {
-      if (search) {
-        queryParams["search"] = search;
-      }
-      if (params.get("from_date")) {
-        queryParams["from_date"] = params.get("from_date");
-      }
-      if (params.get("to_date")) {
-        queryParams["to_date"] = params.get("to_date");
-      }
-    }
-
-    let data: any = [...completeData];
-    if (!completeData?.length) {
-      if (testData?.length) {
-        data = [...testData];
-      } else return;
-    }
-
     if (search) {
-      data = data.filter((item: any) =>
-        item.facility_name
-          ?.toLowerCase()
-          ?.includes(search?.toLowerCase()?.trim())
-      );
+      queryParams["search"] = search;
     }
-    router.push(`${prepareURLEncodedParams(pathname, queryParams)}`);
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
+    }
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
+    }
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
+    }
 
-    setFacilitiesData(data);
+    router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
+    let data = [...completeData];
+
+    if (orderBy && orderType) {
+      data = sortAndGetData(data, orderBy, orderType);
+      if (search) {
+        data = data.filter((item: any) =>
+          item.sales_rep_name
+            ?.toLowerCase()
+            ?.includes(search?.toLowerCase()?.trim())
+        );
+      }
+    } else {
+      data = [...completeData];
+      if (search) {
+        data = data.filter((item: any) =>
+          item.sales_rep_name
+            ?.toLowerCase()
+            ?.includes(search?.toLowerCase()?.trim())
+        );
+      }
+    }
+    const modifieData = addSerial(data, 1, data?.length);
+    setFacilitiesData(modifieData);
 
     const totalCases = data.reduce(
       (sum: any, item: any) => sum + +item.total_cases,
-      0
-    );
-    const targeted_amount = data.reduce(
-      (sum: any, item: any) => sum + +item.expected_amount,
       0
     );
 
@@ -283,20 +320,23 @@ const FacilitiesList = () => {
       0
     );
 
-    const result = [
-      "Total",
-      null,
-      totalCases,
-      billedAmoumnt,
-      paidRevenueSum,
-      pendingAmoumnt,
+    const result: any = [
+      { value: "Total", dolorSymbol: false },
+      { value: null, dolorSymbol: false },
+      { value: null, dolorSymbol: false },
+      { value: totalCases, dolorSymbol: false },
+      { value: billedAmoumnt, dolorSymbol: true },
+      { value: paidRevenueSum, dolorSymbol: true },
+      { value: pendingAmoumnt, dolorSymbol: true },
     ];
-
     setTotalSumValues(result);
   };
 
+
   useEffect(() => {
-    getFacilitiesList({ fromDate: searchParams?.from_date, toDate: searchParams?.to_date });
+    getFacilitiesList({
+      fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: searchParams?.search,
+    });
     if (searchParams?.from_date) {
       setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
     }
@@ -317,11 +357,13 @@ const FacilitiesList = () => {
         dateFilterDefaultValue={dateFilterDefaultValue}
         setDateFilterDefaultValue={setDateFilterDefaultValue}
       />
-      <MultipleColumnsTable
+      <MultipleColumnsTableForSalesRep
         data={facilitiesData}
         columns={columnDef}
         loading={loading}
         totalSumValues={totalSumValues}
+        searchParams={searchParams}
+        getData={onUpdateData}
       />
       <LoadingComponent loading={loading} />
     </div>
