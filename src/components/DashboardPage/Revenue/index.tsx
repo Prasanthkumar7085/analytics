@@ -8,12 +8,11 @@ import { toast } from "sonner";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 const RevenueBlock = () => {
-
   const [totalGraphData, setTotalGraphData] = useState<any>([]);
-  const [labelsData, setLablesData] = useState<any>([])
-  const [billedData, setBilledData] = useState<any>([])
-  const [totalRevenueData, setTotalRevenueData] = useState<any>([])
-  const [loading, setLoading] = useState(true)
+  const [labelsData, setLablesData] = useState<any>([]);
+  const [billedData, setBilledData] = useState<any>([]);
+  const [totalRevenueData, setTotalRevenueData] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
   const updateTheResponseForGraph = (data: any) => {
     if (!data) {
       return;
@@ -29,9 +28,8 @@ const RevenueBlock = () => {
   };
 
   const getRevenue = async (fromDate: any, toDate: any) => {
-    setLoading(true)
+    setLoading(true);
     try {
-
       let queryParams: any = {};
 
       if (fromDate) {
@@ -48,9 +46,8 @@ const RevenueBlock = () => {
       }
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
-    }
-    finally {
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,56 +60,52 @@ const RevenueBlock = () => {
   };
 
   return (
-    <div className={styles.casetype} style={{ position: "relative" }}>
-      <div className={styles.header}>
-        <div className={styles.headingcontainer}>
-          <div className={styles.iconcontainer}>
-            <Image
-              className={styles.icon}
-              alt=""
-              src="/navbar/icon.svg"
-              height={20}
-              width={20}
-            />
-          </div>
-          <div className={styles.heading}>Revenue</div>
+    <>
+      <div className="eachDataCard" id="RevenueTableData">
+        <div className="cardHeader">
+          <h3>
+            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+            Revenue
+          </h3>
+          <GlobalDateRangeFilter onChangeData={onChangeData} />
         </div>
-        <GlobalDateRangeFilter onChangeData={onChangeData} />
-      </div>
-      <div style={{ width: "98%" }}>
-        <RevenueDataGraph labelsData={labelsData}
-          billedData={billedData}
-          totalRevenueData={totalRevenueData} />
-      </div>
-
-      {loading ? (
-        <Backdrop
-          open={true}
-          style={{
-            zIndex: 999,
-            color: "red",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "rgba(256,256,256,0.8)",
-          }}
-        >
-          <object
-            type="image/svg+xml"
-            data={"/core/loading.svg"}
-            width={150}
-            height={150}
+        <div className="cardBody">
+          <RevenueDataGraph
+            labelsData={labelsData}
+            billedData={billedData}
+            totalRevenueData={totalRevenueData}
           />
-        </Backdrop>
-      ) : (
-        ""
-      )}
-    </div>
+
+          {loading ? (
+            <Backdrop
+              open={true}
+              style={{
+                zIndex: 999,
+                color: "red",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(256,256,256,0.8)",
+              }}
+            >
+              <object
+                type="image/svg+xml"
+                data={"/core/loading.svg"}
+                width={150}
+                height={150}
+              />
+            </Backdrop>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

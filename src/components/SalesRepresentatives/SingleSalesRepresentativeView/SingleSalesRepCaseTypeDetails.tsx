@@ -6,25 +6,22 @@ import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
   const [value, setValue] = useState("Revenue");
-  const [selectedDate, setSelectedDate] = useState<any>([])
+  const [selectedDate, setSelectedDate] = useState<any>([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
 
-
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      setSelectedDate([fromDate, toDate])
-    }
-    else {
-      setSelectedDate([])
-
+      setSelectedDate([fromDate, toDate]);
+    } else {
+      setSelectedDate([]);
     }
   };
 
   return (
-    <div className="eachDataCard" id="caseTypesData">
+    <div className="eachDataCard" id="mothWiseCaseTypeData">
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
@@ -43,7 +40,12 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
         {/* <GlobalDateRangeFilter onChangeData={onChangeData} /> */}
       </div>
       <div className="cardBody">
-        <RevenuVolumeCaseTypesDetails tabValue={value} apiUrl={apiUrl} searchParams={searchParams} selectedDate={selectedDate} />
+        <RevenuVolumeCaseTypesDetails
+          tabValue={value}
+          apiUrl={apiUrl}
+          searchParams={searchParams}
+          selectedDate={selectedDate}
+        />
       </div>
     </div>
   );

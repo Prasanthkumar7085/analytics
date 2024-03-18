@@ -15,8 +15,8 @@ table {
       th {
         height: auto;
         font-size: 11px;
-        font-weight: 500;
-        padding: 15px 20px;
+        font-weight: 500 !important;
+        padding: 8px 10px;
         border-left: 1px solid #fff;
         border-right: 1px solid #fff;
         border-top: 1px solid #fff;
@@ -35,7 +35,7 @@ table {
       height: auto;
       font-size: 13px;
       font-weight: 600;
-      padding: 5px 20px;
+      padding: 5px 10px;
       border: 1px solid #edf2f7;
       background: #eff1fa;
     }
@@ -47,7 +47,7 @@ table {
         height: auto;
         font-size: 13px;
         font-weight: 500;
-        padding: 5px 20px;
+        padding: 5px 10px;
         border-bottom: 1px solid #edf2f7;
 
         &:nth-child(3) {
@@ -90,7 +90,6 @@ table {
 
   tfoot {
     td {
-      padding: 10px 20px;
 
       &:not(:last-child) {
         border-right: 1px solid rgba(0, 0, 0, 0.05);
@@ -372,6 +371,7 @@ table {
     overflow: auto;
     padding: 0 !important;
   }
+
   .tableContainer .thead .table-row .cell:first-child {
     border-left: 0.633951px solid #e0e0e0 !important;
     border-radius: 5px 0px 0px 5px !important;
@@ -380,6 +380,7 @@ table {
     left: 0 !important;
     background: #f0edff !important;
   }
+
   .tableContainer .tbody .table-row .cell:first-child {
     border-left: 0.633951px solid #e0e0e0 !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.12) !important;
@@ -415,6 +416,7 @@ table {
     left: 0 !important;
     background: #eff1fa !important;
   }
+
   .tableContainer .tfoot .table-row .cell:first-child {
     border-left: 0.633951px solid #e0e0e0 !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.12) !important;
@@ -448,6 +450,35 @@ table {
     padding: 0;
   }
 
+  .tableContainer {
+    overflow-x: hidden !important;
+  }
+
+  tbody {
+    td {
+      span {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+    }
+  }
+
+  table {
+
+    td,
+    th {
+
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4) {
+        width: 130px !important;
+        min-width: 130px !important;
+        max-width: 130px !important;
+        text-align: center;
+      }
+    }
+  }
+
   .customTableContainer {
     height: 300px;
     overflow: auto;
@@ -469,6 +500,7 @@ table {
   tfoot {
     tr {
       td {
+
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -480,7 +512,7 @@ table {
 }
 
 .Stats_totalvalue__y0659 {
-  font-size: 1.15em !important;
+  font-size: 1.35em !important;
   font-weight: 600 !important;
 }
 
@@ -488,14 +520,12 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(
-      circle at center center,
+    repeating-radial-gradient(circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px
-    );
+      transparent 10px);
   background-blend-mode: multiply;
 }
 
@@ -506,6 +536,21 @@ table {
       td {
         &:last-child {
           display: none;
+        }
+      }
+    }
+  }
+}
+
+
+#mothWiseCaseTypeData {
+
+  table {
+    tbody {
+      tr {
+        td {
+          background: inherit;
+          color: inherit;
         }
       }
     }
