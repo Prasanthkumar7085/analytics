@@ -239,6 +239,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                     graphData={totalSumValues}
                     graphValuesData={totalSumValues}
                     graphColor={"blue"}
+                    tabValue={tabValue}
 
                 /> : ""}
         </div>

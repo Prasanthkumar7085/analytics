@@ -9,7 +9,16 @@ const GraphDialog = ({
   graphData,
   graphValuesData,
   graphColor,
+  tabValue
 }: any) => {
+
+  function formatMonthYear(monthYear: string) {
+    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
+    let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
+    return month + " '" + year; // Concatenate month abbreviation and year
+  }
+
+
   const options = {
     title: {
       text: graphData?.case_type_name,
@@ -21,7 +30,7 @@ const GraphDialog = ({
         text: "Months",
       },
       categories: Object?.values(graphValuesData)?.length
-        ? Object?.keys(graphValuesData).map((item: any) => item)
+        ? Object?.keys(graphValuesData).map((item: any) => formatMonthYear(item))
         : [],
     },
 
@@ -31,9 +40,7 @@ const GraphDialog = ({
         marker: {
           enabled: true,
         },
-        tooltip: {
-          enabled: false,
-        },
+
         states: {
           hover: {
             enabled: false,
@@ -43,9 +50,7 @@ const GraphDialog = ({
       marker: {
         enabled: false,
       },
-      tooltip: {
-        enabled: false,
-      },
+
       area: {
         color: graphColor,
         fillColor: {
@@ -72,9 +77,17 @@ const GraphDialog = ({
         threshold: null,
       },
     },
+    tooltip: {
+      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
+        if (tabValue == "Revenue")
+          return '<b>' + this.point.category + '</b>: $' + Highcharts.numberFormat(this.point.y, 2, '.', ',');
+        else
+          return '<b>' + this.point.category + '</b>:' + Highcharts.numberFormat(this.point.y, 0, '.', ',');
+      }
+    },
     yAxis: {
       title: {
-        text: "Number of Cases",
+        text: tabValue,
       },
     },
     legend: {

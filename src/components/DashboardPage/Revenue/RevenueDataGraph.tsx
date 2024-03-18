@@ -38,7 +38,16 @@ const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => 
       }
     },
     tooltip: {
-      valueSuffix: '',
+      shared: true,
+      useHTML: true,
+      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
+        if (!this) return ''; // Return empty string if `this` is undefined
+        let tooltipHTML = '<b>' + this.x + '</b><br/>';
+        this.points.forEach(function (point: any) {
+          tooltipHTML += '<span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': $' + Highcharts.numberFormat(point.y, 2, '.', ',') + '<br/>';
+        });
+        return tooltipHTML;
+      }
     },
     plotOptions: {
       column: {
