@@ -4,6 +4,7 @@ import { Chart } from "react-google-charts";
 import { toast } from "sonner";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import Image from "next/image";
 const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => {
 
   const options = {
@@ -62,7 +63,17 @@ const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => 
 
   return (
     <div style={{ overflowY: "hidden" }}>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+      {Object.keys(billedData)?.length || Object.keys(totalRevenueData)?.length ?
+        <HighchartsReact highcharts={Highcharts} options={options} /> : <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "40vh",
+          }}
+        >
+          <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
+        </div>}
     </div>
   );
 };

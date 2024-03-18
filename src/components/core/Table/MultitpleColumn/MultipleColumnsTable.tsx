@@ -182,6 +182,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                                 src="/core/sort/sort-asc.svg"
                                 height={8}
                                 width={8}
+                                style={{ display: removeSortingForColumnIds?.includes(header.id) ? "none" : "" }}
                                 alt="image"
                               />
                             ),
@@ -190,6 +191,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
                                 src="/core/sort/sort-desc.svg"
                                 height={8}
                                 width={8}
+                                style={{ display: removeSortingForColumnIds?.includes(header.id) ? "none" : "" }}
                                 alt="image"
                               />
                             ),

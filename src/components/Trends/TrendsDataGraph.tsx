@@ -5,6 +5,7 @@ import {
 } from "@/services/salesRepsAPIs";
 import { Backdrop, CircularProgress } from "@mui/material";
 import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -55,46 +56,44 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
   }
 
 
-  useEffect(() => {
-    if (chartRef && chartRef.current && trendsData?.length) {
-      // Custom entrance animation for the chart
-      Highcharts.chart(chartRef.current, {
-        chart: {
-          type: "spline",
-          animation: {
-            duration: 1000, // Set the animation duration
-            easing: "easeOutBounce", // Set the easing function for a smoother animation
-          },
+
+  let options = {
+    chart: {
+      type: "spline",
+      animation: {
+        duration: 1000, // Set the animation duration
+        easing: "easeOutBounce", // Set the easing function for a smoother animation
+      },
+    },
+    title: {
+      text: graphType == "volume" ? "Total Volume" : "Total Revenue",
+    },
+    xAxis: {
+      categories: trendsData?.map((item: any) => formatMonthYear(item?.month)),
+    },
+    yAxis: {
+      title: {
+        text: "Amount",
+      },
+    },
+    series: [
+      {
+        name:
+          graphType == "volume"
+            ? "Total Volume"
+            : "Total Revenue",
+        data:
+          graphType == "volume"
+            ? trendsData?.length ? trendsData?.map((item: any) => +item.total_cases) : []
+            : trendsData?.length ? trendsData?.map((item: any) => +item.paid_amount) : [],
+        animation: {
+          opacity: 1, // Set opacity animation for smoother entrance
         },
-        title: {
-          text: graphType == "volume" ? "Total Volume" : "Total Revenue",
-        },
-        xAxis: {
-          categories: trendsData?.map((item: any) => formatMonthYear(item?.month)),
-        },
-        yAxis: {
-          title: {
-            text: "Amount",
-          },
-        },
-        series: [
-          {
-            name:
-              graphType == "volume"
-                ? "Total Volume"
-                : "Total Revenue",
-            data:
-              graphType == "volume"
-                ? trendsData?.length ? trendsData?.map((item: any) => +item.total_cases) : []
-                : trendsData?.length ? trendsData?.map((item: any) => +item.paid_amount) : [],
-            animation: {
-              opacity: 1, // Set opacity animation for smoother entrance
-            },
-          },
-        ],
-      } as any);
-    }
-  }, [trendsData]);
+      },
+    ],
+
+
+  }
 
   useEffect(() => {
     // setTrendsData({});
@@ -104,7 +103,9 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
   return (
     <div style={{ position: "relative" }}>
       {trendsData?.length ?
-        <div ref={chartRef}></div> : <div
+        <HighchartsReact highcharts={Highcharts} options={options} />
+
+        : <div
           style={{
             display: "flex",
             justifyContent: "center",
