@@ -33,34 +33,33 @@
   color: inherit;
   display: inline-block;
 }
-.caseTypeRow{
+.caseTypeRow {
   display: flex;
-   flex-direction: row;
-   align-items: center;
-   color: #404040;
-    gap: 0.5rem;
-     font-size:clamp(12px, 0.62vw, 14px);
-     font-family: "Poppins", sans-serif;
-     font-weight: 400;
-     padding-inline: 1rem;
+  flex-direction: row;
+  align-items: center;
+  color: #404040;
+  gap: 0.5rem;
+  font-size: clamp(12px, 0.62vw, 14px);
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  padding-inline: 1rem;
 }
-.totalCasesRow{
-  font-size:clamp(12px, 0.62vw, 14px);
+.totalCasesRow {
+  font-size: clamp(12px, 0.62vw, 14px);
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   padding-inline: 1rem;
-  
 }
-.revenueBlock{
-  font-size:clamp(12px, 0.62vw, 14px);
-     font-family: "Poppins", sans-serif;
-     font-weight: 400;
-     padding-inline: 1rem;
-     color: #FF9932;
+.revenueBlock {
+  /* font-size: clamp(12px, 0.62vw, 14px);
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  padding-inline: 1rem; */
+  /* color: #FF9932; */
 }
-.tableHeading{
-  font-size:clamp(12px, 0.62vw, 14px);
-   color:#686D75;
+.tableHeading {
+  font-size: clamp(12px, 0.62vw, 14px);
+  color: #686d75;
   white-space: nowrap;
   font-weight: 500 !important;
   padding-inline: 1rem;
@@ -111,7 +110,7 @@
 .heading {
   position: relative;
   font-size: clamp(14px, 0.72vw, 16px);
-    font-weight: 500;
+  font-weight: 500;
   font-weight: 500;
 }
 .headingcontainer {
@@ -406,14 +405,14 @@
   box-sizing: border-box;
   gap: 1rem 0;
   height: "330px";
-  }
+}
 .headinglable,
 .stats1 {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-    height: "330px";
+  height: "330px";
 }
 .container8,
 .salesrepresentative {
@@ -423,7 +422,7 @@
 }
 .salesrepresentative {
   flex: 1;
-  gap:1rem;
+  gap: 1rem;
   border-radius: 12px;
   background-color: #fff;
   box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),

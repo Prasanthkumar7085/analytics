@@ -50,25 +50,6 @@ table {
         padding: 5px 10px;
         border-bottom: 1px solid #edf2f7;
 
-        &:nth-child(3) {
-          color: #477593;
-          background-color: #f9feff;
-        }
-
-        &:nth-child(4) {
-          color: #ff9932;
-          background-color: #ffffff;
-        }
-
-        &:nth-child(5) {
-          color: #36c24d;
-          background-color: #f5fff7;
-        }
-
-        &:nth-child(6) {
-          color: #fe5046;
-          background-color: #fff9f9;
-        }
       }
 
       .actionButton {
@@ -703,6 +684,103 @@ table {
 
     &:hover {
       cursor: pointer;
+    }
+  }
+}
+
+#salesRepresentativesPage {
+  table {
+    tr {
+      td {
+        &:nth-child(5) {
+          color: #ff9932;
+          background-color: #f9feff;
+
+        }
+
+        &:nth-child(6) {
+          color: #36c24d;
+          background-color: #f5fff7;
+        }
+
+        &:nth-child(7) {
+          color: #fe5046;
+          background-color: #fff9f9;
+        }
+      }
+    }
+  }
+}
+
+#InsurancePayorsData,
+#CaseTypesGraphsData {
+  table {
+    tr {
+      td {
+        &:nth-child(2) {
+          color: #ff9932;
+          background-color: #f9feff;
+
+        }
+
+        &:nth-child(3) {
+          color: #36c24d;
+          background-color: #f5fff7;
+        }
+
+        &:nth-child(4) {
+          color: #fe5046;
+          background-color: #fff9f9;
+        }
+      }
+    }
+  }
+}
+
+#FacilitiesData {
+  table {
+    tr {
+      td {
+        &:nth-child(3) {
+          color: #ff9932;
+          background-color: #f9feff;
+
+        }
+
+        &:nth-child(4) {
+          color: #36c24d;
+          background-color: #f5fff7;
+        }
+
+        &:nth-child(5) {
+          color: #fe5046;
+          background-color: #fff9f9;
+        }
+      }
+    }
+  }
+}
+
+#SalesRepresentativeTableData {
+  table {
+    tr {
+      td {
+        &:nth-child(5) {
+          color: #ff9932;
+          background-color: #f9feff;
+
+        }
+
+        &:nth-child(6) {
+          color: #36c24d;
+          background-color: #f5fff7;
+        }
+
+        &:nth-child(7) {
+          color: #fe5046;
+          background-color: #fff9f9;
+        }
+      }
     }
   }
 }
