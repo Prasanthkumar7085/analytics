@@ -193,7 +193,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
 
   const graphColoumn = [{
     accessorFn: (row: any) => row.actions,
-    id: "Actions",
+    id: "actions",
     header: () => <span style={{ whiteSpace: "nowrap" }}>Graph</span>,
     footer: (props: any) => props.column.id,
     width: "100px",
@@ -217,8 +217,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     },
   },]
 
-  const columnDef = useMemo(
-    () => [
+  const columnDef =
+    [
       {
         accessorFn: (row: any) => row.case_type_name,
         id: "case_type_name",
@@ -231,10 +231,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
           return <span>{getValue()}</span>;
         },
       },
-
-    ],
-    []
-  );
+    ];
 
 
 

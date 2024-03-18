@@ -17,7 +17,6 @@ interface pageProps {
   totalSumValues?: any;
   loading: boolean;
   searchParams?: any;
-  getData?: any;
 }
 const MultipleColumnsTable: FC<pageProps> = ({
   columns,
@@ -25,9 +24,9 @@ const MultipleColumnsTable: FC<pageProps> = ({
   totalSumValues,
   loading,
   searchParams,
-  getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
+  let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount"]
 
   const table = useReactTable({
     columns,
@@ -61,12 +60,11 @@ const MultipleColumnsTable: FC<pageProps> = ({
   const SortItems = ({
     searchParams,
     header,
-    removeSortingForColumnIds,
   }: {
     searchParams: any;
     header: any;
-    removeSortingForColumnIds?: string[];
   }) => {
+    console.log(header, "header")
     return (
       <div>
         {searchParams?.order_by == header?.id ? (
@@ -122,11 +120,6 @@ const MultipleColumnsTable: FC<pageProps> = ({
         orderType = "";
       }
     }
-
-    getData({
-      orderBy: orderBy,
-      orderType: orderType,
-    });
   };
 
   return (
@@ -164,7 +157,12 @@ const MultipleColumnsTable: FC<pageProps> = ({
                     >
                       {header.isPlaceholder ? null : (
                         <div
-                          onClick={() => sortAndGetData(header)}
+                          {...{
+                            className: header.column.getCanSort()
+                              ? "cursor-pointer select-none"
+                              : "",
+                            onClick: header.column.getToggleSortingHandler(),
+                          }}
                           style={{
                             display: "flex",
                             gap: "10px",
@@ -178,10 +176,32 @@ const MultipleColumnsTable: FC<pageProps> = ({
                             header.getContext()
                           )}
 
-                          <SortItems
-                            searchParams={searchParams}
-                            header={header}
-                          />
+                          {{
+                            asc: (
+                              <Image
+                                src="/core/sort/sort-asc.svg"
+                                height={8}
+                                width={8}
+                                alt="image"
+                              />
+                            ),
+                            desc: (
+                              <Image
+                                src="/core/sort/sort-desc.svg"
+                                height={8}
+                                width={8}
+                                alt="image"
+                              />
+                            ),
+                          }[header.column.getIsSorted() as string] ?? (
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{ display: header.id === "actions" || removeSortingForColumnIds.includes(header.id) ? "none" : "" }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>

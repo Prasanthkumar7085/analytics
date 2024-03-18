@@ -12,6 +12,7 @@ import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
+import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 
 const SalesRepresentatives = () => {
   const dispatch = useDispatch();
@@ -332,7 +333,7 @@ const SalesRepresentatives = () => {
         setDateFilterDefaultValue={setDateFilterDefaultValue}
         searchParams={searchParams}
       />
-      <MultipleColumnsTable
+      <MultipleColumnsTableForSalesRep
         data={salesReps}
         columns={columnDef}
         loading={loading}

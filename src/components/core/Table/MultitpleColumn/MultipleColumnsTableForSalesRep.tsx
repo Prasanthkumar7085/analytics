@@ -8,20 +8,24 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
+import styles from "./multi-column.module.css";
 
 interface pageProps {
   columns: any[];
   data: any[];
   totalSumValues?: any;
   loading: boolean;
+  searchParams?: any;
+  getData?: any;
 }
-const SingleColumnTable: FC<pageProps> = ({
+const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
   columns,
   data,
   totalSumValues,
   loading,
+  searchParams,
+  getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount"]
@@ -39,21 +43,90 @@ const SingleColumnTable: FC<pageProps> = ({
     debugTable: true,
   });
 
-  const useParams = useSearchParams();
-  const [searchParams, setSearchParams] = useState(
-    Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
-  );
+  function findObjectById(array: any[], id: string) {
+    for (let i = 0; i < array.length; i++) {
+      const element = array[i];
+      if (typeof element === "object" && element.id === id) {
+        return element;
+      }
+      if (Array.isArray(element)) {
+        const foundObject: any = findObjectById(element, id);
+        if (foundObject) {
+          return foundObject;
+        }
+      }
+    }
+    return null;
+  }
 
-  useEffect(() => {
-    setSearchParams(
-      Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
+  const SortItems = ({
+    searchParams,
+    header,
+  }: {
+    searchParams: any;
+    header: any;
+  }) => {
+    console.log(header, "header")
+    return (
+      <div>
+        {searchParams?.order_by == header?.id ? (
+          searchParams?.order_type == "asc" ? (
+            <Image
+              src="/core/sort/sort-asc.svg"
+              height={8}
+              width={8}
+              alt="image"
+            />
+          ) : (
+            <Image
+              src="/core/sort/sort-desc.svg"
+              height={8}
+              width={8}
+              alt="image"
+            />
+          )
+        ) : removeSortingForColumnIds?.includes(header.id) ? (
+          ""
+        ) : (
+          <Image
+            src="/core/sort/un-sort.svg"
+            height={8}
+            width={8}
+            alt="image"
+          />
+        )}
+      </div>
     );
-  }, [useParams]);
+  };
 
   const getWidth = (id: string) => {
-    const widthObj = columns.find((item: any) => item.id == id);
-    const width = widthObj?.width;
-    return width;
+    const widthObj = findObjectById(columns, id);
+
+    if (widthObj) {
+      const width = widthObj?.width;
+      return width;
+    } else return "100px";
+  };
+
+  const sortAndGetData = (header: any) => {
+    if (header.id == "select_rows" || header.id == "actions") {
+      return;
+    }
+    let orderBy = header.id;
+    let orderType = "asc";
+    if ((searchParams?.order_by as string) == header.id) {
+      if (searchParams?.order_type == "asc") {
+        orderType = "desc";
+      } else {
+        orderBy = "";
+        orderType = "";
+      }
+    }
+
+    getData({
+      orderBy: orderBy,
+      orderType: orderType,
+    });
   };
 
   return (
@@ -91,13 +164,7 @@ const SingleColumnTable: FC<pageProps> = ({
                     >
                       {header.isPlaceholder ? null : (
                         <div
-                          // onClick={() => sortAndGetData(header)}
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
+                          onClick={() => sortAndGetData(header)}
                           style={{
                             display: "flex",
                             gap: "10px",
@@ -110,33 +177,12 @@ const SingleColumnTable: FC<pageProps> = ({
                             header.column.columnDef.header,
                             header.getContext()
                           )}
-                          {{
-                            asc: (
-                              <Image
-                                src="/core/sort/sort-asc.svg"
-                                height={8}
-                                width={8}
-                                alt="image"
-                              />
-                            ),
-                            desc: (
-                              <Image
-                                src="/core/sort/sort-desc.svg"
-                                height={8}
-                                width={8}
-                                alt="image"
-                              />
-                            ),
-                          }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{ display: header.id === "actions" || removeSortingForColumnIds.includes(header.id) ? "none" : "" }}
-                              />
-                            )}
 
+                          <SortItems
+                            searchParams={searchParams}
+                            header={header}
+
+                          />
                         </div>
                       )}
                     </th>
@@ -153,7 +199,7 @@ const SingleColumnTable: FC<pageProps> = ({
                   {row.getVisibleCells().map((cell: any, index: number) => {
                     return (
                       <td
-                        className="cell"
+                        className={styles.tableCell}
                         key={index}
                         style={{
                           width: "100%",
@@ -176,7 +222,7 @@ const SingleColumnTable: FC<pageProps> = ({
                 </tr>
               );
             })
-          ) : loading ? (
+          ) : !loading ? (
             <tr>
               <td colSpan={10}>
                 <div
@@ -187,7 +233,12 @@ const SingleColumnTable: FC<pageProps> = ({
                     height: "40vh",
                   }}
                 >
-                  <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
+                  <Image
+                    src="/NoDataImageAnalytics.svg"
+                    alt=""
+                    height={150}
+                    width={250}
+                  />
                 </div>
               </td>
             </tr>
@@ -195,32 +246,30 @@ const SingleColumnTable: FC<pageProps> = ({
             ""
           )}
         </tbody>
-        <tfoot>
-          <tr
-            style={{
-              fontSize: "clamp(12px, 0.62vw, 14px)",
-              border: "1px solid #a5a5a5",
-              textTransform: "uppercase",
-              fontWeight: "600",
-              color: "#1B2459",
-              background: "#EFF1FA",
-            }}
-          >
+        <tfoot
+          style={{
+            fontSize: "clamp(12px, 0.62vw, 14px)",
+            border: "1px solid #a5a5a5",
+            textTransform: "uppercase",
+            fontWeight: "600",
+            color: "#1B2459",
+            background: "#EFF1FA",
+          }}
+        >
+          <tr>
             {totalSumValues?.map((item: any, index: number) => {
               return (
                 <td key={index}>
-                  {item
-                    ? index == 0
-                      ? item
-                      : formatMoney(item)
-                    : ""}
+                  {index == 0 || index == 1 ? item : formatMoney(item)}
                 </td>
               );
             })}
+            <td></td>
+            <td></td>
           </tr>
         </tfoot>
       </table>
     </div>
   );
 };
-export default SingleColumnTable;
+export default MultipleColumnsTableForSalesRep;

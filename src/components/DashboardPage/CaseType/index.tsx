@@ -264,7 +264,7 @@ const CaseTypes = ({
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Case Types Volumes
+            Case Types {tabValue}
           </h3>
           {pathName?.includes("dashboard") ?
             <GlobalDateRangeFilter onChangeData={onChangeData} /> : ""}

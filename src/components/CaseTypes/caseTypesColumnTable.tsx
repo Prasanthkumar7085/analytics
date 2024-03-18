@@ -44,6 +44,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
         getSortedRowModel: getSortedRowModel(),
         debugTable: true,
     });
+    let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount"]
 
     const useParams = useSearchParams();
     const [searchParams, setSearchParams] = useState(
@@ -120,24 +121,29 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                                                         asc: (
                                                             <Image
                                                                 src="/core/sort/sort-asc.svg"
-                                                                height={10}
-                                                                width={10}
+                                                                height={8}
+                                                                width={8}
                                                                 alt="image"
                                                             />
                                                         ),
                                                         desc: (
                                                             <Image
                                                                 src="/core/sort/sort-desc.svg"
-                                                                height={10}
-                                                                width={10}
+                                                                height={8}
+                                                                width={8}
                                                                 alt="image"
                                                             />
                                                         ),
-                                                    }[header.column.getIsSorted() as string] ?? null}
-                                                    {/* <SortItems
-                              searchParams={searchParams}
-                              header={header}
-                            /> */}
+                                                    }[header.column.getIsSorted() as string] ?? (
+                                                            <Image
+                                                                src="/core/sort/un-sort.svg"
+                                                                height={8}
+                                                                width={8}
+                                                                alt="Unsorted"
+                                                                style={{ display: header.id === "actions" || removeSortingForColumnIds.includes(header.id) ? "none" : "" }}
+                                                            />
+                                                        )}
+
                                                 </div>
                                             )}
                                         </th>
