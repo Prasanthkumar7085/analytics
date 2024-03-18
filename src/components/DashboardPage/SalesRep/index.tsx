@@ -89,7 +89,7 @@ const SalesRep = () => {
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-          Sales Representative
+          Sales Representatives
         </h3>
         <GlobalDateRangeFilter onChangeData={onChangeData} />
       </div>

@@ -220,7 +220,7 @@ const CaseTypes = ({
     chart: {
       type: "pie",
     },
-    colors: colors,
+    colors: Object.values(colors).map((item) => item),
     subtitle: {
       useHTML: true,
       text: getSubtitle(),
