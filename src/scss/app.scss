@@ -618,6 +618,10 @@ table {
 
 }
 
+.MuiDialog-root {
+  z-index: 9999999 !important;
+}
+
 #SalesRepresentativeTableData {
   table {
     tr {
