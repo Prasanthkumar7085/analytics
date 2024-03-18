@@ -120,7 +120,7 @@ const GraphDialog = ({
         </IconButton>
       </div>
       <div className="hightChartsGraph">
-        <HighchartsReact highcharts={Highcharts} options={options} />;
+        <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </Dialog>
   );

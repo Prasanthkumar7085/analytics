@@ -79,7 +79,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         });
         // Converting object to array
         const result = Object.values(groupedData);
-        setCaseData(result);
+        const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
+          return a.case_type_name.localeCompare(b.case_type_name);
+        });
+        setCaseData(sortedData);
 
 
         const groupedDataSum: any = {};
@@ -94,6 +97,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
           // Add amount to the total_sum for the respective month
           groupedDataSum[formattedMonth] += amount;
         });
+
         // Convert the object to an array
         setTotalSumValues(groupedDataSum);
       }
@@ -139,8 +143,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
 
           groupedData[case_type_id][formattedMonth] = paid_amount;
         });
+        // Sorting alphabetically based on case_type_name
+        const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
+          return a.case_type_name.localeCompare(b.case_type_name);
+        });
         // Converting object to array
-        const result = Object.values(groupedData);
+        const result = Object.values(sortedData);
         setCaseData(result);
 
 
