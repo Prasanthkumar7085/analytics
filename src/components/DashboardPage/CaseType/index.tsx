@@ -137,7 +137,7 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.pending_cases,
       id: "pending_cases",
       cell: (info: any) => (
-        <span className={styles.revenueBlock}>{info.getValue()}</span>
+        <span className={styles.revenueBlock}>{info.getValue()?.toLocaleString()}</span>
       ),
       header: () => <span className={styles.tableHeading}>Pending</span>,
       footer: (props: any) => props.column.id,

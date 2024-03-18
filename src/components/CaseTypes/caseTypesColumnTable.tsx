@@ -226,20 +226,21 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                                 </td>
                             );
                         })}
-                        <td className="cell" onClick={() => setGraphDialogOpen(true)}> <AreaGraph data={totalSumValues} graphColor={"blue"} />
+                        <td className="cell" onClick={() => setGraphDialogOpen(true)}>   {headerMonths?.length ? <AreaGraph data={totalSumValues} graphColor={"blue"} /> : ""}
                         </td>
 
                     </tr>
                 </tfoot>
             </table>
-            <GraphDialog
-                graphDialogOpen={graphDialogOpen}
-                setGraphDialogOpen={setGraphDialogOpen}
-                graphData={totalSumValues}
-                graphValuesData={totalSumValues}
-                graphColor={"blue"}
+            {headerMonths?.length ?
+                < GraphDialog
+                    graphDialogOpen={graphDialogOpen}
+                    setGraphDialogOpen={setGraphDialogOpen}
+                    graphData={totalSumValues}
+                    graphValuesData={totalSumValues}
+                    graphColor={"blue"}
 
-            />
+                /> : ""}
         </div>
     );
 };
