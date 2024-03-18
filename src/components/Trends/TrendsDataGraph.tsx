@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searchParams: any }) => {
+const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: string, searchParams: any, apiurl: string }) => {
   const [trendsData, setTrendsData] = useState<any>([]);
 
   const { id } = useParams();
@@ -32,10 +32,12 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
       let response;
       if (graphType == "revenue") {
         response = await getTrendsForRevenueBySalesRepIdAPI({
+          apiurl,
           id: id as string, queryParams
         });
       } else if (graphType == "volume") {
         response = await getTrendsForVolumeBySalesRepIdAPI({
+          apiurl,
           id: id as string, queryParams
         });
       }

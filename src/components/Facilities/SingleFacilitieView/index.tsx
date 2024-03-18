@@ -302,12 +302,12 @@ const FacilitiesView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors searchParams={searchParams} />
+                  <InsurancePayors searchParams={searchParams} apiurl={"facilities"} />
                 </div>
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} />
+              <Trends searchParams={searchParams} apiurl={"facilities"} />
             </Grid>
           </Grid>
         </div>

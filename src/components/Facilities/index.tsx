@@ -228,7 +228,7 @@ const FacilitiesList = () => {
     },
     {
       accessorFn: (row: any) => row.actions,
-      id: "Actions",
+      id: "actions",
       header: () => <span style={{ whiteSpace: "nowrap" }}>Actions</span>,
       footer: (props: any) => props.column.id,
       width: "200px",
@@ -284,19 +284,17 @@ const FacilitiesList = () => {
       data = sortAndGetData(data, orderBy, orderType);
       if (search) {
         data = data.filter((item: any) =>
-          item.sales_rep_name
-            ?.toLowerCase()
-            ?.includes(search?.toLowerCase()?.trim())
-        );
+        (item.sales_rep_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()) ||
+          item.facility_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()))
+        )
       }
     } else {
       data = [...completeData];
       if (search) {
         data = data.filter((item: any) =>
-          item.sales_rep_name
-            ?.toLowerCase()
-            ?.includes(search?.toLowerCase()?.trim())
-        );
+        (item.sales_rep_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()) ||
+          item.facility_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()))
+        )
       }
     }
     const modifieData = addSerial(data, 1, data?.length);

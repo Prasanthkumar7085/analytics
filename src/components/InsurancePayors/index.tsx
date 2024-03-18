@@ -7,7 +7,7 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
 import { Backdrop, CircularProgress } from "@mui/material";
 
-const InsurancePayors = ({ searchParams }: any) => {
+const InsurancePayors = ({ searchParams, apiurl }: any) => {
   const { id } = useParams();
   const [insuranceData, setInsuranceData] = useState([]);
   const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
@@ -28,6 +28,7 @@ const InsurancePayors = ({ searchParams }: any) => {
       }
 
       const response = await getAllInsurancePayorsBySalesRepIdAPI({
+        apiurl,
         id: id as string, queryParams
       });
       if (response?.status == 200 || response?.status == 201) {
@@ -55,84 +56,81 @@ const InsurancePayors = ({ searchParams }: any) => {
     }
   };
 
-  const columns = useMemo(
-    () => [
-      {
-        accessorFn: (row: any) => row.insurance_name,
-        id: "insurance_name",
-        header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>INSURANCE NAME</span>
-        ),
-        footer: (props: any) => props.column.id,
-        width: "220px",
-        maxWidth: "220px",
-        minWidth: "220px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
-        },
+  const columns = [
+    {
+      accessorFn: (row: any) => row.insurance_name,
+      id: "insurance_name",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>INSURANCE NAME</span>
+      ),
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()}</span>;
       },
-      {
-        accessorFn: (row: any) => row.generated_amount,
-        id: "generated_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-        footer: (props: any) => props.column.id,
-        width: "70px",
-        maxWidth: "100px",
-        minWidth: "70px",
-        cell: ({ getValue }: any) => {
-          return <span>{formatMoney(getValue())}</span>;
-        },
+    },
+    {
+      accessorFn: (row: any) => row.generated_amount,
+      id: "generated_amount",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
+      footer: (props: any) => props.column.id,
+      width: "70px",
+      maxWidth: "100px",
+      minWidth: "70px",
+      cell: ({ getValue }: any) => {
+        return <span>{formatMoney(getValue())}</span>;
       },
-      {
-        accessorFn: (row: any) => row.paid_amount,
-        id: "paid_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
-        footer: (props: any) => props.column.id,
-        width: "70px",
-        maxWidth: "100px",
-        minWidth: "70px",
-        cell: ({ getValue }: any) => {
-          return <span>{formatMoney(getValue())}</span>;
-        },
+    },
+    {
+      accessorFn: (row: any) => row.paid_amount,
+      id: "paid_amount",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
+      footer: (props: any) => props.column.id,
+      width: "70px",
+      maxWidth: "100px",
+      minWidth: "70px",
+      cell: ({ getValue }: any) => {
+        return <span>{formatMoney(getValue())}</span>;
       },
-      {
-        accessorFn: (row: any) => row.pending_amount,
-        id: "pending_amount",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
-        footer: (props: any) => props.column.id,
-        width: "70px",
-        maxWidth: "100px",
-        minWidth: "70px",
-        cell: ({ getValue }: any) => {
-          return <span>{formatMoney(getValue())}</span>;
-        },
+    },
+    {
+      accessorFn: (row: any) => row.pending_amount,
+      id: "pending_amount",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
+      footer: (props: any) => props.column.id,
+      width: "70px",
+      maxWidth: "100px",
+      minWidth: "70px",
+      cell: ({ getValue }: any) => {
+        return <span>{formatMoney(getValue())}</span>;
       },
-      // {
-      //   accessorFn: (row: any) => row,
-      //   id: "graph",
-      //   header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
-      //   footer: (props: any) => props.column.id,
-      //   width: "100px",
-      //   maxWidth: "100px",
-      //   minWidth: "100px",
-      //   cell: (info: any) => {
+    },
+    // {
+    //   accessorFn: (row: any) => row,
+    //   id: "graph",
+    //   header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
+    //   footer: (props: any) => props.column.id,
+    //   width: "100px",
+    //   maxWidth: "100px",
+    //   minWidth: "100px",
+    //   cell: (info: any) => {
 
-      //     const dataPoints = Object.entries(info.row.original)
-      //       .filter(([key]) => key !== 'caseType')
-      //       .map(([month, value]) => [month, value]);
-      //     return (
-      //       <div onClick={() => {
-      //         // setGraphDialogOpen(true);
-      //         // setSelectedGraphData(info.row.original);
-      //       }}>
-      //         <AreaGraph getValue={info.getValue} />
-      //       </div>
-      //     )
-      //   },
-      // },
-    ],
-    []
-  );
+    //     const dataPoints = Object.entries(info.row.original)
+    //       .filter(([key]) => key !== 'caseType')
+    //       .map(([month, value]) => [month, value]);
+    //     return (
+    //       <div onClick={() => {
+    //         // setGraphDialogOpen(true);
+    //         // setSelectedGraphData(info.row.original);
+    //       }}>
+    //         <AreaGraph getValue={info.getValue} />
+    //       </div>
+    //     )
+    //   },
+    // },
+  ]
 
   useEffect(() => {
     getAllInsrancePayors(searchParams?.from_date, searchParams?.to_date);

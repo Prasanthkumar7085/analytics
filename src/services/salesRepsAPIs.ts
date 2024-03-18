@@ -40,15 +40,17 @@ export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
 
 
 export const getTrendsForRevenueBySalesRepIdAPI = async ({
+  apiurl,
   id,
   queryParams
 }: {
+  apiurl: string,
   id: string;
   queryParams: any
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/sales-reps/${id}/trends/revenue`, queryParams
+      `/${apiurl}/${id}/trends/revenue`, queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -60,15 +62,17 @@ export const getTrendsForRevenueBySalesRepIdAPI = async ({
 };
 
 export const getTrendsForVolumeBySalesRepIdAPI = async ({
+  apiurl,
   id,
   queryParams
 }: {
+  apiurl: string;
   id: string;
   queryParams: any
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/sales-reps/${id}/trends/volume`, queryParams
+      `/${apiurl}/${id}/trends/volume`, queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -93,14 +97,16 @@ export const getFacilitiesBySalesRepId = async ({ id, queryParams }: { id: strin
 
 
 export const getAllInsurancePayorsBySalesRepIdAPI = async ({
+  apiurl,
   id,
   queryParams
 }: {
+  apiurl: string,
   id: string;
   queryParams: any;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/insurance-payors`, queryParams);
+    const { success, data } = await $fetch.get(`/${apiurl}/${id}/insurance-payors`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

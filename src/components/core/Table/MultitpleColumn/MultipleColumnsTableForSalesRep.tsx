@@ -66,7 +66,6 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
     searchParams: any;
     header: any;
   }) => {
-    console.log(header, "header")
     return (
       <div>
         {searchParams?.order_by == header?.id ? (

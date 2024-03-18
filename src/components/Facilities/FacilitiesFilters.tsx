@@ -41,7 +41,7 @@ const FacilitiesFilters = ({ onUpdateData, getFacilitiesList, dateFilterDefaultV
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search"
+                placeholder="Search facility or sales"
                 type="search"
                 InputProps={{
                   startAdornment: (
@@ -58,6 +58,7 @@ const FacilitiesFilters = ({ onUpdateData, getFacilitiesList, dateFilterDefaultV
                 }}
               />
             </li>
+
           </ul>
         </Grid>
       </Grid>

@@ -281,7 +281,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </Grid>
             <Grid item xs={8}>
@@ -316,12 +316,12 @@ const SalesRepView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors searchParams={searchParams} />
+                  <InsurancePayors searchParams={searchParams} apiurl={"sales-reps"} />
                 </div>
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} />
+              <Trends searchParams={searchParams} apiurl={"sales-reps"} />
             </Grid>
             <Grid item xs={12}>
               <div className="eachDataCard" id="FacilitiesData">
