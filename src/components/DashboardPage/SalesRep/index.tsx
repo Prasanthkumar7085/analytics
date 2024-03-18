@@ -10,16 +10,14 @@ import { Backdrop, CircularProgress } from "@mui/material";
 import { addSerial } from "@/lib/Pipes/addSerial";
 
 const SalesRep = () => {
-
-
   const router = useRouter();
 
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
   const getAllSalesReps = async ({ fromDate = "", toDate = "" }: any) => {
     try {
-      setLoading(true)
+      setLoading(true);
       let queryParams: any = {};
 
       if (fromDate) {
@@ -35,14 +33,29 @@ const SalesRep = () => {
         let data = response?.data;
         const modifieData = addSerial(data, 1, data?.length);
         setSalesReps(modifieData);
-        const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
-        const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
+        const totalCases = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.total_cases,
+          0
+        );
+        const targeted_amount = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.expected_amount,
+          0
+        );
 
-        const billedAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.generated_amount), 0);
-        const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
-        const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
+        const billedAmoumnt = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.generated_amount,
+          0
+        );
+        const paidRevenueSum = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.paid_amount,
+          0
+        );
+        const pendingAmoumnt = response?.data.reduce(
+          (sum: any, item: any) => sum + +item.pending_amount,
+          0
+        );
 
-        console.log(pendingAmoumnt, "Dsfas")
+        console.log(pendingAmoumnt, "Dsfas");
         const result = [
           "Total",
           null,
@@ -51,9 +64,7 @@ const SalesRep = () => {
           billedAmoumnt,
           paidRevenueSum,
           pendingAmoumnt,
-
         ];
-
 
         setTotalSumValues(result);
       } else {
@@ -61,9 +72,8 @@ const SalesRep = () => {
       }
     } catch (err) {
       console.error(err);
-    }
-    finally {
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,64 +81,52 @@ const SalesRep = () => {
     getAllSalesReps({});
   }, []);
 
-
   const onChangeData = (fromDate: any, toDate: any) => {
     getAllSalesReps({ fromDate, toDate });
   };
   return (
-    <section id="salesRepresentatives" style={{ position: "relative" }}>
-      <div className={styles.salesrepresentative}>
-        <div className={styles.header}>
-          <div className={styles.headingcontainer}>
-            <div className={styles.iconcontainer}>
-              <Image
-                className={styles.icon}
-                alt=""
-                src="/navbar/icon.svg"
-                height={20}
-                width={20}
-              />
-            </div>
-            <div className={styles.headinglable}>
-              <div className={styles.heading}>Sales Representatives</div>
-            </div>
-          </div>
-          <GlobalDateRangeFilter onChangeData={onChangeData} />
-
-        </div>
+    <div className="eachDataCard mb-10" id="SalesRepresentativeTableData">
+      <div className="cardHeader">
+        <h3>
+          <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+          Sales Representative
+        </h3>
+        <GlobalDateRangeFilter onChangeData={onChangeData} />
+      </div>
+      <div className="cardBody">
         <SalesRepsTable
           salesReps={salesReps}
-          totalRevenueSum={totalRevenueSum} />
+          totalRevenueSum={totalRevenueSum}
+        />
+        {loading ? (
+          <Backdrop
+            open={true}
+            style={{
+              zIndex: 999,
+              color: "red",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(256,256,256,0.8)",
+            }}
+          >
+            <object
+              type="image/svg+xml"
+              data={"/core/loading.svg"}
+              width={150}
+              height={150}
+            />
+          </Backdrop>
+        ) : (
+          ""
+        )}
       </div>
-
-      {loading ? (
-        <Backdrop
-          open={true}
-          style={{
-            zIndex: 999,
-            color: "red",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "rgba(256,256,256,0.8)",
-          }}
-        >
-          <object
-            type="image/svg+xml"
-            data={"/core/loading.svg"}
-            width={150}
-            height={150}
-          />
-        </Backdrop>
-      ) : (
-        ""
-      )}
-    </section>
+    </div>
   );
 };
 

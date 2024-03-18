@@ -15,14 +15,13 @@ const DashboardPage = () => {
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
-  const [caseTypeLoading, setCaseTypeLoading] = useState(true)
+  const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Revenue");
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
     let urls = ["/overview/stats-revenue", "/overview/stats-volume"];
-
 
     let queryParams: any = {};
 
@@ -61,7 +60,7 @@ const DashboardPage = () => {
   //get the caseTypesVolume data
   const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
     setCaseTypeLoading(true);
-    let url = "/overview/case-types-volume"
+    let url = "/overview/case-types-volume";
     try {
       let queryParams: any = {};
 
@@ -81,7 +80,7 @@ const DashboardPage = () => {
         response?.data?.forEach((entry: any) => {
           totalCases += entry.total_cases ? +entry.total_cases : 0;
           completedCases += entry.completed_cases ? +entry.completed_cases : 0;
-          pendingCases += entry.pending_cases ? +entry.pending_cases : 0
+          pendingCases += entry.pending_cases ? +entry.pending_cases : 0;
         });
 
         const result = ["Total", totalCases, completedCases, pendingCases];
@@ -115,11 +114,18 @@ const DashboardPage = () => {
 
         response?.data?.forEach((entry: any) => {
           paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
-          totalRevenueSum += entry.generated_amount ? +entry.generated_amount : 0;
-          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0
+          totalRevenueSum += entry.generated_amount
+            ? +entry.generated_amount
+            : 0;
+          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = ["Total", totalRevenueSum, paidRevenueSum, pendingRevenueSum];
+        const result = [
+          "Total",
+          totalRevenueSum,
+          paidRevenueSum,
+          pendingRevenueSum,
+        ];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
@@ -130,11 +136,9 @@ const DashboardPage = () => {
     }
   };
 
-
-
   //api call to get stats count
   useEffect(() => {
-    getStatsCounts("", "")
+    getStatsCounts("", "");
     getCaseTypesRevenueStats("", "");
   }, []);
 
@@ -146,7 +150,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => { }}
+            onChange={() => {}}
             getStatsCounts={getStatsCounts}
           />
         </Grid>
@@ -161,12 +165,12 @@ const DashboardPage = () => {
             tabValue={tabValue}
           />
         </Grid>
-      </Grid>
-      <Grid item xs={12} className="mb-5">
-        <RevenueBlock />
-      </Grid>
-      <Grid item xs={8}>
-        <SalesRep />
+        <Grid item xs={12}>
+          <RevenueBlock />
+        </Grid>
+        <Grid item xs={12}>
+          <SalesRep />
+        </Grid>
       </Grid>
     </>
   );

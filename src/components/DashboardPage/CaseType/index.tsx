@@ -10,7 +10,7 @@ import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleC
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { usePathname, useSearchParams } from "next/navigation";
-import CountUp from 'react-countup';
+import CountUp from "react-countup";
 import { Tab, Tabs } from "@mui/material";
 
 const CaseTypes = ({
@@ -21,12 +21,10 @@ const CaseTypes = ({
   totalRevenueSum,
   tabValue,
   setTabValue,
-
 }: any) => {
-
   const params = useSearchParams();
   const pathName = usePathname();
-  const [selectedDates, setSelectedDates] = useState<any>([])
+  const [selectedDates, setSelectedDates] = useState<any>([]);
 
   useEffect(() => {
     setSelectedDates([params.get("from_date"), params.get("to_date")]);
@@ -35,33 +33,31 @@ const CaseTypes = ({
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
     if (newValue == "Revenue") {
-      getCaseTypesRevenueStats(selectedDates[0], selectedDates[1])
-    }
-    else {
-      getCaseTypesVolumeStats(selectedDates[0], selectedDates[1])
+      getCaseTypesRevenueStats(selectedDates[0], selectedDates[1]);
+    } else {
+      getCaseTypesVolumeStats(selectedDates[0], selectedDates[1]);
     }
   };
   let colors: any = {
-    "CARDIAC": "#ea1d22",
+    CARDIAC: "#ea1d22",
     "CGX PANEL": "#00a752",
     "CLINICAL CHEMISTRY": "#fcf00b",
-    "COVID": "#f19213",
+    COVID: "#f19213",
     "COVID FLU": "#00b0ea",
-    "DIABETES": "#f51059",
-    "GASTRO": "#dc79c8",
+    DIABETES: "#f51059",
+    GASTRO: "#dc79c8",
     "GTI STI": "#92298f",
     "GTI WOMENS HEALTH": "#2e3094",
-    "NAIL": "#0071b9",
+    NAIL: "#0071b9",
     "PAD ALZHEIMERS": "#82eedd",
     "PGX TEST": "#eea782",
     "PULMONARY PANEL": "#000000",
     "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
-    "TOXICOLOGY": "#e1dbe4",
-    "URINANLYSIS": "#f6dad3",
-    "UTI": "#87b5af",
-    "WOUND": "#185a59",
+    TOXICOLOGY: "#e1dbe4",
+    URINANLYSIS: "#f6dad3",
+    UTI: "#87b5af",
+    WOUND: "#185a59",
   };
-
 
   function formatNumber(amount: any) {
     if (amount >= 10000000) {
@@ -75,7 +71,6 @@ const CaseTypes = ({
     }
   }
 
-
   //chagedData for pie chart
   const modifyData = (array: Array<any>) => {
     if (array && array.length) {
@@ -83,7 +78,14 @@ const CaseTypes = ({
       array.map((item: any) => {
         tempArray.push({
           name: item["case_type_name"],
-          y: tabValue == "Revenue" ? item["generated_amount"] ? +item["generated_amount"] : 0 : item["total_cases"] ? +item["total_cases"] : 0,
+          y:
+            tabValue == "Revenue"
+              ? item["generated_amount"]
+                ? +item["generated_amount"]
+                : 0
+              : item["total_cases"]
+              ? +item["total_cases"]
+              : 0,
         });
       });
       return tempArray;
@@ -135,9 +137,7 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.pending_cases,
       id: "pending_cases",
       cell: (info: any) => (
-        <span className={styles.revenueBlock}>
-          {info.getValue()}
-        </span>
+        <span className={styles.revenueBlock}>{info.getValue()}</span>
       ),
       header: () => <span className={styles.tableHeading}>Pending</span>,
       footer: (props: any) => props.column.id,
@@ -170,7 +170,9 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.generated_amount,
       id: "generated_amount",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>{formatMoney(info.getValue())}</span>
+        <span className={styles.totalCasesRow}>
+          {formatMoney(info.getValue())}
+        </span>
       ),
       header: () => <span className={styles.tableHeading}>Billed</span>,
       footer: (props: any) => props.column.id,
@@ -180,7 +182,9 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.paid_amount,
       id: "paid_amount",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>{formatMoney(info.getValue())}</span>
+        <span className={styles.totalCasesRow}>
+          {formatMoney(info.getValue())}
+        </span>
       ),
       header: () => <span className={styles.tableHeading}>Collected</span>,
       footer: (props: any) => props.column.id,
@@ -201,13 +205,16 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[1] ?
-      totalRevenueSum[1] : 0;
+    const totalNumber = totalRevenueSum[1] ? totalRevenueSum[1] : 0;
     return `<span style="font-size: 6px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 13px;">
-            <b> 
-            ${tabValue == "Revenue" ? formatMoney(totalNumber) : totalNumber.toFixed(2)}</b>
+            <b>
+            ${
+              tabValue == "Revenue"
+                ? formatMoney(totalNumber)
+                : totalNumber.toFixed(2)
+            }</b>
         </span>`;
   }
 
@@ -247,14 +254,12 @@ const CaseTypes = ({
     ],
   };
 
-
   const onChangeData = (fromDate: any, toDate: any) => {
-    setSelectedDates([fromDate, toDate])
+    setSelectedDates([fromDate, toDate]);
     if (tabValue == "Revenue") {
-      getCaseTypesRevenueStats(fromDate, toDate)
+      getCaseTypesRevenueStats(fromDate, toDate);
     } else {
-      getCaseTypesVolumeStats(fromDate, toDate)
-
+      getCaseTypesVolumeStats(fromDate, toDate);
     }
   };
 
@@ -266,8 +271,11 @@ const CaseTypes = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Case Types {tabValue}
           </h3>
-          {pathName?.includes("dashboard") ?
-            <GlobalDateRangeFilter onChangeData={onChangeData} /> : ""}
+          {pathName?.includes("dashboard") ? (
+            <GlobalDateRangeFilter onChangeData={onChangeData} />
+          ) : (
+            ""
+          )}
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Tabs
               value={tabValue}
@@ -280,11 +288,9 @@ const CaseTypes = ({
               <Tab value="Volume" label="Volume" />
             </Tabs>
           </div>
-
         </div>
         <div className="cardBody">
           <div style={{ display: "flex", height: "37vh" }}>
-
             <div style={{ width: "35%" }}>
               <HighchartsReact
                 highcharts={Highcharts}
@@ -298,16 +304,12 @@ const CaseTypes = ({
                 }}
               />
             </div>
-
-
-
             <TanStackTableComponent
               data={caseTypesStatsData}
               columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
               totalSumValues={totalRevenueSum}
               loading={false}
             />
-
 
             {loading ? (
               <Backdrop
@@ -333,7 +335,6 @@ const CaseTypes = ({
                   height={150}
                 />
               </Backdrop>
-
             ) : (
               ""
             )}
