@@ -236,6 +236,9 @@ const SalesRepView = () => {
           <div className="person flex items-center">
             <Avatar sx={{ height: "30px", width: "30px" }} />
             <p className="pl-3">{salesRepDetails?.[0]?.sales_rep}</p>
+            {salesRepDetails?.[0]?.manager ?
+              <p className="pl-3">manager:{salesRepDetails?.[0]?.manager}</p> : ""}
+
           </div>
           <div style={{ marginLeft: "70%" }}>
             <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
