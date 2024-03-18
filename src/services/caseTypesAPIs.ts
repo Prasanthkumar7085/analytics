@@ -2,9 +2,9 @@ import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
 
-export const getAllCaseTypesAPI = async () => {
+export const getAllCaseTypesAPI = async (updatedQueyParams: any) => {
   try {
-    const { data, success } = await $fetch.get("/case-types");
+    const { data, success } = await $fetch.get("/case-types", updatedQueyParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
