@@ -42,11 +42,10 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/dashboard"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                      styles[
-                        pathname == "/dashboard" ? "activePagename" : "active"
-                      ]
-                    }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname == "/dashboard" ? "activePagename" : "active"
+                    ]
+                      }`}
                   >
                     Overview
                   </Link>
@@ -54,36 +53,34 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/sales-representatives"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                      styles[
-                        pathname.includes("/sales-representatives")
-                          ? "activePagename"
-                          : "active"
-                      ]
-                    }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname.includes("/sales-representatives")
+                        ? "activePagename"
+                        : "active"
+                    ]
+                      }`}
                   >
                     Sales Representatives
                   </Link>
                 </li>
                 <li>
-                  <a
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                      styles[
-                        pathname == "/insurance" ? "activePagename" : "active"
-                      ]
-                    }`}
+                  <Link
+                    href={"/insurances"}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname == "/insurances" ? "activePagename" : "active"
+                    ]
+                      }`}
                   >
                     Insurances
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link
                     href={"/facilities"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                      styles[
-                        pathname == "/facilities" ? "activePagename" : "active"
-                      ]
-                    }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname == "/facilities" ? "activePagename" : "active"
+                    ]
+                      }`}
                   >
                     Facilities
                   </Link>
@@ -91,22 +88,20 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <Link
                     href={"/case-types"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                      styles[
-                        pathname == "/case-types" ? "activePagename" : "active"
-                      ]
-                    }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname == "/case-types" ? "activePagename" : "active"
+                    ]
+                      }`}
                   >
                     Case Types
                   </Link>
                 </li>
                 <li>
                   <a
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                      styles[
-                        pathname == "/reports" ? "activePagename" : "active"
-                      ]
-                    }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname == "/reports" ? "activePagename" : "active"
+                    ]
+                      }`}
                   >
                     Reports
                   </a>
