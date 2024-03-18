@@ -73,8 +73,16 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
     },
     yAxis: {
       title: {
-        text: "Amount",
+        text: graphType == "volume" ? "Volume" : "Revenue",
       },
+    },
+    tooltip: {
+      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
+        if (graphType == "revenue")
+          return '<b>' + this.point.category + '</b>: $' + Highcharts.numberFormat(this.point.y, 2, '.', ',');
+        else
+          return '<b>' + this.point.category + '</b>:' + Highcharts.numberFormat(this.point.y, 0, '.', ',');
+      }
     },
     series: [
       {

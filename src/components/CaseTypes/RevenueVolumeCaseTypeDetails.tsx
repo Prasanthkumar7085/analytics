@@ -212,6 +212,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
       delete data?.case_type_name;
       return (
         <div
+          style={{ cursor: "pointer" }}
           onClick={() => {
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
@@ -314,6 +315,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         graphData={selectedGrpahData}
         graphValuesData={graphValuesData}
         graphColor={graphColor}
+        tabValue={tabValue}
 
       />
     </div>

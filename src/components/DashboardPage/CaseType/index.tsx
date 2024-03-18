@@ -231,6 +231,16 @@ const CaseTypes = ({
     title: {
       text: "",
     },
+    tooltip: {
+      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
+        if (tabValue == "Revenue")
+          return '<b>' + this.point.name + '</b>: $' + Highcharts.numberFormat(this.point.y, 2, '.', ',');
+        else
+          return '<b>' + this.point.name + '</b>:' + Highcharts.numberFormat(this.point.y, 0, '.', ',');
+
+      }
+
+    },
     plotOptions: {
       pie: {
         innerSize: "60%", // Make it a donut chart by setting innerSize
