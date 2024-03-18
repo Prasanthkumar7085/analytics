@@ -43,7 +43,7 @@ const InsurancePayors = ({ searchParams }: any) => {
           totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = ["Total", totalAmount, totalPaid, totalPending];
+        const result = [{ value: "Total", dolorSymbol: false }, { value: totalAmount, dolorSymbol: true }, { value: totalPaid, dolorSymbol: true }, { value: totalPending, dolorSymbol: true }];
 
         setTortalInsurancePayors(result);
       }

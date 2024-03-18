@@ -83,7 +83,7 @@ const DashboardPage = () => {
           pendingCases += entry.pending_cases ? +entry.pending_cases : 0;
         });
 
-        const result = ["Total", totalCases, completedCases, pendingCases];
+        const result = [{ value: "Total", dolorSymbol: false }, { value: totalCases, dolorSymbol: false }, { value: completedCases, dolorSymbol: false }, { value: pendingCases, dolorSymbol: false }];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
@@ -120,12 +120,7 @@ const DashboardPage = () => {
           pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = [
-          "Total",
-          totalRevenueSum,
-          paidRevenueSum,
-          pendingRevenueSum,
-        ];
+        const result = [{ value: "Total", dolorSymbol: false }, { value: totalRevenueSum, dolorSymbol: true }, { value: paidRevenueSum, dolorSymbol: true }, { value: pendingRevenueSum, dolorSymbol: true }];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
@@ -150,7 +145,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => {}}
+            onChange={() => { }}
             getStatsCounts={getStatsCounts}
           />
         </Grid>

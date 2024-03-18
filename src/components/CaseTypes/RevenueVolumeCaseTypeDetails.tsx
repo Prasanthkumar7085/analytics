@@ -186,7 +186,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     minWidth: "220px",
     cell: (info: any) => (
       <span>
-        {tabValue == "Revenue" ? formatMoney(info.getValue()) : info.getValue()}
+        {tabValue == "Revenue" ? formatMoney(info.getValue()) : info.getValue()?.toLocaleString()}
       </span>
     ),
   }));

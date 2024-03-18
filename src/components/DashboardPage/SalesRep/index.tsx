@@ -55,15 +55,15 @@ const SalesRep = () => {
           0
         );
 
-        console.log(pendingAmoumnt, "Dsfas");
         const result = [
-          "Total",
-          null,
-          totalCases,
-          targeted_amount,
-          billedAmoumnt,
-          paidRevenueSum,
-          pendingAmoumnt,
+          { value: "Total", dolorSymbol: false },
+          { value: null, dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+          { value: targeted_amount, dolorSymbol: true },
+          { value: billedAmoumnt, dolorSymbol: true },
+          { value: paidRevenueSum, dolorSymbol: true },
+          { value: pendingAmoumnt, dolorSymbol: true },
+
         ];
 
         setTotalSumValues(result);

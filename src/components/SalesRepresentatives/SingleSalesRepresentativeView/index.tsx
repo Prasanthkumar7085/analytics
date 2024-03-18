@@ -115,7 +115,7 @@ const SalesRepView = () => {
           pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0
         });
 
-        const result = ["Total", totalRevenueSum, paidRevenueSum, pendingRevenueSum];
+        const result = [{ value: "Total", dolorSymbol: false }, { value: totalRevenueSum, dolorSymbol: true }, { value: paidRevenueSum, dolorSymbol: true }, { value: pendingRevenueSum, dolorSymbol: true }];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
@@ -152,7 +152,7 @@ const SalesRepView = () => {
           pendingCases += entry.pending_cases ? +entry.pending_cases : 0
         });
 
-        const result = ["Total", totalCases, completedCases, pendingCases];
+        const result = [{ value: "Total", dolorSymbol: false }, { value: totalCases, dolorSymbol: false }, { value: completedCases, dolorSymbol: false }, { value: pendingCases, dolorSymbol: false }];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }

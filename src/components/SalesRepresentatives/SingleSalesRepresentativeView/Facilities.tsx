@@ -16,9 +16,7 @@ const Facilities = ({ searchParams }: any) => {
   const { id } = useParams();
   const facilities = useSelector((state: any) => state?.users.facilities);
   const [facilitiesData, setFacilitiesData] = useState([]);
-  const [totalSumFacilityValues, setTotalSumFacilityValues] = useState<
-    (string | number)[]
-  >([]);
+  const [totalSumFacilityValues, setTotalSumFacilityValues] = useState<any>([]);
   const [loading, setLoading] = useState(true)
 
 
@@ -49,17 +47,13 @@ const Facilities = ({ searchParams }: any) => {
         });
 
         const result = [
-          "Total",
-          totalCases,
-          totalAmount,
-          totalPaid,
-          totalPending,
-          "",
+          { value: "Total", dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+          { value: totalAmount, dolorSymbol: true },
+          { value: totalPaid, dolorSymbol: true },
+          { value: totalPending, dolorSymbol: true },
         ];
         setTotalSumFacilityValues(result);
-
-
-
         setFacilitiesData(response?.data);
       }
     } catch (err) {
@@ -70,80 +64,78 @@ const Facilities = ({ searchParams }: any) => {
     }
   };
 
-  const columnDef = useMemo(
-    () => [
-      {
-        accessorFn: (row: any) => row.facility_name,
-        id: "facility_name",
-        header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>
-        ),
-        footer: (props: any) => props.column.id,
-        width: "220px",
-        maxWidth: "220px",
-        minWidth: "220px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+  const columnDef = [
+    {
+      accessorFn: (row: any) => row.facility_name,
+      id: "facility_name",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>
+      ),
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.total_cases,
+      id: "total_cases",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()?.toLocaleString()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row._id,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
+      id: "revenue",
+      width: "800px",
+      columns: [
+        {
+          accessorFn: (row: any) => row.generated_amount,
+          id: "generated_amount",
+          header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
+          },
         },
-      },
-      {
-        accessorFn: (row: any) => row.total_cases,
-        id: "total_cases",
-        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
-        footer: (props: any) => props.column.id,
-        width: "200px",
-        maxWidth: "200px",
-        minWidth: "200px",
-        cell: ({ getValue }: any) => {
-          return <span>{getValue()}</span>;
+        {
+          accessorFn: (row: any) => row.paid_amount,
+          header: () => (
+            <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
+          ),
+          id: "paid_amount",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
+          },
         },
-      },
-      {
-        accessorFn: (row: any) => row._id,
-        header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
-        id: "revenue",
-        width: "800px",
-        columns: [
-          {
-            accessorFn: (row: any) => row.generated_amount,
-            id: "generated_amount",
-            header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            cell: ({ getValue }: any) => {
-              return <span>{formatMoney(getValue())}</span>;
-            },
+        {
+          accessorFn: (row: any) => row.pending_amount,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
+          id: "pending_amount",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: ({ getValue }: any) => {
+            return <span>{formatMoney(getValue())}</span>;
           },
-          {
-            accessorFn: (row: any) => row.paid_amount,
-            header: () => (
-              <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
-            ),
-            id: "paid_amount",
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            cell: ({ getValue }: any) => {
-              return <span>{formatMoney(getValue())}</span>;
-            },
-          },
-          {
-            accessorFn: (row: any) => row.pending_amount,
-            header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
-            id: "pending_amount",
-            width: "200px",
-            maxWidth: "200px",
-            minWidth: "200px",
-            cell: ({ getValue }: any) => {
-              return <span>{formatMoney(getValue())}</span>;
-            },
-          },
-        ],
-      },
-    ],
-    []
-  );
+        },
+      ],
+    },
+  ]
+
   useEffect(() => {
     getSalesRepFacilities(searchParams?.from_date, searchParams?.to_date);
   }, [searchParams]);

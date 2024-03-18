@@ -6,9 +6,6 @@ import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => {
 
-
-
-
   const options = {
     chart: {
       height: 375,
@@ -40,7 +37,7 @@ const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => 
       }
     },
     tooltip: {
-      valueSuffix: ''
+      valueSuffix: '',
     },
     plotOptions: {
       column: {
