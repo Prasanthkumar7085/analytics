@@ -5,6 +5,7 @@ import {
 } from "@/services/salesRepsAPIs";
 import { Backdrop, CircularProgress } from "@mui/material";
 import Highcharts from "highcharts";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -37,7 +38,6 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
           id: id as string, queryParams
         });
       }
-
       setTrendsData(response?.data);
     } catch (err) {
       console.error(err);
@@ -50,8 +50,8 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
 
   function formatMonthYear(monthYear: string) {
     let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 4); // Extract the last 4 characters (year)
-    return month + year; // Concatenate month abbreviation and year
+    let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
+    return month + " '" + year; // Concatenate month abbreviation and year
   }
 
 
@@ -85,8 +85,8 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
                 : "Total Revenue",
             data:
               graphType == "volume"
-                ? trendsData?.map((item: any) => +item.total_cases)
-                : trendsData?.map((item: any) => +item.paid_amount),
+                ? trendsData?.length ? trendsData?.map((item: any) => +item.total_cases) : []
+                : trendsData?.length ? trendsData?.map((item: any) => +item.paid_amount) : [],
             animation: {
               opacity: 1, // Set opacity animation for smoother entrance
             },
@@ -103,7 +103,17 @@ const TrendsDataGraph = ({ graphType, searchParams }: { graphType: string, searc
 
   return (
     <div style={{ position: "relative" }}>
-      <div ref={chartRef}></div>
+      {trendsData?.length ?
+        <div ref={chartRef}></div> : <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "40vh",
+          }}
+        >
+          <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
+        </div>}
       {loading ? (
         <Backdrop
           open={true}

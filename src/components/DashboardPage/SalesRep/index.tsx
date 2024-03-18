@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { addSerial } from "@/lib/Pipes/addSerial";
 
 const SalesRep = () => {
 
@@ -31,7 +32,9 @@ const SalesRep = () => {
       const response = await salesRepsAPI(queryParams);
 
       if (response.status == 200 || response.status == 201) {
-        setSalesReps(response?.data);
+        let data = response?.data;
+        const modifieData = addSerial(data, 1, data?.length);
+        setSalesReps(modifieData);
         const totalCases = response?.data.reduce((sum: any, item: any) => sum + (+item.total_cases), 0);
         const targeted_amount = response?.data.reduce((sum: any, item: any) => sum + (+item.expected_amount), 0);
 
@@ -39,13 +42,16 @@ const SalesRep = () => {
         const paidRevenueSum = response?.data.reduce((sum: any, item: any) => sum + (+item.paid_amount), 0);
         const pendingAmoumnt = response?.data.reduce((sum: any, item: any) => sum + (+item.pending_amount), 0);
 
+        console.log(pendingAmoumnt, "Dsfas")
         const result = [
           "Total",
+          null,
           totalCases,
           targeted_amount,
           billedAmoumnt,
           paidRevenueSum,
           pendingAmoumnt,
+
         ];
 
 
@@ -84,7 +90,7 @@ const SalesRep = () => {
               />
             </div>
             <div className={styles.headinglable}>
-              <div className={styles.heading}>Sales Representative</div>
+              <div className={styles.heading}>Sales Representatives</div>
             </div>
           </div>
           <GlobalDateRangeFilter onChangeData={onChangeData} />

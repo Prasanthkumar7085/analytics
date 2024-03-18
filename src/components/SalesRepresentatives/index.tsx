@@ -98,6 +98,7 @@ const SalesRepresentatives = () => {
         const result = [
           "Total",
           null,
+          null,
           totalCases,
           billedAmoumnt,
           paidRevenueSum,
@@ -143,6 +144,18 @@ const SalesRepresentatives = () => {
       accessorFn: (row: any) => row.sales_rep_name,
       id: "sales_rep_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.no_of_facilities,
+      id: "no_of_facilities",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",

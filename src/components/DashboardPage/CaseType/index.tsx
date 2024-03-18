@@ -203,11 +203,11 @@ const CaseTypes = ({
   function getSubtitle() {
     const totalNumber = totalRevenueSum[1] ?
       totalRevenueSum[1] : 0;
-    return `<span style="font-size: 10px,margin-left:"45px">Total value</span>
+    return `<span style="font-size: 6px,margin-left:"45px">Total value</span>
         <br>
-        <span style="font-size: 20px;">
+        <span style="font-size: 13px;">
             <b> 
-            ${formatNumber(totalNumber)}</b>
+            ${tabValue == "Revenue" ? formatMoney(totalNumber) : totalNumber.toFixed(2)}</b>
         </span>`;
   }
 

@@ -176,7 +176,7 @@ const SingleColumnTable: FC<pageProps> = ({
                 </tr>
               );
             })
-          ) : loading ? (
+          ) : !loading ? (
             <tr>
               <td colSpan={10}>
                 <div

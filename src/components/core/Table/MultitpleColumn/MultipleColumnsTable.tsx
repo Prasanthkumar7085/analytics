@@ -143,8 +143,6 @@ const MultipleColumnsTable: FC<pageProps> = ({
             .map((headerGroup: any, mainIndex: number) => (
               <tr className="table-row" key={headerGroup.id}>
                 {headerGroup.headers.map((header: any, index: number) => {
-                  console.log(header, "header")
-
                   return (
                     <th
                       className="cell"
