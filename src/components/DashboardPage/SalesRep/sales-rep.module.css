@@ -1,24 +1,11 @@
-.salesTableHeading{
-   white-space: nowrap;
-    font-size:clamp(12px, 0.62vw, 16px);
-     font-weight:500;
-      color:#534D59;
-      padding-inline: 1rem;
+.salesTableHeading {
+  white-space: nowrap;
+  font-size: clamp(12px, 0.62vw, 16px);
+  font-weight: 500;
+  color: #534d59;
+  padding-inline: 1rem;
 }
-.totalCasesRow{
-      color: #1B2459;
-      font-weight: 500;
-}
-.targetedRow{
-      color: #477593 !important;
-      font-weight: 500;
-}
-.billedRow{
-      color: #FF9932;
-}
-.receivedRow{
-      color: #36C24D;
-}
-.arrearsRow{
-      color: #FE5046;
+.totalCasesRow {
+  color: #1b2459;
+  font-weight: 500;
 }
