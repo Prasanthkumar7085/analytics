@@ -52,7 +52,6 @@ const Facilities = ({ searchParams }: any) => {
           { value: totalAmount, dolorSymbol: true },
           { value: totalPaid, dolorSymbol: true },
           { value: totalPending, dolorSymbol: true },
-          "",
         ];
         setTotalSumFacilityValues(result);
         setFacilitiesData(response?.data);
