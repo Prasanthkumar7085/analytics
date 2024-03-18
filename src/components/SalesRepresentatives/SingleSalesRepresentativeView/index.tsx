@@ -5,7 +5,12 @@ import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import {
   getSingleRepCaseTypes,
   getSingleRepDeatilsAPI,
@@ -36,12 +41,12 @@ const SalesRepView = () => {
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [salesRepDetails, setSalesRepDetails] = useState<any>();
-  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const params = useSearchParams();
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
-  const [caseTypeLoading, setCaseTypeLoading] = useState(true)
+  const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Revenue");
 
   //get the stats counts
@@ -52,7 +57,6 @@ const SalesRepView = () => {
       `/sales-reps/${id}/stats-volume`,
     ];
     try {
-
       let queryParams: any = {};
 
       if (fromDate) {
@@ -111,11 +115,18 @@ const SalesRepView = () => {
 
         response?.data?.forEach((entry: any) => {
           paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
-          totalRevenueSum += entry.generated_amount ? +entry.generated_amount : 0;
-          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0
+          totalRevenueSum += entry.generated_amount
+            ? +entry.generated_amount
+            : 0;
+          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = [{ value: "Total", dolorSymbol: false }, { value: totalRevenueSum, dolorSymbol: true }, { value: paidRevenueSum, dolorSymbol: true }, { value: pendingRevenueSum, dolorSymbol: true }];
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalRevenueSum, dolorSymbol: true },
+          { value: paidRevenueSum, dolorSymbol: true },
+          { value: pendingRevenueSum, dolorSymbol: true },
+        ];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
@@ -149,10 +160,15 @@ const SalesRepView = () => {
         response?.data?.forEach((entry: any) => {
           totalCases += entry.total_cases ? +entry.total_cases : 0;
           completedCases += entry.completed_cases ? +entry.completed_cases : 0;
-          pendingCases += entry.pending_cases ? +entry.pending_cases : 0
+          pendingCases += entry.pending_cases ? +entry.pending_cases : 0;
         });
 
-        const result = [{ value: "Total", dolorSymbol: false }, { value: totalCases, dolorSymbol: false }, { value: completedCases, dolorSymbol: false }, { value: pendingCases, dolorSymbol: false }];
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+          { value: completedCases, dolorSymbol: false },
+          { value: pendingCases, dolorSymbol: false },
+        ];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
@@ -178,7 +194,6 @@ const SalesRepView = () => {
     }
   };
 
-
   useEffect(() => {
     setSearchParams(
       Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
@@ -192,7 +207,10 @@ const SalesRepView = () => {
       getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
-        setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+        setDateFilterDefaultValue([
+          new Date(searchParams?.from_date),
+          new Date(searchParams?.to_date),
+        ]);
       }
     } else {
       router.back();
@@ -202,23 +220,20 @@ const SalesRepView = () => {
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
+      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
       if (tabValue == "Revenue") {
         getCaseTypesRevenueStats(fromDate, toDate);
+      } else {
+        getCaseTypesVolumeStats(fromDate, toDate);
       }
-      else {
-        getCaseTypesVolumeStats(fromDate, toDate)
-      }
-    }
-    else {
-      setDateFilterDefaultValue("")
+    } else {
+      setDateFilterDefaultValue("");
       getStatsCounts("", "");
-      router.push(`/sales-representatives/${id}`)
+      router.push(`/sales-representatives/${id}`);
       if (tabValue == "Revenue") {
         getCaseTypesRevenueStats("", "");
-      }
-      else {
-        getCaseTypesVolumeStats("", "")
+      } else {
+        getCaseTypesVolumeStats("", "");
       }
     }
   };
@@ -227,21 +242,36 @@ const SalesRepView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div
-            onClick={() => router.back()}
-            className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
-          >
-            <ArrowBack className="w-[20px] text-[#bf1b39]" />
-          </div>
-          <div className="person flex items-center">
-            <Avatar sx={{ height: "30px", width: "30px" }} />
-            <p className="pl-3">{salesRepDetails?.[0]?.sales_rep}</p>
-            {salesRepDetails?.[0]?.manager ?
-              <p className="pl-3">manager:{salesRepDetails?.[0]?.manager}</p> : ""}
+          <div className="flex items-center w-[250px]">
+            <div>
+              <div
+                onClick={() => router.back()}
+                className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
+              >
+                <ArrowBack className="w-[20px] text-[#bf1b39]" />
+              </div>
+            </div>
 
+            <div className="person flex items-center">
+              <Avatar sx={{ height: "30px", width: "30px" }} />
+              <div className="pl-3">
+                <p>{salesRepDetails?.[0]?.sales_rep}</p>
+                {salesRepDetails?.[0]?.manager ? (
+                  <p className="mt-0">
+                    Manager: {salesRepDetails?.[0]?.manager}
+                  </p>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
           </div>
+
           <div style={{ marginLeft: "70%" }}>
-            <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
+            <GlobalDateRangeFilter
+              onChangeData={onChangeData}
+              dateFilterDefaultValue={dateFilterDefaultValue}
+            />
           </div>
         </div>
         <div className="personData">
@@ -251,7 +281,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </Grid>
             <Grid item xs={8}>
@@ -267,7 +297,10 @@ const SalesRepView = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <SingleSalesRepCaseTypeDetails apiUrl={"sales-reps"} searchParams={searchParams} />
+              <SingleSalesRepCaseTypeDetails
+                apiUrl={"sales-reps"}
+                searchParams={searchParams}
+              />
             </Grid>
             <Grid item xs={7}>
               <div className="eachDataCard" id="InsurancePayorsData">
