@@ -20,26 +20,26 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   const [headerMonths, setHeaderMonths] = useState<any>([])
   const [graphValuesData, setGraphValuesData] = useState<any>({})
   const [graphColor, setGraphColor] = useState("")
-  let colors = [
-    "#ea1d22",
-    "#00a752",
-    "#fcf00b",
-    "#f19213",
-    "#00b0ea",
-    "#f51059",
-    "#dc79c8",
-    "#92298f",
-    "#2e3094",
-    "#0071b9",
-    "#82eedd",
-    "	#eea782",
-    "#000000",
-    "#82a8cd",
-    "#e1dbe4",
-    "#f6dad3",
-    "#87b5af",
-    "	#185a59",
-  ];
+  let colors: any = {
+    "CARDIAC": "#ea1d22",
+    "CGX PANEL": "#00a752",
+    "CLINICAL CHEMISTRY": "#fcf00b",
+    "COVID": "#f19213",
+    "COVID FLU": "#00b0ea",
+    "DIABETES": "#f51059",
+    "GASTRO": "#dc79c8",
+    "GTI STI": "#92298f",
+    "GTI WOMENS HEALTH": "#2e3094",
+    "NAIL": "#0071b9",
+    "PAD ALZHEIMERS": "#82eedd",
+    "PGX TEST": "#eea782",
+    "PULMONARY PANEL": "#000000",
+    "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
+    "TOXICOLOGY": "#e1dbe4",
+    "URINANLYSIS": "#f6dad3",
+    "UTI": "#87b5af",
+    "WOUND": "#185a59",
+  };
 
 
   const tableRef: any = useRef();
@@ -208,10 +208,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
             setGraphValuesData(data)
-            setGraphColor(colors[info.row.index])
+            setGraphColor(colors[info.row.original.case_type_name])
           }}
         >
-          <AreaGraph data={data} graphColor={colors[info.row.index]} />
+          <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} />
         </div>
       );
     },

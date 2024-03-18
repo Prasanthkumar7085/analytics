@@ -26,7 +26,7 @@ const MultipleColumnsTable: FC<pageProps> = ({
   searchParams,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount"]
+  let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount", "1_revenue_expected_amount"]
 
   const table = useReactTable({
     columns,
@@ -143,6 +143,8 @@ const MultipleColumnsTable: FC<pageProps> = ({
             .map((headerGroup: any, mainIndex: number) => (
               <tr className="table-row" key={headerGroup.id}>
                 {headerGroup.headers.map((header: any, index: number) => {
+                  console.log(header, "header")
+
                   return (
                     <th
                       className="cell"

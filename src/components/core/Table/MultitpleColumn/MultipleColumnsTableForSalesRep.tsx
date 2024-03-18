@@ -260,7 +260,7 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
             {totalSumValues?.map((item: any, index: number) => {
               return (
                 <td key={index}>
-                  {index == 0 || index == 1 ? item : formatMoney(item)}
+                  {index == 0 || index == 1 || index == 2 ? item : formatMoney(item)}
                 </td>
               );
             })}
