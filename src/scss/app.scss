@@ -559,6 +559,10 @@ table {
       background: #fff !important;
     }
 
+    thead {
+      z-index: 9999 !important;
+    }
+
     thead,
     tfoot {
       z-index: 99;
