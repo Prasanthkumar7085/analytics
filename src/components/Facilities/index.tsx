@@ -27,16 +27,18 @@ const FacilitiesList = () => {
   );
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [completeData, setCompleteData] = useState([]);
-  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
-  const [loading, setLoading] = useState<boolean>(true)
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   //get the list of Facilities
   const getFacilitiesList = async ({
-    fromDate, toDate,
+    fromDate,
+    toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type, }: any) => {
-    setLoading(true)
+    orderType = searchParams?.order_type,
+  }: any) => {
+    setLoading(true);
     try {
       let queryParams: any = {};
 
@@ -76,7 +78,7 @@ const FacilitiesList = () => {
         }
         data = sortAndGetData(data, orderBy, orderType);
         const modifieData = addSerial(data, 1, data?.length);
-        setFacilitiesData(modifieData)
+        setFacilitiesData(modifieData);
         const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
           0
@@ -104,36 +106,29 @@ const FacilitiesList = () => {
           { value: pendingAmoumnt, dolorSymbol: true },
         ];
         setTotalSumValues(result);
-
       }
     } catch (err) {
       console.error(err);
-    }
-    finally {
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
-
   const goToSingleRepPage = (Id: string) => {
-
-    let queryString = '';
-    const queryParams: any = {}
-    if (params.get('from_date')) {
-      queryParams['from_date'] = params.get('from_date')
+    let queryString = "";
+    const queryParams: any = {};
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
     }
-    if (params.get('to_date')) {
-      queryParams['to_date'] = params.get('to_date')
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
     }
     if (Object.keys(queryParams)?.length) {
-      queryString = prepareURLEncodedParams('', queryParams)
+      queryString = prepareURLEncodedParams("", queryParams);
     }
 
-    router.push(
-      `/facilities/${1}${queryString}`
-    );
-
-  }
+    router.push(`/facilities/${1}${queryString}`);
+  };
 
   const columnDef = [
     {
@@ -148,9 +143,7 @@ const FacilitiesList = () => {
     {
       accessorFn: (row: any) => row.facility_name,
       id: "facility_name",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>
-      ),
+      header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
@@ -202,9 +195,7 @@ const FacilitiesList = () => {
         },
         {
           accessorFn: (row: any) => row.paid_amount,
-          header: () => (
-            <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
-          ),
+          header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
           id: "paid_amount",
           width: "200px",
           maxWidth: "200px",
@@ -240,7 +231,6 @@ const FacilitiesList = () => {
             <Button
               className="actionButton"
               onClick={() => goToSingleRepPage(info.row.original._id)}
-
             >
               View
             </Button>
@@ -248,8 +238,7 @@ const FacilitiesList = () => {
         );
       },
     },
-  ]
-
+  ];
 
   const onUpdateData = ({
     search = searchParams?.search,
@@ -283,18 +272,28 @@ const FacilitiesList = () => {
     if (orderBy && orderType) {
       data = sortAndGetData(data, orderBy, orderType);
       if (search) {
-        data = data.filter((item: any) =>
-        (item.sales_rep_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()) ||
-          item.facility_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()))
-        )
+        data = data.filter(
+          (item: any) =>
+            item.sales_rep_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim()) ||
+            item.facility_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim())
+        );
       }
     } else {
       data = [...completeData];
       if (search) {
-        data = data.filter((item: any) =>
-        (item.sales_rep_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()) ||
-          item.facility_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()))
-        )
+        data = data.filter(
+          (item: any) =>
+            item.sales_rep_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim()) ||
+            item.facility_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim())
+        );
       }
     }
     const modifieData = addSerial(data, 1, data?.length);
@@ -330,16 +329,19 @@ const FacilitiesList = () => {
     setTotalSumValues(result);
   };
 
-
   useEffect(() => {
     getFacilitiesList({
-      fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: searchParams?.search,
+      fromDate: searchParams?.from_date,
+      toDate: searchParams?.to_date,
+      searchValue: searchParams?.search,
     });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+      setDateFilterDefaultValue([
+        new Date(searchParams?.from_date),
+        new Date(searchParams?.to_date),
+      ]);
     }
   }, []);
-
 
   useEffect(() => {
     setSearchParams(
@@ -348,7 +350,7 @@ const FacilitiesList = () => {
   }, [params]);
 
   return (
-    <div >
+    <div id="salesRepresentativesPage">
       <FacilitiesFilters
         onUpdateData={onUpdateData}
         getFacilitiesList={getFacilitiesList}

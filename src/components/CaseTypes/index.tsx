@@ -23,14 +23,16 @@ const CaseTypes = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
-  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [completeData, setCompleteData] = useState([]);
   const getAllCaseTypes = async ({
-    fromDate, toDate,
+    fromDate,
+    toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type, }: any) => {
+    orderType = searchParams?.order_type,
+  }: any) => {
     try {
       let queryParams: any = {};
 
@@ -70,7 +72,7 @@ const CaseTypes = () => {
         }
         data = sortAndGetData(data, orderBy, orderType);
         const modifieData = addSerial(data, 1, data?.length);
-        setAllCaseTypes(modifieData)
+        setAllCaseTypes(modifieData);
         const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
           0
@@ -98,7 +100,6 @@ const CaseTypes = () => {
           { value: pendingAmoumnt, dolorSymbol: true },
         ];
         setTotalCaseTypeSum(result);
-
       }
     } catch (err) {
       console.error(err);
@@ -137,18 +138,28 @@ const CaseTypes = () => {
     if (orderBy && orderType) {
       data = sortAndGetData(data, orderBy, orderType);
       if (search) {
-        data = data.filter((item: any) =>
-        (item.case_type_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()) ||
-          item.facility_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()))
-        )
+        data = data.filter(
+          (item: any) =>
+            item.case_type_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim()) ||
+            item.facility_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim())
+        );
       }
     } else {
       data = [...completeData];
       if (search) {
-        data = data.filter((item: any) =>
-        (item.case_type_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()) ||
-          item.facility_name?.toLowerCase()?.includes(search?.toLowerCase()?.trim()))
-        )
+        data = data.filter(
+          (item: any) =>
+            item.case_type_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim()) ||
+            item.facility_name
+              ?.toLowerCase()
+              ?.includes(search?.toLowerCase()?.trim())
+        );
       }
     }
     const modifieData = addSerial(data, 1, data?.length);
@@ -237,7 +248,6 @@ const CaseTypes = () => {
       id: "revenue",
       width: "800px",
       columns: [
-
         {
           accessorFn: (row: any) => row.genereated_amount,
           header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
@@ -251,9 +261,7 @@ const CaseTypes = () => {
         },
         {
           accessorFn: (row: any) => row.paid_amount,
-          header: () => (
-            <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>
-          ),
+          header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
           id: "paid_amount",
           width: "200px",
           maxWidth: "200px",
@@ -292,17 +300,21 @@ const CaseTypes = () => {
     //     );
     //   },
     // },
-  ]
+  ];
 
   useEffect(() => {
     getAllCaseTypes({
-      fromDate: searchParams?.from_date, toDate: searchParams?.to_date, searchValue: searchParams?.search,
+      fromDate: searchParams?.from_date,
+      toDate: searchParams?.to_date,
+      searchValue: searchParams?.search,
     });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+      setDateFilterDefaultValue([
+        new Date(searchParams?.from_date),
+        new Date(searchParams?.to_date),
+      ]);
     }
   }, []);
-
 
   useEffect(() => {
     setSearchParams(
@@ -310,7 +322,7 @@ const CaseTypes = () => {
     );
   }, [params]);
   return (
-    <div>
+    <div id="salesRepresentativesPage">
       <CaseTypeFilters
         onUpdateData={onUpdateData}
         getAllCaseTypes={getAllCaseTypes}
@@ -324,7 +336,6 @@ const CaseTypes = () => {
         totalSumValues={totalCaseTypesSum}
         searchParams={searchParams}
         getData={onUpdateData}
-
       />
     </div>
   );

@@ -6,7 +6,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-const InsurancesFilters = ({ onUpdateData, getInsurancesList, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
+const InsurancesFilters = ({
+  onUpdateData,
+  getInsurancesList,
+  dateFilterDefaultValue,
+  setDateFilterDefaultValue,
+}: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -19,12 +24,10 @@ const InsurancesFilters = ({ onUpdateData, getInsurancesList, dateFilterDefaultV
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       getInsurancesList({ fromDate, toDate });
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
-    }
-    else {
-      setDateFilterDefaultValue("", "")
+      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+    } else {
+      setDateFilterDefaultValue("", "");
       getInsurancesList({});
-
     }
   };
   return (
@@ -35,9 +38,11 @@ const InsurancesFilters = ({ onUpdateData, getInsurancesList, dateFilterDefaultV
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-
             <li className="eachFilterLists">
-              <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
             </li>
             <li className="eachFilterLists">
               <TextField
@@ -58,7 +63,6 @@ const InsurancesFilters = ({ onUpdateData, getInsurancesList, dateFilterDefaultV
                 }}
               />
             </li>
-
           </ul>
         </Grid>
       </Grid>
