@@ -85,7 +85,7 @@ const SalesRep = () => {
     getAllSalesReps({ fromDate, toDate });
   };
   return (
-    <div className="eachDataCard mb-10" id="SalesRepresentativeTableData">
+    <div className="eachDataCard mb-10" id="SalesRepresentativeTableData" style={{ position: "relative" }}>
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />

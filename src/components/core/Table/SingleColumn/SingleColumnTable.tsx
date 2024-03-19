@@ -132,20 +132,20 @@ const SingleColumnTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  header.id === "actions" ||
-                                  removeSortingForColumnIds.includes(header.id)
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    header.id === "actions" ||
+                                      removeSortingForColumnIds.includes(header.id)
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>
@@ -227,8 +227,8 @@ const SingleColumnTable: FC<pageProps> = ({
                     ? index == 0
                       ? item.value
                       : item?.dolorSymbol
-                      ? formatMoney(item.value)
-                      : item.value?.toLocaleString()
+                        ? formatMoney(item.value)
+                        : item.value?.toLocaleString()
                     : ""}
                 </td>
               );

@@ -85,7 +85,7 @@ const InsurancesComponent = () => {
           0
         );
         const billedAmoumnt = data.reduce(
-          (sum: any, item: any) => sum + +item.generated_ammount,
+          (sum: any, item: any) => sum + +item.generated_amount,
           0
         );
         const paidRevenueSum = data.reduce(
@@ -184,8 +184,8 @@ const InsurancesComponent = () => {
       width: "800px",
       columns: [
         {
-          accessorFn: (row: any) => row.generated_ammount,
-          id: "generated_ammount",
+          accessorFn: (row: any) => row.generated_amount,
+          id: "generated_amount",
           header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
           width: "200px",
           maxWidth: "200px",
@@ -306,7 +306,7 @@ const InsurancesComponent = () => {
     );
 
     const billedAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.generated_ammount,
+      (sum: any, item: any) => sum + +item.generated_amount,
       0
     );
     const paidRevenueSum = data.reduce(

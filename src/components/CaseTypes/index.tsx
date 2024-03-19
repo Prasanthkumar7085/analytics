@@ -13,6 +13,7 @@ import { addSerial } from "@/lib/Pipes/addSerial";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import CaseTypeFilters from "./CaseTypeFilters";
+import LoadingComponent from "../core/LoadingComponent";
 
 const CaseTypes = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const CaseTypes = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [completeData, setCompleteData] = useState([]);
+  const [loading, setLoading] = useState<boolean>(true)
   const getAllCaseTypes = async ({
     fromDate,
     toDate,
@@ -33,6 +35,7 @@ const CaseTypes = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
+    setLoading(true)
     try {
       let queryParams: any = {};
 
@@ -78,7 +81,7 @@ const CaseTypes = () => {
           0
         );
         const billedAmoumnt = data.reduce(
-          (sum: any, item: any) => sum + +item.genereated_amount,
+          (sum: any, item: any) => sum + +item.generated_amount,
           0
         );
         const paidRevenueSum = data.reduce(
@@ -103,6 +106,9 @@ const CaseTypes = () => {
       }
     } catch (err) {
       console.error(err);
+    }
+    finally {
+      setLoading(false)
     }
   };
 
@@ -171,7 +177,7 @@ const CaseTypes = () => {
     );
 
     const billedAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.genereated_amount,
+      (sum: any, item: any) => sum + +item.generated_amount,
       0
     );
     const paidRevenueSum = data.reduce(
@@ -205,18 +211,7 @@ const CaseTypes = () => {
       minWidth: "60px",
       maxWidth: "60px",
     },
-    {
-      accessorFn: (row: any) => row.no_of_facilities,
-      id: "no_of_facilities",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITIES</span>,
-      footer: (props: any) => props.column.id,
-      width: "220px",
-      maxWidth: "220px",
-      minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
-      },
-    },
+
     {
       accessorFn: (row: any) => row.case_type_name,
       id: "case_type_name",
@@ -229,7 +224,18 @@ const CaseTypes = () => {
         return <span>{getValue()}</span>;
       },
     },
-
+    {
+      accessorFn: (row: any) => row.no_of_facilities,
+      id: "no_of_facilities",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITIES</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()}</span>;
+      },
+    },
     {
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
@@ -249,9 +255,9 @@ const CaseTypes = () => {
       width: "800px",
       columns: [
         {
-          accessorFn: (row: any) => row.genereated_amount,
+          accessorFn: (row: any) => row.generated_amount,
           header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-          id: "genereated_amount",
+          id: "generated_amount",
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
@@ -337,6 +343,7 @@ const CaseTypes = () => {
         searchParams={searchParams}
         getData={onUpdateData}
       />
+      <LoadingComponent loading={loading} />
     </div>
   );
 };

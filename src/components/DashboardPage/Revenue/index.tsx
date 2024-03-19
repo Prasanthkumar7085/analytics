@@ -61,7 +61,7 @@ const RevenueBlock = () => {
 
   return (
     <>
-      <div className="eachDataCard" id="RevenueTableData">
+      <div className="eachDataCard" id="RevenueTableData" style={{ position: "relative" }}>
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />

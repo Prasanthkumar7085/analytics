@@ -67,7 +67,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   <Link
                     href={"/insurances"}
                     className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/insurances" ? "activePagename" : "active"
+                      pathname.includes("/insurances") ? "activePagename" : "active"
                     ]
                       }`}
                   >
@@ -78,7 +78,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   <Link
                     href={"/facilities"}
                     className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/facilities" ? "activePagename" : "active"
+                      pathname.includes("/facilities") ? "activePagename" : "active"
                     ]
                       }`}
                   >
@@ -89,7 +89,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   <Link
                     href={"/case-types"}
                     className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/case-types" ? "activePagename" : "active"
+                      pathname.includes("/case-types") ? "activePagename" : "active"
                     ]
                       }`}
                   >
@@ -99,7 +99,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 <li>
                   <a
                     className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/reports" ? "activePagename" : "active"
+                      pathname.includes("/reports") ? "activePagename" : "active"
                     ]
                       }`}
                   >
