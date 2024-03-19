@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useMemo, useState } from "react";
 import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import { useSelector } from "react-redux";

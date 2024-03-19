@@ -1,9 +1,11 @@
-"use client"
 import InsurancesComponent from "@/components/Insurances";
+import { Suspense } from "react";
 
 const InsurancesPage = () => {
     return (
-        <InsurancesComponent />
+        <Suspense>
+            <InsurancesComponent />
+        </Suspense>
     )
 }
 export default InsurancesPage;
