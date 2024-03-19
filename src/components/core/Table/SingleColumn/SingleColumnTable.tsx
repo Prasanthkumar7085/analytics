@@ -24,7 +24,11 @@ const SingleColumnTable: FC<pageProps> = ({
   loading,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount"]
+  let removeSortingForColumnIds = [
+    "id",
+    "actions",
+    "1_revenue_generated_amount",
+  ];
 
   const table = useReactTable({
     columns,
@@ -128,15 +132,20 @@ const SingleColumnTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{ display: header.id === "actions" || removeSortingForColumnIds.includes(header.id) ? "none" : "" }}
-                              />
-                            )}
-
+                            <Image
+                              src="/core/sort/un-sort.svg"
+                              height={8}
+                              width={8}
+                              alt="Unsorted"
+                              style={{
+                                display:
+                                  header.id === "actions" ||
+                                  removeSortingForColumnIds.includes(header.id)
+                                    ? "none"
+                                    : "",
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     </th>
@@ -187,7 +196,12 @@ const SingleColumnTable: FC<pageProps> = ({
                     height: "40vh",
                   }}
                 >
-                  <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
+                  <Image
+                    src="/NoDataImageAnalytics.svg"
+                    alt=""
+                    height={150}
+                    width={250}
+                  />
                 </div>
               </td>
             </tr>
@@ -212,7 +226,9 @@ const SingleColumnTable: FC<pageProps> = ({
                   {item
                     ? index == 0
                       ? item.value
-                      : item?.dolorSymbol ? formatMoney(item.value) : item.value?.toLocaleString()
+                      : item?.dolorSymbol
+                      ? formatMoney(item.value)
+                      : item.value?.toLocaleString()
                     : ""}
                 </td>
               );

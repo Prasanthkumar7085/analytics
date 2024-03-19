@@ -107,7 +107,7 @@ table {
 
     .eachFilterLists {
       &:not(:last-child) {
-        margin-right: 2em;
+        margin-right: 1em;
       }
     }
   }
@@ -782,5 +782,13 @@ table {
         }
       }
     }
+  }
+}
+
+#insuranceCaseTypesData {
+
+  th,
+  td {
+    min-width: 200px !important;
   }
 }
