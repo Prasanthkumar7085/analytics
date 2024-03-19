@@ -195,7 +195,7 @@ const FacilitiesView = () => {
   };
 
   //get single facility details
-  const getSignleSalesRepDetails = async () => {
+  const getSingleFacilityDetails = async () => {
     setLoading(true);
     try {
       const response = await getSingleFacilityDetailsAPI(id as string);
@@ -214,7 +214,7 @@ const FacilitiesView = () => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
       getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
-      getSignleSalesRepDetails()
+      getSingleFacilityDetails()
     }
     if (searchParams?.from_date) {
       setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])

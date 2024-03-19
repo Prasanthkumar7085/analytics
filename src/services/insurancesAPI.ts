@@ -13,6 +13,18 @@ export const getInsurancesAPI = async (params: any) => {
     }
 };
 
+export const getSingleInsurancesDetailsAPI = async (insurance_id: string) => {
+    try {
+        const { success, data } = await $fetch.get(`/insurances/${insurance_id}`);
+        if (!success) {
+            return handleAPIErrorResponse(data);
+        }
+        return data;
+    } catch (err) {
+        throw err;
+    }
+};
+
 export const getInsurancesCaseTypesAPI = async (insurace_id: string, params: any) => {
     try {
         const { success, data } = await $fetch.get(`/insurances/${insurace_id}/case-types`, params);

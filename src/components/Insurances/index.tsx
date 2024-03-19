@@ -70,7 +70,7 @@ const InsurancesComponent = () => {
                 let data = response?.data;
                 if (searchValue) {
                     data = data.filter((item: any) =>
-                        item.sales_rep_name
+                        item.insurance_payor_name
                             ?.toLowerCase()
                             ?.includes(searchValue?.toLowerCase()?.trim())
                     );
