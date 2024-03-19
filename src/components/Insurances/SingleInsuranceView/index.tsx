@@ -19,7 +19,6 @@ const InsuranceView = () => {
     const [searchParams, setSearchParams] = useState(
         Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
     );
-    const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
 
     useEffect(() => {
         setSearchParams(
@@ -27,10 +26,6 @@ const InsuranceView = () => {
         );
     }, [params]);
 
-
-    const onChangeData = (fromDate: any, toDate: any) => {
-
-    };
     return (
         <div>
             <div className="salesPersonDataDetails">
@@ -52,12 +47,8 @@ const InsuranceView = () => {
                                 </div>
                             </div>
 
-
                         </div>
-
                     </div>
-                    <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
-
                 </div>
                 <div className="personData">
                     <Grid container spacing={2}>
@@ -66,7 +57,7 @@ const InsuranceView = () => {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <Trends searchParams={searchParams} apiurl={"facilities"} />
+                            <Trends searchParams={searchParams} apiurl={"insurances"} />
                         </Grid>
                     </Grid>
                 </div>

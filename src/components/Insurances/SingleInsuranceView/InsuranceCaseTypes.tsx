@@ -56,10 +56,7 @@ const InsuranceCaseTypes = ({ searchParams }: any) => {
                     { value: expectedAmount, dolorSymbol: true },
                     { value: totalPaid, dolorSymbol: true },
                     { value: pendingVolume, dolorSymbol: false },
-                    { value: totalPending, dolorSymbol: true },
-                    { value: null, dolorSymbol: false },
-                    { value: null, dolorSymbol: false },
-                ];
+                    { value: totalPending, dolorSymbol: true }];
 
                 setTortalInsurancePayors(result);
             }
@@ -179,7 +176,6 @@ const InsuranceCaseTypes = ({ searchParams }: any) => {
                 return <span>{formatMoney(getValue())}</span>;
             },
         },
-
         {
             accessorFn: (row: any) => row.pending_amount,
             id: "clearence_rate",
@@ -190,18 +186,6 @@ const InsuranceCaseTypes = ({ searchParams }: any) => {
             minWidth: "70px",
             cell: (info: any) => {
                 return <span>{(((info.row.original.paid_amount) / (info.row.original.expected_amount)) * 100).toFixed(2)}%</span>;
-            },
-        },
-        {
-            accessorFn: (row: any) => row.pending_amount,
-            id: "clearence_rate",
-            header: () => <span style={{ whiteSpace: "nowrap" }}>PAID PRICE/TARGET PRICE</span>,
-            footer: (props: any) => props.column.id,
-            width: "70px",
-            maxWidth: "100px",
-            minWidth: "70px",
-            cell: (info: any) => {
-                return <span>{"75/100"}</span>;
             },
         },
     ]
