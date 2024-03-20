@@ -21,7 +21,7 @@ const GraphDialog = ({
 
   const options = {
     title: {
-      text: graphData?.case_type_name,
+      text: graphData?.case_type_name ? graphData?.case_type_name + " " + tabValue.toUpperCase() : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },
 

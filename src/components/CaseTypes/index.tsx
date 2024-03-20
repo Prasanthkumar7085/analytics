@@ -14,6 +14,7 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import CaseTypeFilters from "./CaseTypeFilters";
 import LoadingComponent from "../core/LoadingComponent";
+import SingleFacilitieCaseTypeDetails from "../Facilities/SingleFacilitieView/SingleFacilitiesCaseTypeDetails";
 
 const CaseTypes = () => {
   const router = useRouter();
@@ -289,23 +290,6 @@ const CaseTypes = () => {
         },
       ],
     },
-
-    // {
-    //   accessorFn: (row: any) => row,
-    //   id: "graph",
-    //   header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
-    //   footer: (props: any) => props.column.id,
-    //   width: "100px",
-    //   maxWidth: "100px",
-    //   minWidth: "100px",
-    //   cell: ({ getValue }: any) => {
-    //     return (
-    //       <span style={{ cursor: "pointer" }}>
-    //         <AreaGraph graphData={getValue} />
-    //       </span>
-    //     );
-    //   },
-    // },
   ];
 
   useEffect(() => {
@@ -328,22 +312,28 @@ const CaseTypes = () => {
     );
   }, [params]);
   return (
-    <div id="salesRepresentativesPage">
-      <CaseTypeFilters
-        onUpdateData={onUpdateData}
-        getAllCaseTypes={getAllCaseTypes}
-        dateFilterDefaultValue={dateFilterDefaultValue}
-        setDateFilterDefaultValue={setDateFilterDefaultValue}
-      />
-      <MultipleColumnsTableForSalesRep
-        data={allCaseTypes}
-        columns={columnDef}
-        loading={false}
-        totalSumValues={totalCaseTypesSum}
-        searchParams={searchParams}
-        getData={onUpdateData}
-      />
-      <LoadingComponent loading={loading} />
+    <div>
+      <div id="salesRepresentativesPage">
+        <CaseTypeFilters
+          onUpdateData={onUpdateData}
+          getAllCaseTypes={getAllCaseTypes}
+          dateFilterDefaultValue={dateFilterDefaultValue}
+          setDateFilterDefaultValue={setDateFilterDefaultValue}
+        />
+        <MultipleColumnsTableForSalesRep
+          data={allCaseTypes}
+          columns={columnDef}
+          loading={false}
+          totalSumValues={totalCaseTypesSum}
+          searchParams={searchParams}
+          getData={onUpdateData}
+        />
+
+        <LoadingComponent loading={loading} />
+      </div>
+      <div style={{ marginTop: "30px" }}>
+        <SingleFacilitieCaseTypeDetails apiUrl={"case-types"} searchParams={searchParams} />
+      </div>
     </div>
   );
 };
