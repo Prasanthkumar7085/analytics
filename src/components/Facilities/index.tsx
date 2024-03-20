@@ -127,7 +127,7 @@ const FacilitiesList = () => {
       queryString = prepareURLEncodedParams("", queryParams);
     }
 
-    router.push(`/facilities/${1}${queryString}`);
+    router.push(`/facilities/${Id}${queryString}`);
   };
 
   const columnDef = [
@@ -230,7 +230,7 @@ const FacilitiesList = () => {
           <span>
             <Button
               className="actionButton"
-              onClick={() => goToSingleRepPage(info.row.original._id)}
+              onClick={() => goToSingleRepPage(info.row.original.facility_id)}
             >
               View
             </Button>
