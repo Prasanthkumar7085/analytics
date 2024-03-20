@@ -80,11 +80,11 @@ const CaseTypes = ({
           name: item["case_type_name"],
           y:
             tabValue == "Revenue"
-              ? item["generated_amount"]
-                ? +item["generated_amount"]
+              ? item["paid_amount"]
+                ? +item["paid_amount"]
                 : 0
-              : item["total_cases"]
-                ? +item["total_cases"]
+              : item["completed_cases"]
+                ? +item["completed_cases"]
                 : 0,
         });
       });
@@ -205,8 +205,8 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[1]?.value ?
-      totalRevenueSum[1]?.value : 0;
+    const totalNumber = totalRevenueSum[2]?.value ?
+      totalRevenueSum[2]?.value : 0;
     return `<span style="font-size: 6px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 13px;">
