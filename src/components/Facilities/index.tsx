@@ -155,7 +155,7 @@ const FacilitiesList = () => {
     {
       accessorFn: (row: any) => row.sales_rep_name,
       id: "sales_rep_name",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>SALES REP</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
@@ -220,7 +220,7 @@ const FacilitiesList = () => {
     {
       accessorFn: (row: any) => row.actions,
       id: "actions",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>Actions</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
       footer: (props: any) => props.column.id,
       width: "200px",
       maxWidth: "200px",

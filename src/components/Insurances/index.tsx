@@ -129,7 +129,7 @@ const InsurancesComponent = () => {
       queryString = prepareURLEncodedParams("", queryParams);
     }
 
-    router.push(`/insurances/${1}${queryString}`);
+    router.push(`/insurances/${Id}${queryString}`);
   };
 
   const columnDef = [
@@ -222,7 +222,7 @@ const InsurancesComponent = () => {
     {
       accessorFn: (row: any) => row.actions,
       id: "actions",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>Actions</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
       footer: (props: any) => props.column.id,
       width: "200px",
       maxWidth: "200px",
@@ -232,7 +232,7 @@ const InsurancesComponent = () => {
           <span>
             <Button
               className="actionButton"
-              onClick={() => goToSingleRepPage(info.row.original._id)}
+              onClick={() => goToSingleRepPage(info.row.original.insurance_payor_id)}
             >
               View
             </Button>

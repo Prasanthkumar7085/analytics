@@ -43,6 +43,7 @@ const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue
               <TextField
                 placeholder="Search case-types"
                 type="search"
+                sx={{ cursor: "pointer" }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
