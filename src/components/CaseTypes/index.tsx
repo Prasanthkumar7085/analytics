@@ -93,11 +93,15 @@ const CaseTypes = () => {
           (sum: any, item: any) => sum + +item.pending_amount,
           0
         );
+        const totalFacilitesSum = data.reduce(
+          (sum: any, item: any) => sum + +item.no_of_facilities,
+          0
+        );
 
         const result = [
           { value: "Total", dolorSymbol: false },
           { value: null, dolorSymbol: false },
-          { value: null, dolorSymbol: false },
+          { value: totalFacilitesSum, dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
           { value: billedAmoumnt, dolorSymbol: true },
           { value: paidRevenueSum, dolorSymbol: true },
@@ -189,11 +193,15 @@ const CaseTypes = () => {
       (sum: any, item: any) => sum + +item.pending_amount,
       0
     );
+    const totalFacilitesSum = data.reduce(
+      (sum: any, item: any) => sum + +item.no_of_facilities,
+      0
+    );
 
     const result: any = [
       { value: "Total", dolorSymbol: false },
       { value: null, dolorSymbol: false },
-      { value: null, dolorSymbol: false },
+      { value: totalFacilitesSum, dolorSymbol: false },
       { value: totalCases, dolorSymbol: false },
       { value: billedAmoumnt, dolorSymbol: true },
       { value: paidRevenueSum, dolorSymbol: true },
@@ -228,7 +236,7 @@ const CaseTypes = () => {
     {
       accessorFn: (row: any) => row.no_of_facilities,
       id: "no_of_facilities",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITIES</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",

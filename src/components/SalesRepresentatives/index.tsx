@@ -94,11 +94,15 @@ const SalesRepresentatives = () => {
           (sum: any, item: any) => sum + +item.pending_amount,
           0
         );
+        const totalNoOfFacilities = data.reduce(
+          (sum: any, item: any) => sum + +item.no_of_facilities,
+          0
+        );
 
         const result: any = [
           { value: "Total", dolorSymbol: false },
           { value: null, dolorSymbol: false },
-          { value: null, dolorSymbol: false },
+          { value: totalNoOfFacilities, dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
           { value: billedAmoumnt, dolorSymbol: true },
           { value: paidRevenueSum, dolorSymbol: true },
@@ -307,11 +311,15 @@ const SalesRepresentatives = () => {
       (sum: any, item: any) => sum + +item.pending_amount,
       0
     );
+    const totalNoOfFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.no_of_facilities,
+      0
+    );
 
     const result: any = [
       { value: "Total", dolorSymbol: false },
       { value: null, dolorSymbol: false },
-      { value: null, dolorSymbol: false },
+      { value: totalNoOfFacilities, dolorSymbol: false },
       { value: totalCases, dolorSymbol: false },
       { value: billedAmoumnt, dolorSymbol: true },
       { value: paidRevenueSum, dolorSymbol: true },
