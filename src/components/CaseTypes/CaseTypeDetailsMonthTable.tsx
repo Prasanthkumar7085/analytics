@@ -276,12 +276,19 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   const addAddtionalColoumns = [...columnDef, ...addtionalcolumns, ...graphColoumn]
   //api call to get details of case types
   useEffect(() => {
-    if (selectedDate?.length == 0) {
+    if (selectedDate?.length == 0 && !searchParams?.order_type) {
       if (tabValue == "Revenue") {
-        getDetailsOfCaseTypesOfRevenue(searchParams?.from_date, searchParams?.to_date, searchParams?.search)
-      }
-      else {
-        getDetailsOfCaseTypesOfVolume(searchParams?.from_date, searchParams?.to_date, searchParams?.search)
+        getDetailsOfCaseTypesOfRevenue(
+          searchParams?.from_date,
+          searchParams?.to_date,
+          searchParams?.search
+        );
+      } else {
+        getDetailsOfCaseTypesOfVolume(
+          searchParams?.from_date,
+          searchParams?.to_date,
+          searchParams?.search
+        );
       }
     }
   }, [tabValue, searchParams, selectedDate]);

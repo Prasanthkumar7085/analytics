@@ -61,7 +61,7 @@ const FacilitiesView = () => {
 
       const responses = await Promise.allSettled(
         urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, "");
+          const response = await getStatsDetailsAPI(url, queryParams);
           return response;
         })
       );
@@ -175,17 +175,16 @@ const FacilitiesView = () => {
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
+      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
       if (tabValue == "Revenue") {
         getCaseTypesRevenueStats(fromDate, toDate);
       } else {
         getCaseTypesVolumeStats(fromDate, toDate);
       }
-    }
-    else {
-      setDateFilterDefaultValue("")
+    } else {
+      setDateFilterDefaultValue("");
       getStatsCounts("", "");
-      router.push(`/facilities/${id}`)
+      router.push(`/facilities/${id}`);
       if (tabValue == "Revenue") {
         getCaseTypesRevenueStats("", "");
       } else {
@@ -214,10 +213,13 @@ const FacilitiesView = () => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
       getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
-      getSingleFacilityDetails()
+      getSingleFacilityDetails();
     }
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([new Date(searchParams?.from_date), new Date(searchParams?.to_date)])
+      setDateFilterDefaultValue([
+        new Date(searchParams?.from_date),
+        new Date(searchParams?.to_date),
+      ]);
     }
   }, []);
 
@@ -234,7 +236,9 @@ const FacilitiesView = () => {
                 <ArrowBack className="w-[20px] text-[#bf1b39]" />
               </div>
             </div>
-            <div style={{ width: "40%", display: "flex", flexDirection: "row" }}>
+            <div
+              style={{ width: "40%", display: "flex", flexDirection: "row" }}
+            >
               <div className="person flex items-center">
                 <Avatar sx={{ height: "30px", width: "30px" }} />
                 <div className="pl-3">
@@ -252,7 +256,6 @@ const FacilitiesView = () => {
             </div>
           </div>
 
-
           <div style={{ marginLeft: "70%" }}>
             <GlobalDateRangeFilter
               onChangeData={onChangeData}
@@ -267,7 +270,7 @@ const FacilitiesView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </Grid>
             <Grid item xs={8}>
@@ -302,7 +305,10 @@ const FacilitiesView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors searchParams={searchParams} apiurl={"facilities"} />
+                  <InsurancePayors
+                    searchParams={searchParams}
+                    apiurl={"facilities"}
+                  />
                 </div>
               </div>
             </Grid>
