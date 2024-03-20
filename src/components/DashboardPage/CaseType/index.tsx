@@ -222,11 +222,12 @@ const CaseTypes = ({
     },
     colors: Object.values(colors).map((item) => item),
     subtitle: {
-      useHTML: true,
+      useHTML: false,
       text: getSubtitle(),
       floating: true,
       verticalAlign: "middle",
       y: 10,
+
     },
     title: {
       text: "",

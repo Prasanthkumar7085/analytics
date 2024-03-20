@@ -50,7 +50,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum }: any) => {
       maxWidth: "120px",
       minWidth: "120px",
       cell: ({ getValue }: any) => {
-        return <span className={styles.totalCasesRow}>{getValue()}</span>;
+        return <span className={styles.totalCasesRow}>{getValue().toLocaleString()}</span>;
       },
     },
     {
