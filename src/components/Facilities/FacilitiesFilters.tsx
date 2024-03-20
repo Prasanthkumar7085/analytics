@@ -41,7 +41,7 @@ const FacilitiesFilters = ({ onUpdateData, getFacilitiesList, dateFilterDefaultV
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search facility or sales"
+                placeholder="Search facility or sales-rep"
                 type="search"
                 InputProps={{
                   startAdornment: (

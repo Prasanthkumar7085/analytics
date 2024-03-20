@@ -15,6 +15,7 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import CaseTypeFilters from "./CaseTypeFilters";
 import LoadingComponent from "../core/LoadingComponent";
 import SingleFacilitieCaseTypeDetails from "../Facilities/SingleFacilitieView/SingleFacilitiesCaseTypeDetails";
+import MonthWiseCaseTypeDetails from "./MonthWiseCaseTypeDetails";
 
 const CaseTypes = () => {
   const router = useRouter();
@@ -69,7 +70,7 @@ const CaseTypes = () => {
         let data = response?.data;
         if (searchValue) {
           data = data.filter((item: any) =>
-            item.sales_rep_name
+            item.case_type_name
               ?.toLowerCase()
               ?.includes(searchValue?.toLowerCase()?.trim())
           );
@@ -126,6 +127,7 @@ const CaseTypes = () => {
     orderBy: string;
     orderType: "asc" | "desc";
   }>) => {
+    setLoading(true)
     let queryParams: any = {};
     if (search) {
       queryParams["search"] = search;
@@ -153,9 +155,6 @@ const CaseTypes = () => {
           (item: any) =>
             item.case_type_name
               ?.toLowerCase()
-              ?.includes(search?.toLowerCase()?.trim()) ||
-            item.facility_name
-              ?.toLowerCase()
               ?.includes(search?.toLowerCase()?.trim())
         );
       }
@@ -165,9 +164,6 @@ const CaseTypes = () => {
         data = data.filter(
           (item: any) =>
             item.case_type_name
-              ?.toLowerCase()
-              ?.includes(search?.toLowerCase()?.trim()) ||
-            item.facility_name
               ?.toLowerCase()
               ?.includes(search?.toLowerCase()?.trim())
         );
@@ -208,6 +204,8 @@ const CaseTypes = () => {
       { value: pendingAmoumnt, dolorSymbol: true },
     ];
     setTotalCaseTypeSum(result);
+    setLoading(false)
+
   };
 
   const columnDef = [
@@ -340,7 +338,7 @@ const CaseTypes = () => {
         <LoadingComponent loading={loading} />
       </div>
       <div style={{ marginTop: "30px" }}>
-        <SingleFacilitieCaseTypeDetails apiUrl={"case-types"} searchParams={searchParams} />
+        <MonthWiseCaseTypeDetails apiUrl={"case-types"} searchParams={searchParams} />
       </div>
     </div>
   );
