@@ -10,6 +10,7 @@ import { getInsurancesCaseTypesAPI, getSingleInsurancesDetailsAPI } from "@/serv
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import InsuranceCaseTypes from "./InsuranceCaseTypes";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { addSerial } from "@/lib/Pipes/addSerial";
 
 const InsuranceView = () => {
     const { id } = useParams();
@@ -64,7 +65,8 @@ const InsuranceView = () => {
                 id as string, queryParams
             );
             if (response?.status == 200 || response?.status == 201) {
-                setInsuranceData(response?.data);
+                const modifieData = addSerial(response?.data, 1, response?.data?.length);
+                setInsuranceData(modifieData);
                 let totalVolume = 0;
                 let completeVolume = 0;
                 let expectedAmount = 0;
@@ -86,6 +88,7 @@ const InsuranceView = () => {
 
                 const result = [
                     { value: "Total", dolorSymbol: false },
+                    { value: null, dolorSymbol: false },
                     { value: totalVolume, dolorSymbol: false },
                     { value: completeVolume, dolorSymbol: false },
                     { value: totalAmount, dolorSymbol: true },

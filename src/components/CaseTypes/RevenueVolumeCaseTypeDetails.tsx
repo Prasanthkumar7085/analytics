@@ -9,6 +9,7 @@ import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
 import AreaGraph from "../core/AreaGraph";
+import { addSerial } from "@/lib/Pipes/addSerial";
 
 const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selectedDate }: any) => {
   const { id } = useParams();
@@ -87,7 +88,9 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
-        setCaseData(sortedData);
+
+        const modifieData = addSerial(sortedData, 1, sortedData?.length);
+        setCaseData(modifieData);
 
 
         const groupedDataSum: any = {};
@@ -160,7 +163,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         });
         // Converting object to array
         const result = Object.values(sortedData);
-        setCaseData(result);
+        const modifieData = addSerial(sortedData, 1, sortedData?.length);
+        setCaseData(modifieData);
 
 
 
@@ -239,6 +243,16 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
 
   const columnDef =
     [
+      {
+        accessorFn: (row: any) => row.serial,
+        id: "id",
+        header: () => <span>S.No</span>,
+        footer: (props: any) => props.column.id,
+        width: "60px",
+        minWidth: "60px",
+        maxWidth: "60px",
+      },
+
       {
         accessorFn: (row: any) => row.case_type_name,
         id: "case_type_name",

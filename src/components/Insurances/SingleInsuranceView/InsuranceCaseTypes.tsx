@@ -17,6 +17,15 @@ const InsuranceCaseTypes = ({
 
   const columns = [
     {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
+    {
       accessorFn: (row: any) => row.case_type_name,
       id: "case_type_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>CASE TYPE</span>,

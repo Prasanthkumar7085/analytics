@@ -6,6 +6,7 @@ import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { addSerial } from "@/lib/Pipes/addSerial";
 
 const InsurancePayors = ({ searchParams, apiurl }: any) => {
   const { id } = useParams();
@@ -32,7 +33,8 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
         id: id as string, queryParams
       });
       if (response?.status == 200 || response?.status == 201) {
-        setInsuranceData(response?.data);
+        const modifieData = addSerial(response?.data, 1, response?.data?.length);
+        setInsuranceData(modifieData);
 
         let totalAmount = 0;
         let totalPaid = 0;
@@ -44,7 +46,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
           totalPending += entry.pending_amount ? +entry.pending_amount : 0;
         });
 
-        const result = [{ value: "Total", dolorSymbol: false }, { value: totalAmount, dolorSymbol: true }, { value: totalPaid, dolorSymbol: true }, { value: totalPending, dolorSymbol: true }];
+        const result = [{ value: "Total", dolorSymbol: false }, { value: null, dolorSymbol: false }, { value: totalAmount, dolorSymbol: true }, { value: totalPaid, dolorSymbol: true }, { value: totalPending, dolorSymbol: true }];
 
         setTortalInsurancePayors(result);
       }
@@ -57,6 +59,15 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
   };
 
   const columns = [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
     {
       accessorFn: (row: any) => row.insurance_name,
       id: "insurance_name",

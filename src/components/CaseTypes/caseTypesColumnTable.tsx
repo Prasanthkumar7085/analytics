@@ -214,7 +214,9 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                             background: "#EFF1FA",
                         }}
                     >
+
                         <td className="cell">Total</td>
+                        <td className="cell"></td>
                         {headerMonths?.map((item: any, index: number) => {
 
                             return (

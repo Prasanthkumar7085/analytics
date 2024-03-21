@@ -1,6 +1,7 @@
 import { setAllFacilities } from "@/Redux/Modules/marketers";
 import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
+import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { mapFacilityNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { getAllFacilitiesAPI } from "@/services/authAPIs";
@@ -48,13 +49,15 @@ const Facilities = ({ searchParams }: any) => {
 
         const result = [
           { value: "Total", dolorSymbol: false },
+          { value: null, dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
           { value: totalAmount, dolorSymbol: true },
           { value: totalPaid, dolorSymbol: true },
           { value: totalPending, dolorSymbol: true },
         ];
         setTotalSumFacilityValues(result);
-        setFacilitiesData(response?.data);
+        const modifieData = addSerial(response?.data, 1, response?.data?.length);
+        setFacilitiesData(modifieData);
       }
     } catch (err) {
       console.error(err);
@@ -65,6 +68,15 @@ const Facilities = ({ searchParams }: any) => {
   };
 
   const columnDef = [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
     {
       accessorFn: (row: any) => row.facility_name,
       id: "facility_name",
