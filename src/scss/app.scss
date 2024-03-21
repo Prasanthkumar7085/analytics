@@ -307,11 +307,11 @@ table {
   border-radius: 16px;
   background-color: #fff;
   height: 100%;
-  box-shadow: 0px 8px 16px -6px #18274B05;
+  box-shadow: 0px 8px 16px -6px #18274b05;
 
-  box-shadow: 0px 6px 8px -6px #18274B0F;
+  box-shadow: 0px 6px 8px -6px #18274b0f;
 
-  box-shadow: 0px -4px 17px 0px #0000000A;
+  box-shadow: 0px -4px 17px 0px #0000000a;
 
   border: 1px solid rgba(0, 0, 0, 0.05);
   overflow: hidden;
@@ -446,10 +446,8 @@ table {
   }
 
   table {
-
     td,
     th {
-
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -482,7 +480,6 @@ table {
   tfoot {
     tr {
       td {
-
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -502,12 +499,14 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(circle at center center,
+    repeating-radial-gradient(
+      circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px);
+      transparent 10px
+    );
   background-blend-mode: multiply;
 }
 
@@ -572,7 +571,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -616,7 +615,6 @@ table {
 #SalesRepresentativeTableData {
   table {
     tr {
-
       th,
       td {
         &:nth-child(1) {
@@ -632,10 +630,8 @@ table {
 #salesRepresentativesPage {
   table {
     tr {
-
       th,
       td {
-
         &:nth-child(3),
         &:nth-child(4) {
           width: 150px !important;
@@ -705,7 +701,6 @@ table {
         }
       }
     }
-
   }
 }
 
@@ -731,7 +726,6 @@ table {
         }
       }
     }
-
   }
 }
 
@@ -782,7 +776,6 @@ table {
         }
       }
     }
-
   }
 }
 
@@ -812,9 +805,20 @@ table {
 }
 
 #insuranceCaseTypesData {
-
   th,
   td {
     min-width: 200px !important;
+  }
+}
+
+.overViewTabs {
+  height: 40px;
+  min-height: 40px;
+
+  .Mui-selected {
+    color: #1b2459;
+  }
+  .MuiTabs-indicator {
+    background-color: #1b2459;
   }
 }
