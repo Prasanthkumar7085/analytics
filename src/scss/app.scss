@@ -540,12 +540,25 @@ table {
       z-index: 9;
     }
 
+
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
       position: sticky;
       left: 0;
+      width: 50px !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+      font-size: 11px;
+    }
+
+    thead th:nth-child(2),
+    tbody td:nth-child(2),
+    tfoot td:nth-child(2) {
+      position: sticky;
+      left: 50px;
       border-right: 1px solid rgba(0, 0, 0, 0.05);
+      z-index: 9;
     }
 
     thead th:last-child,
@@ -884,6 +897,16 @@ $actionButtonWidth: 95px;
         }
       }
     }
+
+    thead th:first-child,
+    tbody td:first-child,
+    tfoot td:first-child {
+      width: 50px !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+      font-size: 11px;
+    }
+
   }
 }
 
@@ -933,6 +956,15 @@ $actionButtonWidth: 95px;
           }
         }
       }
+    }
+
+    thead th:first-child,
+    tbody td:first-child,
+    tfoot td:first-child {
+      width: 50px !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+      font-size: 11px;
     }
   }
 }
