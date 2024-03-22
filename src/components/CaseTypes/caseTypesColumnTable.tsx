@@ -243,6 +243,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                         <td className="cell" onClick={() => setGraphDialogOpen(true)} style={{ cursor: "pointer" }}>   {headerMonths?.length ? <AreaGraph data={totalSumValues} graphColor={"blue"} /> : ""}
                         </td>
 
+
                     </tr>
                 </tfoot>
             </table>

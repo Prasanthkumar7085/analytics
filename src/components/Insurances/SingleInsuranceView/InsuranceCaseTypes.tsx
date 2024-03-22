@@ -104,7 +104,7 @@ const InsuranceCaseTypes = ({
             style={{
               color:
                 info.row.original.paid_amount ==
-                info.row.original.expected_amount
+                  info.row.original.expected_amount
                   ? "green"
                   : "red",
             }}
@@ -144,32 +144,32 @@ const InsuranceCaseTypes = ({
       },
     },
 
+    // {
+    //   accessorFn: (row: any) => row.pending_amount,
+    //   id: "actions",
+    //   header: () => (
+    //     <span style={{ whiteSpace: "nowrap" }}>REV CLEARANCE RATE</span>
+    //   ),
+    //   footer: (props: any) => props.column.id,
+    //   width: "70px",
+    //   maxWidth: "100px",
+    //   minWidth: "70px",
+    //   cell: (info: any) => {
+    //     return (
+    //       <span>
+    //         {(
+    //           (info.row.original.paid_amount /
+    //             info.row.original.expected_amount) *
+    //           100
+    //         ).toFixed(2)}
+    //         %
+    //       </span>
+    //     );
+    //   },
+    // },
     {
       accessorFn: (row: any) => row.pending_amount,
-      id: "clearence_rate",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>REV CLEARANCE RATE</span>
-      ),
-      footer: (props: any) => props.column.id,
-      width: "70px",
-      maxWidth: "100px",
-      minWidth: "70px",
-      cell: (info: any) => {
-        return (
-          <span>
-            {(
-              (info.row.original.paid_amount /
-                info.row.original.expected_amount) *
-              100
-            ).toFixed(2)}
-            %
-          </span>
-        );
-      },
-    },
-    {
-      accessorFn: (row: any) => row.pending_amount,
-      id: "clearence_rate",
+      id: "actions",
       header: () => (
         <span style={{ whiteSpace: "nowrap" }}>PAID PRICE/TARGET PRICE</span>
       ),
@@ -181,7 +181,7 @@ const InsuranceCaseTypes = ({
         return (
           <span>
             {formatMoney(info.row.original.paid_amount) +
-              "/" +
+              " / " +
               formatMoney(info.row.original.expected_amount)}
           </span>
         );

@@ -63,6 +63,8 @@ const SalesRep = () => {
           { value: billedAmoumnt, dolorSymbol: true },
           { value: paidRevenueSum, dolorSymbol: true },
           { value: pendingAmoumnt, dolorSymbol: true },
+          { value: null, dolorSymbol: false },
+
         ];
 
         setTotalSumValues(result);

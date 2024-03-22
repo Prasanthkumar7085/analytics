@@ -40,7 +40,7 @@ const Stats = ({
               <div className={styles.row}>
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <label className={styles.lable}>Billed</label>
+                    <label className={styles.lable}>BILLED</label>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
@@ -65,7 +65,7 @@ const Stats = ({
                 />
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <label className={styles.lable}>Collected</label>
+                    <label className={styles.lable}>RECEIVED</label>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
@@ -96,7 +96,7 @@ const Stats = ({
                 />
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <p className={styles.value}>Pending</p>
+                    <p className={styles.value}>ARREARS</p>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
@@ -127,7 +127,7 @@ const Stats = ({
               <div className={styles.row}>
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <label className={styles.lable}>Total</label>
+                    <label className={styles.lable}>TOTAL</label>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
@@ -154,7 +154,7 @@ const Stats = ({
                 />
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <label className={styles.lable}>Finalised</label>
+                    <label className={styles.lable}>FINALISED</label>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
@@ -181,7 +181,7 @@ const Stats = ({
                 />
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <p className={styles.value}>Pending</p>
+                    <p className={styles.value}>PENDING</p>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (

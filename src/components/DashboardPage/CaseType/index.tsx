@@ -84,8 +84,8 @@ const CaseTypes = ({
                 ? +item["paid_amount"]
                 : 0
               : item["completed_cases"]
-              ? +item["completed_cases"]
-              : 0,
+                ? +item["completed_cases"]
+                : 0,
         });
       });
       return tempArray;
@@ -96,7 +96,7 @@ const CaseTypes = ({
     {
       accessorFn: (row: any) => row.case_type_name,
       id: "case_type_name",
-      header: () => <span className={styles.tableHeading}>Case Type</span>,
+      header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
       cell: (info: any, index: number) => {
         return (
           <span className={styles.caseTypeRow}>
@@ -121,7 +121,7 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Total</span>,
+      header: () => <span className={styles.tableHeading}>TOTAL</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -133,7 +133,7 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Finalised</span>,
+      header: () => <span className={styles.tableHeading}>FINALISED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -145,7 +145,7 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Pending</span>,
+      header: () => <span className={styles.tableHeading}>PENDING</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -155,7 +155,7 @@ const CaseTypes = ({
     {
       accessorFn: (row: any) => row.case_type_name,
       id: "case_type_name",
-      header: () => <span className={styles.tableHeading}>Case Type</span>,
+      header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
       cell: (info: any, index: number) => {
         return (
           <span className={styles.caseTypeRow}>
@@ -180,7 +180,7 @@ const CaseTypes = ({
           {formatMoney(info.getValue())}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Billed</span>,
+      header: () => <span className={styles.tableHeading}>BILLED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -192,7 +192,7 @@ const CaseTypes = ({
           {formatMoney(info.getValue())}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Collected</span>,
+      header: () => <span className={styles.tableHeading}>RECEIVED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -204,7 +204,7 @@ const CaseTypes = ({
           {formatMoney(info.getValue())}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>Pending</span>,
+      header: () => <span className={styles.tableHeading}>ARREARS</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -218,11 +218,10 @@ const CaseTypes = ({
         <br>
         <span style="font-size: 13px;">
             <b> 
-            ${
-              tabValue == "Revenue"
-                ? formatMoney(totalNumber)
-                : totalNumber?.toLocaleString()
-            }</b>
+            ${tabValue == "Revenue"
+        ? formatMoney(totalNumber)
+        : totalNumber?.toLocaleString()
+      }</b>
         </span>`;
   }
 

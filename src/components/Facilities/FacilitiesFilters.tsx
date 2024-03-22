@@ -46,7 +46,7 @@ const FacilitiesFilters = ({
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search facility or sales-rep"
+                placeholder="Search facility / sales"
                 type="search"
                 InputProps={{
                   startAdornment: (
