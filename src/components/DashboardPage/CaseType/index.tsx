@@ -84,8 +84,8 @@ const CaseTypes = ({
                 ? +item["paid_amount"]
                 : 0
               : item["completed_cases"]
-                ? +item["completed_cases"]
-                : 0,
+              ? +item["completed_cases"]
+              : 0,
         });
       });
       return tempArray;
@@ -117,7 +117,9 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>{info.getValue()?.toLocaleString()}</span>
+        <span className={styles.totalCasesRow}>
+          {info.getValue()?.toLocaleString()}
+        </span>
       ),
       header: () => <span className={styles.tableHeading}>Total</span>,
       footer: (props: any) => props.column.id,
@@ -127,7 +129,9 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.completed_cases,
       id: "completed_cases",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>{info.getValue()?.toLocaleString()}</span>
+        <span className={styles.totalCasesRow}>
+          {info.getValue()?.toLocaleString()}
+        </span>
       ),
       header: () => <span className={styles.tableHeading}>Finalised</span>,
       footer: (props: any) => props.column.id,
@@ -137,7 +141,9 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.pending_cases,
       id: "pending_cases",
       cell: (info: any) => (
-        <span className={styles.revenueBlock}>{info.getValue()?.toLocaleString()}</span>
+        <span className={styles.revenueBlock}>
+          {info.getValue()?.toLocaleString()}
+        </span>
       ),
       header: () => <span className={styles.tableHeading}>Pending</span>,
       footer: (props: any) => props.column.id,
@@ -205,13 +211,18 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[2]?.value ?
-      totalRevenueSum[2]?.value : 0;
+    const totalNumber = totalRevenueSum[2]?.value
+      ? totalRevenueSum[2]?.value
+      : 0;
     return `<span style="font-size: 6px,margin-left:"45px">Total value</span>
         <br>
         <span style="font-size: 13px;">
             <b> 
-            ${tabValue == "Revenue" ? formatMoney(totalNumber) : totalNumber?.toLocaleString()}</b>
+            ${
+              tabValue == "Revenue"
+                ? formatMoney(totalNumber)
+                : totalNumber?.toLocaleString()
+            }</b>
         </span>`;
   }
 
@@ -227,20 +238,29 @@ const CaseTypes = ({
       floating: true,
       verticalAlign: "middle",
       y: 10,
-
     },
     title: {
       text: "",
     },
     tooltip: {
-      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
+      formatter: function (
+        this: Highcharts.TooltipFormatterContextObject | any
+      ): string {
         if (tabValue == "Revenue")
-          return '<b>' + this.point.name + '</b>: $' + Highcharts.numberFormat(this.point.y, 2, '.', ',');
+          return (
+            "<b>" +
+            this.point.name +
+            "</b>: $" +
+            Highcharts.numberFormat(this.point.y, 2, ".", ",")
+          );
         else
-          return '<b>' + this.point.name + '</b>:' + Highcharts.numberFormat(this.point.y, 0, '.', ',');
-
-      }
-
+          return (
+            "<b>" +
+            this.point.name +
+            "</b>:" +
+            Highcharts.numberFormat(this.point.y, 0, ".", ",")
+          );
+      },
     },
     plotOptions: {
       pie: {
@@ -286,6 +306,7 @@ const CaseTypes = ({
           )}
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Tabs
+              className="overViewTabs"
               value={tabValue}
               onChange={handleChange}
               textColor="secondary"

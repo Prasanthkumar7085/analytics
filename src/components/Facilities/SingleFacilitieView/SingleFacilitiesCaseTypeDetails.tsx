@@ -1,5 +1,5 @@
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import styles from "./facilitiesCaseTypes.module.css"
+import styles from "./facilitiesCaseTypes.module.css";
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
@@ -13,7 +13,7 @@ const SingleFacilitieCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
   };
 
   return (
-    <div className="eachDataCard" id="mothWiseCaseTypeData">
+    <div className="eachDataCard s-no-column" id="mothWiseCaseTypeData">
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />

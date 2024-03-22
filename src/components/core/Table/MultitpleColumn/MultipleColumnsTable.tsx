@@ -281,12 +281,13 @@ const MultipleColumnsTable: FC<pageProps> = ({
             {totalSumValues?.map((item: any, index: number) => {
               return (
                 <td key={index}>
-                  {index == 0 ? item.value : item.dolorSymbol ? formatMoney(item.value) : item?.value?.toLocaleString()}
+
+                  {
+                    index == 0 ? item.value : item.dolorSymbol ? formatMoney(item.value) : item?.value?.toLocaleString()}
                 </td>
               );
             })}
-            <td></td>
-            <td></td>
+
           </tr>
         </tfoot>
       </table>

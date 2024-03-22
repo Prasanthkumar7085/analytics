@@ -106,7 +106,7 @@ const SignIn: NextPage = () => {
         <div className="max-w-md w-full">
           <div className="logo flex items-center justify-center mb-20">
             <Image
-              className="w-[250px]"
+              className="w-[600px]"
               alt=""
               src="/auth/login/logo.svg"
               height={20}

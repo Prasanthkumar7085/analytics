@@ -33,7 +33,7 @@
   font-family: "Poppins", sans-serif;
   font-size: clamp(13px, 0.67vw, 20px);
   display: inline-block;
-  color: #DD5050 !important;
+  color: #dd5050 !important;
 }
 .pagename {
   text-decoration: none;
@@ -451,7 +451,7 @@
 /* new Coode */
 .primaryNavbar {
   background: #1b2459;
-  padding: 10px 0 40px 0;
+  padding: 30px 0 40px 0;
 }
 .navigationLinks {
   display: flex;

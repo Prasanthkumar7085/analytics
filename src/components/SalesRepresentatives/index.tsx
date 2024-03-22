@@ -349,23 +349,25 @@ const SalesRepresentatives = () => {
   }, [params]);
 
   return (
-    <div className={styles.salesRepsContainer}>
-      <SalesRepsFilters
-        onUpdateData={onUpdateData}
-        getAllSalesReps={getAllSalesReps}
-        dateFilterDefaultValue={dateFilterDefaultValue}
-        setDateFilterDefaultValue={setDateFilterDefaultValue}
-        searchParams={searchParams}
-      />
-      <MultipleColumnsTableForSalesRep
-        data={salesReps}
-        columns={columnDef}
-        loading={loading}
-        totalSumValues={totalSumValues}
-        searchParams={searchParams}
-        getData={onUpdateData}
-      />
-      <LoadingComponent loading={loading} />
+    <div className="s-no-column" id="salesRepsPage">
+      <div className={styles.salesRepsContainer}>
+        <SalesRepsFilters
+          onUpdateData={onUpdateData}
+          getAllSalesReps={getAllSalesReps}
+          dateFilterDefaultValue={dateFilterDefaultValue}
+          setDateFilterDefaultValue={setDateFilterDefaultValue}
+          searchParams={searchParams}
+        />
+        <MultipleColumnsTableForSalesRep
+          data={salesReps}
+          columns={columnDef}
+          loading={loading}
+          totalSumValues={totalSumValues}
+          searchParams={searchParams}
+          getData={onUpdateData}
+        />
+        <LoadingComponent loading={loading} />
+      </div>
     </div>
   );
 };

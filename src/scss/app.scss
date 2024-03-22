@@ -5,7 +5,7 @@ ul {
 }
 
 #salesRepresentativesPage {
-  border-radius: 40px;
+  border-radius: 15px;
   overflow: hidden;
 }
 
@@ -49,7 +49,6 @@ table {
         font-weight: 500;
         padding: 5px 10px;
         border-bottom: 1px solid #edf2f7;
-
       }
 
       .actionButton {
@@ -71,7 +70,6 @@ table {
 
   tfoot {
     td {
-
       &:not(:last-child) {
         border-right: 1px solid rgba(0, 0, 0, 0.05);
       }
@@ -310,8 +308,11 @@ table {
   background-color: #fff;
   height: 100%;
   box-shadow: 0px 8px 16px -6px #18274b05;
+
   box-shadow: 0px 6px 8px -6px #18274b0f;
+
   box-shadow: 0px -4px 17px 0px #0000000a;
+
   border: 1px solid rgba(0, 0, 0, 0.05);
   overflow: hidden;
 
@@ -485,7 +486,7 @@ table {
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
-          display: none;
+          display: "";
         }
       }
     }
@@ -510,22 +511,8 @@ table {
   background-blend-mode: multiply;
 }
 
-#salesRepresentatives,
-#salesRepresentativesPage {
-  tfoot {
-    tr {
-      td {
-        &:last-child {
-          display: none;
-        }
-      }
-    }
-  }
-}
-
 
 #mothWiseCaseTypeData {
-
   table {
     tbody {
       tr {
@@ -553,12 +540,21 @@ table {
       z-index: 9;
     }
 
+
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
       position: sticky;
       left: 0;
+    }
+
+    thead th:nth-child(2),
+    tbody td:nth-child(2),
+    tfoot td:nth-child(2) {
+      position: sticky;
+      left: 50px;
       border-right: 1px solid rgba(0, 0, 0, 0.05);
+      z-index: 9;
     }
 
     thead th:last-child,
@@ -595,8 +591,6 @@ table {
       z-index: 1;
     }
   }
-
-
 }
 
 .MuiDialog-root {
@@ -613,50 +607,184 @@ table {
       }
     }
   }
-
 }
 
-#salesRepresentativesPage,
-#SalesRepresentativeTableData {
-  table {
-    tr {
 
-      th,
-      td {
-        &:nth-child(1) {
-          width: 65px !important;
-          min-width: 65px !important;
-          max-width: 65px !important;
+
+
+
+// !Table Columns Width controls - Start
+$actionButtonWidth: 95px;
+
+// First And Last Child
+.facilitiesPage,
+.insurancesPage,
+#salesRepsPage {
+
+  table {
+    overflow: clip;
+
+    @mixin tableActions {
+      &:last-child {
+        width: $actionButtonWidth !important;
+        min-width: $actionButtonWidth !important;
+        max-width: $actionButtonWidth !important;
+      }
+
+    }
+
+    tbody {
+      tr {
+        td {
+          @include tableActions();
         }
       }
     }
+
+    thead {
+      tr {
+        th {
+          @include tableActions();
+        }
+      }
+    }
+
   }
 }
 
-#salesRepresentativesPage {
+
+#salesRepsPage {
+  $totalCasesWidth: 120px;
+  $faculityColumWidth: 140px;
+
   table {
     tr {
 
-      th,
-      td {
+      td,
+      th {
+        &:nth-child(3) {
+          width: $faculityColumWidth !important;
+          min-width: $faculityColumWidth !important;
+          max-width: $faculityColumWidth !important;
+        }
 
-        &:nth-child(3),
         &:nth-child(4) {
-          width: 150px !important;
-          min-width: 150px !important;
-          max-width: 150px !important;
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
         }
       }
     }
   }
 }
+
+.insurancesPage {
+  $totalCasesWidth: 120px;
+  $faculityColumWidth: 140px;
+
+  table {
+    tr {
+
+      td,
+      th {
+        &:nth-child(3) {
+          width: $faculityColumWidth !important;
+          min-width: $faculityColumWidth !important;
+          max-width: $faculityColumWidth !important;
+        }
+
+        &:nth-child(4) {
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
+        }
+      }
+    }
+  }
+}
+
+.caseTypesPage {
+  $totalCasesWidth: 120px;
+  $totalFacilitiesWidth: 140px;
+
+  table {
+    tr {
+
+      th,
+      td {
+
+
+        &:nth-child(3) {
+          width: $totalFacilitiesWidth !important;
+          min-width: $totalFacilitiesWidth !important;
+          max-width: $totalFacilitiesWidth !important;
+        }
+
+        &:nth-child(4) {
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
+        }
+
+      }
+    }
+
+    tfoot {
+      td {
+
+        &:nth-last-child(-n+2) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.facilitiesPage {
+  table {
+    overflow: clip;
+  }
+
+  $totalCasesWidth: 120px;
+  $marketerColumWidth: 170px;
+
+  table {
+    tr {
+
+      td,
+      th {
+        &:nth-child(3) {
+          width: $marketerColumWidth !important;
+          min-width: $marketerColumWidth !important;
+          max-width: $marketerColumWidth !important;
+        }
+
+        &:nth-child(4) {
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
+        }
+      }
+    }
+  }
+
+  tfoot {
+    td {
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+}
+
+// !Table Columns Width controls - END
+
 
 .hightChartsGraph {
   padding: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   margin: 30px;
   border-radius: 7px;
-
 }
 
 .dialogCloseButton {
@@ -690,47 +818,73 @@ table {
 
 #salesRepresentativesPage {
   table {
-    tr {
-      td {
-        &:nth-child(5) {
-          color: #ff9932;
-          background-color: #f9feff;
+    tbody {
+      tr {
+        td {
+          &:nth-child(5) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
 
-        }
+          &:nth-child(6) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
 
-        &:nth-child(6) {
-          color: #36c24d;
-          background-color: #f5fff7;
-        }
-
-        &:nth-child(7) {
-          color: #fe5046;
-          background-color: #fff9f9;
+          &:nth-child(7) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
         }
       }
     }
   }
 }
 
-#InsurancePayorsData,
+#InsurancePayorsData {
+  table {
+    tbody {
+      tr {
+        td {
+          &:nth-child(3) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
+
+          &:nth-child(4) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
+
+          &:nth-child(5) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
+        }
+      }
+    }
+  }
+}
+
 #CaseTypesGraphsData {
   table {
-    tr {
-      td {
-        &:nth-child(2) {
-          color: #ff9932;
-          background-color: #f9feff;
+    tbody {
+      tr {
+        td {
+          &:nth-child(2) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
 
-        }
+          &:nth-child(3) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
 
-        &:nth-child(3) {
-          color: #36c24d;
-          background-color: #f5fff7;
-        }
-
-        &:nth-child(4) {
-          color: #fe5046;
-          background-color: #fff9f9;
+          &:nth-child(4) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
         }
       }
     }
@@ -739,56 +893,123 @@ table {
 
 #FacilitiesData {
   table {
-    tr {
-      td {
-        &:nth-child(3) {
-          color: #ff9932;
-          background-color: #f9feff;
+    tbody {
+      tr {
+        td {
+          &:nth-child(4) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
 
-        }
+          &:nth-child(5) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
 
-        &:nth-child(4) {
-          color: #36c24d;
-          background-color: #f5fff7;
-        }
-
-        &:nth-child(5) {
-          color: #fe5046;
-          background-color: #fff9f9;
+          &:nth-child(6) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
         }
       }
+    }
+  }
+}
+
+.s-no-column {
+  table {
+
+    thead th:first-child,
+    tbody td:first-child,
+    tfoot td:first-child {
+      width: 50px !important;
+      min-width: 50px !important;
+      max-width: 50px !important;
+    }
+
+    tfoot td:first-child {
+      font-size: 10px;
     }
   }
 }
 
 #SalesRepresentativeTableData {
   table {
-    tr {
-      td {
-        &:nth-child(5) {
-          color: #ff9932;
-          background-color: #f9feff;
+    tbody {
+      tr {
+        td {
 
-        }
+          &:nth-child(5) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
 
-        &:nth-child(6) {
-          color: #36c24d;
-          background-color: #f5fff7;
-        }
+          &:nth-child(6) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
 
-        &:nth-child(7) {
-          color: #fe5046;
-          background-color: #fff9f9;
+          &:nth-child(7) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
         }
       }
     }
   }
 }
 
-#insuranceCaseTypesData {
+.overViewTabs {
+  height: 40px;
+  min-height: 40px;
 
-  th,
-  td {
-    min-width: 200px !important;
+  .Mui-selected {
+    color: #1b2459;
+  }
+
+  .MuiTabs-indicator {
+    background-color: #1b2459;
+  }
+}
+
+.viewIcon {
+  .MuiSvgIcon-root {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+#insuranceCaseTypesData {
+  table {
+    tr {
+
+      td,
+      th {
+
+        &:nth-child(3),
+        &:nth-child(4),
+        &:nth-child(5),
+        &:nth-child(6),
+        &:nth-child(7),
+        &:nth-child(8),
+        &:nth-child(9) {
+          width: 110px !important;
+          min-width: 110px !important;
+          max-width: 110px !important;
+        }
+
+        &:nth-child(10) {
+          width: 170px !important;
+          min-width: 170px !important;
+          max-width: 170px !important;
+        }
+
+        &:last-child {
+          width: 200px !important;
+          min-width: 200px !important;
+          max-width: 200px !important;
+        }
+      }
+    }
   }
 }

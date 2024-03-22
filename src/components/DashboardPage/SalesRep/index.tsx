@@ -63,7 +63,6 @@ const SalesRep = () => {
           { value: billedAmoumnt, dolorSymbol: true },
           { value: paidRevenueSum, dolorSymbol: true },
           { value: pendingAmoumnt, dolorSymbol: true },
-
         ];
 
         setTotalSumValues(result);
@@ -85,7 +84,11 @@ const SalesRep = () => {
     getAllSalesReps({ fromDate, toDate });
   };
   return (
-    <div className="eachDataCard mb-10" id="SalesRepresentativeTableData" style={{ position: "relative" }}>
+    <div
+      className="eachDataCard mb-10 s-no-column"
+      id="SalesRepresentativeTableData"
+      style={{ position: "relative" }}
+    >
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />

@@ -242,36 +242,34 @@ const SalesRepView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div className="flex items-center w-[250px]">
-            <div>
+          <div className="grid grid-cols-2 w-full items-center">
+            <div className="gridItem flex items-center">
               <div
                 onClick={() => router.back()}
                 className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
               >
                 <ArrowBack className="w-[20px] text-[#bf1b39]" />
               </div>
-            </div>
-
-            <div className="person flex items-center">
-              <Avatar sx={{ height: "30px", width: "30px" }} />
-              <div className="pl-3">
-                <p>{salesRepDetails?.[0]?.sales_rep}</p>
-                {salesRepDetails?.[0]?.manager ? (
-                  <p className="mt-0">
-                    Manager: {salesRepDetails?.[0]?.manager}
-                  </p>
-                ) : (
-                  ""
-                )}
+              <div className="person flex items-center mr-10">
+                <Avatar sx={{ height: "30px", width: "30px" }} />
+                <div className="pl-3">
+                  <p className="m-0">{salesRepDetails?.[0]?.sales_rep}</p>
+                  {salesRepDetails?.[0]?.manager ? (
+                    <p className="mt-0">
+                      Manager: {salesRepDetails?.[0]?.manager}
+                    </p>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-
-          <div style={{ marginLeft: "70%" }}>
-            <GlobalDateRangeFilter
-              onChangeData={onChangeData}
-              dateFilterDefaultValue={dateFilterDefaultValue}
-            />
+            <div className="gridItem flex justify-end">
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
+            </div>
           </div>
         </div>
         <div className="personData">
@@ -281,7 +279,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </Grid>
             <Grid item xs={8}>
@@ -303,7 +301,10 @@ const SalesRepView = () => {
               />
             </Grid>
             <Grid item xs={7}>
-              <div className="eachDataCard" id="InsurancePayorsData">
+              <div
+                className="eachDataCard s-no-column"
+                id="InsurancePayorsData"
+              >
                 <div className="cardHeader">
                   <h3>
                     <Image
@@ -316,7 +317,10 @@ const SalesRepView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors searchParams={searchParams} apiurl={"sales-reps"} />
+                  <InsurancePayors
+                    searchParams={searchParams}
+                    apiurl={"sales-reps"}
+                  />
                 </div>
               </div>
             </Grid>
@@ -324,7 +328,7 @@ const SalesRepView = () => {
               <Trends searchParams={searchParams} apiurl={"sales-reps"} />
             </Grid>
             <Grid item xs={12}>
-              <div className="eachDataCard" id="FacilitiesData">
+              <div className="eachDataCard s-no-column" id="FacilitiesData">
                 <div className="cardHeader">
                   <h3>
                     <Image

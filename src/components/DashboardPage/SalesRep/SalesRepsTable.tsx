@@ -50,7 +50,11 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
       maxWidth: "120px",
       minWidth: "120px",
       cell: ({ getValue }: any) => {
-        return <span className={styles.totalCasesRow}>{getValue().toLocaleString()}</span>;
+        return (
+          <span className={styles.totalCasesRow}>
+            {getValue().toLocaleString()}
+          </span>
+        );
       },
     },
     {
@@ -71,7 +75,11 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
           maxWidth: "200px",
           minWidth: "200px",
           cell: ({ getValue }: any) => {
-            return <span className={styles.targetedRow}>{formatMoney(getValue())}</span>;
+            return (
+              <span className={styles.targetedRow}>
+                {formatMoney(getValue())}
+              </span>
+            );
           },
         },
         {
@@ -84,7 +92,11 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
           maxWidth: "200",
           minWidth: "200",
           cell: ({ getValue }: any) => {
-            return <span className={styles.billedRow}>{formatMoney(getValue())}</span>;
+            return (
+              <span className={styles.billedRow}>
+                {formatMoney(getValue())}
+              </span>
+            );
           },
         },
         {
@@ -97,7 +109,11 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
           maxWidth: "200",
           minWidth: "200",
           cell: ({ getValue }: any) => {
-            return <span className={styles.receivedRow}>{formatMoney(getValue())}</span>;
+            return (
+              <span className={styles.receivedRow}>
+                {formatMoney(getValue())}
+              </span>
+            );
           },
         },
         {
@@ -110,7 +126,11 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
           maxWidth: "200",
           minWidth: "200",
           cell: ({ getValue }: any) => {
-            return <span className={styles.arrearsRow}>{formatMoney(getValue())}</span>;
+            return (
+              <span className={styles.arrearsRow}>
+                {formatMoney(getValue())}
+              </span>
+            );
           },
         },
       ],
@@ -121,21 +141,25 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
       id: "actions",
       header: () => <span className={styles.salesTableHeading}>ACTIONS</span>,
       footer: (props: any) => props.column.id,
-      width: "120px",
+      width: "80px",
       maxWidth: "120px",
       minWidth: "120px",
       cell: (info: any) => {
         return (
-          <IconButton onClick={() => {
-            router.push(`/sales-representatives/${info.row.original.sales_rep_id}`)
-          }}>
+          <IconButton
+            className="viewIcon"
+            onClick={() => {
+              router.push(
+                `/sales-representatives/${info.row.original.sales_rep_id}`
+              );
+            }}
+          >
             <RemoveRedEyeIcon />
           </IconButton>
-        )
+        );
       },
     },
-  ]
-
+  ];
 
   return (
     <div
