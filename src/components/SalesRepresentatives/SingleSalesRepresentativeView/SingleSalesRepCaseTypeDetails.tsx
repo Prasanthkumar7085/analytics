@@ -21,7 +21,7 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
   };
 
   return (
-    <div className="eachDataCard" id="mothWiseCaseTypeData">
+    <div className="eachDataCard s-no-column" id="mothWiseCaseTypeData">
       <div className="cardHeader">
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />

@@ -316,7 +316,7 @@ const CaseTypes = () => {
     );
   }, [params]);
   return (
-    <div className="caseTypesPage">
+    <div className="caseTypesPage s-no-column">
       <div id="salesRepresentativesPage">
         <CaseTypeFilters
           onUpdateData={onUpdateData}

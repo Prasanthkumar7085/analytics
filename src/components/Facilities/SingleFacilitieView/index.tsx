@@ -1,11 +1,16 @@
-"use client"
+"use client";
 import type { NextPage } from "next";
-import styles from "./index.module.css"
+import styles from "./index.module.css";
 import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import { useEffect, useState } from "react";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import Trends from "@/components/Trends";
@@ -13,7 +18,10 @@ import InsurancePayors from "@/components/InsurancePayors";
 import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { getSingleFacilityCaseTypes, getSingleFacilityDetailsAPI } from "@/services/facilitiesAPIs";
+import {
+  getSingleFacilityCaseTypes,
+  getSingleFacilityDetailsAPI,
+} from "@/services/facilitiesAPIs";
 import { ArrowBack } from "@mui/icons-material";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { Avatar, Grid } from "@mui/material";
@@ -32,10 +40,10 @@ const FacilitiesView = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
-  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>()
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Revenue");
-  const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>()
+  const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
@@ -227,7 +235,7 @@ const FacilitiesView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div className="flex items-center w-[250px]">
+          <div className="flex items-center w-[600px]">
             <div>
               <div
                 onClick={() => router.back()}
@@ -292,7 +300,10 @@ const FacilitiesView = () => {
               />
             </Grid>
             <Grid item xs={7}>
-              <div className="eachDataCard" id="InsurancePayorsData">
+              <div
+                className="eachDataCard s-no-column"
+                id="InsurancePayorsData"
+              >
                 <div className="cardHeader">
                   <h3>
                     <Image

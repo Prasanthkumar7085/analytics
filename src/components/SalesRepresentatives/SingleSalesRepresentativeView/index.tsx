@@ -242,7 +242,7 @@ const SalesRepView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div className="flex items-center w-[250px]">
+          <div className="flex items-center w-[600px]">
             <div>
               <div
                 onClick={() => router.back()}
@@ -281,7 +281,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </Grid>
             <Grid item xs={8}>
@@ -303,7 +303,10 @@ const SalesRepView = () => {
               />
             </Grid>
             <Grid item xs={7}>
-              <div className="eachDataCard" id="InsurancePayorsData">
+              <div
+                className="eachDataCard s-no-column"
+                id="InsurancePayorsData"
+              >
                 <div className="cardHeader">
                   <h3>
                     <Image
@@ -316,7 +319,10 @@ const SalesRepView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors searchParams={searchParams} apiurl={"sales-reps"} />
+                  <InsurancePayors
+                    searchParams={searchParams}
+                    apiurl={"sales-reps"}
+                  />
                 </div>
               </div>
             </Grid>
@@ -324,7 +330,7 @@ const SalesRepView = () => {
               <Trends searchParams={searchParams} apiurl={"sales-reps"} />
             </Grid>
             <Grid item xs={12}>
-              <div className="eachDataCard" id="FacilitiesData">
+              <div className="eachDataCard s-no-column" id="FacilitiesData">
                 <div className="cardHeader">
                   <h3>
                     <Image

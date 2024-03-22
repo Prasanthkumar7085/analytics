@@ -364,7 +364,10 @@ const InsurancesComponent = () => {
   }, [params]);
 
   return (
-    <section id="salesRepresentativesPage" className="insurancesPage">
+    <section
+      id="salesRepresentativesPage"
+      className="insurancesPage s-no-column"
+    >
       <InsurancesFilters
         onUpdateData={onUpdateData}
         getInsurancesList={getInsurancesList}

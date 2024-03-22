@@ -84,7 +84,9 @@ const InsuranceCaseTypes = ({
       maxWidth: "100px",
       minWidth: "70px",
       cell: ({ getValue }: any) => {
-        return <span style={{ color: "green" }}>{formatMoney(getValue())}</span>;
+        return (
+          <span style={{ color: "green" }}>{formatMoney(getValue())}</span>
+        );
       },
     },
 
@@ -97,7 +99,19 @@ const InsuranceCaseTypes = ({
       maxWidth: "100px",
       minWidth: "70px",
       cell: (info: any) => {
-        return <span style={{ color: info.row.original.paid_amount == info.row.original.expected_amount ? "green" : "red" }}>{formatMoney(info.row.original.paid_amount)}</span>;
+        return (
+          <span
+            style={{
+              color:
+                info.row.original.paid_amount ==
+                info.row.original.expected_amount
+                  ? "green"
+                  : "red",
+            }}
+          >
+            {formatMoney(info.row.original.paid_amount)}
+          </span>
+        );
       },
     },
     {
@@ -122,7 +136,11 @@ const InsuranceCaseTypes = ({
       maxWidth: "100px",
       minWidth: "70px",
       cell: ({ getValue }: any) => {
-        return <span style={{ color: getValue() == 0 ? "" : "red" }}>{formatMoney(getValue())}</span>;
+        return (
+          <span style={{ color: getValue() == 0 ? "" : "red" }}>
+            {formatMoney(getValue())}
+          </span>
+        );
       },
     },
 
@@ -160,14 +178,20 @@ const InsuranceCaseTypes = ({
       maxWidth: "100px",
       minWidth: "70px",
       cell: (info: any) => {
-        return <span>{formatMoney(info.row.original.paid_amount) + "/" + formatMoney(info.row.original.expected_amount)}</span>;
+        return (
+          <span>
+            {formatMoney(info.row.original.paid_amount) +
+              "/" +
+              formatMoney(info.row.original.expected_amount)}
+          </span>
+        );
       },
     },
   ];
 
   return (
     <div style={{ position: "relative" }}>
-      <div className="eachDataCard" id="insuranceCaseTypesData">
+      <div className="eachDataCard s-no-column" id="insuranceCaseTypesData">
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
