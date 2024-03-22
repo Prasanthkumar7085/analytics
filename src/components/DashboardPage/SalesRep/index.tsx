@@ -97,6 +97,7 @@ const SalesRep = () => {
         <SalesRepsTable
           salesReps={salesReps}
           totalRevenueSum={totalRevenueSum}
+          loading={loading}
         />
         {loading ? (
           <Backdrop

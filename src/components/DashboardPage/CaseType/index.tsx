@@ -316,7 +316,7 @@ const CaseTypes = ({
               data={caseTypesStatsData}
               columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
               totalSumValues={totalRevenueSum}
-              loading={false}
+              loading={loading}
             />
 
             {loading ? (

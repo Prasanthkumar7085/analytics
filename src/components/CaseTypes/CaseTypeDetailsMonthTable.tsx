@@ -313,7 +313,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
         data={caseData}
         columns={addAddtionalColoumns}
         totalSumValues={totalSumValues}
-        loading={false}
+        loading={loading}
         headerMonths={headerMonths}
         tabValue={tabValue}
       />

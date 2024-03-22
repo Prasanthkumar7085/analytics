@@ -146,7 +146,7 @@ const Facilities = ({ searchParams }: any) => {
       <MultipleColumnsTable
         data={facilitiesData}
         columns={columnDef}
-        loading={false}
+        loading={loading}
         totalSumValues={totalSumFacilityValues}
       />
 

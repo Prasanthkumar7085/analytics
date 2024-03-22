@@ -115,7 +115,7 @@ const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: strin
       {trendsData?.length ?
         <HighchartsReact highcharts={Highcharts} options={options} />
 
-        : <div
+        : !loading ? <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -124,6 +124,14 @@ const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: strin
           }}
         >
           <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
+        </div> : <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "40vh",
+          }}
+        >
         </div>}
       {loading ? (
         <Backdrop

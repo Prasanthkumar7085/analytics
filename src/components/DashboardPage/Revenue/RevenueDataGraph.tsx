@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import Image from "next/image";
-const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => {
+const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData, loading }: any) => {
 
   function formatMonthYear(monthYear: string) {
     let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
@@ -80,7 +80,8 @@ const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => 
   return (
     <div style={{ overflowY: "hidden" }}>
       {Object.keys(billedData)?.length || Object.keys(totalRevenueData)?.length ?
-        <HighchartsReact highcharts={Highcharts} options={options} /> : <div
+        <HighchartsReact highcharts={Highcharts} options={options} /> :
+        !loading ? <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -89,7 +90,14 @@ const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData }: any) => 
           }}
         >
           <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
-        </div>}
+        </div> : <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "40vh",
+          }}
+        ></div>}
     </div>
   );
 };

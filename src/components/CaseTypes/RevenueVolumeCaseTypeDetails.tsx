@@ -288,7 +288,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         data={caseData}
         columns={addAddtionalColoumns}
         totalSumValues={totalSumValues}
-        loading={false}
+        loading={loading}
         headerMonths={headerMonths}
         tabValue={tabValue}
       />

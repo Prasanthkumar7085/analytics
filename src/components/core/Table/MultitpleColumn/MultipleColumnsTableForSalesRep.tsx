@@ -244,7 +244,20 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
               </td>
             </tr>
           ) : (
-            ""
+            <tr>
+              <td colSpan={10}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "40vh",
+                  }}
+                >
+
+                </div>
+              </td>
+            </tr>
           )}
         </tbody>
         <tfoot

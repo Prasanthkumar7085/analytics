@@ -12,7 +12,7 @@ import { IconButton } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/navigation";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-const SalesRepsTable = ({ salesReps, totalRevenueSum }: any) => {
+const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
   const router = useRouter();
 
   const columnDef = [
@@ -146,7 +146,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum }: any) => {
         data={salesReps}
         totalSumValues={totalRevenueSum}
         columns={columnDef}
-        loading={false}
+        loading={loading}
       />
     </div>
   );

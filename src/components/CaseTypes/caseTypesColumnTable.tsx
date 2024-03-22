@@ -199,7 +199,19 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                             </td>
                         </tr>
                     ) : (
-                        ""
+                        <tr>
+                            <td colSpan={10}>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        height: "40vh",
+                                    }}
+                                >
+                                </div>
+                            </td>
+                        </tr>
                     )}
                 </tbody>
                 <tfoot className="tfoot"
@@ -226,7 +238,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                                 </td>
                             );
                         })}
-                        <td className="cell" onClick={() => setGraphDialogOpen(true)}>   {headerMonths?.length ? <AreaGraph data={totalSumValues} graphColor={"blue"} /> : ""}
+                        <td className="cell" onClick={() => setGraphDialogOpen(true)} style={{ cursor: "pointer" }}>   {headerMonths?.length ? <AreaGraph data={totalSumValues} graphColor={"blue"} /> : ""}
                         </td>
 
                     </tr>

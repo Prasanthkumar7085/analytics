@@ -329,7 +329,7 @@ const CaseTypes = () => {
         <MultipleColumnsTableForSalesRep
           data={allCaseTypes}
           columns={columnDef}
-          loading={false}
+          loading={loading}
           totalSumValues={totalCaseTypesSum}
           searchParams={searchParams}
           getData={onUpdateData}

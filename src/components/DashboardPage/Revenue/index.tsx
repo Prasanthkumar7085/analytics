@@ -74,6 +74,7 @@ const RevenueBlock = () => {
             labelsData={labelsData}
             billedData={billedData}
             totalRevenueData={totalRevenueData}
+            loading={loading}
           />
 
           {loading ? (

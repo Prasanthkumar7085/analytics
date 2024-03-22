@@ -23,7 +23,7 @@ const SalesRepresentatives = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
 
   const [salesReps, setSalesReps] = useState([]);

@@ -170,7 +170,7 @@ const InsuranceCaseTypes = ({
             data={insuranceData}
             columns={columns}
             totalSumValues={totalInsurancePayors}
-            loading={false}
+            loading={loading}
           />
 
           {loading ? (
