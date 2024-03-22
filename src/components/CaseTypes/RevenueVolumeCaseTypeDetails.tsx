@@ -222,9 +222,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     width: "100px",
 
     cell: (info: any) => {
+      console.log(info.row.original, "0987")
       let data = { ...info.row.original }
       delete data?.case_type_id;
       delete data?.case_type_name;
+      delete data?.serial;
+
       return (
         <div
           style={{ cursor: "pointer" }}

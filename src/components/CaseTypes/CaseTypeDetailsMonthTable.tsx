@@ -241,6 +241,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
       let data = { ...info.row.original }
       delete data?.case_type_id;
       delete data?.case_type_name;
+      delete data?.serial;
       return (
         <div
           style={{ cursor: "pointer" }}
