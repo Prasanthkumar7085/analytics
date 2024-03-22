@@ -235,40 +235,39 @@ const FacilitiesView = () => {
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div className="flex items-center w-[600px]">
-            <div>
+          <div className="grid grid-cols-2 w-full items-center">
+            <div className="gridItem flex items-center">
               <div
                 onClick={() => router.back()}
                 className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
               >
                 <ArrowBack className="w-[20px] text-[#bf1b39]" />
               </div>
-            </div>
-            <div
-              style={{ width: "40%", display: "flex", flexDirection: "row" }}
-            >
-              <div className="person flex items-center">
+              <div className="person flex items-center mr-10">
                 <Avatar sx={{ height: "30px", width: "30px" }} />
                 <div className="pl-3">
-                  <p>Facility Name</p>
-                  <p>{singleFacilityDetails?.[0]?.facility_name}</p>
+                  <p className="m-0">Facility Name</p>
+                  <p className="m-0">
+                    {singleFacilityDetails?.[0]?.facility_name}
+                  </p>
                 </div>
               </div>
               <div className="person flex items-center">
                 <Avatar sx={{ height: "30px", width: "30px" }} />
                 <div className="pl-3">
-                  <p>Marketer Name</p>
-                  <p>{singleFacilityDetails?.[0]?.sales_rep_name}</p>
+                  <p className="m-0">Marketer Name</p>
+                  <p className="m-0">
+                    {singleFacilityDetails?.[0]?.sales_rep_name}
+                  </p>
                 </div>
               </div>
             </div>
-          </div>
-
-          <div style={{ marginLeft: "70%" }}>
-            <GlobalDateRangeFilter
-              onChangeData={onChangeData}
-              dateFilterDefaultValue={dateFilterDefaultValue}
-            />
+            <div className="gridItem flex justify-end">
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
+            </div>
           </div>
         </div>
         <div className="personData">
