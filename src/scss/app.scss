@@ -446,8 +446,10 @@ table {
   }
 
   table {
+
     td,
     th {
+
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -480,6 +482,7 @@ table {
   tfoot {
     tr {
       td {
+
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -499,29 +502,15 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(
-      circle at center center,
+    repeating-radial-gradient(circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px
-    );
+      transparent 10px);
   background-blend-mode: multiply;
 }
 
-#salesRepresentatives,
-#salesRepresentativesPage {
-  tfoot {
-    tr {
-      td {
-        &:last-child {
-          display: none;
-        }
-      }
-    }
-  }
-}
 
 #mothWiseCaseTypeData {
   table {
@@ -571,7 +560,7 @@ table {
       }
     }
 
-    .remove-tooltip > div {
+    .remove-tooltip>div {
       height: 20px !important;
     }
 
@@ -611,37 +600,206 @@ table {
   }
 }
 
-#salesRepresentativesPage,
-#SalesRepresentativeTableData {
+
+
+
+
+// !Table Columns Width controls - Start
+$sNoWidth: 50px;
+$actionButtonWidth: 95px;
+
+// First And Last Child
+.facilitiesPage,
+.insurancesPage,
+#salesRepsPage {
+
   table {
-    tr {
-      th,
-      td {
-        &:nth-child(1) {
-          width: 65px !important;
-          min-width: 65px !important;
-          max-width: 65px !important;
+    overflow: clip;
+
+    @mixin tableActions {
+      &:last-child {
+        width: $actionButtonWidth !important;
+        min-width: $actionButtonWidth !important;
+        max-width: $actionButtonWidth !important;
+      }
+
+      &:first-child {
+        width: $sNoWidth !important;
+        min-width: $sNoWidth !important;
+        max-width: $sNoWidth !important;
+        font-size: 11px;
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          @include tableActions();
+        }
+      }
+    }
+
+    thead {
+      tr {
+        th {
+          @include tableActions();
+        }
+      }
+    }
+
+    tfoot {
+      tr {
+        td {
+          &:first-child {
+            width: $sNoWidth !important;
+            min-width: $sNoWidth !important;
+            max-width: $sNoWidth !important;
+            font-size: 10px;
+          }
         }
       }
     }
   }
 }
 
-#salesRepresentativesPage {
+
+#salesRepsPage {
+  $totalCasesWidth: 120px;
+  $faculityColumWidth: 140px;
+
   table {
     tr {
-      th,
-      td {
-        &:nth-child(3),
+
+      td,
+      th {
+        &:nth-child(3) {
+          width: $faculityColumWidth !important;
+          min-width: $faculityColumWidth !important;
+          max-width: $faculityColumWidth !important;
+        }
+
         &:nth-child(4) {
-          width: 150px !important;
-          min-width: 150px !important;
-          max-width: 150px !important;
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
         }
       }
     }
   }
 }
+
+.insurancesPage {
+  $totalCasesWidth: 120px;
+  $faculityColumWidth: 140px;
+
+  table {
+    tr {
+
+      td,
+      th {
+        &:nth-child(3) {
+          width: $faculityColumWidth !important;
+          min-width: $faculityColumWidth !important;
+          max-width: $faculityColumWidth !important;
+        }
+
+        &:nth-child(4) {
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
+        }
+      }
+    }
+  }
+}
+
+.caseTypesPage {
+  $totalCasesWidth: 120px;
+  $totalFacilitiesWidth: 140px;
+
+  table {
+    tr {
+
+      th,
+      td {
+
+        &:first-child {
+          width: $sNoWidth !important;
+          min-width: $sNoWidth !important;
+          max-width: $sNoWidth !important;
+        }
+
+        &:nth-child(3) {
+          width: $totalFacilitiesWidth !important;
+          min-width: $totalFacilitiesWidth !important;
+          max-width: $totalFacilitiesWidth !important;
+        }
+
+        &:nth-child(4) {
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
+        }
+
+      }
+    }
+
+    tfoot {
+      td {
+        &:first-child {
+          width: $sNoWidth !important;
+          min-width: $sNoWidth !important;
+          max-width: $sNoWidth !important;
+          font-size: 10px;
+        }
+
+        &:nth-last-child(-n+2) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.facilitiesPage {
+  table {
+    overflow: clip;
+  }
+
+  $totalCasesWidth: 120px;
+  $marketerColumWidth: 170px;
+
+  table {
+    tr {
+
+      td,
+      th {
+        &:nth-child(3) {
+          width: $marketerColumWidth !important;
+          min-width: $marketerColumWidth !important;
+          max-width: $marketerColumWidth !important;
+        }
+
+        &:nth-child(4) {
+          width: $totalCasesWidth !important;
+          min-width: $totalCasesWidth !important;
+          max-width: $totalCasesWidth !important;
+        }
+      }
+    }
+  }
+
+  tfoot {
+    td {
+      &:last-child {
+        display: none;
+      }
+    }
+  }
+}
+
+// !Table Columns Width controls - END
+
 
 .hightChartsGraph {
   padding: 20px;
@@ -784,6 +942,12 @@ table {
     tbody {
       tr {
         td {
+          &:first-child {
+            width: $sNoWidth !important;
+            min-width: $sNoWidth !important;
+            max-width: $sNoWidth !important;
+          }
+
           &:nth-child(5) {
             color: #ff9932;
             background-color: #f9feff;
@@ -801,10 +965,36 @@ table {
         }
       }
     }
+
+    thead {
+      tr {
+        th {
+          &:first-child {
+            width: $sNoWidth !important;
+            min-width: $sNoWidth !important;
+            max-width: $sNoWidth !important;
+          }
+        }
+      }
+    }
+
+    tfoot {
+      tr {
+        td {
+          &:first-child {
+            width: $sNoWidth !important;
+            min-width: $sNoWidth !important;
+            max-width: $sNoWidth !important;
+            font-size: 10px;
+          }
+        }
+      }
+    }
   }
 }
 
 #insuranceCaseTypesData {
+
   th,
   td {
     min-width: 200px !important;
@@ -818,6 +1008,7 @@ table {
   .Mui-selected {
     color: #1b2459;
   }
+
   .MuiTabs-indicator {
     background-color: #1b2459;
   }

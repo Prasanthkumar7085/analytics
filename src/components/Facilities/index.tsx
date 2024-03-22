@@ -350,7 +350,7 @@ const FacilitiesList = () => {
   }, [params]);
 
   return (
-    <div id="salesRepresentativesPage">
+    <div id="salesRepresentativesPage" className="facilitiesPage">
       <FacilitiesFilters
         onUpdateData={onUpdateData}
         getFacilitiesList={getFacilitiesList}

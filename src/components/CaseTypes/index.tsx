@@ -29,7 +29,7 @@ const CaseTypes = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [completeData, setCompleteData] = useState([]);
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(true);
   const getAllCaseTypes = async ({
     fromDate,
     toDate,
@@ -37,7 +37,7 @@ const CaseTypes = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
-    setLoading(true)
+    setLoading(true);
     try {
       let queryParams: any = {};
 
@@ -112,9 +112,8 @@ const CaseTypes = () => {
       }
     } catch (err) {
       console.error(err);
-    }
-    finally {
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,7 +126,7 @@ const CaseTypes = () => {
     orderBy: string;
     orderType: "asc" | "desc";
   }>) => {
-    setLoading(true)
+    setLoading(true);
     let queryParams: any = {};
     if (search) {
       queryParams["search"] = search;
@@ -151,21 +150,19 @@ const CaseTypes = () => {
     if (orderBy && orderType) {
       data = sortAndGetData(data, orderBy, orderType);
       if (search) {
-        data = data.filter(
-          (item: any) =>
-            item.case_type_name
-              ?.toLowerCase()
-              ?.includes(search?.toLowerCase()?.trim())
+        data = data.filter((item: any) =>
+          item.case_type_name
+            ?.toLowerCase()
+            ?.includes(search?.toLowerCase()?.trim())
         );
       }
     } else {
       data = [...completeData];
       if (search) {
-        data = data.filter(
-          (item: any) =>
-            item.case_type_name
-              ?.toLowerCase()
-              ?.includes(search?.toLowerCase()?.trim())
+        data = data.filter((item: any) =>
+          item.case_type_name
+            ?.toLowerCase()
+            ?.includes(search?.toLowerCase()?.trim())
         );
       }
     }
@@ -204,8 +201,7 @@ const CaseTypes = () => {
       { value: pendingAmoumnt, dolorSymbol: true },
     ];
     setTotalCaseTypeSum(result);
-    setLoading(false)
-
+    setLoading(false);
   };
 
   const columnDef = [
@@ -234,7 +230,9 @@ const CaseTypes = () => {
     {
       accessorFn: (row: any) => row.no_of_facilities,
       id: "no_of_facilities",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>,
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
+      ),
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
@@ -318,7 +316,7 @@ const CaseTypes = () => {
     );
   }, [params]);
   return (
-    <div>
+    <div className="caseTypesPage">
       <div id="salesRepresentativesPage">
         <CaseTypeFilters
           onUpdateData={onUpdateData}
@@ -338,7 +336,10 @@ const CaseTypes = () => {
         <LoadingComponent loading={loading} />
       </div>
       <div style={{ marginTop: "30px" }}>
-        <MonthWiseCaseTypeDetails apiUrl={"case-types"} searchParams={searchParams} />
+        <MonthWiseCaseTypeDetails
+          apiUrl={"case-types"}
+          searchParams={searchParams}
+        />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useMemo, useState } from "react";
 import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import { useSelector } from "react-redux";
@@ -102,7 +102,6 @@ const InsurancesComponent = () => {
           0
         );
 
-
         const result = [
           { value: "Total", dolorSymbol: false },
           { value: null, dolorSymbol: false },
@@ -162,7 +161,9 @@ const InsurancesComponent = () => {
     {
       accessorFn: (row: any) => row.no_of_facilities,
       id: "no_of_facilities",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>,
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
+      ),
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
@@ -237,7 +238,9 @@ const InsurancesComponent = () => {
           <span>
             <Button
               className="actionButton"
-              onClick={() => goToSingleRepPage(info.row.original.insurance_payor_id)}
+              onClick={() =>
+                goToSingleRepPage(info.row.original.insurance_payor_id)
+              }
             >
               View
             </Button>
@@ -361,7 +364,7 @@ const InsurancesComponent = () => {
   }, [params]);
 
   return (
-    <section id="salesRepresentativesPage">
+    <section id="salesRepresentativesPage" className="insurancesPage">
       <InsurancesFilters
         onUpdateData={onUpdateData}
         getInsurancesList={getInsurancesList}

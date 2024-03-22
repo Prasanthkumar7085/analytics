@@ -349,7 +349,7 @@ const SalesRepresentatives = () => {
   }, [params]);
 
   return (
-    <div className={styles.salesRepsContainer}>
+    <div className={styles.salesRepsContainer} id="salesRepsPage">
       <SalesRepsFilters
         onUpdateData={onUpdateData}
         getAllSalesReps={getAllSalesReps}
