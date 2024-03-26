@@ -334,7 +334,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
         <Backdrop
           open={true}
           style={{
-            zIndex: 999,
+            zIndex: 9999,
             color: "red",
             position: "absolute",
             top: 0,

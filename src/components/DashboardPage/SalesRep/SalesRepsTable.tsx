@@ -8,7 +8,7 @@ import { salesRepsAPI } from "@/services/salesRepsAPIs";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./sales-rep.module.css";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/navigation";
 import formatMoney from "@/lib/Pipes/moneyFormat";
@@ -146,20 +146,37 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
       minWidth: "120px",
       cell: (info: any) => {
         return (
-          <IconButton
-            className="viewIcon"
+          <Button
+            className="actionButton"
             onClick={() => {
               router.push(
                 `/sales-representatives/${info.row.original.sales_rep_id}`
               );
             }}
           >
-            <RemoveRedEyeIcon />
-          </IconButton>
+            View
+          </Button>
+
         );
       },
     },
   ];
+
+  // const goToSingleRepPage = (repId: string) => {
+  //   let queryString = "";
+  //   const queryParams: any = {};
+  //   if (params.get("from_date")) {
+  //     queryParams["from_date"] = params.get("from_date");
+  //   }
+  //   if (params.get("to_date")) {
+  //     queryParams["to_date"] = params.get("to_date");
+  //   }
+  //   if (Object.keys(queryParams)?.length) {
+  //     queryString = prepareURLEncodedParams("", queryParams);
+  //   }
+
+  //   router.push(`/sales-representatives/${repId}${queryString}`);
+  // };
 
   return (
     <div

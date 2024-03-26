@@ -46,7 +46,7 @@ const SalesRepsFilters = ({
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search marketer name"
+                placeholder="Search Marketer Name"
                 type="search"
                 InputProps={{
                   startAdornment: (

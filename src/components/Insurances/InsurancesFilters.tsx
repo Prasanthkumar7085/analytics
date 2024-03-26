@@ -46,7 +46,7 @@ const InsurancesFilters = ({
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search insurance name"
+                placeholder="Search Insurance Name"
                 type="search"
                 InputProps={{
                   startAdornment: (

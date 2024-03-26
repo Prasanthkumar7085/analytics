@@ -41,7 +41,7 @@ const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search case-types"
+                placeholder="Search Case Types"
                 type="search"
                 sx={{ cursor: "pointer" }}
                 InputProps={{

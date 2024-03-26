@@ -218,7 +218,7 @@ const CaseTypes = () => {
     {
       accessorFn: (row: any) => row.case_type_name,
       id: "case_type_name",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>CASE TYPE</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>CASE TYPES</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
@@ -231,7 +231,7 @@ const CaseTypes = () => {
       accessorFn: (row: any) => row.no_of_facilities,
       id: "no_of_facilities",
       header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
+        <span style={{ whiteSpace: "nowrap" }}>NO.OF FACILITIES</span>
       ),
       footer: (props: any) => props.column.id,
       width: "220px",

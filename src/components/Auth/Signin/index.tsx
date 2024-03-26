@@ -162,14 +162,14 @@ const SignIn: NextPage = () => {
                       />
                     </div>
 
-                    <div className="w-1/2 forgot-password text-right">
+                    {/* <div className="w-1/2 forgot-password text-right">
                       <button
                         type="button"
                         className="text-sm text-indigo-600 hover:underline"
                       >
                         Forgot Password?
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

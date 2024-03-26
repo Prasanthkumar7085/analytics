@@ -164,7 +164,7 @@ const InsurancesComponent = () => {
       accessorFn: (row: any) => row.no_of_facilities,
       id: "no_of_facilities",
       header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
+        <span style={{ whiteSpace: "nowrap" }}>NO.OF FACILITIES</span>
       ),
       footer: (props: any) => props.column.id,
       width: "220px",

@@ -68,7 +68,7 @@ const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData, loading }:
         data: billedData
       },
       {
-        name: 'Collected',
+        name: 'Received',
         data: totalRevenueData
       }
     ]

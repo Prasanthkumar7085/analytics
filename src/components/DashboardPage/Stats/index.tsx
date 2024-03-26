@@ -69,7 +69,7 @@ const Stats = ({
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
-                      <Skeleton width={120} height={50} />
+                      <Skeleton width={100} height={50} />
                     ) : (
 
                       <CountUp start={0}
@@ -79,11 +79,7 @@ const Stats = ({
                         end={revenueStatsDetails?.[0]?.paid_amount
                         }
                       />
-                      // formatMoney(
-                      //   revenueStatsDetails?.[0]?.paid_amount
-                      //     ? revenueStatsDetails?.[0]?.paid_amount
-                      //     : 0
-                      // )
+
                     )}
                   </h2>
                 </div>
@@ -100,7 +96,7 @@ const Stats = ({
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
-                      <Skeleton width={120} height={50} />
+                      <Skeleton width={100} height={50} />
                     ) : (
                       <CountUp start={0}
                         decimal="."
@@ -131,7 +127,7 @@ const Stats = ({
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
-                      <Skeleton width={120} height={50} />
+                      <Skeleton width={100} height={50} />
                     ) : (
                       <CountUp start={0}
                         decimal="."
@@ -158,7 +154,7 @@ const Stats = ({
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
-                      <Skeleton width={120} height={50} />
+                      <Skeleton width={100} height={50} />
                     ) : (
                       <CountUp start={0}
                         decimal="."
@@ -185,7 +181,7 @@ const Stats = ({
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (
-                      <Skeleton width={120} height={50} />
+                      <Skeleton width={100} height={50} />
                     ) : (
                       <CountUp start={0}
                         decimal="."
