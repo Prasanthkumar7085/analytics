@@ -20,9 +20,10 @@ table {
         border-left: 1px solid #fff;
         border-right: 1px solid #fff;
         border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
 
         &:nth-child(3) {
-          border-bottom: 0.5px solid #fff;
+          // border-bottom: 0.5px solid #fff;
         }
       }
     }
@@ -71,7 +72,9 @@ table {
   tfoot {
     td {
       &:not(:last-child) {
-        border-right: 1px solid rgba(0, 0, 0, 0.05);
+        // border-right: 1px solid rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #fff;
+        border-left: 1px solid #fff;
       }
     }
   }
@@ -135,7 +138,7 @@ table {
     overflow: hidden;
     border: 1px solid #d5d5d5;
     border-radius: 5px !important;
-    max-width: 230px;
+    max-width: 215px;
 
     &:hover {
       border: 1px solid #000000 !important;
@@ -180,7 +183,7 @@ table {
 }
 
 .tableContainer {
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 174px);
   overflow-y: auto;
   position: relative;
 
@@ -220,7 +223,7 @@ table {
   }
 
   tfoot {
-    bottom: 0;
+    bottom: -0.5px;
   }
 
   tbody {
@@ -233,13 +236,15 @@ table {
   overflow: hidden;
   border: 1px solid #d5d5d5;
   border-radius: 5px !important;
-  max-width: 230px;
+  max-width: 21px;
 
   &:hover {
     border: 1px solid #000000 !important;
     border-radius: 5px;
   }
-
+  &.rs-picker-toggle-wrapper {
+    max-width: 215px !important;
+  }
   .rs-input-group {
     height: 32px;
     border: none;
@@ -339,7 +344,8 @@ table {
   }
 
   .cardBody {
-    padding: 10px 20px 20px 20px;
+    padding: 0 20px 20px 20px;
+    margin-top: 10px;
   }
 }
 
@@ -754,6 +760,20 @@ $actionButtonWidth: 95px;
       &:last-child {
         display: "";
       }
+    }
+  }
+}
+.statHeader {
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 30px;
+}
+.tfootRow {
+  .radiusLastChild {
+    td:last-child {
+      background-color: #eff1fa;
+      border-radius: 0 0 15px 0;
     }
   }
 }

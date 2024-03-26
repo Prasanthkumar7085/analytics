@@ -12,11 +12,11 @@ import {
 const GlobalDateRangeFilter = ({
   onChangeData,
   DatePickerplacement,
-  dateFilterDefaultValue
+  dateFilterDefaultValue,
 }: {
-  onChangeData: any,
-  DatePickerplacement?: any,
-  dateFilterDefaultValue?: any
+  onChangeData: any;
+  DatePickerplacement?: any;
+  dateFilterDefaultValue?: any;
 }) => {
   const predefinedRanges: any = [
     {
@@ -95,7 +95,6 @@ const GlobalDateRangeFilter = ({
         placement={DatePickerplacement ? DatePickerplacement : "bottomEnd"}
         ranges={predefinedRanges}
         value={dateFilterDefaultValue}
-        size="lg"
         disabledDate={(date: any) => {
           return date.getTime() > new Date().getTime();
         }}

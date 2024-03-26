@@ -84,8 +84,8 @@ const CaseTypes = ({
                 ? +item["paid_amount"]
                 : 0
               : item["completed_cases"]
-                ? +item["completed_cases"]
-                : 0,
+              ? +item["completed_cases"]
+              : 0,
         });
       });
       return tempArray;
@@ -218,10 +218,11 @@ const CaseTypes = ({
         <br>
         <span style="font-size: 13px;">
             <b> 
-            ${tabValue == "Revenue"
-        ? formatMoney(totalNumber)
-        : totalNumber?.toLocaleString()
-      }</b>
+            ${
+              tabValue == "Revenue"
+                ? formatMoney(totalNumber)
+                : totalNumber?.toLocaleString()
+            }</b>
         </span>`;
   }
 
@@ -350,6 +351,7 @@ const CaseTypes = ({
                   left: 0,
                   right: 0,
                   bottom: 0,
+                  borderRadius: "15px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",

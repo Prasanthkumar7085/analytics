@@ -28,7 +28,11 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
   getData,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount"]
+  let removeSortingForColumnIds = [
+    "id",
+    "actions",
+    "1_revenue_generated_amount",
+  ];
 
   const table = useReactTable({
     columns,
@@ -74,7 +78,11 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
               src="/core/sort/sort-asc.svg"
               height={8}
               width={8}
-              style={{ display: removeSortingForColumnIds?.includes(header.id) ? "none" : "" }}
+              style={{
+                display: removeSortingForColumnIds?.includes(header.id)
+                  ? "none"
+                  : "",
+              }}
               alt="image"
             />
           ) : (
@@ -82,7 +90,11 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
               src="/core/sort/sort-desc.svg"
               height={8}
               width={8}
-              style={{ display: removeSortingForColumnIds?.includes(header.id) ? "none" : "" }}
+              style={{
+                display: removeSortingForColumnIds?.includes(header.id)
+                  ? "none"
+                  : "",
+              }}
               alt="image"
             />
           )
@@ -182,7 +194,6 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                           <SortItems
                             searchParams={searchParams}
                             header={header}
-
                           />
                         </div>
                       )}
@@ -253,28 +264,30 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                     alignItems: "center",
                     height: "40vh",
                   }}
-                >
-
-                </div>
+                ></div>
               </td>
             </tr>
           )}
         </tbody>
         <tfoot
+          className="tfootRow"
           style={{
             fontSize: "clamp(12px, 0.62vw, 14px)",
             border: "1px solid #a5a5a5",
             textTransform: "uppercase",
             fontWeight: "600",
             color: "#1B2459",
-            background: "#EFF1FA",
           }}
         >
-          <tr>
+          <tr className="radiusLastChild">
             {totalSumValues?.map((item: any, index: number) => {
               return (
                 <td key={index}>
-                  {index == 0 || index == 1 ? item.value : item.dolorSymbol ? formatMoney(item.value) : item?.value?.toLocaleString()}
+                  {index == 0 || index == 1
+                    ? item.value
+                    : item.dolorSymbol
+                    ? formatMoney(item.value)
+                    : item?.value?.toLocaleString()}
                 </td>
               );
             })}
