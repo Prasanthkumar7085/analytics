@@ -97,11 +97,11 @@ const Stats = ({
                   <div className={styles.header}>
                     <p className={styles.value}>ARREARS</p>
                   </div>
-                  {loading ?
-                    <Skeleton width={100} height={50} />
-                    :
-                    <h2 className={styles.totalvalue}>
 
+                  <h2 className={styles.totalvalue}>
+                    {loading ?
+                      <Skeleton width={100} height={50} />
+                      :
                       <CountUp
                         start={0}
                         decimal="."
@@ -110,8 +110,8 @@ const Stats = ({
                         end={revenueStatsDetails?.[0]?.pending_amount}
                       />
 
-
-                    </h2>}
+                    }
+                  </h2>
                 </div>
               </div>
             </div>

@@ -28,4 +28,7 @@ body{
   .remove-tooltip .highcharts-tooltip{
     display: none;
   }
+  .rs-picker-daterange-header{
+    display:none;
+  }
 
