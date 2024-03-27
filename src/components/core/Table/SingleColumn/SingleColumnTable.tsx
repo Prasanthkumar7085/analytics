@@ -193,14 +193,14 @@ const SingleColumnTable: FC<pageProps> = ({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "40vh",
+                    height: "23vh",
                   }}
                 >
                   <Image
                     src="/NoDataImageAnalytics.svg"
                     alt=""
-                    height={150}
-                    width={250}
+                    height={110}
+                    width={210}
                   />
                 </div>
               </td>

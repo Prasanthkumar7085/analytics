@@ -84,8 +84,8 @@ const CaseTypes = ({
                 ? +item["paid_amount"]
                 : 0
               : item["completed_cases"]
-              ? +item["completed_cases"]
-              : 0,
+                ? +item["completed_cases"]
+                : 0,
         });
       });
       return tempArray;
@@ -218,11 +218,10 @@ const CaseTypes = ({
         <br>
         <span style="font-size: 13px;">
             <b> 
-            ${
-              tabValue == "Revenue"
-                ? formatMoney(totalNumber)
-                : totalNumber?.toLocaleString()
-            }</b>
+            ${tabValue == "Revenue"
+        ? formatMoney(totalNumber)
+        : totalNumber?.toLocaleString()
+      }</b>
         </span>`;
   }
 
@@ -248,10 +247,10 @@ const CaseTypes = ({
       ): string {
         if (tabValue == "Revenue")
           return (
-            "<b>" +
+
             this.point.name +
-            "</b>: $" +
-            Highcharts.numberFormat(this.point.y, 2, ".", ",")
+            ": $" +
+            "<b>" + Highcharts.numberFormat(this.point.y, 2, ".", ",") + "<b>"
           );
         else
           return (

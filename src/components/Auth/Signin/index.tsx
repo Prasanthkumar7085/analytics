@@ -123,7 +123,7 @@ const SignIn: NextPage = () => {
                 id="email"
                 name="email"
                 className="mt-1 block w-full border h-[50px] rounded pl-4 mb-2"
-                placeholder="Enter email"
+                placeholder="Enter Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -141,7 +141,7 @@ const SignIn: NextPage = () => {
                       id="password"
                       name="password"
                       className="mt-1 block w-full border h-[50px] rounded pl-4 mb-2"
-                      placeholder="Enter password"
+                      placeholder="Enter Password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
