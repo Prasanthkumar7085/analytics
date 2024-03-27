@@ -40,7 +40,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-7">
                 <li
-
+                  onClick={() => router.push("/dashboard")}
                   className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
                     pathname == "/dashboard" ? "activePagename" : "active"
                   ]
@@ -48,51 +48,43 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 >
                   Overview
                 </li>
-                <li>
-                  <Link
-                    href={"/sales-representatives"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/sales-representatives")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
-                  >
-                    Sales Representatives
-                  </Link>
+                <li
+                  onClick={() => router.push("/sales-representatives")}
+                  className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                    pathname.includes("/sales-representatives")
+                      ? "activePagename"
+                      : "active"
+                  ]
+                    }`}
+                >
+                  Sales Representatives
                 </li>
-                <li>
-                  <Link
-                    href={"/insurances"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/insurances") ? "activePagename" : "active"
-                    ]
-                      }`}
-                  >
-                    Insurances
-                  </Link>
+                <li
+                  onClick={() => router.push("/insurances")}
+                  className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                    pathname.includes("/insurances") ? "activePagename" : "active"
+                  ]
+                    }`}
+                >
+                  Insurances
                 </li>
-                <li>
-                  <Link
-                    href={"/facilities"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/facilities") ? "activePagename" : "active"
-                    ]
-                      }`}
-                  >
-                    Facilities
-                  </Link>
+                <li
+                  onClick={() => router.push("/facilities")}
+                  className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                    pathname.includes("/facilities") ? "activePagename" : "active"
+                  ]
+                    }`}
+                >
+                  Facilities
                 </li>
-                <li>
-                  <Link
-                    href={"/case-types"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/case-types") ? "activePagename" : "active"
-                    ]
-                      }`}
-                  >
-                    Case Types
-                  </Link>
+                <li
+                  onClick={() => router.push("/case-types")}
+                  className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                    pathname.includes("/case-types") ? "activePagename" : "active"
+                  ]
+                    }`}
+                >
+                  Case Types
                 </li>
                 <li>
                   <a
