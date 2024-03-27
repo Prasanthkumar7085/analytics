@@ -214,7 +214,7 @@ const CaseTypes = ({
     const totalNumber = totalRevenueSum[2]?.value
       ? totalRevenueSum[2]?.value
       : 0;
-    return `<span style="font-size: 6px,margin-left:"45px">Total value</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Received" : "Total Finalised"}</span>
         <br>
         <span style="font-size: 13px;">
             <b> 
@@ -249,15 +249,15 @@ const CaseTypes = ({
           return (
 
             this.point.name +
-            ": $" +
-            "<b>" + Highcharts.numberFormat(this.point.y, 2, ".", ",") + "<b>"
+            "<b>" +
+            ": $" + Highcharts.numberFormat(this.point.y, 2, ".", ",") + "<b>"
           );
         else
           return (
-            "<b>" +
-            this.point.name +
-            "</b>:" +
-            Highcharts.numberFormat(this.point.y, 0, ".", ",")
+
+            this.point.name + ":" +
+            "<b>" + Highcharts.numberFormat(this.point.y, 0, ".", ",") +
+            "</b>"
           );
       },
     },

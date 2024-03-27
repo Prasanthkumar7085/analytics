@@ -27,7 +27,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible: false,
+      visible: Object?.values(data)?.length == 1 ? true : false,
     },
     yAxis: {
       labels: {
@@ -36,7 +36,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible: false,
+      visible: Object?.values(data)?.length == 1 ? true : false,
     },
     legend: {
       enabled: false,
@@ -49,7 +49,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       series: {
         animation: true,
         marker: {
-          enabled: false,
+          enabled: Object?.values(data)?.length == 1 ? true : false,
         },
         tooltip: {
           enabled: false,

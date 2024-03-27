@@ -81,9 +81,9 @@ const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: strin
     tooltip: {
       formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
         if (graphType == "revenue")
-          return '<b>' + this.point.category + '</b>: $' + "<b>" + Highcharts.numberFormat(this.point.y, 2, '.', ',') + "</b>";
+          return this.point.category + " <b>" + ': $' + Highcharts.numberFormat(this.point.y, 2, '.', ',') + "</b>";
         else
-          return '<b>' + this.point.category + '</b>:' + '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
+          return this.point.category + ':' + '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
       }
     },
     series: [

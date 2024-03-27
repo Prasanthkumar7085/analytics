@@ -80,9 +80,9 @@ const GraphDialog = ({
     tooltip: {
       formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
         if (tabValue == "Revenue")
-          return '<b>' + this.point.category + '</b>: $' + Highcharts.numberFormat(this.point.y, 2, '.', ',');
+          return this.point.category + '<b>' + ' : $' + Highcharts.numberFormat(this.point.y, 2, '.', ', ') + '</b>';
         else
-          return '<b>' + this.point.category + '</b>:' + Highcharts.numberFormat(this.point.y, 0, '.', ',');
+          return this.point.category + ' : ' + '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ', ') + '</b>';
       }
     },
     yAxis: {
