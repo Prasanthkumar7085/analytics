@@ -39,16 +39,14 @@ const NavBar: FC<pageProps> = ({ children }) => {
             </Grid>
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-7">
-                <li>
-                  <Link
-                    href={"/dashboard"}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/dashboard" ? "activePagename" : "active"
-                    ]
-                      }`}
-                  >
-                    Overview
-                  </Link>
+                <li
+
+                  className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                    pathname == "/dashboard" ? "activePagename" : "active"
+                  ]
+                    }`}
+                >
+                  Overview
                 </li>
                 <li>
                   <Link
