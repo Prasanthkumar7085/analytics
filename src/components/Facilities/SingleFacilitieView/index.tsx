@@ -277,7 +277,7 @@ const FacilitiesView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </Grid>
             <Grid item xs={8}>

@@ -29,6 +29,7 @@ import {
   setCaseTypeOptions,
 } from "@/Redux/Modules/marketers";
 import { caseTypesOptions } from "@/lib/constants/caseTypes";
+import { getSingleRepProfileDeatilsAPI } from "@/services/salesRepsAPIs";
 
 const SignIn: NextPage = () => {
   const dispatch = useDispatch();
@@ -60,6 +61,27 @@ const SignIn: NextPage = () => {
       console.error(err);
     }
   };
+
+
+  //get single sales rep ref id
+  const getSalesRepDetails = async (salesrepId: any) => {
+    setLoading(true);
+
+    try {
+      let response: any = await getSingleRepProfileDeatilsAPI(salesrepId);
+      if (response.success) {
+        let refId = response?.data?.[0]?.id
+        router.push(`/sales-representatives/${refId}`)
+      }
+    }
+    catch (err) {
+      console.error(err)
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
   const signIn = async (e: any) => {
     e.preventDefault();
     setLoading(true);
@@ -72,13 +94,15 @@ const SignIn: NextPage = () => {
       };
       let response: any = await signInAPI(payload);
       if (response.success) {
-        console.log(response, "Fsd")
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
         dispatch(setCaseTypeOptions(caseTypesOptions));
-        getUsersFromLabsquire();
-        getFacilitiesFromLabsquire();
-        router.push("/dashboard");
+        if (response?.user_details?.user_type == "MARKETER") {
+          await getSalesRepDetails(response?.user_details?._id)
+        }
+        else {
+          router.push("/dashboard");
+        }
       } else if (response.type == "VALIDATION_ERROR") {
         setErrorMessages(response?.error_data?.details);
       } else if (response.type == "Invalid_Credentials") {

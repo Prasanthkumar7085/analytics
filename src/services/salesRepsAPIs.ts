@@ -37,6 +37,18 @@ export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
   }
 };
 
+export const getSingleRepProfileDeatilsAPI = async (salerep_id: string) => {
+  try {
+    const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}/ref-id`);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
 
 
 export const getTrendsForRevenueBySalesRepIdAPI = async ({

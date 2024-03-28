@@ -31,10 +31,14 @@ import { ArrowBack } from "@mui/icons-material";
 import Grid from "@mui/material/Grid";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { useSelector } from "react-redux";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
   const pathName = usePathname();
+
+  const userType = useSelector((state: any) => state.auth.user?.user_details?.user_type)
+
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
@@ -244,12 +248,14 @@ const SalesRepView = () => {
         <div className="personDetails">
           <div className="grid grid-cols-2 w-full items-center">
             <div className="gridItem flex items-center">
-              <div
-                onClick={() => router.back()}
-                className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
-              >
-                <ArrowBack className="w-[20px] text-[#bf1b39]" />
-              </div>
+              {userType == "MARKETER" ? "" :
+                <div
+                  onClick={() => router.back()}
+                  className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
+                >
+                  <ArrowBack className="w-[20px] text-[#bf1b39]" />
+                </div>}
+
               <div className="person flex items-center mr-10">
                 <Avatar sx={{ height: "30px", width: "30px" }} />
                 <div className="pl-3">
@@ -279,7 +285,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </Grid>
             <Grid item xs={8}>
