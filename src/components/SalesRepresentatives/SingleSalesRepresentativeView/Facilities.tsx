@@ -4,16 +4,18 @@ import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleC
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { mapFacilityNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { getAllFacilitiesAPI } from "@/services/authAPIs";
 import { getFacilitiesBySalesRepId } from "@/services/salesRepsAPIs";
 import { Backdrop, CircularProgress } from "@mui/material";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const Facilities = ({ searchParams }: any) => {
   const dispatch = useDispatch();
-
+  const params = useSearchParams();
+  const router = useRouter()
   const { id } = useParams();
   const facilities = useSelector((state: any) => state?.users.facilities);
   const [facilitiesData, setFacilitiesData] = useState([]);
@@ -67,6 +69,23 @@ const Facilities = ({ searchParams }: any) => {
     }
   };
 
+
+  const goToSingleFacilityPage = (Id: string) => {
+    let queryString = "";
+    const queryParams: any = {};
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
+    }
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
+    }
+    if (Object.keys(queryParams)?.length) {
+      queryString = prepareURLEncodedParams("", queryParams);
+    }
+
+    router.push(`/facilities/${Id}${queryString}`);
+  };
+
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
@@ -81,14 +100,16 @@ const Facilities = ({ searchParams }: any) => {
       accessorFn: (row: any) => row.facility_name,
       id: "facility_name",
       header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>
+        <span style={{ whiteSpace: "nowrap" }} >FACILITY NAME</span>
       ),
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }} onClick={() => {
+          goToSingleFacilityPage(info.row.original.facility_id)
+        }}>{info.getValue()}</span>;
       },
     },
     {

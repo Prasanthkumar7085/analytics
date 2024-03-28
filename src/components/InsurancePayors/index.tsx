@@ -1,5 +1,5 @@
 import { getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
@@ -7,6 +7,7 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import GraphDialog from "../core/GraphDialog";
 import { Backdrop, CircularProgress } from "@mui/material";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 
 const InsurancePayors = ({ searchParams, apiurl }: any) => {
   const { id } = useParams();
@@ -15,6 +16,8 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
   const [loading, setLoading] = useState(true)
+  const params = useSearchParams();
+  const router = useRouter()
   const getAllInsrancePayors = async (fromDate: any, toDate: any) => {
     setLoading(true)
     try {
@@ -58,6 +61,22 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
     }
   };
 
+  const goToSingleInsurancePage = (Id: string) => {
+    let queryString = "";
+    const queryParams: any = {};
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
+    }
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
+    }
+    if (Object.keys(queryParams)?.length) {
+      queryString = prepareURLEncodedParams("", queryParams);
+    }
+
+    router.push(`/insurances/${Id}${queryString}`);
+  };
+
   const columns = [
     {
       accessorFn: (row: any) => row.serial,
@@ -78,8 +97,10 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }} onClick={() => {
+          goToSingleInsurancePage(info.row.original.insurance_id)
+        }}>{info.getValue()}</span>;
       },
     },
     {
