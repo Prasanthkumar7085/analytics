@@ -72,6 +72,7 @@ const SignIn: NextPage = () => {
       };
       let response: any = await signInAPI(payload);
       if (response.success) {
+        console.log(response, "Fsd")
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
         dispatch(setCaseTypeOptions(caseTypesOptions));

@@ -8,11 +8,16 @@ interface IAPIResponse {
   data: any;
 }
 class FetchService {
-  authStatusCodes: number[] = [401, 403, 409];
 
-  responseOnlyURLs: string[] = [''];
+  authStatusCodes: number[] = [401, 403];
 
-  authErrorURLs: string[] = ["/signin", "/forgot-password"];
+  responseOnlyURLs: string[] = ["/e-requisition", "/cases/download-as-csv?", "/trumed-pharmacy-orders/download-as-csv", "/orders/download-as-csv?",];
+
+  authErrorURLs: string[] = [
+    "/signin",
+    "/forgot-password",
+    "/create-accession-number",
+  ];
 
   private _isGlobal: Boolean;
 
@@ -27,13 +32,12 @@ class FetchService {
   }
 
   configureAuthorization(config: any) {
-    if (this._isGlobal) {
-      const state = store.getState();
+    const state = store.getState();
 
-      const accessToken = state?.auth?.user?.access_token;
-      // IMPLEMENT STORE/COOCIKES DATA HERE
-      config.headers["Authorization"] = accessToken; // we need to
-    }
+    const accessToken = state?.auth?.user?.access_token;
+
+    // IMPLEMENT STORE/COOCIKES DATA HERE
+    config.headers["Authorization"] = accessToken; // we need to
   }
 
   setDefualtHeaders(config: any, includeHeaders: boolean) {
@@ -42,9 +46,8 @@ class FetchService {
         "Content-Type": "application/json; charset=utf-8",
       };
     } else {
-      config.headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-      };
+      config.headers = {};
+      // "Content-Type": "application/x-www-form-urlencoded",
     }
   }
 
@@ -52,6 +55,11 @@ class FetchService {
     store.dispatch(removeUserDetails());
   }
 
+  checkToLogOutOrNot(path: string) {
+    return this.authErrorURLs.some((arrayUrl: string) =>
+      path.includes(arrayUrl)
+    );
+  }
   isAuthRequest(path: string) {
     return this.authErrorURLs.includes(path);
   }
@@ -62,7 +70,7 @@ class FetchService {
 
     const authReq = this.isAuthRequest(path);
 
-    if (!authReq && this._isGlobal) {
+    if (!authReq) {
       this.configureAuthorization(config);
     }
 
@@ -81,18 +89,26 @@ class FetchService {
 
     const response: any = await fetch(url, config);
     if (response.status == 200 || response.status == 201) {
-      return {
-        success: true,
-        status: response.status,
-        data: { ...(await response.json()), status: response.status },
-      };
+      if (this.responseOnlyUrlOrNot(url)) {
+        return {
+          success: true,
+          status: response.status,
+          data: response,
+        };
+      } else {
+        return {
+          success: true,
+          status: response.status,
+          data: { ...(await response.json()), status: response.status },
+        };
+      }
     } else if (
       this.authStatusCodes.includes(response.status) &&
-      !this.authErrorURLs.includes(path)
+      !this.checkToLogOutOrNot(path)
     ) {
-      // this.dispatchRemoveUserDetails();
-      // Cookies.remove("user");
-      // window.location.href = "/";
+      this.dispatchRemoveUserDetails();
+      Cookies.remove("user");
+      window.location.href = "/";
       return {
         success: false,
         status: response.status,
@@ -138,6 +154,15 @@ class FetchService {
     return await this.hit(url, {
       method: "GET",
     });
+  }
+  async getWithOutHeaders(url: string, queryParams = {}) {
+    if (Object.keys(queryParams).length > 0) {
+      url = prepareURLEncodedParams(url, queryParams);
+    }
+
+    return await this.hit(url, {
+      method: "GET",
+    }, false);
   }
 
   async delete(url: string, payload = {}) {
