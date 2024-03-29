@@ -1,7 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = [
+  "/dashboard",
+  "/sales-representatives",
+  "/case-types",
+  "/sales-representatives/",
+  "/insurances",
+  "/facilities",
+];
 
 const unProtectedRoutes = ["/signin"];
 function containsSubstring(inputString: string, substrings: Array<string>) {
@@ -16,6 +23,21 @@ const isAuthenticated = (req: NextRequest) => {
 const getUserIdIfSalesRep = (req: NextRequest) => {
   const userId = req.cookies.get("user_ref_id")?.value;
   return userId;
+};
+
+const getIsSalesRepAndAccessingOtherPageOrNot = (req: NextRequest) => {
+  return (
+    req.cookies.get("user")?.value == "MARKETER" &&
+    !req.nextUrl.pathname?.includes("/sales-representatives/")
+  );
+};
+const getIsManagerAndAccessingOtherPageOrNot = (req: NextRequest) => {
+  // return false;
+  return (
+    req.cookies.get("user")?.value == "HOSPITAL_MARKETING_MANAGER" &&
+    !req.nextUrl.pathname?.includes("/sales-representatives") &&
+    !req.nextUrl.pathname?.includes("/dashboard")
+  );
 };
 
 export default function middleware(req: NextRequest) {
@@ -36,12 +58,30 @@ export default function middleware(req: NextRequest) {
         req.nextUrl.origin
       );
       return NextResponse.redirect(absoluteURL.toString());
+    } else {
+      const absoluteURL = new URL("/dashboard", req.nextUrl.origin);
+      return NextResponse.redirect(absoluteURL.toString());
     }
-    const absoluteURL = new URL("/dashboard", req.nextUrl.origin);
-    return NextResponse.redirect(absoluteURL.toString());
   }
   if (req.nextUrl.pathname == "/") {
     const absoluteURL = new URL("/signin", req.nextUrl.origin);
+    return NextResponse.redirect(absoluteURL.toString());
+  }
+  if (
+    containsSubstring(req.nextUrl.pathname, protectedRoutes) &&
+    getIsSalesRepAndAccessingOtherPageOrNot(req)
+  ) {
+    const absoluteURL = new URL(
+      `/sales-representatives/${getUserIdIfSalesRep(req)}`,
+      req.nextUrl.origin
+    );
+    return NextResponse.redirect(absoluteURL.toString());
+  }
+  if (
+    containsSubstring(req.nextUrl.pathname, protectedRoutes) &&
+    getIsManagerAndAccessingOtherPageOrNot(req)
+  ) {
+    const absoluteURL = new URL(`/dashboard`, req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
 }

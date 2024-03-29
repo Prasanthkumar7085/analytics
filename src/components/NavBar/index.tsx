@@ -25,6 +25,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
 
   const logout = () => {
     Cookies.remove("user");
+    Cookies.remove("user_ref_id");
     dispatch(removeUserDetails());
     router.push("/signin");
   };
@@ -35,6 +36,8 @@ const NavBar: FC<pageProps> = ({ children }) => {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
               <Image
+                onClick={() => router.push("/dashboard")}
+                style={{ cursor: "pointer" }}
                 className={styles.labsquirelogoIcon}
                 alt=""
                 src="/navbar/labsquirelogo@2x.png"

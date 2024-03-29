@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/core/Table/MultitpleColumn"
+    "src/components/core/Table/MultitpleColumn",
+    "src/app/not-found.tsx#"
   ],
   "exclude": ["node_modules"]
 }
