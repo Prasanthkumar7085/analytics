@@ -70,10 +70,14 @@ const FacilitiesList = () => {
 
         let data = response?.data;
         if (searchValue) {
-          data = data.filter((item: any) =>
-            item.sales_rep_name
-              ?.toLowerCase()
-              ?.includes(searchValue?.toLowerCase()?.trim())
+          data = data.filter(
+            (item: any) =>
+              item.sales_rep_name
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase()?.trim()) ||
+              item.facility_name
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase()?.trim())
           );
         }
         data = sortAndGetData(data, orderBy, orderType);

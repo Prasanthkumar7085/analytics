@@ -318,7 +318,7 @@ const CaseTypes = ({
           </div>
         </div>
         <div className="cardBody">
-          <div style={{ display: "flex", height: "37vh" }}>
+          <div style={{ display: "flex", height: "40vh" }}>
             <div style={{ width: "35%" }}>
               <HighchartsReact
                 highcharts={Highcharts}

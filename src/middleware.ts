@@ -28,7 +28,9 @@ const getUserIdIfSalesRep = (req: NextRequest) => {
 const getIsSalesRepAndAccessingOtherPageOrNot = (req: NextRequest) => {
   return (
     req.cookies.get("user")?.value == "MARKETER" &&
-    !req.nextUrl.pathname?.includes("/sales-representatives/")
+    !req.nextUrl.pathname?.includes("/sales-representatives/") &&
+    !req.nextUrl.pathname?.includes("/insurances/") &&
+    !req.nextUrl.pathname?.includes("/facilities/")
   );
 };
 const getIsManagerAndAccessingOtherPageOrNot = (req: NextRequest) => {
@@ -36,7 +38,10 @@ const getIsManagerAndAccessingOtherPageOrNot = (req: NextRequest) => {
   return (
     req.cookies.get("user")?.value == "HOSPITAL_MARKETING_MANAGER" &&
     !req.nextUrl.pathname?.includes("/sales-representatives") &&
-    !req.nextUrl.pathname?.includes("/dashboard")
+    !req.nextUrl.pathname?.includes("/dashboard") &&
+    !req.nextUrl.pathname?.includes("/insurances/") &&
+    !req.nextUrl.pathname?.includes("/facilities/")
+
   );
 };
 

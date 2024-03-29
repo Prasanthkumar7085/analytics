@@ -29,6 +29,9 @@ body{
     display: none;
   }
   .rs-picker-daterange-header{
-    display:none;
+    display:none!important;
+  }
+  .rs-picker-popup{
+    z-index: 9999!important;
   }
 

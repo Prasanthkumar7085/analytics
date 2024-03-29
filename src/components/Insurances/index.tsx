@@ -72,10 +72,14 @@ const InsurancesComponent = () => {
 
         let data = response?.data;
         if (searchValue) {
-          data = data.filter((item: any) =>
-            item.insurance_payor_name
-              ?.toLowerCase()
-              ?.includes(searchValue?.toLowerCase()?.trim())
+          data = data.filter(
+            (item: any) =>
+              item.insurance_payor_name
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase()?.trim()) ||
+              item.facility_name
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase()?.trim())
           );
         }
         data = sortAndGetData(data, orderBy, orderType);
@@ -164,7 +168,7 @@ const InsurancesComponent = () => {
       accessorFn: (row: any) => row.no_of_facilities,
       id: "no_of_facilities",
       header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>NO.OF FACILITIES</span>
+        <span style={{ whiteSpace: "nowrap" }}>NO. OF FACILITIES</span>
       ),
       footer: (props: any) => props.column.id,
       width: "220px",
