@@ -37,9 +37,9 @@ export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
   }
 };
 
-export const getSingleRepProfileDeatilsAPI = async (salerep_id: string) => {
+export const getSingleRepProfileDeatilsAPI = async () => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${salerep_id}/ref-id`);
+    const { success, data } = await $fetch.get(`/sales-reps/ref-id`);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

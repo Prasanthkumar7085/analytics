@@ -64,23 +64,22 @@ const SignIn: NextPage = () => {
 
 
   //get single sales rep ref id
-  const getSalesRepDetails = async (salesrepId: any) => {
+  const getSalesRepDetails = async () => {
     setLoading(true);
 
     try {
-      let response: any = await getSingleRepProfileDeatilsAPI(salesrepId);
+      let response: any = await getSingleRepProfileDeatilsAPI();
       if (response.success) {
-        let refId = response?.data?.[0]?.id
-        router.push(`/sales-representatives/${refId}`)
+        let refId = response?.data?.[0]?.id;
+        Cookies.set("user_ref_id", refId);
+        router.push(`/sales-representatives/${refId}`);
       }
-    }
-    catch (err) {
-      console.error(err)
-    }
-    finally {
+    } catch (err) {
+      console.error(err);
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   const signIn = async (e: any) => {
     e.preventDefault();
@@ -98,9 +97,13 @@ const SignIn: NextPage = () => {
         dispatch(setUserDetails(response));
         dispatch(setCaseTypeOptions(caseTypesOptions));
         if (response?.user_details?.user_type == "MARKETER") {
-          await getSalesRepDetails(response?.user_details?._id)
-        }
-        else {
+          await getSalesRepDetails();
+          //TODO: Remove this condition after confirmed
+          // } else if (
+          //   response?.user_details?.user_type == "HOSPITAL_MARKETING_MANAGER"
+          // ) {
+          //   router.push("/dashboard");
+        } else {
           router.push("/dashboard");
         }
       } else if (response.type == "VALIDATION_ERROR") {

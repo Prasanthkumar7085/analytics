@@ -13,6 +13,10 @@ const isAuthenticated = (req: NextRequest) => {
   if (loggedIn) return true;
   return false;
 };
+const getUserIdIfSalesRep = (req: NextRequest) => {
+  const userId = req.cookies.get("user_ref_id")?.value;
+  return userId;
+};
 
 export default function middleware(req: NextRequest) {
   if (
@@ -26,6 +30,13 @@ export default function middleware(req: NextRequest) {
     isAuthenticated(req) &&
     unProtectedRoutes.includes(req.nextUrl.pathname)
   ) {
+    if (req.cookies.get("user")?.value == "MARKETER") {
+      const absoluteURL = new URL(
+        `/sales-representatives/${getUserIdIfSalesRep(req)}`,
+        req.nextUrl.origin
+      );
+      return NextResponse.redirect(absoluteURL.toString());
+    }
     const absoluteURL = new URL("/dashboard", req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
