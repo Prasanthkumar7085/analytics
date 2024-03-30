@@ -1,8 +1,11 @@
 import FacilitiesView from "@/components/Facilities/SingleFacilitieView";
+import { Suspense } from "react";
 
 const SingleFacilityViewPage = () => {
     return (
-        <FacilitiesView />
+        <Suspense>
+            <FacilitiesView />
+        </Suspense>
     )
 }
 export default SingleFacilityViewPage;
