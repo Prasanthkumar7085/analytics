@@ -19,6 +19,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.serial,
       id: "id",
+      enableSorting: false,
       header: () => <span>S.No</span>,
       footer: (props: any) => props.column.id,
       width: "60px",
@@ -40,6 +41,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>VOLUME</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
@@ -52,6 +54,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.completed_cases,
       id: "completed_cases",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>CLEARED VOL</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
@@ -65,6 +68,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.generated_amount,
       id: "generated_amount",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
       footer: (props: any) => props.column.id,
       width: "70px",
@@ -78,6 +82,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.expected_amount,
       id: "expected_amount",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>EXPECTED</span>,
       footer: (props: any) => props.column.id,
       width: "70px",
@@ -93,6 +98,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.paid_amount,
       id: "paid_amount",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>CLEARED BILL</span>,
       footer: (props: any) => props.column.id,
       width: "70px",
@@ -117,6 +123,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.pending_cases,
       id: "pending_cases",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>PEN VOL</span>,
       footer: (props: any) => props.column.id,
       width: "70px",
@@ -130,6 +137,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.pending_amount,
       id: "pending_amount",
+      sortDescFirst: false,
       header: () => <span style={{ whiteSpace: "nowrap" }}>PENDING REV</span>,
       footer: (props: any) => props.column.id,
       width: "70px",
@@ -170,6 +178,7 @@ const InsuranceCaseTypes = ({
     {
       accessorFn: (row: any) => row.pending_amount,
       id: "actions",
+      enableSorting: false,
       header: () => (
         <span style={{ whiteSpace: "nowrap" }}>PAID PRICE/TARGET PRICE</span>
       ),

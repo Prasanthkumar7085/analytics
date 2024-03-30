@@ -89,6 +89,7 @@ const Facilities = ({ searchParams }: any) => {
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
+      enableSorting: false,
       id: "id",
       header: () => <span>S.No</span>,
       footer: (props: any) => props.column.id,
@@ -120,6 +121,7 @@ const Facilities = ({ searchParams }: any) => {
       width: "200px",
       maxWidth: "200px",
       minWidth: "200px",
+      sortDescFirst: false,
       cell: ({ getValue }: any) => {
         return <span>{getValue()?.toLocaleString()}</span>;
       },
@@ -137,6 +139,7 @@ const Facilities = ({ searchParams }: any) => {
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
+          sortDescFirst: false,
           cell: ({ getValue }: any) => {
             return <span>{formatMoney(getValue())}</span>;
           },
@@ -150,6 +153,7 @@ const Facilities = ({ searchParams }: any) => {
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
+          sortDescFirst: false,
           cell: ({ getValue }: any) => {
             return <span>{formatMoney(getValue())}</span>;
           },
@@ -161,6 +165,7 @@ const Facilities = ({ searchParams }: any) => {
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
+          sortDescFirst: false,
           cell: ({ getValue }: any) => {
             return <span>{formatMoney(getValue())}</span>;
           },

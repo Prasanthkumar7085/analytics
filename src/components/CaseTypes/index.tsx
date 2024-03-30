@@ -208,6 +208,7 @@ const CaseTypes = () => {
     {
       accessorFn: (row: any) => row.serial,
       id: "id",
+      enableSorting: false,
       header: () => <span>S.No</span>,
       footer: (props: any) => props.column.id,
       width: "60px",

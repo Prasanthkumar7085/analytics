@@ -81,6 +81,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
     {
       accessorFn: (row: any) => row.serial,
       id: "id",
+      enableSorting: false,
       header: () => <span>S.No</span>,
       footer: (props: any) => props.column.id,
       width: "60px",
@@ -111,6 +112,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
       width: "70px",
       maxWidth: "100px",
       minWidth: "70px",
+      sortDescFirst: false,
       cell: ({ getValue }: any) => {
         return <span>{formatMoney(getValue())}</span>;
       },
@@ -123,6 +125,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
       width: "70px",
       maxWidth: "100px",
       minWidth: "70px",
+      sortDescFirst: false,
       cell: ({ getValue }: any) => {
         return <span>{formatMoney(getValue())}</span>;
       },
@@ -135,6 +138,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
       width: "70px",
       maxWidth: "100px",
       minWidth: "70px",
+      sortDescFirst: false,
       cell: ({ getValue }: any) => {
         return <span>{formatMoney(getValue())}</span>;
       },

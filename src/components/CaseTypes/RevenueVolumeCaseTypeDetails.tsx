@@ -207,6 +207,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     width: "80px",
     maxWidth: "220px",
     minWidth: "220px",
+    sortDescFirst: false,
     cell: (info: any) => (
       <span>
         {tabValue == "Revenue" ? formatMoney(info.getValue()) : info.getValue()?.toLocaleString()}
@@ -217,6 +218,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   const graphColoumn = [{
     accessorFn: (row: any) => row.actions,
     id: "actions",
+    enableSorting: false,
     header: () => <span style={{ whiteSpace: "nowrap" }}>Graph</span>,
     footer: (props: any) => props.column.id,
     width: "100px",
@@ -248,6 +250,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
       {
         accessorFn: (row: any) => row.serial,
         id: "id",
+        enableSorting: false,
         header: () => <span>S.No</span>,
         footer: (props: any) => props.column.id,
         width: "60px",

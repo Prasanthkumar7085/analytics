@@ -216,6 +216,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   let addtionalcolumns = headerMonths?.map((item: any) => ({
     accessorFn: (row: any) => row[item],
     id: item,
+    sortDescFirst: false,
     header: () => (
       <span style={{ whiteSpace: "nowrap" }}>{formatMonthYear(item)}</span>
     ),
@@ -232,6 +233,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
 
   const graphColoumn = [{
     accessorFn: (row: any) => row.actions,
+    enableSorting: false,
     id: "actions",
     header: () => <span style={{ whiteSpace: "nowrap" }}>Graph</span>,
     footer: (props: any) => props.column.id,
@@ -263,6 +265,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
       {
         accessorFn: (row: any) => row.serial,
         id: "id",
+        enableSorting: false,
         header: () => <span>S.No</span>,
         footer: (props: any) => props.column.id,
         width: "60px",

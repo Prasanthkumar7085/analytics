@@ -121,6 +121,7 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
+      sortDescFirst: false,
       header: () => <span className={styles.tableHeading}>TOTAL</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -128,6 +129,7 @@ const CaseTypes = ({
     {
       accessorFn: (row: any) => row.completed_cases,
       id: "completed_cases",
+      sortDescFirst: false,
       cell: (info: any) => (
         <span className={styles.totalCasesRow}>
           {info.getValue()?.toLocaleString()}
@@ -140,6 +142,7 @@ const CaseTypes = ({
     {
       accessorFn: (row: any) => row.pending_cases,
       id: "pending_cases",
+      sortDescFirst: false,
       cell: (info: any) => (
         <span className={styles.revenueBlock}>
           {info.getValue()?.toLocaleString()}
@@ -175,6 +178,7 @@ const CaseTypes = ({
     {
       accessorFn: (row: any) => row.generated_amount,
       id: "generated_amount",
+      sortDescFirst: false,
       cell: (info: any) => (
         <span className={styles.totalCasesRow}>
           {formatMoney(info.getValue())}
@@ -186,6 +190,7 @@ const CaseTypes = ({
     },
     {
       accessorFn: (row: any) => row.paid_amount,
+      sortDescFirst: false,
       id: "paid_amount",
       cell: (info: any) => (
         <span className={styles.totalCasesRow}>
@@ -198,6 +203,7 @@ const CaseTypes = ({
     },
     {
       accessorFn: (row: any) => row.pending_amount,
+      sortDescFirst: false,
       id: "pending_amount",
       cell: (info: any) => (
         <span className={styles.revenueBlock}>

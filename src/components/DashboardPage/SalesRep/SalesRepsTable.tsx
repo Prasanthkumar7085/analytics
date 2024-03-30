@@ -19,6 +19,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
     {
       accessorFn: (row: any) => row.serial,
       id: "id",
+      enableSorting: false,
       header: () => <span>S.No</span>,
       footer: (props: any) => props.column.id,
       width: "60px",
@@ -45,6 +46,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
       header: () => (
         <span className={styles.salesTableHeading}>TOTAL CASES</span>
       ),
+      sortDescFirst: false,
       footer: (props: any) => props.column.id,
       width: "120px",
       maxWidth: "120px",
@@ -68,6 +70,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
         {
           accessorFn: (row: any) => row.expected_amount,
           id: "expected_amount",
+          sortDescFirst: false,
           header: () => (
             <span className={styles.salesTableHeading}>TARGETED</span>
           ),
@@ -84,6 +87,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
         },
         {
           accessorFn: (row: any) => row.generated_amount,
+          sortDescFirst: false,
           header: () => (
             <span className={styles.salesTableHeading}>BILLED</span>
           ),
@@ -101,6 +105,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
         },
         {
           accessorFn: (row: any) => row.paid_amount,
+          sortDescFirst: false,
           header: () => (
             <span className={styles.salesTableHeading}>RECEIVED</span>
           ),
@@ -118,6 +123,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
         },
         {
           accessorFn: (row: any) => row.pending_amount,
+          sortDescFirst: false,
           header: () => (
             <span className={styles.salesTableHeading}>ARREARS</span>
           ),
