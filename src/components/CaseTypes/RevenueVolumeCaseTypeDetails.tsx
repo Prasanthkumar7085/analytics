@@ -256,6 +256,8 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         width: "60px",
         minWidth: "60px",
         maxWidth: "60px",
+        cell: ({ row, table }: any) =>
+          (table.getSortedRowModel()?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) + 1,
       },
 
       {
