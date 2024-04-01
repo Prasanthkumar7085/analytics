@@ -247,7 +247,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                     </tr>
                 </tfoot>
             </table>
-            {headerMonths?.length ?
+            {/* {headerMonths?.length ?
                 < GraphDialog
                     graphDialogOpen={graphDialogOpen}
                     setGraphDialogOpen={setGraphDialogOpen}
@@ -256,7 +256,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                     graphColor={"blue"}
                     tabValue={tabValue}
 
-                /> : ""}
+                /> : ""} */}
         </div>
     );
 };

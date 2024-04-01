@@ -239,7 +239,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
             setGraphColor(colors[info.row.original.case_type_name])
           }}
         >
-          <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} />
+          {/* <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} /> */}
         </div>
       );
     },
@@ -353,4 +353,4 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     </div>
   );
 };
-export default RevenuVolumeCaseTypesDetails; 
+export default RevenuVolumeCaseTypesDetails;

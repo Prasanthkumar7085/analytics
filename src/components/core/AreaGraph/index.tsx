@@ -96,7 +96,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
     series: [
       {
         name: null,
-        data: Object?.values(data)?.length ? Object.values(data).map((item: any) => +item) : [],
+        data: Object?.values(data)?.length ? Object.values(data).map((item: any) => item ? item : 0) : [],
         animation: {
           opacity: 0.4,
         },

@@ -60,10 +60,7 @@ const GraphDialog = ({
             x2: 0,
             y2: 1,
           },
-          stops: [
-            [0, graphColor],
-            [1, Highcharts.color("white").setOpacity(0).get("rgba")],
-          ],
+
         },
         marker: {
           radius: 2,
@@ -76,6 +73,12 @@ const GraphDialog = ({
         },
         threshold: null,
       },
+      plotOptions: {
+        series: {
+          clip: true
+        }
+      }
+
     },
     tooltip: {
       formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
@@ -97,7 +100,7 @@ const GraphDialog = ({
       {
         name: graphData.case_type_name,
         data: Object?.values(graphValuesData)?.length
-          ? Object.values(graphValuesData).map((item: any) => +item)
+          ? Object.values(graphValuesData).map((item: any) => item)
           : [],
         type: "area",
       },
@@ -133,7 +136,7 @@ const GraphDialog = ({
         </IconButton>
       </div>
       <div className="hightChartsGraph">
-        <HighchartsReact highcharts={Highcharts} options={options} />
+        {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
       </div>
     </Dialog>
   );
