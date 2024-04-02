@@ -42,7 +42,7 @@ const FacilitiesView = () => {
   );
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
-  const [tabValue, setTabValue] = useState("Revenue");
+  const [tabValue, setTabValue] = useState("Volume");
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -220,7 +220,7 @@ const FacilitiesView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
+      getCaseTypesVolumeStats(searchParams?.from_date, searchParams?.to_date);
       getSingleFacilityDetails();
     }
     if (searchParams?.from_date) {

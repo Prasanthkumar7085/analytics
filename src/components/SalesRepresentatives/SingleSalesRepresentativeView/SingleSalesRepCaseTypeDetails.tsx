@@ -5,7 +5,7 @@ import { useState } from "react";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
-  const [value, setValue] = useState("Revenue");
+  const [value, setValue] = useState("Volume");
   const [selectedDate, setSelectedDate] = useState<any>([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -34,8 +34,8 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
           indicatorColor="secondary"
           aria-label="secondary tabs example"
         >
-          <Tab value="Revenue" label="Revenue" />
           <Tab value="Volume" label="Volume" />
+          <Tab value="Revenue" label="Revenue" />
         </Tabs>
         {/* <GlobalDateRangeFilter onChangeData={onChangeData} /> */}
       </div>

@@ -51,7 +51,7 @@ const SalesRepView = () => {
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
-  const [tabValue, setTabValue] = useState("Revenue");
+  const [tabValue, setTabValue] = useState("Volume");
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -208,7 +208,7 @@ const SalesRepView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      getCaseTypesRevenueStats(searchParams?.from_date, searchParams?.to_date);
+      getCaseTypesVolumeStats(searchParams?.from_date, searchParams?.to_date);
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
         setDateFilterDefaultValue([

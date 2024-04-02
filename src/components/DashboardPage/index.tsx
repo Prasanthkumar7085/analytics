@@ -16,7 +16,7 @@ const DashboardPage = () => {
   const [caseTypesStatsData, setCaseTypesStatsData] = useState<any>([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
-  const [tabValue, setTabValue] = useState("Revenue");
+  const [tabValue, setTabValue] = useState("Volume");
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -144,7 +144,7 @@ const DashboardPage = () => {
   //api call to get stats count
   useEffect(() => {
     getStatsCounts("", "");
-    getCaseTypesRevenueStats("", "");
+    getCaseTypesVolumeStats("", "");
   }, []);
 
   return (
@@ -155,7 +155,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => {}}
+            onChange={() => { }}
             getStatsCounts={getStatsCounts}
           />
         </Grid>
