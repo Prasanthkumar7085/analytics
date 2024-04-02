@@ -120,22 +120,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 ) : (
                   ""
                 )}
-                {hasAccessOrNot("/reports", userType) && userType ? (
-                  <li>
-                    <a
-                      className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                        pathname.includes("/reports")
-                          ? "activePagename"
-                          : "active"
-                      ]
-                        }`}
-                    >
-                      Reports
-                    </a>
-                  </li>
-                ) : (
-                  ""
-                )}
+
                 <li>
                   <Button
                     onClick={logout}
