@@ -47,6 +47,8 @@ const FacilitiesView = () => {
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
+
+    // REVIEW: Why this here move this to service 
     let urls = [
       `/facilities/${id}/stats-revenue`,
       `/facilities/${id}/stats-volume`,

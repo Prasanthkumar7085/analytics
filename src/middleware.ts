@@ -11,6 +11,11 @@ const protectedRoutes = [
 ];
 
 const unProtectedRoutes = ["/signin"];
+
+//REVIEW: After login into signin page when I use browser history navigation I am able to go to signin page it won't happen
+
+
+
 function containsSubstring(inputString: string, substrings: Array<string>) {
   return substrings.some((substring) => inputString.includes(substring));
 }
@@ -24,6 +29,31 @@ const getUserIdIfSalesRep = (req: NextRequest) => {
   const userId = req.cookies.get("user_ref_id")?.value;
   return userId;
 };
+
+//REVIEW: Change below code with map instead of && checking 
+
+/*
+
+ const userAllowedRoutes = {
+   "MARKETER": [
+     "/sales-representatives/",
+     "/insurances/",
+     "/facilities/"
+   ]
+ }
+
+ make a fuction which check the user acccess
+
+ write a method like
+
+ isProtectedRoute
+
+ hasUserAcccess
+
+ 
+
+
+*/
 
 const getIsSalesRepAndAccessingOtherPageOrNot = (req: NextRequest) => {
   return (
@@ -53,6 +83,8 @@ export default function middleware(req: NextRequest) {
     const absoluteURL = new URL("/signin", req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
+
+
   if (
     isAuthenticated(req) &&
     unProtectedRoutes.includes(req.nextUrl.pathname)
@@ -68,10 +100,13 @@ export default function middleware(req: NextRequest) {
       return NextResponse.redirect(absoluteURL.toString());
     }
   }
+
+
   if (req.nextUrl.pathname == "/") {
     const absoluteURL = new URL("/signin", req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
   }
+
   if (
     containsSubstring(req.nextUrl.pathname, protectedRoutes) &&
     getIsSalesRepAndAccessingOtherPageOrNot(req)

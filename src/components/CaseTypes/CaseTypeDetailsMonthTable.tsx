@@ -21,6 +21,9 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   const [headerMonths, setHeaderMonths] = useState<any>([])
   const [graphValuesData, setGraphValuesData] = useState<any>({})
   const [graphColor, setGraphColor] = useState("")
+
+  //REVIEW: Move this to constants
+
   let colors: any = {
     "CARDIAC": "#ea1d22",
     "CGX PANEL": "#00a752",
@@ -49,11 +52,17 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   ) => {
     setLoading(true);
 
+    // REVIEW: Remove from Component move to service 
+
     let url = `/${apiUrl}/months/volume`;
 
     try {
 
       let queryParams: any = {};
+
+
+      // REVIEW: Move this to query preparation method
+
 
       if (fromDate) {
         queryParams["from_date"] = fromDate;
@@ -66,8 +75,11 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
       }
       const { search, ...updatedQueyParams } = queryParams;
 
+      // REVIEW: Why we write this status code will handle in Service it self
       const response = await getRevenueOrVolumeCaseDetailsAPI(url, updatedQueyParams);
       if (response.status == 200 || response.status == 201) {
+
+        //REVIEW: This logic need to  move this to helper js file
         let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
         let uniqueMonths = Array.from(new Set(monthArray));
         setHeaderMonths(uniqueMonths)

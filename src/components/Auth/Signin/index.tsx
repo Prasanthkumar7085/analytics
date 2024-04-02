@@ -1,4 +1,5 @@
 "use client";
+//REVIEW: Remove unused imports
 import {
   Button,
   CircularProgress,
@@ -41,6 +42,8 @@ const SignIn: NextPage = () => {
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
+
+  // REVIEW: Remove unused code
   const getUsersFromLabsquire = async () => {
     try {
       const userData = await getAllUsersAPI();

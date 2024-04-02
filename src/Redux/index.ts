@@ -13,7 +13,7 @@ import { combinedReducer } from "./Modules";
 import pesistStorage from "./persistateStore";
 
 const persistConfig = {
-  key: "lis_analytics",
+  key: "lis_analytics", //REVIEW: add lab name from .env for this.
   version: 1,
   storage: pesistStorage,
   REHYDRATE: false,
