@@ -22,6 +22,7 @@ const CaseTypes = ({
   tabValue,
   setTabValue,
 }: any) => {
+
   const params = useSearchParams();
   const pathName = usePathname();
   const [selectedDates, setSelectedDates] = useState<any>([]);
@@ -236,7 +237,7 @@ const CaseTypes = ({
     chart: {
       type: "pie",
     },
-    colors: Object.values(colors).map((item) => item),
+    colors: caseTypesStatsData?.map((item: any) => colors[item?.case_type_name]),
     subtitle: {
       useHTML: false,
       text: getSubtitle(),

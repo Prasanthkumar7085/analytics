@@ -3,7 +3,7 @@ import { useState } from "react";
 import TrendsDataGraph from "./TrendsDataGraph";
 import Image from "next/image";
 const Trends = ({ searchParams, apiurl }: any) => {
-  const [tabValue, setTabValue] = useState<string>("revenue");
+  const [tabValue, setTabValue] = useState<string>("volume");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
@@ -18,8 +18,8 @@ const Trends = ({ searchParams, apiurl }: any) => {
             Trends
           </h3>
           <Tabs onChange={handleChange} value={tabValue}>
-            <Tab value={"revenue"} label={"Revenue"} />
             <Tab value={"volume"} label={"Volume"} />
+            <Tab value={"revenue"} label={"Revenue"} />
           </Tabs>
         </div>
         <div className="cardBody">
