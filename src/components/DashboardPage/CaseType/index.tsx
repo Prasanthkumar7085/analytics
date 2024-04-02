@@ -318,8 +318,8 @@ const CaseTypes = ({
               indicatorColor="secondary"
               aria-label="secondary tabs example"
             >
-              <Tab value="Revenue" label="Revenue" />
               <Tab value="Volume" label="Volume" />
+              <Tab value="Revenue" label="Revenue" />
             </Tabs>
           </div>
         </div>
