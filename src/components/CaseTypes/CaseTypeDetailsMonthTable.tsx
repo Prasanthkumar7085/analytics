@@ -362,7 +362,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
       ) : (
         ""
       )}
-      {/* <GraphDialog
+      <GraphDialog
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
@@ -370,7 +370,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
         graphColor={graphColor}
         tabValue={tabValue}
 
-      /> */}
+      />
     </div>
   );
 };

@@ -337,10 +337,10 @@ const CaseTypes = () => {
         <LoadingComponent loading={loading} />
       </div>
       <div style={{ marginTop: "30px" }}>
-        {/* <MonthWiseCaseTypeDetails
+        <MonthWiseCaseTypeDetails
           apiUrl={"case-types"}
           searchParams={searchParams}
-        /> */}
+        />
       </div>
     </div>
   );
