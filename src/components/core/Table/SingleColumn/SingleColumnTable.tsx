@@ -193,7 +193,6 @@ const SingleColumnTable: FC<pageProps> = ({
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: "23vh",
                   }}
                 >
                   <Image
