@@ -39,24 +39,24 @@ const CaseTypes = ({
     }
   };
   let colors: any = {
-    CARDIAC: "#ea1d22",
+    "CARDIAC": "#ea1d22",
     "CGX PANEL": "#00a752",
     "CLINICAL CHEMISTRY": "#fcf00b",
-    COVID: "#f19213",
+    "COVID": "#f19213",
     "COVID FLU": "#00b0ea",
-    DIABETES: "#f51059",
-    GASTRO: "#dc79c8",
+    "DIABETES": "#f51059",
+    "GASTRO": "#dc79c8",
     "GTI STI": "#92298f",
     "GTI WOMENS HEALTH": "#2e3094",
-    NAIL: "#0071b9",
+    "NAIL": "#0071b9",
     "PAD ALZHEIMERS": "#82eedd",
     "PGX TEST": "#eea782",
     "PULMONARY PANEL": "#000000",
     "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
-    TOXICOLOGY: "#e1dbe4",
-    URINANLYSIS: "#f6dad3",
-    UTI: "#87b5af",
-    WOUND: "#185a59",
+    "TOXICOLOGY": "#e1dbe4",
+    "URINALYSIS": "#f6dad3",
+    "UTI": "#87b5af",
+    "WOUND": "#185a59",
   };
 
   function formatNumber(amount: any) {

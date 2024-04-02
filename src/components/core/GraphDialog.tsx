@@ -52,7 +52,7 @@ const GraphDialog = ({
       },
 
       area: {
-        color: graphColor,
+        color: graphColor ? graphColor : "",
         fillColor: {
           linearGradient: {
             x1: 0,
@@ -60,6 +60,10 @@ const GraphDialog = ({
             x2: 0,
             y2: 1,
           },
+          stops: [
+            [0, graphColor ? graphColor : ""],
+            [1, Highcharts.color('white').setOpacity(0).get('rgba')]
+          ]
 
         },
         marker: {
@@ -136,7 +140,7 @@ const GraphDialog = ({
         </IconButton>
       </div>
       <div className="hightChartsGraph">
-        {/* <HighchartsReact highcharts={Highcharts} options={options} /> */}
+        <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </Dialog>
   );

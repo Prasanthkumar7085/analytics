@@ -145,13 +145,13 @@ const SignIn: NextPage = () => {
             <h4 className="text-3xl mb-7">Sign In</h4>
             <div className="formGroupItem mb-7">
               <label htmlFor="email" className="block text-gray-700">
-                Email Address
+                Username
               </label>
               <input
                 id="email"
                 name="email"
                 className="mt-1 block w-full border h-[50px] rounded pl-4 mb-2"
-                placeholder="Enter Email"
+                placeholder="Enter Username"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

@@ -37,7 +37,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     "PULMONARY PANEL": "#000000",
     "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
     "TOXICOLOGY": "#e1dbe4",
-    "URINANLYSIS": "#f6dad3",
+    "URINALYSIS": "#f6dad3",
     "UTI": "#87b5af",
     "WOUND": "#185a59",
   };
@@ -91,7 +91,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
 
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);
-
+        console.log(modifieData, "dfo")
 
         const groupedDataSum: any = {};
         // Grouping the data by month sum
@@ -239,7 +239,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
             setGraphColor(colors[info.row.original.case_type_name])
           }}
         >
-          {/* <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} /> */}
+          <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} />
         </div>
       );
     },

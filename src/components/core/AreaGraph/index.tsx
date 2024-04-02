@@ -4,7 +4,8 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 const AreaGraph = ({ data, graphColor }: any) => {
-
+  console.log(data, "fdsf")
+  const fillColor = Highcharts.color(graphColor).setOpacity(0).get('rgba');
 
   let options = {
     chart: {
@@ -27,7 +28,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible: Object?.values(data)?.length == 1 ? true : false,
+      visible: Object?.values(data)?.length && Object?.values(data)?.length == 1 ? true : false,
     },
     yAxis: {
       labels: {
@@ -36,7 +37,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible: Object?.values(data)?.length == 1 ? true : false,
+      visible: Object?.values(data)?.length && Object?.values(data)?.length == 1 ? true : false,
     },
     legend: {
       enabled: false,
@@ -49,7 +50,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       series: {
         animation: true,
         marker: {
-          enabled: Object?.values(data)?.length == 1 ? true : false,
+          enabled: Object?.values(data)?.length && Object?.values(data)?.length == 1 ? true : false,
         },
         tooltip: {
           enabled: false,
@@ -76,7 +77,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
             y2: 1
           },
           stops: [
-            [0, graphColor],
+            [0, graphColor ? graphColor : ""],
             [1, Highcharts.color('white').setOpacity(0).get('rgba')]
           ]
         },
