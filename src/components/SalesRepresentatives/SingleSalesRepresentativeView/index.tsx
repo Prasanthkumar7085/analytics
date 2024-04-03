@@ -6,8 +6,9 @@ import Trends from "@/components/Trends";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
-  getSingleRepCaseTypes,
   getSingleRepDeatilsAPI,
+  getSingleSalesRepCaseTypesRevenueAPI,
+  getSingleSalesRepCaseTypesVolumeAPI,
 } from "@/services/salesRepsAPIs";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
 import { ArrowBack } from "@mui/icons-material";
@@ -90,20 +91,38 @@ const SalesRepView = () => {
     }
   };
 
-  //get the caseTypesRevenue data
-  const getCaseTypesRevenueStats = async (fromDate: any, toDate: any) => {
-    setCaseTypeLoading(true);
-    let url = `/sales-reps/${id}/case-types-revenue`;
-    try {
-      let queryParams: any = {};
 
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
+
+  //query preparation method
+  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+    let queryParams: any = {};
+
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    try {
+      if (tabValue == "Revenue") {
+        await getCaseTypesRevenueStats(queryParams)
       }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
+      else {
+        await getCaseTypesVolumeStats(queryParams);
       }
-      const response = await getSingleRepCaseTypes(url, queryParams);
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get the caseTypesRevenue data
+  const getCaseTypesRevenueStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
+    try {
+
+      const response = await getSingleSalesRepCaseTypesRevenueAPI(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -134,20 +153,10 @@ const SalesRepView = () => {
   };
 
   //get volumn case types data
-  const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
+  const getCaseTypesVolumeStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
-    let url = `/sales-reps/${id}/case-types-volume`;
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-
-      const response = await getSingleRepCaseTypes(url, queryParams);
+      const response = await getSingleSalesRepCaseTypesVolumeAPI(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         let totalCases = 0;
         let completedCases = 0;
@@ -200,7 +209,7 @@ const SalesRepView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      getCaseTypesVolumeStats(searchParams?.from_date, searchParams?.to_date);
+      queryPreparations(searchParams?.from_date, searchParams?.to_date, "Volume");
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
         setDateFilterDefaultValue([
@@ -217,20 +226,12 @@ const SalesRepView = () => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
-      if (tabValue == "Revenue") {
-        getCaseTypesRevenueStats(fromDate, toDate);
-      } else {
-        getCaseTypesVolumeStats(fromDate, toDate);
-      }
+      queryPreparations(fromDate, toDate, tabValue);
     } else {
       setDateFilterDefaultValue("");
       getStatsCounts("", "");
       router.push(`/sales-representatives/${id}`);
-      if (tabValue == "Revenue") {
-        getCaseTypesRevenueStats("", "");
-      } else {
-        getCaseTypesVolumeStats("", "");
-      }
+      queryPreparations("", "", tabValue);
     }
   };
 
@@ -284,8 +285,7 @@ const SalesRepView = () => {
               <CaseTypes
                 caseTypesStatsData={caseTypesStatsData}
                 loading={caseTypeLoading}
-                getCaseTypesRevenueStats={getCaseTypesRevenueStats}
-                getCaseTypesVolumeStats={getCaseTypesVolumeStats}
+                queryPreparations={queryPreparations}
                 totalRevenueSum={totalRevenueSum}
                 setTabValue={setTabValue}
                 tabValue={tabValue}
@@ -317,13 +317,13 @@ const SalesRepView = () => {
                 <div className="cardBody">
                   <InsurancePayors
                     searchParams={searchParams}
-                    apiurl={"sales-reps"}
+                    pageName={"sales-reps"}
                   />
                 </div>
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} apiurl={"sales-reps"} />
+              <Trends searchParams={searchParams} pageName={"sales-reps"} />
             </Grid>
             <Grid item xs={12}>
               <div className="eachDataCard s-no-column" id="FacilitiesData">

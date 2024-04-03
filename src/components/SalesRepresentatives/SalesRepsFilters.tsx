@@ -7,7 +7,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 const SalesRepsFilters = ({
   onUpdateData,
-  getAllSalesReps,
+  queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
   searchParams,
@@ -23,11 +23,11 @@ const SalesRepsFilters = ({
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getAllSalesReps({ fromDate, toDate });
+      queryPreparations({ fromDate, toDate });
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
     } else {
       setDateFilterDefaultValue("", "");
-      getAllSalesReps({});
+      queryPreparations({});
     }
   };
   return (

@@ -1,3 +1,4 @@
+import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 import { } from "@/services/getRevenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
@@ -10,7 +11,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: string, searchParams: any, apiurl: string }) => {
+const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: string, searchParams: any, pageName: string }) => {
   const [trendsData, setTrendsData] = useState<any>([]);
 
   const { id } = useParams();
@@ -32,12 +33,12 @@ const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: strin
       let response;
       if (graphType == "revenue") {
         response = await getTrendsForRevenueBySalesRepIdAPI({
-          apiurl,
+          pageName,
           id: id as string, queryParams
         });
       } else if (graphType == "volume") {
         response = await getTrendsForVolumeBySalesRepIdAPI({
-          apiurl,
+          pageName,
           id: id as string, queryParams
         });
       }
@@ -48,15 +49,6 @@ const TrendsDataGraph = ({ graphType, searchParams, apiurl }: { graphType: strin
       setLoading(false);
     }
   };
-
-  const chartRef = useRef(null);
-
-  function formatMonthYear(monthYear: string) {
-    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
-    return month + " '" + year; // Concatenate month abbreviation and year
-  }
-
 
 
   let options = {
