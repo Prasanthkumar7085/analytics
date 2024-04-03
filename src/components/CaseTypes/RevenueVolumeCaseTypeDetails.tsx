@@ -37,7 +37,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     "PULMONARY PANEL": "#000000",
     "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
     "TOXICOLOGY": "#e1dbe4",
-    "URINALYSIS": "#f6dad3",
+    "URINANLYSIS": "#f6dad3",
     "UTI": "#87b5af",
     "WOUND": "#185a59",
   };

@@ -81,7 +81,7 @@ const SignIn: NextPage = () => {
         setInvalidMessage(response?.message);
       }
     } catch (err: any) {
-      toast.error(err?.message?.toString() || "Something went wrong");
+      toast.error(err?.message?.toString() || "Something went wrog");
 
       console.error(err);
     } finally {
