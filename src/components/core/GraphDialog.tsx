@@ -12,12 +12,24 @@ const GraphDialog = ({
   tabValue
 }: any) => {
 
+  // REVIEW: Move this to utils js file
+
   function formatMonthYear(monthYear: string) {
     let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
     let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
     return month + " '" + year; // Concatenate month abbreviation and year
   }
 
+
+
+  //REIVEW: Move data operations to seperate variables instead of putting in options object
+
+  /*
+  const titleText = graphData?.case_type_name ? graphData?.case_type_name + " " + tabValue.toUpperCase() : "TOTAL" + " " + tabValue.toUpperCase()
+  const xAxisCategories = Object?.values(graphValuesData)?.length
+    ? Object?.keys(graphValuesData).map((item: any) => formatMonthYear(item))
+    : []
+    */
 
   const options = {
     title: {

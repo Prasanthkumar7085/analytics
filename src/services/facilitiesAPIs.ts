@@ -1,6 +1,9 @@
 import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
+
+//REVIEW: Method Names are not in same pattern some names start with get and some are not
+
 export const facilitiesAPI = async (updatedQueyParams: any) => {
     try {
         const { success, data } = await $fetch.get("/facilities", updatedQueyParams);

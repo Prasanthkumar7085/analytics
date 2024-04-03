@@ -20,12 +20,17 @@ export const signInAPI = async (payload: {
 
 export const getAllUsersAPI = async () => {
   try {
+
+    //REVIEW: All APIs should be unique remove these default query parmaters from API service pass these from component as like payload
+
+
     let queryParams = {
       get_all: true,
       order_by: "first_name",
       order_type: "asc",
     };
     const { success, data } = await $globalFetch.get("/users", queryParams);
+    // REVIEW: Why extra 2 here
     2;
 
     if (!success) {

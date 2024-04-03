@@ -1,31 +1,26 @@
 "use client";
-import type { NextPage } from "next";
-import styles from "./index.module.css";
-import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
-import { useEffect, useState } from "react";
+import Stats from "@/components/DashboardPage/Stats";
+import InsurancePayors from "@/components/InsurancePayors";
+import Trends from "@/components/Trends";
+import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import {
+  getSingleFacilityDetailsAPI
+} from "@/services/facilitiesAPIs";
+import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import { ArrowBack } from "@mui/icons-material";
+import { Avatar, Grid } from "@mui/material";
+import Image from "next/image";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
-import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import Trends from "@/components/Trends";
-import InsurancePayors from "@/components/InsurancePayors";
+import { useEffect, useState } from "react";
 import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
-import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import {
-  getSingleFacilityCaseTypes,
-  getSingleFacilityDetailsAPI,
-} from "@/services/facilitiesAPIs";
-import { ArrowBack } from "@mui/icons-material";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { Avatar, Grid } from "@mui/material";
-import Image from "next/image";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -47,6 +42,8 @@ const FacilitiesView = () => {
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
+
+    // REVIEW: Why this here move this to service 
     let urls = [
       `/facilities/${id}/stats-revenue`,
       `/facilities/${id}/stats-volume`,
@@ -294,7 +291,7 @@ const FacilitiesView = () => {
 
             <Grid item xs={12}>
               <SingleFacilitieCaseTypeDetails
-                apiUrl={"facilities"}
+                pageName={"facilities"}
                 searchParams={searchParams}
               />
             </Grid>

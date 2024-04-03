@@ -1,4 +1,4 @@
-import { getRevenueOrVolumeCaseDetailsAPI } from "@/services/caseTypesAPIs";
+import { getMonthWiseRevenueCaseDetailsAPI, getMonthWiseVolumeCaseDetailsAPI } from "@/services/caseTypesAPIs";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
@@ -11,8 +11,9 @@ import CaseTypesColumnTable from "./caseTypesColumnTable";
 import AreaGraph from "../core/AreaGraph";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { graphColors } from "@/lib/constants";
+import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 
-const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDate }: any) => {
+const CaseTypesDetailsMonthTable = ({ tabValue, pageName, searchParams, selectedDate }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
@@ -23,43 +24,53 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   const [graphValuesData, setGraphValuesData] = useState<any>({})
   const [graphColor, setGraphColor] = useState("")
 
-
-
   const tableRef: any = useRef();
+
+
+  //query preparation method
+  const queryPreparations = async (fromDate: any, toDate: any, searchValue = searchParams?.search, tabValue: string) => {
+    let queryParams: any = {};
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    if (searchValue) {
+      queryParams["search"] = searchValue;
+    }
+    try {
+      if (tabValue == "Revenue") {
+        await getDetailsOfCaseTypesOfRevenue(queryParams)
+      }
+      else {
+        await getDetailsOfCaseTypesOfVolume(queryParams);
+      }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
   //get details Volume of caseTypes
-  const getDetailsOfCaseTypesOfVolume = async (fromDate: any, toDate: any, searchValue = searchParams?.search,
+  const getDetailsOfCaseTypesOfVolume = async (queryParams: any
   ) => {
     setLoading(true);
-
-    let url = `/${apiUrl}/months/volume`;
-
     try {
-
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-      if (searchValue) {
-        queryParams["search"] = searchValue;
-      }
       const { search, ...updatedQueyParams } = queryParams;
 
-      const response = await getRevenueOrVolumeCaseDetailsAPI(url, updatedQueyParams);
+      const response = await getMonthWiseVolumeCaseDetailsAPI(pageName, updatedQueyParams);
       if (response.status == 200 || response.status == 201) {
-        let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
-        let uniqueMonths = Array.from(new Set(monthArray));
+
+        let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths)
 
         let data = response?.data;
-        if (searchValue) {
+        if (queryParams.searchValue) {
           data = data.filter((item: any) =>
             item.case_type_name
               ?.toLowerCase()
-              ?.includes(searchValue?.toLowerCase()?.trim())
+              ?.includes(queryParams.searchValue?.toLowerCase()?.trim())
           );
         }
 
@@ -76,13 +87,11 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
           groupedData[case_type_id][formattedMonth] = total_cases;
         });
         // Converting object to array
-        const result = Object.values(groupedData);
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);
-
 
 
         const groupedDataSum: any = {};
@@ -109,39 +118,24 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   };
 
   //get details Revenue of caseTypes
-  const getDetailsOfCaseTypesOfRevenue = async (fromDate: any, toDate: any, searchValue = searchParams?.search,) => {
+  const getDetailsOfCaseTypesOfRevenue = async (queryParams: any) => {
     setLoading(true);
-    let url = `/${apiUrl}/months/revenue`;
-
     try {
 
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-
-      if (searchValue) {
-        queryParams["search"] = searchValue;
-      }
       const { search, ...updatedQueyParams } = queryParams;
 
-      const response = await getRevenueOrVolumeCaseDetailsAPI(url, updatedQueyParams);
+      const response = await getMonthWiseRevenueCaseDetailsAPI(pageName, updatedQueyParams);
       if (response.status == 200 || response.status == 201) {
-        const monthSums: number[] = [];
-        let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
-        let uniqueMonths = Array.from(new Set(monthArray));
+
+        let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths)
 
         let data = response?.data;
-        if (searchValue) {
+        if (queryParams.searchValue) {
           data = data.filter((item: any) =>
             item.case_type_name
               ?.toLowerCase()
-              ?.includes(searchValue?.toLowerCase()?.trim())
+              ?.includes(queryParams.searchValue?.toLowerCase()?.trim())
           );
         }
 
@@ -162,7 +156,6 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
           return a.case_type_name.localeCompare(b.case_type_name);
         });
         // Converting object to array
-        const result = Object.values(sortedData);
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);
 
@@ -189,12 +182,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   };
 
 
-  function formatMonthYear(monthYear: string) {
-    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 2); // Extract the last 2 characters (year)
-    return month + " '" + year; // Concatenate month abbreviation and year
-  }
-
+  //coloumns preparations
   let addtionalcolumns = headerMonths?.map((item: any) => ({
     accessorFn: (row: any) => row[item],
     id: item,
@@ -270,37 +258,24 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
       },
     ];
 
-
-
   const addAddtionalColoumns = [...columnDef, ...addtionalcolumns, ...graphColoumn]
+
   //api call to get details of case types
   useEffect(() => {
     if (selectedDate?.length == 0 && !searchParams?.order_type) {
-      if (tabValue == "Revenue") {
-        getDetailsOfCaseTypesOfRevenue(
-          searchParams?.from_date,
-          searchParams?.to_date,
-          searchParams?.search
-        );
-      } else {
-        getDetailsOfCaseTypesOfVolume(
-          searchParams?.from_date,
-          searchParams?.to_date,
-          searchParams?.search
-        );
-      }
+      queryPreparations(
+        searchParams?.from_date,
+        searchParams?.to_date,
+        searchParams?.search,
+        tabValue
+      );
     }
   }, [tabValue, searchParams, selectedDate]);
 
 
   useEffect(() => {
     if (selectedDate?.length) {
-      if (tabValue == "Revenue") {
-        getDetailsOfCaseTypesOfRevenue(selectedDate[0], selectedDate[1], searchParams?.search)
-      }
-      else {
-        getDetailsOfCaseTypesOfVolume(selectedDate[0], selectedDate[1], searchParams?.search)
-      }
+      queryPreparations(selectedDate[0], selectedDate[1], searchParams?.search, tabValue)
     }
   }, [tabValue, selectedDate])
 

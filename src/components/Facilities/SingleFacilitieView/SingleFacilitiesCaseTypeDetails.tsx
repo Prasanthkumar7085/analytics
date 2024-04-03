@@ -1,10 +1,8 @@
 import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import styles from "./facilitiesCaseTypes.module.css";
 import { Tab, Tabs } from "@mui/material";
-import { useState } from "react";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import Image from "next/image";
-const SingleFacilitieCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
+import { useState } from "react";
+const SingleFacilitieCaseTypeDetails = ({ pageName, searchParams }: any) => {
   const [value, setValue] = useState("Volume");
   const [selectedDate, setSelectedDate] = useState<any>([]);
 
@@ -34,7 +32,7 @@ const SingleFacilitieCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
       <div className="cardBody">
         <RevenuVolumeCaseTypesDetails
           tabValue={value}
-          apiUrl={apiUrl}
+          pageName={pageName}
           searchParams={searchParams}
           selectedDate={selectedDate}
         />

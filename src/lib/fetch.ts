@@ -11,6 +11,9 @@ class FetchService {
 
   authStatusCodes: number[] = [401, 403];
 
+
+  //REVIEW: Why these Below Endpoints are required here
+
   responseOnlyURLs: string[] = ["/e-requisition", "/cases/download-as-csv?", "/trumed-pharmacy-orders/download-as-csv", "/orders/download-as-csv?",];
 
   authErrorURLs: string[] = [
@@ -89,7 +92,15 @@ class FetchService {
 
     const response: any = await fetch(url, config);
     if (response.status == 200 || response.status == 201) {
-      if (this.responseOnlyUrlOrNot(url)) {
+      if (this.responseOnlyUrlOrNot(url)) { //REVIEW: Change this method to other content type URLs checking instead of responseOnlyUrlOrNot
+
+        /*
+        if(response.headers.get('Content-Type') === 'application/json'){
+          // Do something
+        }
+        */
+
+
         return {
           success: true,
           status: response.status,

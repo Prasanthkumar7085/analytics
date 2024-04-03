@@ -338,7 +338,7 @@ const CaseTypes = () => {
       </div>
       <div style={{ marginTop: "30px" }}>
         <MonthWiseCaseTypeDetails
-          apiUrl={"case-types"}
+          pageName={"case-types"}
           searchParams={searchParams}
         />
       </div>

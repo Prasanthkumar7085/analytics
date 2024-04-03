@@ -1,37 +1,29 @@
 "use client";
-import type { NextPage } from "next";
-import styles from "./salesRepresentative.module.css";
-import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
-import { useEffect, useState } from "react";
+import Stats from "@/components/DashboardPage/Stats";
+import InsurancePayors from "@/components/InsurancePayors";
+import Trends from "@/components/Trends";
+import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import {
+  getSingleRepCaseTypes,
+  getSingleRepDeatilsAPI,
+} from "@/services/salesRepsAPIs";
 import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import { ArrowBack } from "@mui/icons-material";
+import { Avatar } from "@mui/material";
+import Grid from "@mui/material/Grid";
+import Image from "next/image";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import {
-  getSingleRepCaseTypes,
-  getSingleRepDeatilsAPI,
-} from "@/services/salesRepsAPIs";
-import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
-import Facilities from "./Facilities";
-import Trends from "@/components/Trends";
-import InsurancePayors from "@/components/InsurancePayors";
-import Image from "next/image";
-import {
-  mapCaseTypeTitleWithCaseType,
-  mapSalesRepNameWithId,
-  mapSalesRepWithId,
-} from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { Avatar, Button, IconButton, Typography } from "@mui/material";
-import { ArrowBack } from "@mui/icons-material";
-import Grid from "@mui/material/Grid";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import Facilities from "./Facilities";
+import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -302,7 +294,7 @@ const SalesRepView = () => {
 
             <Grid item xs={12}>
               <SingleSalesRepCaseTypeDetails
-                apiUrl={"sales-reps"}
+                pageName={"sales-reps"}
                 searchParams={searchParams}
               />
             </Grid>
