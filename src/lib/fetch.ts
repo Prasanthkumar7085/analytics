@@ -11,15 +11,9 @@ class FetchService {
 
   authStatusCodes: number[] = [401, 403];
 
-
-  //REVIEW: Why these Below Endpoints are required here
-
-  responseOnlyURLs: string[] = ["/e-requisition", "/cases/download-as-csv?", "/trumed-pharmacy-orders/download-as-csv", "/orders/download-as-csv?",];
-
   authErrorURLs: string[] = [
     "/signin",
     "/forgot-password",
-    "/create-accession-number",
   ];
 
   private _isGlobal: Boolean;
@@ -28,11 +22,7 @@ class FetchService {
     this._isGlobal = isGlobal;
     store.subscribe(() => { });
   }
-  responseOnlyUrlOrNot(url: string) {
-    return this.responseOnlyURLs.some((arrayUrl: string) =>
-      url.includes(arrayUrl)
-    );
-  }
+
 
   configureAuthorization(config: any) {
     const state = store.getState();
@@ -92,27 +82,13 @@ class FetchService {
 
     const response: any = await fetch(url, config);
     if (response.status == 200 || response.status == 201) {
-      if (this.responseOnlyUrlOrNot(url)) { //REVIEW: Change this method to other content type URLs checking instead of responseOnlyUrlOrNot
 
-        /*
-        if(response.headers.get('Content-Type') === 'application/json'){
-          // Do something
-        }
-        */
+      return {
+        success: true,
+        status: response.status,
+        data: { ...(await response.json()), status: response.status },
+      };
 
-
-        return {
-          success: true,
-          status: response.status,
-          data: response,
-        };
-      } else {
-        return {
-          success: true,
-          status: response.status,
-          data: { ...(await response.json()), status: response.status },
-        };
-      }
     } else if (
       this.authStatusCodes.includes(response.status) &&
       !this.checkToLogOutOrNot(path)

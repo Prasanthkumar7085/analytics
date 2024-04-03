@@ -1,7 +1,7 @@
 import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
-export const salesRepsAPI = async (params: any) => {
+export const getSalesRepsAPI = async (params: any) => {
   try {
     const { success, data } = await $fetch.get("/sales-reps", params);
     if (!success) {
@@ -13,9 +13,9 @@ export const salesRepsAPI = async (params: any) => {
   }
 };
 
-export const getSingleRepCaseTypes = async (url: string, queryParams: any) => {
+export const getSingleSalesRepCaseTypesVolumeAPI = async (id: string, queryParams: any) => {
   try {
-    const { success, data } = await $fetch.get(url, queryParams);
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/case-types-volume`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -24,6 +24,19 @@ export const getSingleRepCaseTypes = async (url: string, queryParams: any) => {
     throw err;
   }
 };
+
+export const getSingleSalesRepCaseTypesRevenueAPI = async (id: string, queryParams: any) => {
+  try {
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/case-types-revenue`, queryParams);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
 
 export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
   try {
@@ -52,17 +65,17 @@ export const getSingleRepProfileDeatilsAPI = async () => {
 
 
 export const getTrendsForRevenueBySalesRepIdAPI = async ({
-  apiurl,
+  pageName,
   id,
   queryParams
 }: {
-  apiurl: string,
+  pageName: string,
   id: string;
   queryParams: any
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/${apiurl}/${id}/trends/revenue`, queryParams
+      `/${pageName}/${id}/trends/revenue`, queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -74,17 +87,17 @@ export const getTrendsForRevenueBySalesRepIdAPI = async ({
 };
 
 export const getTrendsForVolumeBySalesRepIdAPI = async ({
-  apiurl,
+  pageName,
   id,
   queryParams
 }: {
-  apiurl: string;
+  pageName: string;
   id: string;
   queryParams: any
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/${apiurl}/${id}/trends/volume`, queryParams
+      `/${pageName}/${id}/trends/volume`, queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -109,16 +122,16 @@ export const getFacilitiesBySalesRepId = async ({ id, queryParams }: { id: strin
 
 
 export const getAllInsurancePayorsBySalesRepIdAPI = async ({
-  apiurl,
+  pageName,
   id,
   queryParams
 }: {
-  apiurl: string,
+  pageName: string,
   id: string;
   queryParams: any;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/${apiurl}/${id}/insurance-payors`, queryParams);
+    const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -127,3 +140,5 @@ export const getAllInsurancePayorsBySalesRepIdAPI = async ({
     console.error(err);
   }
 };
+
+

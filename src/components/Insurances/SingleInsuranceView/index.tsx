@@ -34,6 +34,27 @@ const InsuranceView = () => {
   const [insuranceData, setInsuranceData] = useState([]);
   const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
 
+  //query preparation method
+  const queryPreparations = async (fromDate: any,
+    toDate: any) => {
+    let queryParams: any = {};
+
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+
+    try {
+      await getSingleInsuranceCaseTypesDetails(queryParams)
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   //get single Insurance details
   const getSingleInsuranceDetails = async () => {
     setLoading(true);
@@ -50,19 +71,10 @@ const InsuranceView = () => {
   };
 
   const getSingleInsuranceCaseTypesDetails = async (
-    fromDate: any,
-    toDate: any
+    queryParams: any
   ) => {
     setLoading(true);
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
 
       let queryString = prepareURLEncodedParams("", queryParams);
 
@@ -123,31 +135,34 @@ const InsuranceView = () => {
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
-      getSingleInsuranceCaseTypesDetails(fromDate, toDate);
+      queryPreparations(fromDate, toDate);
     } else {
       setDateFilterDefaultValue([]);
-      getSingleInsuranceCaseTypesDetails("", "");
+      queryPreparations("", "");
     }
   };
 
   useEffect(() => {
     getSingleInsuranceDetails();
-    getSingleInsuranceCaseTypesDetails(
+    queryPreparations(
       searchParams?.from_date,
       searchParams?.to_date
-    );
-  }, [searchParams]);
-
-  useEffect(() => {
-    setSearchParams(
-      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
     );
     if (searchParams?.from_date) {
       setDateFilterDefaultValue([
         new Date(searchParams?.from_date),
         new Date(searchParams?.to_date),
       ]);
+
     }
+
+  }, []);
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+
   }, [params]);
 
   return (
@@ -191,7 +206,7 @@ const InsuranceView = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Trends searchParams={searchParams} apiurl={"insurances"} />
+              <Trends searchParams={searchParams} pageName={"insurances"} />
             </Grid>
           </Grid>
         </div>

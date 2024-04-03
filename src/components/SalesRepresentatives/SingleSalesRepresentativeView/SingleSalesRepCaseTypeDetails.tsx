@@ -4,7 +4,7 @@ import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
+const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams }: any) => {
   const [value, setValue] = useState("Volume");
   const [selectedDate, setSelectedDate] = useState<any>([]);
 
@@ -42,7 +42,7 @@ const SingleSalesRepCaseTypeDetails = ({ apiUrl, searchParams }: any) => {
       <div className="cardBody">
         <RevenuVolumeCaseTypesDetails
           tabValue={value}
-          apiUrl={apiUrl}
+          pageName={pageName}
           searchParams={searchParams}
           selectedDate={selectedDate}
         />

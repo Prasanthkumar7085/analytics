@@ -1,17 +1,16 @@
-import { getRevenueOrVolumeCaseDetailsAPI } from "@/services/caseTypesAPIs";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
-import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
+import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import { Backdrop, CircularProgress } from "@mui/material";
-import { SmallGraphInTable } from "../core/SmallGraphIntable";
-import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
+import { graphColors } from "@/lib/constants";
+import { Backdrop } from "@mui/material";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
-import AreaGraph from "../core/AreaGraph";
-import { addSerial } from "@/lib/Pipes/addSerial";
+import { getMonthWiseRevenueCaseTypesForSinglePageAPI, getMonthWiseVolumeCaseTypesForSinglePageAPI } from "@/services/caseTypesAPIs";
+import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 
-const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selectedDate }: any) => {
+const RevenuVolumeCaseTypesDetails = ({ tabValue, pageName, searchParams, selectedDate }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
@@ -21,54 +20,40 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   const [headerMonths, setHeaderMonths] = useState<any>([])
   const [graphValuesData, setGraphValuesData] = useState<any>({})
   const [graphColor, setGraphColor] = useState("")
-  let colors: any = {
-    "CARDIAC": "#ea1d22",
-    "CGX PANEL": "#00a752",
-    "CLINICAL CHEMISTRY": "#fcf00b",
-    "COVID": "#f19213",
-    "COVID FLU": "#00b0ea",
-    "DIABETES": "#f51059",
-    "GASTRO": "#dc79c8",
-    "GTI STI": "#92298f",
-    "GTI WOMENS HEALTH": "#2e3094",
-    "NAIL": "#0071b9",
-    "PAD ALZHEIMERS": "#82eedd",
-    "PGX TEST": "#eea782",
-    "PULMONARY PANEL": "#000000",
-    "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
-    "TOXICOLOGY": "#e1dbe4",
-    "URINANLYSIS": "#f6dad3",
-    "UTI": "#87b5af",
-    "WOUND": "#185a59",
-  };
 
 
-  const tableRef: any = useRef();
-  //get details Volume of caseTypes
-  const getDetailsOfCaseTypesOfVolume = async (fromDate: any, toDate: any) => {
-    setLoading(true);
-    let url;
-    if (id) {
-      url = `/${apiUrl}/${id}/case-types/months/volume`;
+
+  //query preparation method
+  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+    let queryParams: any = {};
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
     }
-    else {
-      url = `/${apiUrl}/months/volume`;
+    if (toDate) {
+      queryParams["to_date"] = toDate;
     }
     try {
-
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
+      if (tabValue == "Revenue") {
+        await getDetailsOfCaseTypesOfRevenue(queryParams)
       }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
+      else {
+        await getDetailsOfCaseTypesOfVolume(queryParams);
       }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-      const response = await getRevenueOrVolumeCaseDetailsAPI(url, queryParams);
+  //get details Volume of caseTypes
+  const getDetailsOfCaseTypesOfVolume = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getMonthWiseVolumeCaseTypesForSinglePageAPI({ pageName, id, queryParams });
       if (response.status == 200 || response.status == 201) {
-        let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
-        let uniqueMonths = Array.from(new Set(monthArray));
+
+        let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths)
 
         const groupedData: any = {};
@@ -84,14 +69,12 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
           groupedData[case_type_id][formattedMonth] = total_cases;
         });
         // Converting object to array
-        const result = Object.values(groupedData);
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
 
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);
-        console.log(modifieData, "dfo")
 
         const groupedDataSum: any = {};
         // Grouping the data by month sum
@@ -117,32 +100,14 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
   };
 
   //get details Revenue of caseTypes
-  const getDetailsOfCaseTypesOfRevenue = async (fromDate: any, toDate: any) => {
+  const getDetailsOfCaseTypesOfRevenue = async (queryParams: any) => {
     setLoading(true);
-    let url;
-    if (id) {
-      url = `/${apiUrl}/${id}/case-types/months/revenue`;
-    }
-    else {
-      url = `/${apiUrl}/months/revenue`;
-    }
 
     try {
-
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-
-      const response = await getRevenueOrVolumeCaseDetailsAPI(url, queryParams);
+      const response = await getMonthWiseRevenueCaseTypesForSinglePageAPI({ pageName, id, queryParams });
       if (response.status == 200 || response.status == 201) {
-        const monthSums: number[] = [];
-        let monthArray = response?.data?.map((item: any) => item.month.replace(/\s/g, ''))
-        let uniqueMonths = Array.from(new Set(monthArray));
+
+        let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths)
 
         const groupedData: any = {};
@@ -157,16 +122,14 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
 
           groupedData[case_type_id][formattedMonth] = paid_amount;
         });
+
         // Sorting alphabetically based on case_type_name
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
         // Converting object to array
-        const result = Object.values(sortedData);
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);
-
-
 
         const groupedDataSum: any = {};
         // Grouping the data by month sum
@@ -190,13 +153,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
     }
   };
 
-
-  function formatMonthYear(monthYear: string) {
-    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 2); // Extract the last 2 characters (year)
-    return month + " '" + year; // Concatenate month abbreviation and year
-  }
-
+  //prepare the table coloumns
   let addtionalcolumns = headerMonths?.map((item: any) => ({
     accessorFn: (row: any) => row[item],
     id: item,
@@ -236,10 +193,10 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
             setGraphValuesData(data)
-            setGraphColor(colors[info.row.original.case_type_name])
+            setGraphColor(graphColors[info.row.original.case_type_name])
           }}
         >
-          <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} />
+          <AreaGraph data={data} graphColor={graphColors[info.row.original.case_type_name]} />
         </div>
       );
     },
@@ -274,30 +231,20 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
       },
     ];
 
-
-
   const addAddtionalColoumns = [...columnDef, ...addtionalcolumns, ...graphColoumn]
+
+
   //api call to get details of case types
   useEffect(() => {
     if (selectedDate?.length == 0) {
-      if (tabValue == "Revenue") {
-        getDetailsOfCaseTypesOfRevenue(searchParams?.from_date, searchParams?.to_date)
-      }
-      else {
-        getDetailsOfCaseTypesOfVolume(searchParams?.from_date, searchParams?.to_date)
-      }
+      queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue)
     }
   }, [tabValue, searchParams, selectedDate]);
 
 
   useEffect(() => {
     if (selectedDate?.length) {
-      if (tabValue == "Revenue") {
-        getDetailsOfCaseTypesOfRevenue(selectedDate[0], selectedDate[1])
-      }
-      else {
-        getDetailsOfCaseTypesOfVolume(selectedDate[0], selectedDate[1])
-      }
+      queryPreparations(selectedDate[0], selectedDate[1], tabValue)
     }
   }, [tabValue, selectedDate])
 
@@ -318,7 +265,7 @@ const RevenuVolumeCaseTypesDetails = ({ tabValue, apiUrl, searchParams, selected
         <Backdrop
           open={true}
           style={{
-            zIndex: 999,
+            zIndex: 9999,
             color: "red",
             position: "absolute",
             top: 0,

@@ -1,14 +1,13 @@
-import { MenuItem, Select, TextField } from "@mui/material";
-import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-import styles from "./facilities-filters.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import SearchIcon from "@mui/icons-material/Search";
+import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
+import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 const FacilitiesFilters = ({
   onUpdateData,
-  getFacilitiesList,
+  queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
 }: any) => {
@@ -23,11 +22,11 @@ const FacilitiesFilters = ({
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getFacilitiesList({ fromDate, toDate });
+      queryPreparations({ fromDate, toDate });
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
     } else {
       setDateFilterDefaultValue("", "");
-      getFacilitiesList({});
+      queryPreparations({});
     }
   };
   return (

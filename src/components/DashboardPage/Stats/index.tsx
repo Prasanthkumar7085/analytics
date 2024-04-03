@@ -15,6 +15,7 @@ const Stats = ({
 }: any) => {
   const pathName = usePathname();
 
+  console.log(revenueStatsDetails, "fdp")
   const onChangeData = (fromDate: any, toDate: any) => {
     getStatsCounts(fromDate, toDate);
   };

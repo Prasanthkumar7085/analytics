@@ -8,7 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 const InsurancesFilters = ({
   onUpdateData,
-  getInsurancesList,
+  queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
 }: any) => {
@@ -23,11 +23,11 @@ const InsurancesFilters = ({
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getInsurancesList({ fromDate, toDate });
+      queryPreparations({ fromDate, toDate });
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
     } else {
       setDateFilterDefaultValue("", "");
-      getInsurancesList({});
+      queryPreparations({});
     }
   };
   return (

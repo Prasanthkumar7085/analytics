@@ -1,23 +1,19 @@
 "use client";
 import {
-  setAllFacilities,
-  setAllMarketers,
-  setCaseTypeOptions,
+  setCaseTypeOptions
 } from "@/Redux/Modules/marketers";
 import { setUserDetails } from "@/Redux/Modules/userlogin";
 import ErrorMessages from "@/components/core/ErrorMessage/ErrorMessages";
 import { caseTypesOptions } from "@/lib/constants/caseTypes";
 import {
-  getAllFacilitiesAPI,
-  getAllUsersAPI,
-  signInAPI,
+  signInAPI
 } from "@/services/authAPIs";
 import { getSingleRepProfileDeatilsAPI } from "@/services/salesRepsAPIs";
 import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
@@ -30,6 +26,7 @@ const SignIn: NextPage = () => {
   const [errorMessages, setErrorMessages] = useState<any>([]);
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
 
 
   //get single sales rep ref id

@@ -1,21 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
-import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
-import { useSelector } from "react-redux";
-import { facilitiesAPI } from "@/services/facilitiesAPIs";
-import {
-  mapFacilityNameWithId,
-  mapSalesRepNameWithId,
-} from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { Button } from "@mui/material";
-import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import FacilitiesFilters from "./FacilitiesFilters";
-import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import LoadingComponent from "../core/LoadingComponent";
-import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { getFacilitiesAPI } from "@/services/facilitiesAPIs";
+import { Button } from "@mui/material";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingComponent from "../core/LoadingComponent";
+import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import FacilitiesFilters from "./FacilitiesFilters";
 
 const FacilitiesList = () => {
   const router = useRouter();
@@ -30,46 +23,58 @@ const FacilitiesList = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  //get the list of Facilities
-  const getFacilitiesList = async ({
+  //query preparation method
+  const queryPreparations = async ({
     fromDate,
     toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
+    let queryParams: any = {};
+
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    if (searchValue) {
+      queryParams["search"] = searchValue;
+    }
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
+    }
+    try {
+      await getFacilitiesList(queryParams)
+
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+  //get the list of Facilities
+  const getFacilitiesList = async (queryParams: any) => {
     setLoading(true);
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-      if (searchValue) {
-        queryParams["search"] = searchValue;
-      }
-      if (orderBy) {
-        queryParams["order_by"] = orderBy;
-      }
-      if (orderType) {
-        queryParams["order_type"] = orderType;
-      }
-
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
 
       const { search, ...updatedQueyParams } = queryParams;
 
-      const response = await facilitiesAPI(updatedQueyParams);
+      const response = await getFacilitiesAPI(updatedQueyParams);
       if (response?.status == 200 || response.status == 201) {
         setCompleteData(response?.data);
 
         let data = response?.data;
-        if (searchValue) {
+        if (queryParams.search) {
           data = data.filter(
             (item: any) =>
               item.sales_rep_name
@@ -80,7 +85,7 @@ const FacilitiesList = () => {
                 ?.includes(search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, orderBy, orderType);
+        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
         const modifieData = addSerial(data, 1, data?.length);
         setFacilitiesData(modifieData);
         const totalCases = data.reduce(
@@ -338,7 +343,7 @@ const FacilitiesList = () => {
   };
 
   useEffect(() => {
-    getFacilitiesList({
+    queryPreparations({
       fromDate: searchParams?.from_date,
       toDate: searchParams?.to_date,
       searchValue: searchParams?.search,
@@ -361,7 +366,7 @@ const FacilitiesList = () => {
     <div id="salesRepresentativesPage" className="facilitiesPage s-no-column">
       <FacilitiesFilters
         onUpdateData={onUpdateData}
-        getFacilitiesList={getFacilitiesList}
+        queryPreparations={queryPreparations}
         dateFilterDefaultValue={dateFilterDefaultValue}
         setDateFilterDefaultValue={setDateFilterDefaultValue}
       />

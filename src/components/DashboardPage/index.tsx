@@ -5,8 +5,8 @@ import RevenueBlock from "./Revenue";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import styles from "./index.module.css";
-import { getStatsDetailsAPI } from "@/services/statsAPIService";
-import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
+import { getRevenueStatsDetailsAPI, getVolumeStatsDetailsAPI } from "@/services/statsAPI";
+import { getDashboardCaseTypesRevenueStatsAPI, getDashboardCaseTypesVolumeStatsAPI } from "@/services/caseTypesAPIs";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import Grid from "@mui/material/Grid";
 const DashboardPage = () => {
@@ -18,11 +18,35 @@ const DashboardPage = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
 
+
+  //get revenue stats count
+  const getRevenueStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getRevenueStatsDetailsAPI(queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get volume stats count
+  const getVolumeStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getVolumeStatsDetailsAPI(queryParams);
+      setVolumeStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
-    setLoading(true);
-    let urls = ["/overview/stats-revenue", "/overview/stats-volume"];
-
     let queryParams: any = {};
 
     if (fromDate) {
@@ -33,45 +57,42 @@ const DashboardPage = () => {
     }
 
     try {
-      let tempResult: any = [];
-
-      const responses = await Promise.allSettled(
-        urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, queryParams);
-          return response;
-        })
-      );
-      responses.forEach((result, num) => {
-        if (result.status === "fulfilled") {
-          tempResult.push(result.value);
-        }
-        if (result.status === "rejected") {
-        }
-      });
-      setRevenueStatsDetails(tempResult[0]?.data);
-      setVolumeStatsDetails(tempResult[1]?.data);
+      await getRevenueStatsCount(queryParams)
+      await getVolumeStatsCount(queryParams)
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
-  //get the caseTypesVolume data
-  const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
-    setCaseTypeLoading(true);
-    let url = "/overview/case-types-volume";
+
+  //prepare query params
+  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+    let queryParams: any = {};
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
+      if (tabValue == "Revenue") {
+        await getCaseTypesRevenueStats(queryParams)
       }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
+      else {
+        await getCaseTypesVolumeStats(queryParams);
       }
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
 
-      const response = await getCaseTypesStatsAPI(url, queryParams);
+  //get the caseTypesVolume data
+  const getCaseTypesVolumeStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
+    try {
+      const response = await getDashboardCaseTypesVolumeStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
         let totalCases = 0;
         let completedCases = 0;
@@ -99,19 +120,10 @@ const DashboardPage = () => {
     }
   };
 
-  const getCaseTypesRevenueStats = async (fromDate: any, toDate: any) => {
+  const getCaseTypesRevenueStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
-    let url = "/overview/case-types-revenue";
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-      const response = await getCaseTypesStatsAPI(url, queryParams);
+      const response = await getDashboardCaseTypesRevenueStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -144,7 +156,7 @@ const DashboardPage = () => {
   //api call to get stats count
   useEffect(() => {
     getStatsCounts("", "");
-    getCaseTypesVolumeStats("", "");
+    queryPreparations("", "", "Volume");
   }, []);
 
   return (
@@ -163,8 +175,7 @@ const DashboardPage = () => {
           <CaseType
             caseTypesStatsData={caseTypesStatsData}
             loading={caseTypeLoading}
-            getCaseTypesRevenueStats={getCaseTypesRevenueStats}
-            getCaseTypesVolumeStats={getCaseTypesVolumeStats}
+            queryPreparations={queryPreparations}
             totalRevenueSum={totalRevenueSum}
             setTabValue={setTabValue}
             tabValue={tabValue}

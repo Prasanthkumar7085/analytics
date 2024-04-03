@@ -30,32 +30,52 @@ const CaseTypes = () => {
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [completeData, setCompleteData] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const getAllCaseTypes = async ({
-    fromDate,
-    toDate,
-    searchValue = searchParams?.search,
-    orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type,
-  }: any) => {
+
+
+
+  //query preparation method
+  const queryPreparations = async (
+    {
+      fromDate,
+      toDate,
+      searchValue = searchParams?.search,
+      orderBy = searchParams?.order_by,
+      orderType = searchParams?.order_type,
+    }: any
+  ) => {
+    let queryParams: any = {};
+
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    if (searchValue) {
+      queryParams["search"] = searchValue;
+    }
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
+    }
+
+    try {
+      await getAllCaseTypes(queryParams)
+    }
+    catch (err: any) {
+      console.error(err);
+    }
+    finally {
+      setLoading(false);
+    }
+  }
+
+  //get all case types details
+  const getAllCaseTypes = async (queryParams: any) => {
     setLoading(true);
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-      if (searchValue) {
-        queryParams["search"] = searchValue;
-      }
-      if (orderBy) {
-        queryParams["order_by"] = orderBy;
-      }
-      if (orderType) {
-        queryParams["order_type"] = orderType;
-      }
 
       let queryString = prepareURLEncodedParams("", queryParams);
 
@@ -68,14 +88,15 @@ const CaseTypes = () => {
         setCompleteData(response?.data);
 
         let data = response?.data;
-        if (searchValue) {
+        if (queryParams.search) {
           data = data.filter((item: any) =>
             item.case_type_name
               ?.toLowerCase()
-              ?.includes(searchValue?.toLowerCase()?.trim())
+              ?.includes(queryParams.search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, orderBy, orderType);
+        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
+
         const modifieData = addSerial(data, 1, data?.length);
         setAllCaseTypes(modifieData);
         const totalCases = data.reduce(
@@ -298,7 +319,7 @@ const CaseTypes = () => {
   ];
 
   useEffect(() => {
-    getAllCaseTypes({
+    queryPreparations({
       fromDate: searchParams?.from_date,
       toDate: searchParams?.to_date,
       searchValue: searchParams?.search,
@@ -321,7 +342,7 @@ const CaseTypes = () => {
       <div id="salesRepresentativesPage">
         <CaseTypeFilters
           onUpdateData={onUpdateData}
-          getAllCaseTypes={getAllCaseTypes}
+          queryPreparations={queryPreparations}
           dateFilterDefaultValue={dateFilterDefaultValue}
           setDateFilterDefaultValue={setDateFilterDefaultValue}
         />
@@ -338,7 +359,7 @@ const CaseTypes = () => {
       </div>
       <div style={{ marginTop: "30px" }}>
         <MonthWiseCaseTypeDetails
-          apiUrl={"case-types"}
+          pageName={"case-types"}
           searchParams={searchParams}
         />
       </div>

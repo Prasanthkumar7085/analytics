@@ -1,19 +1,14 @@
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import SingleColumnTable from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import { getInsurancesCaseTypesAPI } from "@/services/insurancesAPI";
 import { Backdrop } from "@mui/material";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 const InsuranceCaseTypes = ({
   searchParams,
   insuranceData,
   totalInsurancePayors,
   loading,
 }: any) => {
-  const { id } = useParams();
-  const router = useRouter();
 
   const columns = [
     {
@@ -153,30 +148,6 @@ const InsuranceCaseTypes = ({
         );
       },
     },
-
-    // {
-    //   accessorFn: (row: any) => row.pending_amount,
-    //   id: "actions",
-    //   header: () => (
-    //     <span style={{ whiteSpace: "nowrap" }}>REV CLEARANCE RATE</span>
-    //   ),
-    //   footer: (props: any) => props.column.id,
-    //   width: "70px",
-    //   maxWidth: "100px",
-    //   minWidth: "70px",
-    //   cell: (info: any) => {
-    //     return (
-    //       <span>
-    //         {(
-    //           (info.row.original.paid_amount /
-    //             info.row.original.expected_amount) *
-    //           100
-    //         ).toFixed(2)}
-    //         %
-    //       </span>
-    //     );
-    //   },
-    // },
     {
       accessorFn: (row: any) => row.pending_amount,
       id: "actions",

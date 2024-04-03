@@ -5,7 +5,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
+const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -17,12 +17,12 @@ const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getAllCaseTypes({ fromDate, toDate });
+      queryPreparations({ fromDate, toDate });
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
     }
     else {
       setDateFilterDefaultValue("", "")
-      getAllCaseTypes({});
+      queryPreparations({});
 
     }
   };

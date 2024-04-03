@@ -1,15 +1,14 @@
 import { getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
-import formatMoney from "@/lib/Pipes/moneyFormat";
-import GraphDialog from "../core/GraphDialog";
-import { Backdrop, CircularProgress } from "@mui/material";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import formatMoney from "@/lib/Pipes/moneyFormat";
+import { Backdrop } from "@mui/material";
+import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 
-const InsurancePayors = ({ searchParams, apiurl }: any) => {
+const InsurancePayors = ({ searchParams, pageName }: any) => {
   const { id } = useParams();
   const [insuranceData, setInsuranceData] = useState([]);
   const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
@@ -32,7 +31,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
       }
 
       const response = await getAllInsurancePayorsBySalesRepIdAPI({
-        apiurl,
+        pageName,
         id: id as string, queryParams
       });
       if (response?.status == 200 || response?.status == 201) {
@@ -145,29 +144,7 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
         return <span>{formatMoney(getValue())}</span>;
       },
     },
-    // {
-    //   accessorFn: (row: any) => row,
-    //   id: "graph",
-    //   header: () => <span style={{ whiteSpace: "nowrap" }}>GRAPH</span>,
-    //   footer: (props: any) => props.column.id,
-    //   width: "100px",
-    //   maxWidth: "100px",
-    //   minWidth: "100px",
-    //   cell: (info: any) => {
 
-    //     const dataPoints = Object.entries(info.row.original)
-    //       .filter(([key]) => key !== 'caseType')
-    //       .map(([month, value]) => [month, value]);
-    //     return (
-    //       <div onClick={() => {
-    //         // setGraphDialogOpen(true);
-    //         // setSelectedGraphData(info.row.original);
-    //       }}>
-    //         <AreaGraph getValue={info.getValue} />
-    //       </div>
-    //     )
-    //   },
-    // },
   ]
 
   useEffect(() => {
@@ -182,14 +159,6 @@ const InsurancePayors = ({ searchParams, apiurl }: any) => {
         totalSumValues={totalInsurancePayors}
         loading={loading}
       />
-      {/* <GraphDialog
-        graphDialogOpen={graphDialogOpen}
-        setGraphDialogOpen={setGraphDialogOpen}
-        graphData={selectedGrpahData}
-
-      /> */}
-
-
       {loading ? (
         <Backdrop
           open={true}

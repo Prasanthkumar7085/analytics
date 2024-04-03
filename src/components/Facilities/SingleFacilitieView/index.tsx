@@ -1,31 +1,27 @@
 "use client";
-import type { NextPage } from "next";
-import styles from "./index.module.css";
-import Stats from "@/components/DashboardPage/Stats";
 import CaseTypes from "@/components/DashboardPage/CaseType";
-import { useEffect, useState } from "react";
-import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import Stats from "@/components/DashboardPage/Stats";
+import InsurancePayors from "@/components/InsurancePayors";
+import Trends from "@/components/Trends";
+import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import {
+  getSingleFacilityCaseTypesRevenueAPI,
+  getSingleFacilityCaseTypesVolumeAPI,
+  getSingleFacilityDetailsAPI
+} from "@/services/facilitiesAPIs";
+import { getFacilitiesRevenueStatsDetailsAPI, getFacilitiesVolumeStatsDetailsAPI } from "@/services/statsAPI";
+import { ArrowBack } from "@mui/icons-material";
+import { Avatar, Grid } from "@mui/material";
+import Image from "next/image";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { getSingleRepCaseTypes } from "@/services/salesRepsAPIs";
-import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import Trends from "@/components/Trends";
-import InsurancePayors from "@/components/InsurancePayors";
+import { useEffect, useState } from "react";
 import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
-import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import {
-  getSingleFacilityCaseTypes,
-  getSingleFacilityDetailsAPI,
-} from "@/services/facilitiesAPIs";
-import { ArrowBack } from "@mui/icons-material";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { Avatar, Grid } from "@mui/material";
-import Image from "next/image";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -44,15 +40,37 @@ const FacilitiesView = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
+
+
+  //get revenue stats count
+  const getRevenueStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getFacilitiesRevenueStatsDetailsAPI(id, queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get volume stats count
+  const getVolumeStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getFacilitiesVolumeStatsDetailsAPI(id, queryParams);
+      setVolumeStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
-
-    // REVIEW: Why this here move this to service 
-    let urls = [
-      `/facilities/${id}/stats-revenue`,
-      `/facilities/${id}/stats-volume`,
-    ];
     try {
       let queryParams: any = {};
 
@@ -67,23 +85,9 @@ const FacilitiesView = () => {
 
       router.push(`${pathName}${queryString}`);
 
-      let tempResult: any = [];
+      await getRevenueStatsCount(queryParams);
+      await getVolumeStatsCount(queryParams)
 
-      const responses = await Promise.allSettled(
-        urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, queryParams);
-          return response;
-        })
-      );
-      responses.forEach((result, num) => {
-        if (result.status === "fulfilled") {
-          tempResult.push(result.value);
-        }
-        if (result.status === "rejected") {
-        }
-      });
-      setRevenueStatsDetails(tempResult[0]?.data);
-      setVolumeStatsDetails(tempResult[1]?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -91,20 +95,37 @@ const FacilitiesView = () => {
     }
   };
 
-  //get the caseTypesRevenue data
-  const getCaseTypesRevenueStats = async (fromDate: any, toDate: any) => {
-    setCaseTypeLoading(true);
-    let url = `/facilities/${id}/case-types-revenue`;
-    try {
-      let queryParams: any = {};
+  //query preparation method
+  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+    let queryParams: any = {};
 
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    try {
+      if (tabValue == "Revenue") {
+        await getCaseTypesRevenueStats(queryParams)
       }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
+      else {
+        await getCaseTypesVolumeStats(queryParams);
       }
-      const response = await getSingleRepCaseTypes(url, queryParams);
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
+  //get the caseTypesRevenue data
+  const getCaseTypesRevenueStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
+    try {
+
+      const response = await getSingleFacilityCaseTypesRevenueAPI(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -135,20 +156,10 @@ const FacilitiesView = () => {
   };
 
   //get volumn case types data
-  const getCaseTypesVolumeStats = async (fromDate: any, toDate: any) => {
+  const getCaseTypesVolumeStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
-    let url = `/facilities/${id}/case-types-volume`;
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-
-      const response = await getSingleRepCaseTypes(url, queryParams);
+      const response = await getSingleFacilityCaseTypesVolumeAPI(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         let totalCases = 0;
         let completedCases = 0;
@@ -186,20 +197,14 @@ const FacilitiesView = () => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
-      if (tabValue == "Revenue") {
-        getCaseTypesRevenueStats(fromDate, toDate);
-      } else {
-        getCaseTypesVolumeStats(fromDate, toDate);
-      }
-    } else {
+      queryPreparations(fromDate, toDate, tabValue);
+
+    }
+    else {
       setDateFilterDefaultValue("");
       getStatsCounts("", "");
       router.push(`/facilities/${id}`);
-      if (tabValue == "Revenue") {
-        getCaseTypesRevenueStats("", "");
-      } else {
-        getCaseTypesVolumeStats("", "");
-      }
+      queryPreparations(fromDate, toDate, tabValue);
     }
   };
 
@@ -222,7 +227,7 @@ const FacilitiesView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      getCaseTypesVolumeStats(searchParams?.from_date, searchParams?.to_date);
+      queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue);
       getSingleFacilityDetails();
     }
     if (searchParams?.from_date) {
@@ -286,8 +291,7 @@ const FacilitiesView = () => {
               <CaseTypes
                 caseTypesStatsData={caseTypesStatsData}
                 loading={caseTypeLoading}
-                getCaseTypesRevenueStats={getCaseTypesRevenueStats}
-                getCaseTypesVolumeStats={getCaseTypesVolumeStats}
+                queryPreparations={queryPreparations}
                 totalRevenueSum={totalRevenueSum}
                 setTabValue={setTabValue}
                 tabValue={tabValue}
@@ -296,7 +300,7 @@ const FacilitiesView = () => {
 
             <Grid item xs={12}>
               <SingleFacilitieCaseTypeDetails
-                apiUrl={"facilities"}
+                pageName={"facilities"}
                 searchParams={searchParams}
               />
             </Grid>
@@ -319,13 +323,13 @@ const FacilitiesView = () => {
                 <div className="cardBody">
                   <InsurancePayors
                     searchParams={searchParams}
-                    apiurl={"facilities"}
+                    pageName={"facilities"}
                   />
                 </div>
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} apiurl={"facilities"} />
+              <Trends searchParams={searchParams} pageName={"facilities"} />
             </Grid>
           </Grid>
         </div>

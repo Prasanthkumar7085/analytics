@@ -1,18 +1,8 @@
-import { getRevenueAPI } from "@/services/getRevenueAPIs";
-import { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
-import { toast } from "sonner";
+import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import Image from "next/image";
 const RevenueDataGraph = ({ labelsData, billedData, totalRevenueData, loading }: any) => {
-
-  function formatMonthYear(monthYear: string) {
-    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
-    return month + " '" + year; // Concatenate month abbreviation and year
-  }
-
 
   const options = {
     chart: {

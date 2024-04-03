@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { Chart } from "react-google-charts";
-import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -12,15 +11,15 @@ import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { usePathname, useSearchParams } from "next/navigation";
 import CountUp from "react-countup";
 import { Tab, Tabs } from "@mui/material";
+import { graphColors } from "@/lib/constants";
 
 const CaseTypes = ({
   caseTypesStatsData,
   loading,
-  getCaseTypesVolumeStats,
-  getCaseTypesRevenueStats,
   totalRevenueSum,
   tabValue,
   setTabValue,
+  queryPreparations
 }: any) => {
 
   const params = useSearchParams();
@@ -33,44 +32,8 @@ const CaseTypes = ({
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
-    if (newValue == "Revenue") {
-      getCaseTypesRevenueStats(selectedDates[0], selectedDates[1]);
-    } else {
-      getCaseTypesVolumeStats(selectedDates[0], selectedDates[1]);
-    }
+    queryPreparations(selectedDates[0], selectedDates[1], newValue);
   };
-  let colors: any = {
-    "CARDIAC": "#ea1d22",
-    "CGX PANEL": "#00a752",
-    "CLINICAL CHEMISTRY": "#fcf00b",
-    "COVID": "#f19213",
-    "COVID FLU": "#00b0ea",
-    "DIABETES": "#f51059",
-    "GASTRO": "#dc79c8",
-    "GTI STI": "#92298f",
-    "GTI WOMENS HEALTH": "#2e3094",
-    "NAIL": "#0071b9",
-    "PAD ALZHEIMERS": "#82eedd",
-    "PGX TEST": "#eea782",
-    "PULMONARY PANEL": "#000000",
-    "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
-    "TOXICOLOGY": "#e1dbe4",
-    "URINANLYSIS": "#f6dad3",
-    "UTI": "#87b5af",
-    "WOUND": "#185a59",
-  };
-
-  function formatNumber(amount: any) {
-    if (amount >= 10000000) {
-      return (amount / 10000000).toFixed(2) + " Cr";
-    } else if (amount >= 100000) {
-      return (amount / 100000).toFixed(2) + " L";
-    } else if (amount >= 1000) {
-      return (amount / 1000).toFixed(2) + " K";
-    } else {
-      return amount.toFixed(2);
-    }
-  }
 
   //chagedData for pie chart
   const modifyData = (array: Array<any>) => {
@@ -103,7 +66,7 @@ const CaseTypes = ({
           <span className={styles.caseTypeRow}>
             <div
               className={styles.dot}
-              style={{ backgroundColor: colors[info.getValue()] }}
+              style={{ backgroundColor: graphColors[info.getValue()] }}
             ></div>
             {info.getValue()}
           </span>
@@ -165,7 +128,7 @@ const CaseTypes = ({
           <span className={styles.caseTypeRow}>
             <div
               className={styles.dot}
-              style={{ backgroundColor: colors[info.getValue()] }}
+              style={{ backgroundColor: graphColors[info.getValue()] }}
             ></div>
             {info.getValue()}
           </span>
@@ -237,7 +200,7 @@ const CaseTypes = ({
     chart: {
       type: "pie",
     },
-    colors: caseTypesStatsData?.map((item: any) => colors[item?.case_type_name]),
+    colors: caseTypesStatsData?.map((item: any) => graphColors[item?.case_type_name]),
     subtitle: {
       useHTML: false,
       text: getSubtitle(),
@@ -290,11 +253,7 @@ const CaseTypes = ({
 
   const onChangeData = (fromDate: any, toDate: any) => {
     setSelectedDates([fromDate, toDate]);
-    if (tabValue == "Revenue") {
-      getCaseTypesRevenueStats(fromDate, toDate);
-    } else {
-      getCaseTypesVolumeStats(fromDate, toDate);
-    }
+    queryPreparations(fromDate, toDate, tabValue);
   };
 
   return (
