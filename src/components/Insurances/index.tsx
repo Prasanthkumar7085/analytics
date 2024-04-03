@@ -1,23 +1,15 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
-import { useSelector } from "react-redux";
-import { facilitiesAPI } from "@/services/facilitiesAPIs";
-import {
-  mapFacilityNameWithId,
-  mapSalesRepNameWithId,
-} from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { Button } from "@mui/material";
-import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import LoadingComponent from "../core/LoadingComponent";
-import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import InsurancesFilters from "./InsurancesFilters";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { getInsurancesAPI } from "@/services/insurancesAPI";
+import { Button } from "@mui/material";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingComponent from "../core/LoadingComponent";
+import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import InsurancesFilters from "./InsurancesFilters";
 
 const InsurancesComponent = () => {
   const router = useRouter();

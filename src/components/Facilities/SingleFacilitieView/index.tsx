@@ -6,11 +6,11 @@ import Trends from "@/components/Trends";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
-  getSingleFacilityCaseTypesRevenue,
-  getSingleFacilityCaseTypesVolume,
+  getSingleFacilityCaseTypesRevenueAPI,
+  getSingleFacilityCaseTypesVolumeAPI,
   getSingleFacilityDetailsAPI
 } from "@/services/facilitiesAPIs";
-import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import { getStatsDetailsAPI } from "@/services/statsAPI";
 import { ArrowBack } from "@mui/icons-material";
 import { Avatar, Grid } from "@mui/material";
 import Image from "next/image";
@@ -40,11 +40,12 @@ const FacilitiesView = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
 
-    // REVIEW: Why this here move this to service 
+    // w: Why this here move this to service 
     let urls = [
       `/facilities/${id}/stats-revenue`,
       `/facilities/${id}/stats-volume`,
@@ -119,7 +120,7 @@ const FacilitiesView = () => {
     setCaseTypeLoading(true);
     try {
 
-      const response = await getSingleFacilityCaseTypesRevenue(id as string, queryParams);
+      const response = await getSingleFacilityCaseTypesRevenueAPI(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -153,7 +154,7 @@ const FacilitiesView = () => {
   const getCaseTypesVolumeStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
     try {
-      const response = await getSingleFacilityCaseTypesVolume(id as string, queryParams);
+      const response = await getSingleFacilityCaseTypesVolumeAPI(id as string, queryParams);
       if (response.status == 200 || response?.status == 201) {
         let totalCases = 0;
         let completedCases = 0;

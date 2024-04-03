@@ -1,7 +1,7 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
-import { facilitiesAPI } from "@/services/facilitiesAPIs";
+import { getFacilitiesAPI } from "@/services/facilitiesAPIs";
 import { Button } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -69,7 +69,7 @@ const FacilitiesList = () => {
 
       const { search, ...updatedQueyParams } = queryParams;
 
-      const response = await facilitiesAPI(updatedQueyParams);
+      const response = await getFacilitiesAPI(updatedQueyParams);
       if (response?.status == 200 || response.status == 201) {
         setCompleteData(response?.data);
 

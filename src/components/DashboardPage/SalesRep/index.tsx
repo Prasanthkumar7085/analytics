@@ -2,7 +2,7 @@
 import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { addSerial } from "@/lib/Pipes/addSerial";
-import { salesRepsAPI } from "@/services/salesRepsAPIs";
+import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
 import { Backdrop } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -34,7 +34,7 @@ const SalesRep = () => {
   const getAllSalesReps = async (queryParams: any) => {
     try {
       setLoading(true);
-      const response = await salesRepsAPI(queryParams);
+      const response = await getSalesRepsAPI(queryParams);
 
       if (response.status == 200 || response.status == 201) {
         let data = response?.data;

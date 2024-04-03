@@ -1,7 +1,7 @@
 import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
-export const salesRepsAPI = async (params: any) => {
+export const getSalesRepsAPI = async (params: any) => {
   try {
     const { success, data } = await $fetch.get("/sales-reps", params);
     if (!success) {

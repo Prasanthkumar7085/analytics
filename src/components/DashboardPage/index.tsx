@@ -5,7 +5,7 @@ import RevenueBlock from "./Revenue";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import styles from "./index.module.css";
-import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import { getStatsDetailsAPI } from "@/services/statsAPI";
 import { getDashboardCaseTypesRevenueStatsAPI, getDashboardCaseTypesVolumeStatsAPI } from "@/services/caseTypesAPIs";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import Grid from "@mui/material/Grid";

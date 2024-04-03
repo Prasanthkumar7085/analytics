@@ -1,5 +1,5 @@
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
-import { } from "@/services/getRevenueAPIs";
+import { } from "@/services/revenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,

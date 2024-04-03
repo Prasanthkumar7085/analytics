@@ -1,18 +1,11 @@
 "use client";
 
-import { setAllMarketers } from "@/Redux/Modules/marketers";
 import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
-import { mapSalesRepNameWithId } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import { getAllUsersAPI } from "@/services/authAPIs";
-import { salesRepsAPI } from "@/services/salesRepsAPIs";
-import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./sales-rep.module.css";
-import { Button, IconButton } from "@mui/material";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useRouter } from "next/navigation";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { Button } from "@mui/material";
+import { useRouter } from "next/navigation";
+import styles from "./sales-rep.module.css";
 const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate }: any) => {
   const router = useRouter();
 

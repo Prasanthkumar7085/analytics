@@ -3,7 +3,7 @@ import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { salesRepsAPI } from "@/services/salesRepsAPIs";
+import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
 import { Button } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -70,7 +70,7 @@ const SalesRepresentatives = () => {
 
       router.push(`${pathname}${queryString}`);
 
-      const response = await salesRepsAPI(queryParams);
+      const response = await getSalesRepsAPI(queryParams);
       console.log(queryParams, "Fdss")
       if (response.status == 200 || response.status == 201) {
         setCompleteData(response?.data);

@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
@@ -26,6 +26,10 @@ const SignIn: NextPage = () => {
   const [errorMessages, setErrorMessages] = useState<any>([]);
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+
+  }, [])
 
   //get single sales rep ref id
   const getSalesRepDetails = async () => {

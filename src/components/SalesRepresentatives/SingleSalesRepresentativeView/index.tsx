@@ -10,7 +10,7 @@ import {
   getSingleSalesRepCaseTypesRevenueAPI,
   getSingleSalesRepCaseTypesVolumeAPI,
 } from "@/services/salesRepsAPIs";
-import { getStatsDetailsAPI } from "@/services/statsAPIService";
+import { getStatsDetailsAPI } from "@/services/statsAPI";
 import { ArrowBack } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";

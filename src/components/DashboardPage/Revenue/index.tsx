@@ -1,5 +1,5 @@
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { getRevenueAPI } from "@/services/getRevenueAPIs";
+import { getRevenueAPI } from "@/services/revenueAPIs";
 import { Backdrop } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";

@@ -89,6 +89,7 @@ export default function middleware(req: NextRequest) {
     isAuthenticated(req) &&
     unProtectedRoutes.includes(req.nextUrl.pathname)
   ) {
+    { console.log("fsd") }
     if (req.cookies.get("user")?.value == "MARKETER") {
       const absoluteURL = new URL(
         `/sales-representatives/${getUserIdIfSalesRep(req)}`,
