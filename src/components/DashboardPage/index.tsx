@@ -37,7 +37,7 @@ const DashboardPage = () => {
     setLoading(true);
     try {
       const response = await getVolumeStatsDetailsAPI(queryParams);
-      setRevenueStatsDetails(response?.data);
+      setVolumeStatsDetails(response?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -47,7 +47,6 @@ const DashboardPage = () => {
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
-    setLoading(true);
     let queryParams: any = {};
 
     if (fromDate) {
@@ -62,8 +61,6 @@ const DashboardPage = () => {
       await getVolumeStatsCount(queryParams)
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   };
 

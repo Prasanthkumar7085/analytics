@@ -50,27 +50,21 @@ const SalesRepView = () => {
 
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
-    setLoading(true);
     try {
       const response = await getSalesRepRevenueStatsDetailsAPI(id, queryParams);
       setRevenueStatsDetails(response?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   }
 
   //get volume stats count
   const getVolumeStatsCount = async (queryParams: any) => {
-    setLoading(true);
     try {
       const response = await getSalesRepVolumeStatsDetailsAPI(id, queryParams);
-      setRevenueStatsDetails(response?.data);
+      setVolumeStatsDetails(response?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
     }
   }
 

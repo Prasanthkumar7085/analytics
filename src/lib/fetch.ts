@@ -11,10 +11,6 @@ class FetchService {
 
   authStatusCodes: number[] = [401, 403];
 
-
-
-  responseOnlyURLs: string[] = ["",];
-
   authErrorURLs: string[] = [
     "/signin",
     "/forgot-password",
@@ -26,11 +22,7 @@ class FetchService {
     this._isGlobal = isGlobal;
     store.subscribe(() => { });
   }
-  otherContentTypeURLsChecking(url: string) {
-    return this.responseOnlyURLs.some((arrayUrl: string) =>
-      url.includes(arrayUrl)
-    );
-  }
+
 
   configureAuthorization(config: any) {
     const state = store.getState();
@@ -38,7 +30,7 @@ class FetchService {
     const accessToken = state?.auth?.user?.access_token;
 
     // IMPLEMENT STORE/COOCIKES DATA HERE
-    config.headers["Authorization"] = accessToken;
+    config.headers["Authorization"] = accessToken; // we need to
   }
 
   setDefualtHeaders(config: any, includeHeaders: boolean) {
@@ -90,27 +82,13 @@ class FetchService {
 
     const response: any = await fetch(url, config);
     if (response.status == 200 || response.status == 201) {
-      if (this.otherContentTypeURLsChecking(url)) {
 
-        /*
-        if(response.headers.get('Content-Type') === 'application/json'){
-          // Do something
-        }
-        */
+      return {
+        success: true,
+        status: response.status,
+        data: { ...(await response.json()), status: response.status },
+      };
 
-
-        return {
-          success: true,
-          status: response.status,
-          data: response,
-        };
-      } else {
-        return {
-          success: true,
-          status: response.status,
-          data: { ...(await response.json()), status: response.status },
-        };
-      }
     } else if (
       this.authStatusCodes.includes(response.status) &&
       !this.checkToLogOutOrNot(path)

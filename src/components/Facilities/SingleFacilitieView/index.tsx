@@ -60,7 +60,7 @@ const FacilitiesView = () => {
     setLoading(true);
     try {
       const response = await getFacilitiesVolumeStatsDetailsAPI(id, queryParams);
-      setRevenueStatsDetails(response?.data);
+      setVolumeStatsDetails(response?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
