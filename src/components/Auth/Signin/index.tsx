@@ -31,27 +31,6 @@ const SignIn: NextPage = () => {
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  const getUsersFromLabsquire = async () => {
-    try {
-      const userData = await getAllUsersAPI();
-      if (userData?.status == 201 || userData?.status == 200) {
-        dispatch(setAllMarketers(userData?.data));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  const getFacilitiesFromLabsquire = async () => {
-    try {
-      const facilitiesData = await getAllFacilitiesAPI();
-      if (facilitiesData?.status == 201 || facilitiesData?.status == 200) {
-        dispatch(setAllFacilities(facilitiesData?.data));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
 
   //get single sales rep ref id
   const getSalesRepDetails = async () => {
