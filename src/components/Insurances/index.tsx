@@ -32,34 +32,45 @@ const InsurancesComponent = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
 
-  //get the list of Facilities
-  const getInsurancesList = async ({
+
+  //query preparation method
+  const queryPreparations = async ({
     fromDate,
     toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
+    let queryParams: any = {};
+
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    if (searchValue) {
+      queryParams["search"] = searchValue;
+    }
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
+    }
+    try {
+      await getInsurancesList(queryParams)
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get the list of Facilities
+  const getInsurancesList = async (queryParams: any) => {
     setLoading(true);
     try {
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-      if (searchValue) {
-        queryParams["search"] = searchValue;
-      }
-      if (orderBy) {
-        queryParams["order_by"] = orderBy;
-      }
-      if (orderType) {
-        queryParams["order_type"] = orderType;
-      }
-
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
@@ -71,7 +82,7 @@ const InsurancesComponent = () => {
         setCompleteData(response?.data);
 
         let data = response?.data;
-        if (searchValue) {
+        if (queryParams.search) {
           data = data.filter(
             (item: any) =>
               item.insurance_payor_name
@@ -82,7 +93,7 @@ const InsurancesComponent = () => {
                 ?.includes(search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, orderBy, orderType);
+        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
         const modifieData = addSerial(data, 1, data?.length);
         setinsurancesData(modifieData);
         const totalCases = data.reduce(
@@ -352,7 +363,7 @@ const InsurancesComponent = () => {
   };
 
   useEffect(() => {
-    getInsurancesList({
+    queryPreparations({
       fromDate: searchParams?.from_date,
       toDate: searchParams?.to_date,
       searchValue: searchParams?.search,
@@ -378,7 +389,7 @@ const InsurancesComponent = () => {
     >
       <InsurancesFilters
         onUpdateData={onUpdateData}
-        getInsurancesList={getInsurancesList}
+        queryPreparations={queryPreparations}
         dateFilterDefaultValue={dateFilterDefaultValue}
         setDateFilterDefaultValue={setDateFilterDefaultValue}
       />
