@@ -10,6 +10,7 @@ import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
 import AreaGraph from "../core/AreaGraph";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import { graphColors } from "@/lib/constants";
 
 const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDate }: any) => {
   const { id } = useParams();
@@ -21,26 +22,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
   const [headerMonths, setHeaderMonths] = useState<any>([])
   const [graphValuesData, setGraphValuesData] = useState<any>({})
   const [graphColor, setGraphColor] = useState("")
-  let colors: any = {
-    "CARDIAC": "#ea1d22",
-    "CGX PANEL": "#00a752",
-    "CLINICAL CHEMISTRY": "#fcf00b",
-    "COVID": "#f19213",
-    "COVID FLU": "#00b0ea",
-    "DIABETES": "#f51059",
-    "GASTRO": "#dc79c8",
-    "GTI STI": "#92298f",
-    "GTI WOMENS HEALTH": "#2e3094",
-    "NAIL": "#0071b9",
-    "PAD ALZHEIMERS": "#82eedd",
-    "PGX TEST": "#eea782",
-    "PULMONARY PANEL": "#000000",
-    "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
-    "TOXICOLOGY": "#e1dbe4",
-    "URINALYSIS": "#f6dad3",
-    "UTI": "#87b5af",
-    "WOUND": "#185a59",
-  };
+
 
 
   const tableRef: any = useRef();
@@ -251,10 +233,10 @@ const CaseTypesDetailsMonthTable = ({ tabValue, apiUrl, searchParams, selectedDa
             setGraphDialogOpen(true);
             setSelectedGraphData(info.row.original);
             setGraphValuesData(data)
-            setGraphColor(colors[info.row.original.case_type_name])
+            setGraphColor(graphColors[info.row.original.case_type_name])
           }}
         >
-          <AreaGraph data={data} graphColor={colors[info.row.original.case_type_name]} />
+          <AreaGraph data={data} graphColor={graphColors[info.row.original.case_type_name]} />
         </div>
       );
     },

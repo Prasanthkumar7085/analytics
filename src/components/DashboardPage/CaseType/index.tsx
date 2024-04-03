@@ -12,6 +12,7 @@ import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { usePathname, useSearchParams } from "next/navigation";
 import CountUp from "react-countup";
 import { Tab, Tabs } from "@mui/material";
+import { graphColors } from "@/lib/constants";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -38,26 +39,6 @@ const CaseTypes = ({
     } else {
       getCaseTypesVolumeStats(selectedDates[0], selectedDates[1]);
     }
-  };
-  let colors: any = {
-    "CARDIAC": "#ea1d22",
-    "CGX PANEL": "#00a752",
-    "CLINICAL CHEMISTRY": "#fcf00b",
-    "COVID": "#f19213",
-    "COVID FLU": "#00b0ea",
-    "DIABETES": "#f51059",
-    "GASTRO": "#dc79c8",
-    "GTI STI": "#92298f",
-    "GTI WOMENS HEALTH": "#2e3094",
-    "NAIL": "#0071b9",
-    "PAD ALZHEIMERS": "#82eedd",
-    "PGX TEST": "#eea782",
-    "PULMONARY PANEL": "#000000",
-    "RESPIRATORY PATHOGEN PANEL": "#82a8cd",
-    "TOXICOLOGY": "#e1dbe4",
-    "URINALYSIS": "#f6dad3",
-    "UTI": "#87b5af",
-    "WOUND": "#185a59",
   };
 
   function formatNumber(amount: any) {
@@ -103,7 +84,7 @@ const CaseTypes = ({
           <span className={styles.caseTypeRow}>
             <div
               className={styles.dot}
-              style={{ backgroundColor: colors[info.getValue()] }}
+              style={{ backgroundColor: graphColors[info.getValue()] }}
             ></div>
             {info.getValue()}
           </span>
@@ -165,7 +146,7 @@ const CaseTypes = ({
           <span className={styles.caseTypeRow}>
             <div
               className={styles.dot}
-              style={{ backgroundColor: colors[info.getValue()] }}
+              style={{ backgroundColor: graphColors[info.getValue()] }}
             ></div>
             {info.getValue()}
           </span>
@@ -237,7 +218,7 @@ const CaseTypes = ({
     chart: {
       type: "pie",
     },
-    colors: caseTypesStatsData?.map((item: any) => colors[item?.case_type_name]),
+    colors: caseTypesStatsData?.map((item: any) => graphColors[item?.case_type_name]),
     subtitle: {
       useHTML: false,
       text: getSubtitle(),
