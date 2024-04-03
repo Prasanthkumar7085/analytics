@@ -13,13 +13,9 @@ export const getAllCaseTypesAPI = async (updatedQueyParams: any) => {
     console.error(err);
   }
 };
-export const getCaseTypesStatsAPI = async (url: string, params: any) => {
-
-  //REVIEW: Whyn we need pass URL here. to avoid this type of practice we are maintain services 
-
-
+export const getDashboardCaseTypesVolumeStatsAPI = async (params: any) => {
   try {
-    const { data, success } = await $fetch.get(url, params);
+    const { data, success } = await $fetch.get("/overview/case-types-volume", params);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -29,7 +25,17 @@ export const getCaseTypesStatsAPI = async (url: string, params: any) => {
   }
 };
 
-// REVIEW: SOLID : Single Responsiblity principle need ot implment here 
+export const getDashboardCaseTypesRevenueStatsAPI = async (params: any) => {
+  try {
+    const { data, success } = await $fetch.get("/overview/case-types-revenue", params);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
 export const getMonthWiseVolumeCaseDetailsAPI = async (pageName: string, queryParams: any) => {
   try {
     const { data, success } = await $fetch.get(`/${pageName}/months/volume`, queryParams);

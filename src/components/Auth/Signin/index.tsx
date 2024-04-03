@@ -1,5 +1,4 @@
 "use client";
-//REVIEW: Remove unused imports
 import {
   setCaseTypeOptions
 } from "@/Redux/Modules/marketers";

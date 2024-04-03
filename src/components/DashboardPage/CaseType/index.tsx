@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./index.module.css";
 import { Chart } from "react-google-charts";
-import { getCaseTypesStatsAPI } from "@/services/caseTypesAPIs";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -17,11 +16,10 @@ import { graphColors } from "@/lib/constants";
 const CaseTypes = ({
   caseTypesStatsData,
   loading,
-  getCaseTypesVolumeStats,
-  getCaseTypesRevenueStats,
   totalRevenueSum,
   tabValue,
   setTabValue,
+  queryPreparations
 }: any) => {
 
   const params = useSearchParams();
@@ -34,24 +32,8 @@ const CaseTypes = ({
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setTabValue(newValue);
-    if (newValue == "Revenue") {
-      getCaseTypesRevenueStats(selectedDates[0], selectedDates[1]);
-    } else {
-      getCaseTypesVolumeStats(selectedDates[0], selectedDates[1]);
-    }
+    queryPreparations(selectedDates[0], selectedDates[1], newValue);
   };
-
-  function formatNumber(amount: any) {
-    if (amount >= 10000000) {
-      return (amount / 10000000).toFixed(2) + " Cr";
-    } else if (amount >= 100000) {
-      return (amount / 100000).toFixed(2) + " L";
-    } else if (amount >= 1000) {
-      return (amount / 1000).toFixed(2) + " K";
-    } else {
-      return amount.toFixed(2);
-    }
-  }
 
   //chagedData for pie chart
   const modifyData = (array: Array<any>) => {
@@ -271,11 +253,7 @@ const CaseTypes = ({
 
   const onChangeData = (fromDate: any, toDate: any) => {
     setSelectedDates([fromDate, toDate]);
-    if (tabValue == "Revenue") {
-      getCaseTypesRevenueStats(fromDate, toDate);
-    } else {
-      getCaseTypesVolumeStats(fromDate, toDate);
-    }
+    queryPreparations(fromDate, toDate, tabValue);
   };
 
   return (

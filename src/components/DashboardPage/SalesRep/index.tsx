@@ -1,38 +1,47 @@
 "use client";
 import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
-import Image from "next/image";
-import styles from "./index.module.css";
-import { salesRepsAPI } from "@/services/salesRepsAPIs";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { Backdrop, CircularProgress } from "@mui/material";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import { salesRepsAPI } from "@/services/salesRepsAPIs";
+import { Backdrop } from "@mui/material";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const SalesRep = () => {
-  const router = useRouter();
-
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const getAllSalesReps = async ({ fromDate = "", toDate = "" }: any) => {
+  const [fromDate, setFromDate] = useState("")
+  const [toDate, setToDate] = useState("")
+  //query preparation method
+  const queryPreparations = async ({ fromDate = "", toDate = "" }: any) => {
+    let queryParams: any = {};
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    try {
+      await getAllSalesReps(queryParams)
+    } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+  const getAllSalesReps = async (queryParams: any) => {
     try {
       setLoading(true);
-      let queryParams: any = {};
-
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
-      }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
-      }
-
       const response = await salesRepsAPI(queryParams);
 
       if (response.status == 200 || response.status == 201) {
         let data = response?.data;
+
         const modifieData = addSerial(data, 1, data?.length);
         setSalesReps(modifieData);
+
         const totalCases = response?.data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
           0
@@ -79,11 +88,13 @@ const SalesRep = () => {
   };
 
   useEffect(() => {
-    getAllSalesReps({});
+    queryPreparations({});
   }, []);
 
   const onChangeData = (fromDate: any, toDate: any) => {
-    getAllSalesReps({ fromDate, toDate });
+    queryPreparations({ fromDate, toDate });
+    setFromDate(fromDate);
+    setToDate(toDate);
   };
   return (
     <div
@@ -103,6 +114,8 @@ const SalesRep = () => {
           salesReps={salesReps}
           totalRevenueSum={totalRevenueSum}
           loading={loading}
+          fromDate={fromDate}
+          toDate={toDate}
         />
         {loading ? (
           <Backdrop

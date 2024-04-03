@@ -12,7 +12,8 @@ import { Button, IconButton } from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useRouter } from "next/navigation";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate }: any) => {
   const router = useRouter();
 
   const columnDef = [
@@ -157,9 +158,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
           <Button
             className="actionButton"
             onClick={() => {
-              router.push(
-                `/sales-representatives/${info.row.original.sales_rep_id}`
-              );
+              goToSingleRepPage(info.row.original.sales_rep_id)
             }}
           >
             View
@@ -170,21 +169,21 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading }: any) => {
     },
   ];
 
-  // const goToSingleRepPage = (repId: string) => {
-  //   let queryString = "";
-  //   const queryParams: any = {};
-  //   if (params.get("from_date")) {
-  //     queryParams["from_date"] = params.get("from_date");
-  //   }
-  //   if (params.get("to_date")) {
-  //     queryParams["to_date"] = params.get("to_date");
-  //   }
-  //   if (Object.keys(queryParams)?.length) {
-  //     queryString = prepareURLEncodedParams("", queryParams);
-  //   }
+  const goToSingleRepPage = (repId: string) => {
+    let queryString = "";
+    const queryParams: any = {};
+    if (fromDate) {
+      queryParams["from_date"] = fromDate;
+    }
+    if (toDate) {
+      queryParams["to_date"] = toDate;
+    }
+    if (Object.keys(queryParams)?.length) {
+      queryString = prepareURLEncodedParams("", queryParams);
+    }
 
-  //   router.push(`/sales-representatives/${repId}${queryString}`);
-  // };
+    router.push(`/sales-representatives/${repId}${queryString}`);
+  };
 
   return (
     <div

@@ -2,6 +2,7 @@ import { Dialog, IconButton } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import CloseIcon from "@mui/icons-material/Close";
+import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 
 const GraphDialog = ({
   graphDialogOpen,
@@ -11,15 +12,6 @@ const GraphDialog = ({
   graphColor,
   tabValue
 }: any) => {
-
-  // REVIEW: Move this to utils js file
-
-  function formatMonthYear(monthYear: string) {
-    let month = monthYear.substring(0, 3); // Extract the first 3 characters (abbreviation of month)
-    let year = monthYear.substring(monthYear.length - 2); // Extract the last 4 characters (year)
-    return month + " '" + year; // Concatenate month abbreviation and year
-  }
-
 
 
   //REIVEW: Move data operations to seperate variables instead of putting in options object

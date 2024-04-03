@@ -1,14 +1,12 @@
-import Image from "next/image";
-import RevenueDataGraph from "./RevenueDataGraph";
-import styles from "./index.module.css";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { getRevenueAPI } from "@/services/getRevenueAPIs";
+import { Backdrop } from "@mui/material";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { Backdrop, CircularProgress } from "@mui/material";
+import RevenueDataGraph from "./RevenueDataGraph";
 
 const RevenueBlock = () => {
-  const [totalGraphData, setTotalGraphData] = useState<any>([]);
   const [labelsData, setLablesData] = useState<any>([]);
   const [billedData, setBilledData] = useState<any>([]);
   const [totalRevenueData, setTotalRevenueData] = useState<any>([]);
@@ -17,8 +15,6 @@ const RevenueBlock = () => {
     if (!data) {
       return;
     }
-
-    let totalRevenue: any = [];
     const months = data.map((item: any) => item.month);
     const generatedAmounts = data.map((item: any) => +item.generated_amount);
     const paidAmounts = data.map((item: any) => +item.paid_amount);
