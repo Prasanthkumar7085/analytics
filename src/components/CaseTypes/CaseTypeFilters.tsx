@@ -1,11 +1,10 @@
-import { MenuItem, Select, TextField } from "@mui/material";
-import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-import styles from "./facilities-filters.module.css";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import SearchIcon from "@mui/icons-material/Search";
+import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
-import SearchIcon from "@mui/icons-material/Search";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
+import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
