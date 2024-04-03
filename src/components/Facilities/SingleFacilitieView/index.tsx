@@ -10,7 +10,7 @@ import {
   getSingleFacilityCaseTypesVolumeAPI,
   getSingleFacilityDetailsAPI
 } from "@/services/facilitiesAPIs";
-import { getStatsDetailsAPI } from "@/services/statsAPI";
+import { getFacilitiesRevenueStatsDetailsAPI, getFacilitiesVolumeStatsDetailsAPI } from "@/services/statsAPI";
 import { ArrowBack } from "@mui/icons-material";
 import { Avatar, Grid } from "@mui/material";
 import Image from "next/image";
@@ -41,15 +41,36 @@ const FacilitiesView = () => {
   const [tabValue, setTabValue] = useState("Volume");
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
 
+
+  //get revenue stats count
+  const getRevenueStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getFacilitiesRevenueStatsDetailsAPI(id, queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get volume stats count
+  const getVolumeStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getFacilitiesVolumeStatsDetailsAPI(id, queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
-
-    // w: Why this here move this to service 
-    let urls = [
-      `/facilities/${id}/stats-revenue`,
-      `/facilities/${id}/stats-volume`,
-    ];
     try {
       let queryParams: any = {};
 
@@ -64,31 +85,15 @@ const FacilitiesView = () => {
 
       router.push(`${pathName}${queryString}`);
 
-      let tempResult: any = [];
+      await getRevenueStatsCount(queryParams);
+      await getVolumeStatsCount(queryParams)
 
-      const responses = await Promise.allSettled(
-        urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, queryParams);
-          return response;
-        })
-      );
-      responses.forEach((result, num) => {
-        if (result.status === "fulfilled") {
-          tempResult.push(result.value);
-        }
-        if (result.status === "rejected") {
-        }
-      });
-      setRevenueStatsDetails(tempResult[0]?.data);
-      setVolumeStatsDetails(tempResult[1]?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
   };
-
-
 
   //query preparation method
   const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {

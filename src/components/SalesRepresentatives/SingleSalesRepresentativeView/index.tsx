@@ -10,7 +10,7 @@ import {
   getSingleSalesRepCaseTypesRevenueAPI,
   getSingleSalesRepCaseTypesVolumeAPI,
 } from "@/services/salesRepsAPIs";
-import { getStatsDetailsAPI } from "@/services/statsAPI";
+import { getSalesRepRevenueStatsDetailsAPI, getSalesRepVolumeStatsDetailsAPI } from "@/services/statsAPI";
 import { ArrowBack } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -46,13 +46,39 @@ const SalesRepView = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
 
+
+
+  //get revenue stats count
+  const getRevenueStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getSalesRepRevenueStatsDetailsAPI(id, queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get volume stats count
+  const getVolumeStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getSalesRepVolumeStatsDetailsAPI(id, queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
-    let urls = [
-      `/sales-reps/${id}/stats-revenue`,
-      `/sales-reps/${id}/stats-volume`,
-    ];
+
     try {
       let queryParams: any = {};
 
@@ -67,23 +93,9 @@ const SalesRepView = () => {
 
       router.push(`${pathName}${queryString}`);
 
-      let tempResult: any = [];
+      await getVolumeStatsCount(queryParams);
+      await getRevenueStatsCount(queryParams)
 
-      const responses = await Promise.allSettled(
-        urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, queryParams);
-          return response;
-        })
-      );
-      responses.forEach((result, num) => {
-        if (result.status === "fulfilled") {
-          tempResult.push(result.value);
-        }
-        if (result.status === "rejected") {
-        }
-      });
-      setRevenueStatsDetails(tempResult[0]?.data);
-      setVolumeStatsDetails(tempResult[1]?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {

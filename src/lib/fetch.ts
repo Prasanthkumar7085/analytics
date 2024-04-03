@@ -12,14 +12,12 @@ class FetchService {
   authStatusCodes: number[] = [401, 403];
 
 
-  //REVIEW: Why these Below Endpoints are required here
 
-  responseOnlyURLs: string[] = ["/e-requisition", "/cases/download-as-csv?", "/trumed-pharmacy-orders/download-as-csv", "/orders/download-as-csv?",];
+  responseOnlyURLs: string[] = ["",];
 
   authErrorURLs: string[] = [
     "/signin",
     "/forgot-password",
-    "/create-accession-number",
   ];
 
   private _isGlobal: Boolean;
@@ -28,7 +26,7 @@ class FetchService {
     this._isGlobal = isGlobal;
     store.subscribe(() => { });
   }
-  responseOnlyUrlOrNot(url: string) {
+  otherContentTypeURLsChecking(url: string) {
     return this.responseOnlyURLs.some((arrayUrl: string) =>
       url.includes(arrayUrl)
     );
@@ -40,7 +38,7 @@ class FetchService {
     const accessToken = state?.auth?.user?.access_token;
 
     // IMPLEMENT STORE/COOCIKES DATA HERE
-    config.headers["Authorization"] = accessToken; // we need to
+    config.headers["Authorization"] = accessToken;
   }
 
   setDefualtHeaders(config: any, includeHeaders: boolean) {
@@ -92,7 +90,7 @@ class FetchService {
 
     const response: any = await fetch(url, config);
     if (response.status == 200 || response.status == 201) {
-      if (this.responseOnlyUrlOrNot(url)) { //REVIEW: Change this method to other content type URLs checking instead of responseOnlyUrlOrNot
+      if (this.otherContentTypeURLsChecking(url)) {
 
         /*
         if(response.headers.get('Content-Type') === 'application/json'){

@@ -5,7 +5,7 @@ import RevenueBlock from "./Revenue";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import styles from "./index.module.css";
-import { getStatsDetailsAPI } from "@/services/statsAPI";
+import { getRevenueStatsDetailsAPI, getVolumeStatsDetailsAPI } from "@/services/statsAPI";
 import { getDashboardCaseTypesRevenueStatsAPI, getDashboardCaseTypesVolumeStatsAPI } from "@/services/caseTypesAPIs";
 import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
 import Grid from "@mui/material/Grid";
@@ -18,11 +18,36 @@ const DashboardPage = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
 
+
+  //get revenue stats count
+  const getRevenueStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getRevenueStatsDetailsAPI(queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  //get volume stats count
+  const getVolumeStatsCount = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getVolumeStatsDetailsAPI(queryParams);
+      setRevenueStatsDetails(response?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     setLoading(true);
-    let urls = ["/overview/stats-revenue", "/overview/stats-volume"];
-
     let queryParams: any = {};
 
     if (fromDate) {
@@ -33,23 +58,8 @@ const DashboardPage = () => {
     }
 
     try {
-      let tempResult: any = [];
-
-      const responses = await Promise.allSettled(
-        urls.map(async (url) => {
-          const response = await getStatsDetailsAPI(url, queryParams);
-          return response;
-        })
-      );
-      responses.forEach((result, num) => {
-        if (result.status === "fulfilled") {
-          tempResult.push(result.value);
-        }
-        if (result.status === "rejected") {
-        }
-      });
-      setRevenueStatsDetails(tempResult[0]?.data);
-      setVolumeStatsDetails(tempResult[1]?.data);
+      await getRevenueStatsCount(queryParams)
+      await getVolumeStatsCount(queryParams)
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
