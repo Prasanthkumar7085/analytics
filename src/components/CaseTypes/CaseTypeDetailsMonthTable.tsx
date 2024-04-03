@@ -52,6 +52,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, pageName, searchParams, selected
       setLoading(false);
     }
   }
+
   //get details Volume of caseTypes
   const getDetailsOfCaseTypesOfVolume = async (queryParams: any
   ) => {
@@ -66,11 +67,11 @@ const CaseTypesDetailsMonthTable = ({ tabValue, pageName, searchParams, selected
         setHeaderMonths(uniqueMonths)
 
         let data = response?.data;
-        if (queryParams.searchValue) {
+        if (queryParams.search) {
           data = data.filter((item: any) =>
             item.case_type_name
               ?.toLowerCase()
-              ?.includes(queryParams.searchValue?.toLowerCase()?.trim())
+              ?.includes(queryParams.search?.toLowerCase()?.trim())
           );
         }
 
@@ -131,11 +132,11 @@ const CaseTypesDetailsMonthTable = ({ tabValue, pageName, searchParams, selected
         setHeaderMonths(uniqueMonths)
 
         let data = response?.data;
-        if (queryParams.searchValue) {
+        if (queryParams.search) {
           data = data.filter((item: any) =>
             item.case_type_name
               ?.toLowerCase()
-              ?.includes(queryParams.searchValue?.toLowerCase()?.trim())
+              ?.includes(queryParams.search?.toLowerCase()?.trim())
           );
         }
 
@@ -155,6 +156,7 @@ const CaseTypesDetailsMonthTable = ({ tabValue, pageName, searchParams, selected
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
+
         // Converting object to array
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);

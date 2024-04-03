@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
-const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
+const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -18,12 +18,12 @@ const CaseTypeFilters = ({ onUpdateData, getAllCaseTypes, dateFilterDefaultValue
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getAllCaseTypes({ fromDate, toDate });
+      queryPreparations({ fromDate, toDate });
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
     }
     else {
       setDateFilterDefaultValue("", "")
-      getAllCaseTypes({});
+      queryPreparations({});
 
     }
   };
