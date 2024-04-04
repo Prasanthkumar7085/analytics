@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { toast } from "sonner";
+import { Toaster, toast } from "sonner";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -32,13 +32,15 @@ const SignIn = () => {
   //get single sales rep ref id
   const getSalesRepDetails = async () => {
     setLoading(true);
-
     try {
       let response: any = await getSingleRepProfileDeatilsAPI();
-      if (response.success) {
+      if (response.success && response?.data?.[0]?.id) {
         let refId = response?.data?.[0]?.id;
         Cookies.set("user_ref_id", refId);
-        router.replace(`/sales-representatives/${refId}`);
+        router.push(`/sales-representatives/${refId}`);
+      }
+      else {
+        toast.error("Error while login")
       }
     } catch (err) {
       console.error(err);
@@ -180,6 +182,7 @@ const SignIn = () => {
           </form>
         </div>
       </div>
+      <Toaster richColors closeButton position="top-right" />
     </section>
   );
 };
