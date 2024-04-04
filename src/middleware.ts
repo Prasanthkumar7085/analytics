@@ -26,48 +26,31 @@ const getUserIdIfSalesRep = (req: NextRequest) => {
   return userId;
 };
 
-//REVIEW: Change below code with map instead of && checking 
 
-/*
-
- const userAllowedRoutes = {
-   "MARKETER": [
-     "/sales-representatives/",
-     "/insurances/",
-     "/facilities/"
-   ]
- }
-
- make a fuction which check the user acccess
-
- write a method like
-
- isProtectedRoute
-
- hasUserAcccess
-
- 
-
-
-*/
+const userAllowedRoutes = {
+  MARKETER: ["/sales-representatives/", "/insurances/", "/facilities/"],
+  HOSPITAL_MARKETING_MANAGER: [
+    "/sales-representatives",
+    "/dashboard",
+    "/insurances/",
+    "/facilities/",
+  ],
+};
 
 const getIsSalesRepAndAccessingOtherPageOrNot = (req: NextRequest) => {
   return (
     req.cookies.get("user")?.value == "MARKETER" &&
-    !req.nextUrl.pathname?.includes("/sales-representatives/") &&
-    !req.nextUrl.pathname?.includes("/insurances/") &&
-    !req.nextUrl.pathname?.includes("/facilities/")
+    !userAllowedRoutes["MARKETER"].some((url: string) =>
+      req.nextUrl.pathname.includes(url)
+    )
   );
 };
 const getIsManagerAndAccessingOtherPageOrNot = (req: NextRequest) => {
-  // return false;
   return (
     req.cookies.get("user")?.value == "HOSPITAL_MARKETING_MANAGER" &&
-    !req.nextUrl.pathname?.includes("/sales-representatives") &&
-    !req.nextUrl.pathname?.includes("/dashboard") &&
-    !req.nextUrl.pathname?.includes("/insurances/") &&
-    !req.nextUrl.pathname?.includes("/facilities/")
-
+    !userAllowedRoutes["HOSPITAL_MARKETING_MANAGER"].some((url: string) =>
+      req.nextUrl.pathname.includes(url)
+    )
   );
 };
 
@@ -107,6 +90,7 @@ export default function middleware(req: NextRequest) {
     containsSubstring(req.nextUrl.pathname, protectedRoutes) &&
     getIsSalesRepAndAccessingOtherPageOrNot(req)
   ) {
+
     const absoluteURL = new URL(
       `/sales-representatives/${getUserIdIfSalesRep(req)}`,
       req.nextUrl.origin
