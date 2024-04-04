@@ -4,7 +4,7 @@ import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
 export const getAllCaseTypesAPI = async (updatedQueyParams: any) => {
   try {
-    const { data, success } = await $fetch.get("/case-types", updatedQueyParams);
+    const { data, success } = await $fetch.get("/case-types/stats", updatedQueyParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }

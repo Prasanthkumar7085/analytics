@@ -50,7 +50,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
       cell: ({ getValue }: any) => {
         return (
           <span className={styles.totalCasesRow}>
-            {getValue().toLocaleString()}
+            {getValue()?.toLocaleString()}
           </span>
         );
       },

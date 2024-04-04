@@ -272,7 +272,7 @@ const CaseTypes = () => {
       maxWidth: "200px",
       minWidth: "200px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue().toLocaleString()}</span>;
+        return <span>{getValue()?.toLocaleString()}</span>;
       },
     },
     {

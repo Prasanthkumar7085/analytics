@@ -1,4 +1,4 @@
-import { getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
+import { getAllInsurancePayorsByFacilitiesIdAPI, getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -29,11 +29,20 @@ const InsurancePayors = ({ searchParams, pageName }: any) => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
+      let response;
+      if (pageName == "facilities") {
+        response = await getAllInsurancePayorsByFacilitiesIdAPI({
+          pageName,
+          id: id as string, queryParams
+        });
+      }
+      else {
+        response = await getAllInsurancePayorsBySalesRepIdAPI({
+          pageName,
+          id: id as string, queryParams
+        });
+      }
 
-      const response = await getAllInsurancePayorsBySalesRepIdAPI({
-        pageName,
-        id: id as string, queryParams
-      });
       if (response?.status == 200 || response?.status == 201) {
         const modifieData = addSerial(response?.data, 1, response?.data?.length);
         setInsuranceData(modifieData);

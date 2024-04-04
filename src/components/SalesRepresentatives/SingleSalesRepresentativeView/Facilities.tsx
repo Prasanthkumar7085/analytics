@@ -52,7 +52,6 @@ const Facilities = ({ searchParams }: any) => {
         const result = [
           { value: "Total", dolorSymbol: false },
           { value: null, dolorSymbol: false },
-          { value: totalCases, dolorSymbol: false },
           { value: totalAmount, dolorSymbol: true },
           { value: totalPaid, dolorSymbol: true },
           { value: totalPending, dolorSymbol: true },
@@ -116,19 +115,19 @@ const Facilities = ({ searchParams }: any) => {
         }}>{info.getValue()}</span>;
       },
     },
-    {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      maxWidth: "200px",
-      minWidth: "200px",
-      sortDescFirst: false,
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()?.toLocaleString()}</span>;
-      },
-    },
+    // {
+    //   accessorFn: (row: any) => row.total_cases,
+    //   id: "total_cases",
+    //   header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+    //   footer: (props: any) => props.column.id,
+    //   width: "200px",
+    //   maxWidth: "200px",
+    //   minWidth: "200px",
+    //   sortDescFirst: false,
+    //   cell: ({ getValue }: any) => {
+    //     return <span>{getValue()?.toLocaleString()}</span>;
+    //   },
+    // },
     {
       accessorFn: (row: any) => row._id,
       header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
