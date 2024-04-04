@@ -38,7 +38,7 @@ const SignIn = () => {
       if (response.success) {
         let refId = response?.data?.[0]?.id;
         Cookies.set("user_ref_id", refId);
-        router.push(`/sales-representatives/${refId}`);
+        router.replace(`/sales-representatives/${refId}`);
       }
     } catch (err) {
       console.error(err);
