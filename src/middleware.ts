@@ -12,10 +12,6 @@ const protectedRoutes = [
 
 const unProtectedRoutes = ["/signin"];
 
-//REVIEW: After login into signin page when I use browser history navigation I am able to go to signin page it won't happen
-
-
-
 function containsSubstring(inputString: string, substrings: Array<string>) {
   return substrings.some((substring) => inputString.includes(substring));
 }
@@ -89,7 +85,6 @@ export default function middleware(req: NextRequest) {
     isAuthenticated(req) &&
     unProtectedRoutes.includes(req.nextUrl.pathname)
   ) {
-    { console.log("fsd") }
     if (req.cookies.get("user")?.value == "MARKETER") {
       const absoluteURL = new URL(
         `/sales-representatives/${getUserIdIfSalesRep(req)}`,

@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
 
-const SignIn: NextPage = () => {
+const SignIn = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -70,7 +70,7 @@ const SignIn: NextPage = () => {
           // ) {
           //   router.push("/dashboard");
         } else {
-          router.push("/dashboard");
+          router.replace("/dashboard");
         }
       } else if (response.type == "VALIDATION_ERROR") {
         setErrorMessages(response?.error_data?.details);
