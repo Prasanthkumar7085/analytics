@@ -8,8 +8,8 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-const Facilities = ({ searchParams, tabValue }: any) => {
-  const dispatch = useDispatch();
+const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
+
   const params = useSearchParams();
   const router = useRouter()
   const { id } = useParams();
@@ -19,7 +19,7 @@ const Facilities = ({ searchParams, tabValue }: any) => {
 
 
   //query preparation method
-  const queryPreparations = async (fromDate: any, toDate: any) => {
+  const queryPreparations = async (fromDate: any, toDate: any, selectedCaseValue: any) => {
     let queryParams: any = {};
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -27,6 +27,10 @@ const Facilities = ({ searchParams, tabValue }: any) => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    if (selectedCaseValue) {
+      queryParams["case_type"] = selectedCaseValue?.id
+    }
+
     try {
       if (tabValue == "Revenue") {
         await getRevenueDetailsSalesRepFacilities(queryParams)
@@ -280,8 +284,8 @@ const Facilities = ({ searchParams, tabValue }: any) => {
   ]
 
   useEffect(() => {
-    queryPreparations(searchParams?.from_date, searchParams?.to_date);
-  }, [searchParams, tabValue]);
+    queryPreparations(searchParams?.from_date, searchParams?.to_date, selectedCaseValue);
+  }, [searchParams, tabValue, selectedCaseValue]);
 
 
   return (

@@ -8,7 +8,7 @@ import { Backdrop } from "@mui/material";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 
-const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue }: any) => {
+const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue, selectedCaseValue }: any) => {
     const { id } = useParams();
     const [insuranceData, setInsuranceData] = useState([]);
     const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
@@ -20,13 +20,16 @@ const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue }: any)
 
 
     //query preparation method
-    const queryPreparations = async (fromDate: any, toDate: any) => {
+    const queryPreparations = async (fromDate: any, toDate: any, selectedCaseValue: any) => {
         let queryParams: any = {};
         if (fromDate) {
             queryParams["from_date"] = fromDate;
         }
         if (toDate) {
             queryParams["to_date"] = toDate;
+        }
+        if (selectedCaseValue) {
+            queryParams["case_type"] = selectedCaseValue?.id
         }
         try {
             if (tabValue == "Revenue") {
@@ -259,8 +262,8 @@ const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue }: any)
     ]
 
     useEffect(() => {
-        queryPreparations(searchParams?.from_date, searchParams?.to_date);
-    }, [searchParams, tabValue]);
+        queryPreparations(searchParams?.from_date, searchParams?.to_date, selectedCaseValue);
+    }, [searchParams, tabValue, selectedCaseValue]);
 
     //when click on the insurance payor name it goes to single insurance payor details page
     const goToSingleInsurancePage = (Id: string) => {

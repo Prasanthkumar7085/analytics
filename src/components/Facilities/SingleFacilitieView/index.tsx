@@ -23,6 +23,7 @@ import { useEffect, useState } from "react";
 import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
 import InsurancePayorsForFacilities from "@/components/InsurancePayors/InsurancePayorsForFacilities";
 import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
+import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -41,6 +42,7 @@ const FacilitiesView = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
+  const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] = useState<any>(null);
 
 
   //get revenue stats count
@@ -273,7 +275,7 @@ const FacilitiesView = () => {
                 </div>
               </div>
             </div>
-            <div className="gridItem flex justify-end">
+            <div className="gridItem flex items-center justify-end">
               <GlobalTabsForSinglePage
                 setTabValue={setTabValue}
                 tabValue={tabValue}
@@ -328,12 +330,19 @@ const FacilitiesView = () => {
                     />
                     Insurance Payors
                   </h3>
+                  <div style={{ width: "30%" }}>
+                    <GlobalCaseTypesAutoComplete
+                      selectedCaseValue={selectedCaseValueForInsurance}
+                      setSelectedCaseValue={setSelectedCaseValueForInsurance} />
+                  </div>
                 </div>
                 <div className="cardBody">
                   <InsurancePayorsForFacilities
                     searchParams={searchParams}
                     pageName={"facilities"}
                     tabValue={tabValue}
+                    selectedCaseValue={selectedCaseValueForInsurance}
+
                   />
                 </div>
               </div>

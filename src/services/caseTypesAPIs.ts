@@ -13,6 +13,19 @@ export const getAllCaseTypesAPI = async (updatedQueyParams: any) => {
     console.error(err);
   }
 };
+
+export const getAllCaseTypesListAPI = async () => {
+  try {
+    const { data, success } = await $fetch.get("/case-types");
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getDashboardCaseTypesVolumeStatsAPI = async (params: any) => {
   try {
     const { data, success } = await $fetch.get("/overview/case-types-volume", params);

@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
+import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -46,7 +47,9 @@ const SalesRepView = () => {
   );
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
+  const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] = useState<any>(null);
 
+  const [selectedCaseValueForFacilities, setSelectedCaseValueForFacilities] = useState<any>(null);
 
 
   //get revenue stats count
@@ -245,6 +248,8 @@ const SalesRepView = () => {
     }
   };
 
+
+
   return (
     <div>
       <div className="salesPersonDataDetails">
@@ -319,7 +324,7 @@ const SalesRepView = () => {
                 className="eachDataCard s-no-column"
                 id="InsurancePayorsData"
               >
-                <div className="cardHeader">
+                <div className="cardHeader" >
                   <h3>
                     <Image
                       alt=""
@@ -329,12 +334,18 @@ const SalesRepView = () => {
                     />
                     Insurance Payors {tabValue}
                   </h3>
+                  <div style={{ width: "30%" }}>
+                    <GlobalCaseTypesAutoComplete
+                      selectedCaseValue={selectedCaseValueForInsurance}
+                      setSelectedCaseValue={setSelectedCaseValueForInsurance} />
+                  </div>
                 </div>
                 <div className="cardBody">
                   <InsurancePayorsForSalesRep
                     searchParams={searchParams}
                     pageName={"sales-reps"}
                     tabValue={tabValue}
+                    selectedCaseValue={selectedCaseValueForInsurance}
                   />
                 </div>
               </div>
@@ -355,9 +366,18 @@ const SalesRepView = () => {
                     />
                     Facilities {tabValue}
                   </h3>
+                  <div style={{ width: "20%" }}>
+                    <GlobalCaseTypesAutoComplete
+                      selectedCaseValue={selectedCaseValueForFacilities}
+                      setSelectedCaseValue={setSelectedCaseValueForFacilities} />
+                  </div>
                 </div>
                 <div className="cardBody">
-                  <Facilities searchParams={searchParams} tabValue={tabValue}
+                  <Facilities
+                    searchParams={searchParams}
+                    tabValue={tabValue}
+                    selectedCaseValue={selectedCaseValueForFacilities}
+
                   />
                 </div>
               </div>
