@@ -7,7 +7,7 @@ export const graphColors: any = {
     "DIABETES": "#FF4081",
     "GASTRO": "#9C27B0",
     "GTI STI": "#673AB7",
-    "GTI WOMENS HEALTH": "#009F2D",
+    "GTI WOMENS": "#009F2D",
     "NAIL": "#8BC34A",
     "PAD ALZHEIMERS": "#B0C4DE",
     "PGX TEST": "#CB5E37",

@@ -88,6 +88,27 @@ const GlobalDateRangeFilter = ({
       placement: "left",
     },
   ];
+
+  //update date values or format the date values 
+  const updateDateValues = (newDate: any) => {
+    if (newDate) {
+      let date1 = new Date(
+        moment(new Date(newDate[0])).format("YYYY-MM-DD")
+      )
+        .toISOString()
+        .substring(0, 10);
+      let date2 = new Date(
+        moment(new Date(newDate[1])).format("YYYY-MM-DD")
+      )
+        .toISOString()
+        .substring(0, 10);
+
+      onChangeData(date1, date2);
+    } else {
+      onChangeData("", "");
+    }
+  }
+
   return (
     <div>
       <DateRangePicker
@@ -101,22 +122,7 @@ const GlobalDateRangeFilter = ({
         placeholder={"Start Date - End Date"}
 
         onChange={(newDate: any) => {
-          if (newDate) {
-            let date1 = new Date(
-              moment(new Date(newDate[0])).format("YYYY-MM-DD")
-            )
-              .toISOString()
-              .substring(0, 10);
-            let date2 = new Date(
-              moment(new Date(newDate[1])).format("YYYY-MM-DD")
-            )
-              .toISOString()
-              .substring(0, 10);
-
-            onChangeData(date1, date2);
-          } else {
-            onChangeData("", "");
-          }
+          updateDateValues(newDate)
         }}
       />
     </div>
