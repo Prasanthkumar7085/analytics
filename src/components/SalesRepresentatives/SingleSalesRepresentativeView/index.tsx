@@ -328,7 +328,7 @@ const SalesRepView = () => {
                       height={20}
                       width={20}
                     />
-                    Insurance Payors
+                    Insurance Payors {tabValue}
                   </h3>
                 </div>
                 <div className="cardBody">
@@ -341,7 +341,8 @@ const SalesRepView = () => {
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} pageName={"sales-reps"} />
+              <Trends searchParams={searchParams} pageName={"sales-reps"} tabValue={tabValue}
+              />
             </Grid>
             <Grid item xs={12}>
               <div className="eachDataCard s-no-column" id="FacilitiesData">
@@ -353,11 +354,12 @@ const SalesRepView = () => {
                       height={20}
                       width={20}
                     />
-                    Facilities
+                    Facilities {tabValue}
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <Facilities searchParams={searchParams} />
+                  <Facilities searchParams={searchParams} tabValue={tabValue}
+                  />
                 </div>
               </div>
             </Grid>
