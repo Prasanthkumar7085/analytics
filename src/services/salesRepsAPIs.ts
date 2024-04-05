@@ -110,7 +110,7 @@ export const getTrendsForVolumeBySalesRepIdAPI = async ({
 
 export const getFacilitiesBySalesRepId = async ({ id, queryParams }: { id: string, queryParams: any }) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/facilities/revenue`, queryParams);
+    const { success, data } = await $fetch.get(`/sales-reps/${id}/facilities/volume`, queryParams);
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -121,7 +121,27 @@ export const getFacilitiesBySalesRepId = async ({ id, queryParams }: { id: strin
 };
 
 
-export const getAllInsurancePayorsBySalesRepIdAPI = async ({
+export const getVolumeInsurancePayorsBySalesRepIdAPI = async ({
+  pageName,
+  id,
+  queryParams
+}: {
+  pageName: string,
+  id: string;
+  queryParams: any;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors/volume`, queryParams);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getRevenueInsurancePayorsBySalesRepIdAPI = async ({
   pageName,
   id,
   queryParams

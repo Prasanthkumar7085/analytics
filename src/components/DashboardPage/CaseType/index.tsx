@@ -256,6 +256,8 @@ const CaseTypes = ({
     queryPreparations(fromDate, toDate, tabValue);
   };
 
+
+
   return (
     <div style={{ position: "relative" }}>
       <div className="eachDataCard" id="CaseTypesGraphsData">
@@ -269,7 +271,7 @@ const CaseTypes = ({
           ) : (
             ""
           )}
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: pathName?.includes("dashboard") ? "flex" : "none", justifyContent: "center" }}>
             <Tabs
               className="overViewTabs"
               value={tabValue}

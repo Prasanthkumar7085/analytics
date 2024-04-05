@@ -4,8 +4,8 @@ import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams }: any) => {
-  const [value, setValue] = useState("Volume");
+const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams, tabValue }: any) => {
+  const [value, setValue] = useState(tabValue);
   const [selectedDate, setSelectedDate] = useState<any>([]);
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -27,7 +27,7 @@ const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams }: any) => {
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
           Month Wise Case Type Data
         </h3>
-        <Tabs
+        {/* <Tabs
           value={value}
           onChange={handleChange}
           textColor="secondary"
@@ -36,12 +36,12 @@ const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams }: any) => {
         >
           <Tab value="Volume" label="Volume" />
           <Tab value="Revenue" label="Revenue" />
-        </Tabs>
+        </Tabs> */}
         {/* <GlobalDateRangeFilter onChangeData={onChangeData} /> */}
       </div>
       <div className="cardBody">
         <RevenuVolumeCaseTypesDetails
-          tabValue={value}
+          tabValue={tabValue}
           pageName={pageName}
           searchParams={searchParams}
           selectedDate={selectedDate}

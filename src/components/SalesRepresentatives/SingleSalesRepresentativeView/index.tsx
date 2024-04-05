@@ -25,6 +25,8 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
+import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
+import InsurancePayorsForSalesRep from "@/components/InsurancePayors/InsurancePayorsForSalesRep";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -215,7 +217,6 @@ const SalesRepView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      queryPreparations(searchParams?.from_date, searchParams?.to_date, "Volume");
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
         setDateFilterDefaultValue([
@@ -227,6 +228,10 @@ const SalesRepView = () => {
       router.back();
     }
   }, []);
+
+  useEffect(() => {
+    queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue);
+  }, [tabValue])
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
@@ -269,7 +274,12 @@ const SalesRepView = () => {
                 </div>
               </div>
             </div>
-            <div className="gridItem flex justify-end">
+
+            <div className="gridItem flex items-center justify-end">
+              <GlobalTabsForSinglePage
+                setTabValue={setTabValue}
+                tabValue={tabValue}
+              />
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}
                 dateFilterDefaultValue={dateFilterDefaultValue}
@@ -302,6 +312,7 @@ const SalesRepView = () => {
               <SingleSalesRepCaseTypeDetails
                 pageName={"sales-reps"}
                 searchParams={searchParams}
+                tabValue={tabValue}
               />
             </Grid>
             <Grid item xs={7}>
@@ -321,9 +332,10 @@ const SalesRepView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors
+                  <InsurancePayorsForSalesRep
                     searchParams={searchParams}
                     pageName={"sales-reps"}
+                    tabValue={tabValue}
                   />
                 </div>
               </div>

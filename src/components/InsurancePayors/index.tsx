@@ -8,15 +8,16 @@ import { Backdrop } from "@mui/material";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 
-const InsurancePayors = ({ searchParams, pageName }: any) => {
+const InsurancePayors = ({ searchParams, pageName, tabValue }: any) => {
   const { id } = useParams();
   const [insuranceData, setInsuranceData] = useState([]);
   const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const params = useSearchParams();
-  const router = useRouter()
+  const router = useRouter();
+
   const getAllInsrancePayors = async (fromDate: any, toDate: any) => {
     setLoading(true)
     try {
