@@ -1,9 +1,10 @@
 "use client";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import Stats from "@/components/DashboardPage/Stats";
-import InsurancePayors from "@/components/InsurancePayors";
+import InsurancePayorsForSalesRep from "@/components/InsurancePayors/InsurancePayorsForSalesRep";
 import Trends from "@/components/Trends";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
   getSingleRepDeatilsAPI,
@@ -25,8 +26,6 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
-import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
-import InsurancePayorsForSalesRep from "@/components/InsurancePayors/InsurancePayorsForSalesRep";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();

@@ -1,14 +1,14 @@
-import { getAllInsurancePayorsByFacilitiesIdAPI, getAllInsurancePayorsBySalesRepIdAPI } from "@/services/salesRepsAPIs";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
+import { getRevenueOfInsurancePayorsByFacilitiesIdAPI, getVolumeOfInsurancePayorsByFacilitiesIdAPI } from "@/services/facilitiesAPIs";
 import { Backdrop } from "@mui/material";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 
-const InsurancePayors = ({ searchParams, pageName, tabValue }: any) => {
+const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue }: any) => {
     const { id } = useParams();
     const [insuranceData, setInsuranceData] = useState([]);
     const [totalInsurancePayors, setTortalInsurancePayors] = useState<any[]>([]);
@@ -18,19 +18,72 @@ const InsurancePayors = ({ searchParams, pageName, tabValue }: any) => {
     const params = useSearchParams();
     const router = useRouter();
 
-    const getAllInsrancePayors = async (fromDate: any, toDate: any) => {
+
+    //query preparation method
+    const queryPreparations = async (fromDate: any, toDate: any) => {
+        let queryParams: any = {};
+        if (fromDate) {
+            queryParams["from_date"] = fromDate;
+        }
+        if (toDate) {
+            queryParams["to_date"] = toDate;
+        }
+        try {
+            if (tabValue == "Revenue") {
+                await getRevenueDetailsOfInsrancePayors(queryParams)
+            }
+            else {
+                await getVolumeDetailsOfInsrancePayors(queryParams);
+            }
+        } catch (err: any) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    //get volume details for the insurance payors
+    const getVolumeDetailsOfInsrancePayors = async (queryParams: any) => {
         setLoading(true)
         try {
 
-            let queryParams: any = {};
+            let response = await getVolumeOfInsurancePayorsByFacilitiesIdAPI({
+                pageName,
+                id: id as string, queryParams
+            });
 
-            if (fromDate) {
-                queryParams["from_date"] = fromDate;
+            if (response?.status == 200 || response?.status == 201) {
+                const modifieData = addSerial(response?.data, 1, response?.data?.length);
+                setInsuranceData(modifieData);
+
+                let totalCases = 0;
+                let completeCases = 0;
+                let totalPending = 0;
+
+                response?.data?.forEach((entry: any) => {
+                    totalCases += entry.total_cases ? +entry.total_cases : 0;
+                    completeCases += entry.completed_cases ? +entry.completed_cases : 0;
+                    totalPending += entry.pending_cases ? +entry.pending_cases : 0;
+                });
+
+                const result = [{ value: "Total", dolorSymbol: false }, { value: null, dolorSymbol: false }, { value: totalCases, dolorSymbol: false }, { value: completeCases, dolorSymbol: false }, { value: totalPending, dolorSymbol: false }];
+
+                setTortalInsurancePayors(result);
             }
-            if (toDate) {
-                queryParams["to_date"] = toDate;
-            }
-            let response = await getAllInsurancePayorsByFacilitiesIdAPI({
+        } catch (err) {
+            console.error(err);
+        }
+        finally {
+            setLoading(false)
+        }
+    };
+
+    //get revenue details for the insurance payors
+    const getRevenueDetailsOfInsrancePayors = async (queryParams: any) => {
+        setLoading(true)
+        try {
+
+            let response = await getRevenueOfInsurancePayorsByFacilitiesIdAPI({
                 pageName,
                 id: id as string, queryParams
             });
@@ -61,23 +114,8 @@ const InsurancePayors = ({ searchParams, pageName, tabValue }: any) => {
         }
     };
 
-    const goToSingleInsurancePage = (Id: string) => {
-        let queryString = "";
-        const queryParams: any = {};
-        if (params.get("from_date")) {
-            queryParams["from_date"] = params.get("from_date");
-        }
-        if (params.get("to_date")) {
-            queryParams["to_date"] = params.get("to_date");
-        }
-        if (Object.keys(queryParams)?.length) {
-            queryString = prepareURLEncodedParams("", queryParams);
-        }
-
-        router.push(`/insurances/${Id}${queryString}`);
-    };
-
-    const columns = [
+    //coloumns for the revenue table 
+    const Revenuecolumns = [
         {
             accessorFn: (row: any) => row.serial,
             id: "id",
@@ -148,15 +186,105 @@ const InsurancePayors = ({ searchParams, pageName, tabValue }: any) => {
 
     ]
 
+    //cloumns for the volume table
+    const Volumecolumns = [
+        {
+            accessorFn: (row: any) => row.serial,
+            id: "id",
+            enableSorting: false,
+            header: () => <span>S.No</span>,
+            footer: (props: any) => props.column.id,
+            width: "60px",
+            minWidth: "60px",
+            maxWidth: "60px",
+            cell: ({ row, table }: any) =>
+                (table.getSortedRowModel()?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) + 1,
+        },
+        {
+            accessorFn: (row: any) => row.insurance_name,
+            id: "insurance_name",
+            header: () => (
+                <span style={{ whiteSpace: "nowrap" }}>INSURANCE NAME</span>
+            ),
+            footer: (props: any) => props.column.id,
+            width: "220px",
+            maxWidth: "220px",
+            minWidth: "220px",
+            cell: (info: any) => {
+                return <span style={{ cursor: "pointer" }} onClick={() => {
+                    goToSingleInsurancePage(info.row.original.insurance_id)
+                }}>{info.getValue()}</span>;
+            },
+        },
+        {
+            accessorFn: (row: any) => row.total_cases,
+            id: "total_cases",
+            header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+            footer: (props: any) => props.column.id,
+            width: "70px",
+            maxWidth: "100px",
+            minWidth: "70px",
+            sortDescFirst: false,
+            cell: ({ getValue }: any) => {
+                return <span>{getValue()?.toLocaleString()}</span>;
+            },
+        },
+        {
+            accessorFn: (row: any) => row.completed_cases,
+            id: "completed_cases",
+            header: () => <span style={{ whiteSpace: "nowrap" }}>FINALISED</span>,
+            footer: (props: any) => props.column.id,
+            width: "70px",
+            maxWidth: "100px",
+            minWidth: "70px",
+            sortDescFirst: false,
+            cell: ({ getValue }: any) => {
+                return <span>{getValue()?.toLocaleString()}</span>;
+            },
+        },
+        {
+            accessorFn: (row: any) => row.pending_cases,
+            id: "pending_cases",
+            header: () => <span style={{ whiteSpace: "nowrap" }}>PENDING</span>,
+            footer: (props: any) => props.column.id,
+            width: "70px",
+            maxWidth: "100px",
+            minWidth: "70px",
+            sortDescFirst: false,
+            cell: ({ getValue }: any) => {
+                return <span>{getValue()?.toLocaleString()}</span>;
+            },
+        },
+
+    ]
+
     useEffect(() => {
-        getAllInsrancePayors(searchParams?.from_date, searchParams?.to_date);
-    }, [searchParams]);
+        queryPreparations(searchParams?.from_date, searchParams?.to_date);
+    }, [searchParams, tabValue]);
+
+    //when click on the insurance payor name it goes to single insurance payor details page
+    const goToSingleInsurancePage = (Id: string) => {
+        let queryString = "";
+        const queryParams: any = {};
+        if (params.get("from_date")) {
+            queryParams["from_date"] = params.get("from_date");
+        }
+        if (params.get("to_date")) {
+            queryParams["to_date"] = params.get("to_date");
+        }
+        if (Object.keys(queryParams)?.length) {
+            queryString = prepareURLEncodedParams("", queryParams);
+        }
+
+        router.push(`/insurances/${Id}${queryString}`);
+    };
+
 
     return (
         <div style={{ position: "relative" }}>
             <SingleColumnTable
                 data={insuranceData}
-                columns={columns}
+                columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
                 totalSumValues={totalInsurancePayors}
                 loading={loading}
             />
@@ -191,4 +319,4 @@ const InsurancePayors = ({ searchParams, pageName, tabValue }: any) => {
     );
 };
 
-export default InsurancePayors;
+export default InsurancePayorsForFacilities;

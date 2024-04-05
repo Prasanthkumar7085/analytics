@@ -50,6 +50,8 @@ export const getSingleFacilityCaseTypesVolumeAPI = async (facility_id: string, q
 };
 
 
+
+
 export const getSingleFacilityDetailsAPI = async (id: string) => {
     try {
         const { success, data } = await $fetch.get(`/facilities/${id}`);
@@ -59,6 +61,45 @@ export const getSingleFacilityDetailsAPI = async (id: string) => {
         return data;
     } catch (err) {
         throw err;
+    }
+};
+
+export const getVolumeOfInsurancePayorsByFacilitiesIdAPI = async ({
+    pageName,
+    id,
+    queryParams
+}: {
+    pageName: string,
+    id: string;
+    queryParams: any;
+}) => {
+    try {
+        const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors/volume`, queryParams);
+        if (!success) {
+            return handleAPIErrorResponse(data);
+        }
+        return data;
+    } catch (err) {
+        console.error(err);
+    }
+};
+export const getRevenueOfInsurancePayorsByFacilitiesIdAPI = async ({
+    pageName,
+    id,
+    queryParams
+}: {
+    pageName: string,
+    id: string;
+    queryParams: any;
+}) => {
+    try {
+        const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors/revenue`, queryParams);
+        if (!success) {
+            return handleAPIErrorResponse(data);
+        }
+        return data;
+    } catch (err) {
+        console.error(err);
     }
 };
 

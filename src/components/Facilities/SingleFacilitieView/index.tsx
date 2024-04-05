@@ -1,7 +1,6 @@
 "use client";
 import CaseTypes from "@/components/DashboardPage/CaseType";
 import Stats from "@/components/DashboardPage/Stats";
-import InsurancePayors from "@/components/InsurancePayors";
 import Trends from "@/components/Trends";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
@@ -22,6 +21,8 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
+import InsurancePayorsForFacilities from "@/components/InsurancePayors/InsurancePayorsForFacilities";
+import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -227,7 +228,6 @@ const FacilitiesView = () => {
   useEffect(() => {
     if (id) {
       getStatsCounts(searchParams?.from_date, searchParams?.to_date);
-      queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue);
       getSingleFacilityDetails();
     }
     if (searchParams?.from_date) {
@@ -237,6 +237,10 @@ const FacilitiesView = () => {
       ]);
     }
   }, []);
+
+  useEffect(() => {
+    queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue);
+  }, [tabValue])
 
   return (
     <div>
@@ -270,6 +274,10 @@ const FacilitiesView = () => {
               </div>
             </div>
             <div className="gridItem flex justify-end">
+              <GlobalTabsForSinglePage
+                setTabValue={setTabValue}
+                tabValue={tabValue}
+              />
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}
                 dateFilterDefaultValue={dateFilterDefaultValue}
@@ -302,6 +310,7 @@ const FacilitiesView = () => {
               <SingleFacilitieCaseTypeDetails
                 pageName={"facilities"}
                 searchParams={searchParams}
+                tabValue={tabValue}
               />
             </Grid>
             <Grid item xs={7}>
@@ -321,15 +330,16 @@ const FacilitiesView = () => {
                   </h3>
                 </div>
                 <div className="cardBody">
-                  <InsurancePayors
+                  <InsurancePayorsForFacilities
                     searchParams={searchParams}
                     pageName={"facilities"}
+                    tabValue={tabValue}
                   />
                 </div>
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} pageName={"facilities"} />
+              <Trends searchParams={searchParams} pageName={"facilities"} tabValue={tabValue} />
             </Grid>
           </Grid>
         </div>

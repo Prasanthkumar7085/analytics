@@ -171,24 +171,6 @@ export const getRevenueInsurancePayorsBySalesRepIdAPI = async ({
     console.error(err);
   }
 };
-export const getAllInsurancePayorsByFacilitiesIdAPI = async ({
-  pageName,
-  id,
-  queryParams
-}: {
-  pageName: string,
-  id: string;
-  queryParams: any;
-}) => {
-  try {
-    const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors`, queryParams);
-    if (!success) {
-      return handleAPIErrorResponse(data);
-    }
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-};
+
 
 
