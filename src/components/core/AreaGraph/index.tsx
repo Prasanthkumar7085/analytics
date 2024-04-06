@@ -1,12 +1,7 @@
-import { useEffect } from "react";
-import { useRef } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 const AreaGraph = ({ data, graphColor }: any) => {
-  console.log(data, "fdsf")
-  const fillColor = Highcharts.color(graphColor).setOpacity(0).get('rgba');
-
   let options = {
     chart: {
       height: 50,
@@ -28,7 +23,10 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible: Object?.values(data)?.length && Object?.values(data)?.length == 1 ? true : false,
+      visible:
+        Object?.values(data)?.length && Object?.values(data)?.length == 1
+          ? true
+          : false,
     },
     yAxis: {
       labels: {
@@ -37,7 +35,10 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible: Object?.values(data)?.length && Object?.values(data)?.length == 1 ? true : false,
+      visible:
+        Object?.values(data)?.length && Object?.values(data)?.length == 1
+          ? true
+          : false,
     },
     legend: {
       enabled: false,
@@ -46,11 +47,13 @@ const AreaGraph = ({ data, graphColor }: any) => {
       enabled: false,
     },
     plotOptions: {
-
       series: {
         animation: true,
         marker: {
-          enabled: Object?.values(data)?.length && Object?.values(data)?.length == 1 ? true : false,
+          enabled:
+            Object?.values(data)?.length && Object?.values(data)?.length == 1
+              ? true
+              : false,
         },
         tooltip: {
           enabled: false,
@@ -74,42 +77,43 @@ const AreaGraph = ({ data, graphColor }: any) => {
             x1: 0,
             y1: 0,
             x2: 0,
-            y2: 1
+            y2: 1,
           },
           stops: [
             [0, graphColor ? graphColor : ""],
-            [1, Highcharts.color('white').setOpacity(0).get('rgba')]
-          ]
+            [1, Highcharts.color("white").setOpacity(0).get("rgba")],
+          ],
         },
         marker: {
-          radius: 2
+          radius: 2,
         },
         lineWidth: 1,
         states: {
           hover: {
-            lineWidth: 1
-          }
+            lineWidth: 1,
+          },
         },
-        threshold: null
-      }
+        threshold: null,
+      },
     },
 
     series: [
       {
         name: null,
-        data: Object?.values(data)?.length ? Object.values(data).map((item: any) => item ? item : 0) : [],
+        data: Object?.values(data)?.length
+          ? Object.values(data).map((item: any) => (item ? item : 0))
+          : [],
         animation: {
           opacity: 0.4,
         },
       },
     ],
-  }
-
+  };
 
   return (
     <div className="remove-tooltip">
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
-  )
+  );
 };
 export default AreaGraph;

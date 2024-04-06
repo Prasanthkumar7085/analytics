@@ -71,7 +71,6 @@ const SalesRepresentatives = () => {
       router.push(`${pathname}${queryString}`);
 
       const response = await getSalesRepsAPI(queryParams);
-      console.log(queryParams, "Fdss")
       if (response.status == 200 || response.status == 201) {
         setCompleteData(response?.data);
         let data = response?.data;

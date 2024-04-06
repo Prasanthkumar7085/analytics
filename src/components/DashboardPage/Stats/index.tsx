@@ -15,7 +15,6 @@ const Stats = ({
 }: any) => {
   const pathName = usePathname();
 
-  console.log(revenueStatsDetails, "fdp")
   const onChangeData = (fromDate: any, toDate: any) => {
     getStatsCounts(fromDate, toDate);
   };
@@ -100,9 +99,9 @@ const Stats = ({
                   </div>
 
                   <h2 className={styles.totalvalue}>
-                    {loading ?
+                    {loading ? (
                       <Skeleton width={100} height={50} />
-                      :
+                    ) : (
                       <CountUp
                         start={0}
                         decimal="."
@@ -110,8 +109,7 @@ const Stats = ({
                         prefix="$"
                         end={revenueStatsDetails?.[0]?.pending_amount}
                       />
-
-                    }
+                    )}
                   </h2>
                 </div>
               </div>
