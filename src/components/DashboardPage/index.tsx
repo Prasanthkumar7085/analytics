@@ -1,14 +1,18 @@
 "use client";
+import {
+  getDashboardCaseTypesRevenueStatsAPI,
+  getDashboardCaseTypesVolumeStatsAPI,
+} from "@/services/caseTypesAPIs";
+import {
+  getRevenueStatsDetailsAPI,
+  getVolumeStatsDetailsAPI,
+} from "@/services/statsAPI";
+import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import CaseType from "./CaseType";
 import RevenueBlock from "./Revenue";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
-import styles from "./index.module.css";
-import { getRevenueStatsDetailsAPI, getVolumeStatsDetailsAPI } from "@/services/statsAPI";
-import { getDashboardCaseTypesRevenueStatsAPI, getDashboardCaseTypesVolumeStatsAPI } from "@/services/caseTypesAPIs";
-import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import Grid from "@mui/material/Grid";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
