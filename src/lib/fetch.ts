@@ -31,7 +31,7 @@ class FetchService {
 
     // IMPLEMENT STORE/COOCIKES DATA HERE
     config.headers["Authorization"] = accessToken; // we need to
-    // config.headers["ls-auth-key"] = "Berear " + process.env.NEXT_PUBLIC_AUTH_KEY;
+    // config.headers["LS_API_KEY"] = "Berear " + process.env.NEXT_PUBLIC_AUTH_KEY;
   }
 
   setDefualtHeaders(config: any, includeHeaders: boolean) {
