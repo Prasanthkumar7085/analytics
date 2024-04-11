@@ -19,6 +19,7 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import InsuranceCaseTypes from "./InsuranceCaseTypes";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import TrendsGraphForInsurance from "./TrendsGraphForInsurance";
 
 const InsuranceView = () => {
   const { id } = useParams();
@@ -206,7 +207,7 @@ const InsuranceView = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <Trends searchParams={searchParams} pageName={"insurances"} />
+              <TrendsGraphForInsurance searchParams={searchParams} pageName={"insurances"} />
             </Grid>
           </Grid>
         </div>
