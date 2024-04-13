@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import CaseType from "./CaseType";
-import RevenueBlock from "./Revenue";
+import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import styles from "./index.module.css";
