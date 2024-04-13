@@ -125,7 +125,8 @@ const FacilitiesList = () => {
     }
   };
 
-  const goToSingleRepPage = (Id: string) => {
+  //go to single facility page navigation event
+  const gotoSingleFacilityPage = (Id: string) => {
     let queryString = "";
     const queryParams: any = {};
     if (params.get("from_date")) {
@@ -140,6 +141,24 @@ const FacilitiesList = () => {
 
     router.push(`/facilities/${Id}${queryString}`);
   };
+
+  //go to single sales rep page navigation event
+  const gotoSingleSalesRepPage = (Id: string) => {
+    let queryString = "";
+    const queryParams: any = {};
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
+    }
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
+    }
+    if (Object.keys(queryParams)?.length) {
+      queryString = prepareURLEncodedParams("", queryParams);
+    }
+
+    router.push(`/sales-representatives/${Id}${queryString}`);
+  };
+
 
   const columnDef = [
     {
@@ -159,8 +178,10 @@ const FacilitiesList = () => {
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}
+          onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+        >{info.row.original.facility_name}</span>;
       },
     },
     {
@@ -171,8 +192,10 @@ const FacilitiesList = () => {
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}
+          onClick={() => gotoSingleSalesRepPage(info.row.original.sales_rep_id)}>
+          {info.row.original.sales_rep_name}</span>;
       },
     },
     {
@@ -241,7 +264,7 @@ const FacilitiesList = () => {
           <span>
             <Button
               className="actionButton"
-              onClick={() => goToSingleRepPage(info.row.original.facility_id)}
+              onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
             >
               View
             </Button>

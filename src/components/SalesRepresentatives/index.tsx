@@ -163,8 +163,10 @@ const SalesRepresentatives = () => {
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}
+          onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
+        >{info.row.original.sales_rep_name}</span>;
       },
     },
     {

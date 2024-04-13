@@ -129,7 +129,7 @@ const InsurancesComponent = () => {
     }
   };
 
-  const goToSingleRepPage = (Id: string) => {
+  const gotoSingleInsurancePage = (Id: string) => {
     let queryString = "";
     const queryParams: any = {};
     if (params.get("from_date")) {
@@ -163,8 +163,12 @@ const InsurancesComponent = () => {
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}
+          onClick={() =>
+            gotoSingleInsurancePage(info.row.original.insurance_payor_id)
+          }
+        >{info.row.original.insurance_payor_name}</span>;
       },
     },
     {
@@ -248,7 +252,7 @@ const InsurancesComponent = () => {
             <Button
               className="actionButton"
               onClick={() =>
-                goToSingleRepPage(info.row.original.insurance_payor_id)
+                gotoSingleInsurancePage(info.row.original.insurance_payor_id)
               }
             >
               View
