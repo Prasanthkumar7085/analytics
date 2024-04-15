@@ -56,7 +56,7 @@ const SignIn = () => {
     setInvalidMessage("");
     try {
       const payload = {
-        username: email,
+        user_name: email,
         password: password,
       };
       let response: any = await signInAPI(payload);

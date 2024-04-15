@@ -32,8 +32,11 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
       width: "170px",
       maxWidth: "170px",
       minWidth: "170px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}
+          onClick={() => {
+            goToSingleRepPage(info.row.original.sales_rep_id)
+          }}>{info.row.original.sales_rep_name}</span>;
       },
     },
     {

@@ -10,7 +10,7 @@ import {
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
 import CaseType from "./CaseType";
-import RevenueBlock from "./Revenue";
+import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 const DashboardPage = () => {
