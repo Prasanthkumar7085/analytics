@@ -7,7 +7,6 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Backdrop } from "@mui/material";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import GlobalCaseTypesAutoComplete from "../core/GlobalCaseTypesAutoComplete";
 
 const InsurancePayorsForSalesRep = ({ searchParams, pageName, tabValue, selectedCaseValue }: any) => {
     const { id } = useParams();
