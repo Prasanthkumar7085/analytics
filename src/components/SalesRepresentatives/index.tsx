@@ -63,6 +63,7 @@ const SalesRepresentatives = () => {
     }
   }
 
+  //get all sales reps data event
   const getAllSalesReps = async (queryParams: any) => {
     setLoading(true);
     try {
@@ -144,6 +145,7 @@ const SalesRepresentatives = () => {
 
     router.push(`/sales-representatives/${repId}${queryString}`);
   };
+
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
