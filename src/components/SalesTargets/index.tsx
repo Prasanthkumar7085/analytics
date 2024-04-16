@@ -8,6 +8,8 @@ import { addSerial } from "@/lib/Pipes/addSerial";
 import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import LoadingComponent from "../core/LoadingComponent";
+import { getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import timePipe from "@/lib/Pipes/timePipe";
 
 const SalesTargets = () => {
     const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const SalesTargets = () => {
     const [allTargetsData, setAllTargetsData] = useState<any>([]);
     const [completeData, setCompleteData] = useState([]);
     const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
+    const [headerMonths, setHeaderMonths] = useState<any>([]);
     const [searchParams, setSearchParams] = useState(
         Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
     );
@@ -67,6 +70,10 @@ const SalesTargets = () => {
 
             const response = await getSalesRepTargetsAPI(queryParams);
             if (response.status == 200 || response.status == 201) {
+
+                // let uniqueMonths = getUniqueMonths(response?.data);
+                // setHeaderMonths(uniqueMonths)
+
                 setCompleteData(response?.data);
                 let data = response?.data;
                 if (queryParams.search) {
@@ -89,6 +96,7 @@ const SalesTargets = () => {
         }
     };
 
+    //coloumns for the sales rep targets table
     const columnDef = [
         {
             accessorFn: (row: any) => row.serial,
@@ -115,6 +123,57 @@ const SalesTargets = () => {
         },
     ]
 
+    //prepare additional coloumns
+    let addtionalcolumns = completeData?.map((item: any) => ({
+
+        accessorFn: (row: any) => row[item.target_end_date],
+        header: () => <div style={{ textAlign: "center", margin: "auto" }}>
+            <span style={{ whiteSpace: "nowrap" }}>{timePipe(item.target_end_date, "DD-MM-YY")}</span>
+        </div>,
+        id: item.target_end_date,
+        width: "800px",
+        columns: [
+            {
+                accessorFn: (row: any) => row.item.volume,
+                id: item.volume,
+                header: () => (
+                    <span style={{ whiteSpace: "nowrap" }}>Volume</span>
+                ),
+                footer: (props: any) => props.column.id,
+                width: "80px",
+                maxWidth: "220px",
+                minWidth: "220px",
+                sortDescFirst: false,
+                cell: (info: any) => (
+                    <span>
+                        {info.row.original?.volume.toLocaleString()}
+                    </span>
+                ),
+            },
+            {
+                accessorFn: (row: any) => row.item.facilities,
+                id: item.facilities,
+                header: () => (
+                    <span style={{ whiteSpace: "nowrap" }}>Facilities</span>
+                ),
+                footer: (props: any) => props.column.id,
+                width: "80px",
+                maxWidth: "220px",
+                minWidth: "220px",
+                sortDescFirst: false,
+                cell: (info: any) => (
+                    <span>
+                        {info.row.original?.facilities.toLocaleString()}
+                    </span>
+                ),
+            }
+        ]
+    }
+
+    ));
+
+    const addAddtionalColoumns = [...columnDef, ...addtionalcolumns]
+
     const goToSingleRepPage = (repId: string) => {
         let queryString = "";
         const queryParams: any = {};
@@ -130,7 +189,6 @@ const SalesTargets = () => {
 
         router.push(`/sales-representatives/${repId}${queryString}`);
     };
-
 
     const onUpdateData = ({
         search = searchParams?.search,
@@ -217,7 +275,7 @@ const SalesTargets = () => {
                 />
                 <MultipleColumnsTableForSalesRep
                     data={allTargetsData}
-                    columns={columnDef}
+                    columns={addAddtionalColoumns}
                     loading={loading}
                     searchParams={searchParams}
                     getData={onUpdateData}

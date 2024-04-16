@@ -166,6 +166,7 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                   return (
                     <th
                       className="cell"
+                      align="center"
                       key={index}
                       colSpan={header.colSpan}
                       style={{
@@ -286,8 +287,8 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                   {index == 0 || index == 1
                     ? item.value
                     : item.dolorSymbol
-                    ? formatMoney(item.value)
-                    : item?.value?.toLocaleString()}
+                      ? formatMoney(item.value)
+                      : item?.value?.toLocaleString()}
                 </td>
               );
             })}

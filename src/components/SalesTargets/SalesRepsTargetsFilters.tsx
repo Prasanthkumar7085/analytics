@@ -34,7 +34,7 @@ const SalesRepsTargetsFilters = ({
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
         <Grid item xs={3}>
-          <h4>Sales Representatives</h4>
+          <h4>Sales Representatives Targets</h4>
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
