@@ -16,7 +16,7 @@ const SalesTargets = () => {
     const router = useRouter();
     const pathname = usePathname();
     const params = useSearchParams();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [allTargetsData, setAllTargetsData] = useState<any>([]);
     const [completeData, setCompleteData] = useState([]);
     const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
@@ -62,7 +62,7 @@ const SalesTargets = () => {
 
     //get all sales reps data event
     const getAllSalesRepTargets = async (queryParams: any) => {
-        (true);
+        setLoading(true);
         try {
             let queryString = prepareURLEncodedParams("", queryParams);
 
@@ -135,7 +135,7 @@ const SalesTargets = () => {
         columns: [
             {
                 accessorFn: (row: any) => row.item.volume,
-                id: item.volume,
+                id: "volume",
                 header: () => (
                     <span style={{ whiteSpace: "nowrap" }}>Volume</span>
                 ),
@@ -152,7 +152,7 @@ const SalesTargets = () => {
             },
             {
                 accessorFn: (row: any) => row.item.facilities,
-                id: item.facilities,
+                id: "facilities",
                 header: () => (
                     <span style={{ whiteSpace: "nowrap" }}>Facilities</span>
                 ),

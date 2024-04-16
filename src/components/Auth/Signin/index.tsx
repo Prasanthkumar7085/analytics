@@ -23,7 +23,7 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [errorMessages, setErrorMessages] = useState<any>([]);
+  const [errorMessages, setErrorMessages] = useState<any>({});
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +52,7 @@ const SignIn = () => {
   const signIn = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessages([]);
+    setErrorMessages({});
     setInvalidMessage("");
     try {
       const payload = {
@@ -60,22 +60,18 @@ const SignIn = () => {
         password: password,
       };
       let response: any = await signInAPI(payload);
+
       if (response.success) {
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
         dispatch(setCaseTypeOptions(caseTypesOptions));
         if (response?.user_details?.user_type == "MARKETER") {
           await getSalesRepDetails();
-          //TODO: Remove this condition after confirmed
-          // } else if (
-          //   response?.user_details?.user_type == "HOSPITAL_MARKETING_MANAGER"
-          // ) {
-          //   router.push("/dashboard");
         } else {
           router.replace("/dashboard");
         }
-      } else if (response.type == "VALIDATION_ERROR") {
-        setErrorMessages(response?.error_data?.details);
+      } else if (response.status == 422) {
+        setErrorMessages(response?.error_data);
       } else if (response.type == "Invalid_Credentials") {
         setInvalidMessage(response?.message);
       }
@@ -123,7 +119,7 @@ const SignIn = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <ErrorMessages errorMessages={errorMessages} keyname="username" />
+              <ErrorMessages errorMessages={errorMessages} keyname="user_name" />
             </div>
             <div className="form-group mb-5">
               <label htmlFor="password" className="block text-gray-700">
@@ -175,15 +171,17 @@ const SignIn = () => {
             )}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+              className={"w-full bg-indigo-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"}
             >
-              {loading ? "Loading...." : "Sign In"}
+              {loading ?
+                <div style={{ margin: "auto", display: "flex", flexDirection: "row", justifyContent: "center" }}><Image src='/loading.svg' width={40} height={40} alt='loading' /></div>
+                : "Sign In"}
             </button>
           </form>
         </div>
       </div>
       <Toaster richColors closeButton position="top-right" />
-    </section>
+    </section >
   );
 };
 
