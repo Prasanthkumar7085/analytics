@@ -23,7 +23,7 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [errorMessages, setErrorMessages] = useState<any>([]);
+  const [errorMessages, setErrorMessages] = useState<any>({});
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
@@ -52,7 +52,7 @@ const SignIn = () => {
   const signIn = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    setErrorMessages([]);
+    setErrorMessages({});
     setInvalidMessage("");
     try {
       const payload = {
@@ -66,16 +66,11 @@ const SignIn = () => {
         dispatch(setCaseTypeOptions(caseTypesOptions));
         if (response?.user_details?.user_type == "MARKETER") {
           await getSalesRepDetails();
-          //TODO: Remove this condition after confirmed
-          // } else if (
-          //   response?.user_details?.user_type == "HOSPITAL_MARKETING_MANAGER"
-          // ) {
-          //   router.push("/dashboard");
         } else {
           router.replace("/dashboard");
         }
-      } else if (response.type == "VALIDATION_ERROR") {
-        setErrorMessages(response?.error_data?.details);
+      } else if (response.status == 422) {
+        setErrorMessages(response?.error_data);
       } else if (response.type == "Invalid_Credentials") {
         setInvalidMessage(response?.message);
       }
@@ -123,7 +118,7 @@ const SignIn = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <ErrorMessages errorMessages={errorMessages} keyname="username" />
+              <ErrorMessages errorMessages={errorMessages} keyname="user_name" />
             </div>
             <div className="form-group mb-5">
               <label htmlFor="password" className="block text-gray-700">
