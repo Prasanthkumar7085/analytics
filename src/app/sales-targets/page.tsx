@@ -4,9 +4,9 @@ import { Suspense } from "react";
 
 const SalesTargetsPage = () => {
     return (
-        <Suspense>
-            <SalesTargets />
-        </Suspense>
-    )
+      <Suspense>
+        <SalesTargets />
+      </Suspense>
+    );
 }
 export default SalesTargetsPage;
