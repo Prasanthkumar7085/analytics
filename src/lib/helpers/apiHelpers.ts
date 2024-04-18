@@ -22,3 +22,7 @@ export const formatMothNameWithYear = (month: string, year: string) => {
     let yearValue = year.substring(year.length - 2);
     return monthValue + " '" + yearValue;
 }
+export const checkNumbersOrnot = (event: any) => {
+    const value = event.target.value.replace(/\D/g, "");
+    event.target.value = value;
+};
