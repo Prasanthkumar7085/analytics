@@ -719,10 +719,17 @@ $actionButtonWidth: 95px;
   $totalCasesWidth: 120px;
   $faculityColumWidth: 140px;
 
+  // $marketerNameColumnWidth:520px;
+
   table {
     tr {
       td,
       th {
+        //   &:nth-child(2) {
+        //   width: $marketerNameColumnWidth !important;
+        //   min-width: $marketerNameColumnWidth !important;
+        //   max-width: $marketerNameColumnWidth !important;
+        // }
         &:nth-child(3) {
           width: $faculityColumWidth !important;
           min-width: $faculityColumWidth !important;

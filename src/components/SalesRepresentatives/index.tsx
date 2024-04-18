@@ -225,47 +225,47 @@ const SalesRepresentatives = () => {
       ],
     },
 
-    {
-      accessorFn: (row: any) => row.revenue,
-      header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
-      id: "revenue",
-      width: "800px",
-      columns: [
-        {
-          accessorFn: (row: any) => row.generated_amount,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-          id: "generated_amount",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: ({ getValue }: any) => {
-            return <span>{formatMoney(getValue())}</span>;
-          },
-        },
-        {
-          accessorFn: (row: any) => row.paid_amount,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
-          id: "paid_amount",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: (info: any) => {
-            return <span>{formatMoney(info.getValue())}</span>;
-          },
-        },
-        {
-          accessorFn: (row: any) => row.pending_amount,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
-          id: "pending_amount",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: (info: any) => {
-            return <span>{formatMoney(info.getValue())}</span>;
-          },
-        },
-      ],
-    },
+    // {
+    //   accessorFn: (row: any) => row.revenue,
+    //   header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
+    //   id: "revenue",
+    //   width: "800px",
+    //   columns: [
+    //     {
+    //       accessorFn: (row: any) => row.generated_amount,
+    //       header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
+    //       id: "generated_amount",
+    //       width: "200px",
+    //       maxWidth: "200px",
+    //       minWidth: "200px",
+    //       cell: ({ getValue }: any) => {
+    //         return <span>{formatMoney(getValue())}</span>;
+    //       },
+    //     },
+    //     {
+    //       accessorFn: (row: any) => row.paid_amount,
+    //       header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
+    //       id: "paid_amount",
+    //       width: "200px",
+    //       maxWidth: "200px",
+    //       minWidth: "200px",
+    //       cell: (info: any) => {
+    //         return <span>{formatMoney(info.getValue())}</span>;
+    //       },
+    //     },
+    //     {
+    //       accessorFn: (row: any) => row.pending_amount,
+    //       header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
+    //       id: "pending_amount",
+    //       width: "200px",
+    //       maxWidth: "200px",
+    //       minWidth: "200px",
+    //       cell: (info: any) => {
+    //         return <span>{formatMoney(info.getValue())}</span>;
+    //       },
+    //     },
+    //   ],
+    // },
     {
       accessorFn: (row: any) => row.target_reached,
       id: "target_reached",
@@ -277,7 +277,11 @@ const SalesRepresentatives = () => {
       maxWidth: "100px",
       minWidth: "100px",
       cell: (info: any) => {
-        return <span>{`${info.getValue() ? "Yes" : "No"}`}</span>;
+        return (
+          <span
+            style={{ color: `${info.getValue()}` == "true" ? "green" : "red" }}
+          >{`${info.getValue() ? "Yes" : "No"}`}</span>
+        );
       },
     },
     {
@@ -411,9 +415,9 @@ const SalesRepresentatives = () => {
       { value: activeFacilities, dolorSymbol: false },
       { value: totalVolume, dolorSymbol: false },
       { value: targetVolume, dolorSymbol: false },
-      { value: billedAmoumnt, dolorSymbol: true },
-      { value: paidRevenueSum, dolorSymbol: true },
-      { value: pendingAmoumnt, dolorSymbol: true },
+      // { value: billedAmoumnt, dolorSymbol: true },
+      // { value: paidRevenueSum, dolorSymbol: true },
+      // { value: pendingAmoumnt, dolorSymbol: true },
       { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
     ];

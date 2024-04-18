@@ -93,9 +93,9 @@ const SalesRep = () => {
       { value: activeFacilities, dolorSymbol: false },
       { value: totalVolume, dolorSymbol: false },
       { value: targetVolume, dolorSymbol: false },
-      { value: billedAmoumnt, dolorSymbol: true },
-      { value: paidRevenueSum, dolorSymbol: true },
-      { value: pendingAmoumnt, dolorSymbol: true },
+      // { value: billedAmoumnt, dolorSymbol: true },
+      // { value: paidRevenueSum, dolorSymbol: true },
+      // { value: pendingAmoumnt, dolorSymbol: true },
       { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
     ];

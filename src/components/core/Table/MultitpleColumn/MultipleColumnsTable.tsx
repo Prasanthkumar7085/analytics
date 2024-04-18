@@ -229,13 +229,6 @@ const MultipleColumnsTable: FC<pageProps> = ({
                         key={index}
                         style={{
                           width: "100%",
-                          backgroundColor: row?.original.hasOwnProperty(
-                            "target_reached"
-                          )
-                            ? !row?.original?.target_reached
-                              ? "#ffebe9"
-                              : ""
-                            : "",
                         }}
                       >
                         {flexRender(

@@ -16,8 +16,8 @@ const SalesRepsFilters = ({
   const [status, setStatus] = useState<any>(null);
   const [search, setSearch] = useState("");
   const [statusOptions] = useState([
-    { title: "Yes", value: "true" },
-    { title: "No", value: "false" },
+    { title: "Target Reached - Yes", value: "true" },
+    { title: "Target Reached - No", value: "false" },
   ]);
 
   useEffect(() => {
