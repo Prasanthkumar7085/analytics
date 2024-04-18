@@ -2,18 +2,19 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import { getSalesRepTargetsAPI } from "@/services/salesTargetsAPIs";
+import { getSalesRepTargetsAPI, updateTargetsAPI } from "@/services/salesTargetsAPIs";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import LoadingComponent from "../core/LoadingComponent";
-import { formatMothNameWithYear, getOnlyMonthNames, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import { checkNumbersOrnot, formatMothNameWithYear, getOnlyMonthNames, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import timePipe from "@/lib/Pipes/timePipe";
 import { IconButton, TextField } from "@mui/material";
 import Image from "next/image";
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
+import { Toaster, toast } from "sonner";
 
 const SalesTargets = () => {
     const dispatch = useDispatch();
@@ -30,6 +31,8 @@ const SalesTargets = () => {
     );
     const [totalSumValues, setTotalSumValues] = useState<any>([]);
     const [selectedValues, setSelectedValues] = useState<any>({})
+    const [editbleValue, setEditbleValue] = useState<any>()
+
     //query preparation method
     const queryPreparations = async ({
         year,
@@ -117,6 +120,36 @@ const SalesTargets = () => {
         }
     };
 
+    //update cell value or targets values
+    const updateTargets = async (month: string, values: any, id: any) => {
+        setLoading(true)
+        try {
+            let body = {
+                "month": month,
+                "targets_data": values
+
+            }
+            const response = await updateTargetsAPI(body, id);
+            if (response.status == 200 || response.status == 201) {
+                toast.success(response.message)
+                await queryPreparations({
+                    year: searchParams?.year,
+                    searchValue: searchParams?.search,
+                });
+            }
+            else {
+                toast.error(response.message)
+            }
+        }
+        catch (err) {
+            console.error(err)
+        }
+        finally {
+            setLoading(false)
+        }
+    }
+
+    //when double click on the cell we handle the editble or not (cell)
     const handleDoubleClick = (value: any, type: string, month: string, salesID: any) => {
         setSelectedValues({
             selectedColumnType: type,
@@ -124,11 +157,10 @@ const SalesTargets = () => {
             selectedMonth: month,
             selectedSalesRepID: salesID
         })
+        setEditbleValue(value)
     }
 
     const checkEditOrNot = (value: any, type: string, month: string, salesID: any) => {
-        console.log(value, type, month, salesID)
-        console.log(selectedValues)
         if (value == selectedValues.selectedTypeValue && type == selectedValues.selectedColumnType && month == selectedValues.selectedMonth && salesID == selectedValues.selectedSalesRepID) {
             return true;
         }
@@ -136,6 +168,8 @@ const SalesTargets = () => {
             return false;
         }
     }
+
+
 
     //coloumns for the sales rep targets table
     const columnDef = [
@@ -190,10 +224,18 @@ const SalesTargets = () => {
                     <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id)}>
                         {checkEditOrNot(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "centers" }}>
-                                <TextField value={info.row.original?.[item][0]} />
-                                <IconButton sx={{ padding: "0" }}>
+
+                                <TextField value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
+
+                                <IconButton sx={{ padding: "0" }} disabled={editbleValue ? false : true}
+                                    onClick={() => {
+                                        let monthData = [+editbleValue, info.row.original?.[item][1], info.row.original?.[item][2], info.row.original?.[item][3]]
+                                        updateTargets(item, monthData, info.row.original?.id)
+                                    }
+                                    }>
                                     <SaveTwoToneIcon sx={{ fontSize: '15px' }} color='success' />
                                 </IconButton>
+
                                 <IconButton onClick={() => setSelectedValues({})} sx={{ padding: "0" }}>
                                     <CancelTwoToneIcon sx={{ fontSize: '15px' }} color='error' />
                                 </IconButton>
@@ -217,8 +259,13 @@ const SalesTargets = () => {
                     <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)}>
                         {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "centers" }}>
-                                <TextField value={info.row.original?.[item][1]} />
-                                <IconButton>
+                                <TextField value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
+
+                                <IconButton disabled={editbleValue ? false : true}
+                                    onClick={() => {
+                                        let monthData = [info.row.original?.[item][0], +editbleValue, info.row.original?.[item][2], info.row.original?.[item][3]]
+                                        updateTargets(item, monthData, info.row.original?.id)
+                                    }}>
                                     <SaveTwoToneIcon sx={{ fontSize: '15px' }} color='success' />
                                 </IconButton>
                                 <IconButton onClick={() => setSelectedValues({})} sx={{ padding: "0" }}>
@@ -343,6 +390,8 @@ const SalesTargets = () => {
                 />
                 <LoadingComponent loading={loading} />
             </div>
+            <Toaster richColors closeButton position="top-right" />
+
         </div>
 
     )
