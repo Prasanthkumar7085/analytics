@@ -1,5 +1,5 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import { getSalesRepTargetsAPI, updateTargetsAPI } from "@/services/salesTargetsAPIs";
@@ -103,12 +103,16 @@ const SalesTargets = () => {
                             ?.includes(queryParams.search?.toLowerCase()?.trim())
                     );
                 }
-                // data = customSortByMonth(data, queryParams.order_by, queryParams.order_type);
+                if (queryParams.order_by && queryParams.order_by.includes("volume")) {
+                    data = customSortByMonth(data, queryParams.order_by.replace("volume", ""), 0, queryParams.order_type);
+                }
+                if (queryParams.order_by && queryParams.order_by.includes("facilities")) {
+                    data = customSortByMonth(data, queryParams.order_by.replace("facilities", ""), 1, queryParams.order_type);
+                }
                 const modifieData = addSerial(data, 1, data?.length);
                 setAllTargetsData(modifieData);
                 getTotalSumsOfMonths(modifieData)
                 let uniqueMonths = getOnlyMonthNames(response?.data);
-                console.log(uniqueMonths, "Fds")
                 setHeaderMonths(uniqueMonths)
 
             } else {
@@ -212,7 +216,7 @@ const SalesTargets = () => {
         columns: [
             {
                 accessorFn: (row: any) => row.item,
-                id: "volume",
+                id: `${item}volume`,
                 editable: true,
                 header: () => (
                     <span style={{ whiteSpace: "nowrap" }}>Volume</span>
@@ -227,7 +231,7 @@ const SalesTargets = () => {
                         {checkEditOrNot(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
-                                <TextField value={editbleValue}
+                                <TextField autoFocus value={editbleValue}
                                     onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
                                 <IconButton sx={{ padding: "0" }} disabled={editbleValue ? false : true}
@@ -249,7 +253,7 @@ const SalesTargets = () => {
             },
             {
                 accessorFn: (row: any) => row.item,
-                id: "facilities",
+                id: `${item}facilities`,
                 header: () => (
                     <span style={{ whiteSpace: "nowrap" }}>Facilities</span>
                 ),
@@ -262,7 +266,7 @@ const SalesTargets = () => {
                     <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
                         {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                <TextField value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
+                                <TextField autoFocus value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
                                 <IconButton disabled={editbleValue ? false : true}
                                     onClick={() => {
@@ -283,6 +287,7 @@ const SalesTargets = () => {
     }
 
     ));
+
 
     const addAddtionalColoumns = [...columnDef, ...addtionalcolumns]
 
@@ -333,7 +338,12 @@ const SalesTargets = () => {
         let data = [...completeData];
 
         if (orderBy && orderType) {
-            data = sortAndGetData(data, orderBy, orderType);
+            if (orderBy && orderBy.includes("volume")) {
+                data = customSortByMonth(data, orderBy.replace("volume", ""), 0, orderType);
+            }
+            if (orderBy && orderBy.includes("facilities")) {
+                data = customSortByMonth(data, orderBy.replace("facilities", ""), 1, orderType);
+            }
             if (search) {
                 data = data.filter((item: any) =>
                     item.sales_rep_name
