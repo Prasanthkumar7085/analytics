@@ -41,42 +41,7 @@ const SalesRep = () => {
 
         const modifieData = addSerial(data, 1, data?.length);
         setSalesReps(modifieData);
-
-        const totalCases = response?.data.reduce(
-          (sum: any, item: any) => sum + +item.total_cases,
-          0
-        );
-        const targeted_amount = response?.data.reduce(
-          (sum: any, item: any) => sum + +item.expected_amount,
-          0
-        );
-
-        const billedAmoumnt = response?.data.reduce(
-          (sum: any, item: any) => sum + +item.generated_amount,
-          0
-        );
-        const paidRevenueSum = response?.data.reduce(
-          (sum: any, item: any) => sum + +item.paid_amount,
-          0
-        );
-        const pendingAmoumnt = response?.data.reduce(
-          (sum: any, item: any) => sum + +item.pending_amount,
-          0
-        );
-
-        const result = [
-          { value: "Total", dolorSymbol: false },
-          { value: null, dolorSymbol: false },
-          { value: totalCases, dolorSymbol: false },
-          { value: targeted_amount, dolorSymbol: true },
-          { value: billedAmoumnt, dolorSymbol: true },
-          { value: paidRevenueSum, dolorSymbol: true },
-          { value: pendingAmoumnt, dolorSymbol: true },
-          { value: null, dolorSymbol: false },
-
-        ];
-
-        setTotalSumValues(result);
+        setFooterValuData(data);
       } else {
         throw response;
       }
@@ -85,6 +50,56 @@ const SalesRep = () => {
     } finally {
       setLoading(false);
     }
+  };
+  const setFooterValuData = (data: any[]) => {
+    const billedAmoumnt = data.reduce(
+      (sum: any, item: any) => sum + +item.generated_amount,
+      0
+    );
+    const paidRevenueSum = data.reduce(
+      (sum: any, item: any) => sum + +item.paid_amount,
+      0
+    );
+    const pendingAmoumnt = data.reduce(
+      (sum: any, item: any) => sum + +item.pending_amount,
+      0
+    );
+    const totalFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.total_facilities,
+      0
+    );
+    const targetFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.target_facilities,
+      0
+    );
+    const activeFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.active_facilities,
+      0
+    );
+    const targetVolume = data.reduce(
+      (sum: any, item: any) => sum + +item.target_volume,
+      0
+    );
+    const totalVolume = data.reduce(
+      (sum: any, item: any) => sum + +item.total_cases,
+      0
+    );
+
+    const result: any = [
+      { value: "Total", dolorSymbol: false },
+      { value: null, dolorSymbol: false },
+      { value: totalFacilities, dolorSymbol: false },
+      { value: targetFacilities, dolorSymbol: false },
+      { value: activeFacilities, dolorSymbol: false },
+      { value: totalVolume, dolorSymbol: false },
+      { value: targetVolume, dolorSymbol: false },
+      { value: billedAmoumnt, dolorSymbol: true },
+      { value: paidRevenueSum, dolorSymbol: true },
+      { value: pendingAmoumnt, dolorSymbol: true },
+      { value: null, dolorSymbol: false },
+      { value: null, dolorSymbol: false },
+    ];
+    setTotalSumValues(result);
   };
 
   useEffect(() => {

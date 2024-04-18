@@ -26,8 +26,14 @@ const MultipleColumnsTable: FC<pageProps> = ({
   searchParams,
 }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
-  let removeSortingForColumnIds = ["id", "actions", "1_revenue_generated_amount", "1_revenue_expected_amount"]
-
+   let removeSortingForColumnIds = [
+     "id",
+     "actions",
+     "target_reached",
+     "1_revenue_generated_amount",
+     "1_facilities_total_facilities",
+     "1_volume_total_cases",
+   ];
   const table = useReactTable({
     columns,
     data,
