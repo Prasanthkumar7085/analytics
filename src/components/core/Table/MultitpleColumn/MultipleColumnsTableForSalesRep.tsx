@@ -32,6 +32,8 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
     "id",
     "actions",
     "1_revenue_generated_amount",
+    "1_facilities_total_facilities",
+    "1_volume_total_cases",
   ];
 
   const table = useReactTable({
@@ -122,6 +124,9 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
   };
 
   const sortAndGetData = (header: any) => {
+    if (removeSortingForColumnIds.includes(header.id)) {
+      return;
+    }
     if (header.id == "select_rows" || header.id == "actions") {
       return;
     }
