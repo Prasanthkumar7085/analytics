@@ -895,20 +895,20 @@ $actionButtonWidth: 95px;
     tbody {
       tr {
         td {
-          &:nth-child(5) {
+          &:nth-child(6) {
             color: #ff9932;
             background-color: #f9feff;
           }
 
-          &:nth-child(6) {
+          &:nth-child(7) {
             color: #36c24d;
             background-color: #f5fff7;
           }
 
-          &:nth-child(7) {
-            color: #fe5046;
-            background-color: #fff9f9;
-          }
+          // &:nth-child(7) {
+          //   color: #fe5046;
+          //   background-color: #fff9f9;
+          // }
         }
       }
     }
@@ -1010,21 +1010,21 @@ $actionButtonWidth: 95px;
   table {
     tbody {
       tr {
-        td {
-          &:nth-child(5) {
+       td {
+          &:nth-child(6) {
             color: #ff9932;
             background-color: #f9feff;
           }
 
-          &:nth-child(6) {
+          &:nth-child(7) {
             color: #36c24d;
             background-color: #f5fff7;
           }
 
-          &:nth-child(7) {
-            color: #fe5046;
-            background-color: #fff9f9;
-          }
+          // &:nth-child(7) {
+          //   color: #fe5046;
+          //   background-color: #fff9f9;
+          // }
         }
       }
     }
