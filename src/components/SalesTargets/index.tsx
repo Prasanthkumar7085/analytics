@@ -8,7 +8,7 @@ import { addSerial } from "@/lib/Pipes/addSerial";
 import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import LoadingComponent from "../core/LoadingComponent";
-import { getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import { formatMothNameWithYear, getOnlyMonthNames, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import timePipe from "@/lib/Pipes/timePipe";
 
 const SalesTargets = () => {
@@ -24,6 +24,7 @@ const SalesTargets = () => {
     const [searchParams, setSearchParams] = useState(
         Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
     );
+    const [totalSumValues, setTotalSumValues] = useState<any>([]);
 
     //query preparation method
     const queryPreparations = async ({
@@ -59,6 +60,23 @@ const SalesTargets = () => {
         }
     }
 
+    //get total sum of the every month
+    const getTotalSumsOfMonths = (data: any) => {
+        const result: any = [[{ value: "Total", dolorSymbol: false },
+        { value: null, dolorSymbol: false }]];
+        // Calculate totals
+        const months = ["jan", "feb", "mar", "april", "may", "june", "july", "aug", "sep", "oct", "nov", "dec"];
+        months.forEach(month => {
+            const volumeTotal = data.reduce((acc: any, item: any) => acc + item[month][0], 0);
+            const facilitiesTotal = data.reduce((acc: any, item: any) => acc + item[month][1], 0);
+
+            let makeVolumeObj = { value: volumeTotal, dolorSymbol: false }
+            let makeFacilitiesObj = { value: facilitiesTotal, dolorSymbol: false }
+            result.push([makeVolumeObj, makeFacilitiesObj]);
+        });
+        setTotalSumValues(result.flat())
+
+    }
 
     //get all sales reps data event
     const getAllSalesRepTargets = async (queryParams: any) => {
@@ -71,14 +89,14 @@ const SalesTargets = () => {
             const response = await getSalesRepTargetsAPI(queryParams);
             if (response.status == 200 || response.status == 201) {
 
-                // let uniqueMonths = getUniqueMonths(response?.data);
-                // setHeaderMonths(uniqueMonths)
+                let uniqueMonths = getOnlyMonthNames(response?.data);
+                setHeaderMonths(uniqueMonths)
 
                 setCompleteData(response?.data);
                 let data = response?.data;
                 if (queryParams.search) {
                     data = data.filter((item: any) =>
-                        item.sales_rep
+                        item.sales_rep_name
                             ?.toLowerCase()
                             ?.includes(queryParams.search?.toLowerCase()?.trim())
                     );
@@ -86,6 +104,8 @@ const SalesTargets = () => {
                 data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
                 const modifieData = addSerial(data, 1, data?.length);
                 setAllTargetsData(modifieData);
+                getTotalSumsOfMonths(modifieData)
+
             } else {
                 throw response;
             }
@@ -108,8 +128,8 @@ const SalesTargets = () => {
             maxWidth: "60px",
         },
         {
-            accessorFn: (row: any) => row.sales_rep,
-            id: "sales_rep",
+            accessorFn: (row: any) => row.sales_rep_name,
+            id: "sales_rep_name",
             header: () => <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>,
             footer: (props: any) => props.column.id,
             width: "220px",
@@ -118,24 +138,25 @@ const SalesTargets = () => {
             cell: (info: any) => {
                 return <span style={{ cursor: "pointer" }}
                     onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
-                >{info.row.original.sales_rep}</span>;
+                >{info.row.original.sales_rep_name}</span>;
             },
         },
     ]
 
     //prepare additional coloumns
-    let addtionalcolumns = completeData?.map((item: any) => ({
+    let addtionalcolumns = headerMonths?.map((item: any) => ({
 
-        accessorFn: (row: any) => row[item.target_end_date],
+        accessorFn: (row: any) => row[item],
         header: () => <div style={{ textAlign: "center", margin: "auto" }}>
-            <span style={{ whiteSpace: "nowrap" }}>{timePipe(item.target_end_date, "DD-MM-YY")}</span>
+            <span style={{ whiteSpace: "nowrap" }}>{formatMothNameWithYear(item, "2023")}</span>
         </div>,
-        id: item.target_end_date,
+        id: item,
         width: "800px",
         columns: [
             {
-                accessorFn: (row: any) => row.item.volume,
+                accessorFn: (row: any) => row.item,
                 id: "volume",
+                editable: true,
                 header: () => (
                     <span style={{ whiteSpace: "nowrap" }}>Volume</span>
                 ),
@@ -146,12 +167,12 @@ const SalesTargets = () => {
                 sortDescFirst: false,
                 cell: (info: any) => (
                     <span>
-                        {info.row.original?.volume.toLocaleString()}
+                        {info.row.original?.[item][0]?.toLocaleString()}
                     </span>
                 ),
             },
             {
-                accessorFn: (row: any) => row.item.facilities,
+                accessorFn: (row: any) => row.item,
                 id: "facilities",
                 header: () => (
                     <span style={{ whiteSpace: "nowrap" }}>Facilities</span>
@@ -163,7 +184,7 @@ const SalesTargets = () => {
                 sortDescFirst: false,
                 cell: (info: any) => (
                     <span>
-                        {info.row.original?.facilities.toLocaleString()}
+                        {info.row.original?.[item][1]?.toLocaleString()}
                     </span>
                 ),
             }
@@ -174,6 +195,7 @@ const SalesTargets = () => {
 
     const addAddtionalColoumns = [...columnDef, ...addtionalcolumns]
 
+    //go to single sales rep page
     const goToSingleRepPage = (repId: string) => {
         let queryString = "";
         const queryParams: any = {};
@@ -223,7 +245,7 @@ const SalesTargets = () => {
             data = sortAndGetData(data, orderBy, orderType);
             if (search) {
                 data = data.filter((item: any) =>
-                    item.sales_rep
+                    item.sales_rep_name
                         ?.toLowerCase()
                         ?.includes(search?.toLowerCase()?.trim())
                 );
@@ -232,7 +254,7 @@ const SalesTargets = () => {
             data = [...completeData];
             if (search) {
                 data = data.filter((item: any) =>
-                    item.sales_rep
+                    item.sales_rep_name
                         ?.toLowerCase()
                         ?.includes(search?.toLowerCase()?.trim())
                 );
@@ -240,6 +262,7 @@ const SalesTargets = () => {
         }
         const modifieData = addSerial(data, 1, data?.length);
         setAllTargetsData(modifieData);
+        getTotalSumsOfMonths(modifieData)
     };
 
     useEffect(() => {
@@ -264,7 +287,7 @@ const SalesTargets = () => {
 
     return (
 
-        <div className="s-no-column" id="salesRepsPage">
+        <div className="s-no-column" id="salesTarget">
             <div >
                 <SalesRepsTargetsFilters
                     onUpdateData={onUpdateData}
@@ -279,6 +302,7 @@ const SalesTargets = () => {
                     loading={loading}
                     searchParams={searchParams}
                     getData={onUpdateData}
+                    totalSumValues={totalSumValues}
                 />
                 <LoadingComponent loading={loading} />
             </div>
