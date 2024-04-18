@@ -346,6 +346,11 @@ table {
 }
 
 #salesTarget {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#salesTarget {
   .table {
     padding: 0;
   }
@@ -915,6 +920,96 @@ $actionButtonWidth: 95px;
   }
 }
 
+#FacilitiesTablePage {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#FacilitiesTablePage {
+  table {
+    tbody {
+      tr {
+        td {
+          &:nth-child(5) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
+
+          &:nth-child(6) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
+
+          &:nth-child(7) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
+        }
+      }
+    }
+  }
+}
+
+#caseTypesTablePage {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#caseTypesTablePage {
+  table {
+    tbody {
+      tr {
+        td {
+          &:nth-child(5) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
+
+          &:nth-child(6) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
+
+          &:nth-child(7) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
+        }
+      }
+    }
+  }
+}
+
+#InsuranceTablePage {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#InsuranceTablePage {
+  table {
+    tbody {
+      tr {
+        td {
+          &:nth-child(5) {
+            color: #ff9932;
+            background-color: #f9feff;
+          }
+
+          &:nth-child(6) {
+            color: #36c24d;
+            background-color: #f5fff7;
+          }
+
+          &:nth-child(7) {
+            color: #fe5046;
+            background-color: #fff9f9;
+          }
+        }
+      }
+    }
+  }
+}
+
 #InsurancePayorsData {
   table {
     tbody {
@@ -1010,7 +1105,7 @@ $actionButtonWidth: 95px;
   table {
     tbody {
       tr {
-       td {
+        td {
           &:nth-child(5) {
             // color: #ff9932;
             background-color: #eefafd;

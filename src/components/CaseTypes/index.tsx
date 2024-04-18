@@ -339,7 +339,7 @@ const CaseTypes = () => {
   }, [params]);
   return (
     <div className="caseTypesPage s-no-column">
-      <div id="salesRepresentativesPage">
+      <div id="caseTypesTablePage">
         <CaseTypeFilters
           onUpdateData={onUpdateData}
           queryPreparations={queryPreparations}

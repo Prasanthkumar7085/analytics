@@ -19,7 +19,7 @@ export const getOnlyMonthNames = (data: any) => {
 
 export const formatMothNameWithYear = (month: string, year: string) => {
     let monthValue = month.substring(0, 1).toUpperCase() + month.substring(1, 3);
-    let yearValue = year.substring(year.length - 2);
+    let yearValue = year?.substring(year.length - 2);
     return monthValue + " '" + yearValue;
 }
 export const checkNumbersOrnot = (event: any) => {

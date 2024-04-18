@@ -380,7 +380,7 @@ const InsurancesComponent = () => {
 
   return (
     <section
-      id="salesRepresentativesPage"
+      id="InsuranceTablePage"
       className="insurancesPage s-no-column"
     >
       <InsurancesFilters

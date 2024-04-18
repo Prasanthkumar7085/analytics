@@ -386,7 +386,7 @@ const FacilitiesList = () => {
   }, [params]);
 
   return (
-    <div id="salesRepresentativesPage" className="facilitiesPage s-no-column">
+    <div id="FacilitiesTablePage" className="facilitiesPage s-no-column">
       <FacilitiesFilters
         onUpdateData={onUpdateData}
         queryPreparations={queryPreparations}
