@@ -5,6 +5,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
+import GlobalYearFilter from "../core/GlobalYearFilter";
 const SalesRepsTargetsFilters = ({
   onUpdateData,
   queryPreparations,
@@ -21,13 +22,13 @@ const SalesRepsTargetsFilters = ({
     setSearch(params.get("search") ? (params.get("search") as string) : "");
   }, [params]);
 
-  const onChangeData = (fromDate: any, toDate: any) => {
-    if (fromDate) {
-      queryPreparations({ fromDate, toDate });
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+  const onChangeData = (year: any) => {
+    if (year) {
+      queryPreparations({ year });
+      setDateFilterDefaultValue({ year: year });
     } else {
-      setDateFilterDefaultValue("", "");
-      queryPreparations({});
+      setDateFilterDefaultValue({ year: 2024 });
+      queryPreparations({ year });
     }
   };
   return (
@@ -39,9 +40,10 @@ const SalesRepsTargetsFilters = ({
         <Grid item xs={9}>
           <ul className="filterLists">
             <li className="eachFilterLists">
-              <GlobalDateRangeFilter
+              <GlobalYearFilter
                 onChangeData={onChangeData}
-                dateFilterDefaultValue={dateFilterDefaultValue}
+                defaultYearValue={dateFilterDefaultValue}
+                setDefaultYearValue={setDateFilterDefaultValue}
               />
             </li>
             <li className="eachFilterLists">

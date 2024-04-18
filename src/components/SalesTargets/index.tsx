@@ -10,6 +10,10 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import LoadingComponent from "../core/LoadingComponent";
 import { formatMothNameWithYear, getOnlyMonthNames, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import timePipe from "@/lib/Pipes/timePipe";
+import { IconButton, TextField } from "@mui/material";
+import Image from "next/image";
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
+import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
 
 const SalesTargets = () => {
     const dispatch = useDispatch();
@@ -19,28 +23,24 @@ const SalesTargets = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [allTargetsData, setAllTargetsData] = useState<any>([]);
     const [completeData, setCompleteData] = useState([]);
-    const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
+    const [defaultYearValue, setDefaultYearValue] = useState<any>();
     const [headerMonths, setHeaderMonths] = useState<any>([]);
     const [searchParams, setSearchParams] = useState(
         Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
     );
     const [totalSumValues, setTotalSumValues] = useState<any>([]);
-
+    const [selectedValues, setSelectedValues] = useState<any>({})
     //query preparation method
     const queryPreparations = async ({
-        fromDate,
-        toDate,
+        year,
         searchValue = searchParams?.search,
         orderBy = searchParams?.order_by,
         orderType = searchParams?.order_type,
     }: any) => {
-        let queryParams: any = {};
+        let queryParams: any = { year: 2024 };
 
-        if (fromDate) {
-            queryParams["from_date"] = fromDate;
-        }
-        if (toDate) {
-            queryParams["to_date"] = toDate;
+        if (year) {
+            queryParams["year"] = year;
         }
         if (searchValue) {
             queryParams["search"] = searchValue;
@@ -51,6 +51,7 @@ const SalesTargets = () => {
         if (orderType) {
             queryParams["order_type"] = orderType;
         }
+
         try {
             await getAllSalesRepTargets(queryParams)
         } catch (err: any) {
@@ -116,6 +117,26 @@ const SalesTargets = () => {
         }
     };
 
+    const handleDoubleClick = (value: any, type: string, month: string, salesID: any) => {
+        setSelectedValues({
+            selectedColumnType: type,
+            selectedTypeValue: value,
+            selectedMonth: month,
+            selectedSalesRepID: salesID
+        })
+    }
+
+    const checkEditOrNot = (value: any, type: string, month: string, salesID: any) => {
+        console.log(value, type, month, salesID)
+        console.log(selectedValues)
+        if (value == selectedValues.selectedTypeValue && type == selectedValues.selectedColumnType && month == selectedValues.selectedMonth && salesID == selectedValues.selectedSalesRepID) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     //coloumns for the sales rep targets table
     const columnDef = [
         {
@@ -148,7 +169,7 @@ const SalesTargets = () => {
 
         accessorFn: (row: any) => row[item],
         header: () => <div style={{ textAlign: "center", margin: "auto" }}>
-            <span style={{ whiteSpace: "nowrap" }}>{formatMothNameWithYear(item, "2023")}</span>
+            <span style={{ whiteSpace: "nowrap" }}>{formatMothNameWithYear(item, searchParams.year as string)}</span>
         </div>,
         id: item,
         width: "800px",
@@ -166,8 +187,18 @@ const SalesTargets = () => {
                 minWidth: "220px",
                 sortDescFirst: false,
                 cell: (info: any) => (
-                    <span>
-                        {info.row.original?.[item][0]?.toLocaleString()}
+                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id)}>
+                        {checkEditOrNot(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id) ?
+                            <div style={{ display: "flex", flexDirection: "row", alignItems: "centers" }}>
+                                <TextField value={info.row.original?.[item][0]} />
+                                <IconButton sx={{ padding: "0" }}>
+                                    <SaveTwoToneIcon sx={{ fontSize: '15px' }} color='success' />
+                                </IconButton>
+                                <IconButton onClick={() => setSelectedValues({})} sx={{ padding: "0" }}>
+                                    <CancelTwoToneIcon sx={{ fontSize: '15px' }} color='error' />
+                                </IconButton>
+                            </div>
+                            : info.row.original?.[item][0]?.toLocaleString()}
                     </span>
                 ),
             },
@@ -183,8 +214,18 @@ const SalesTargets = () => {
                 minWidth: "220px",
                 sortDescFirst: false,
                 cell: (info: any) => (
-                    <span>
-                        {info.row.original?.[item][1]?.toLocaleString()}
+                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)}>
+                        {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
+                            <div style={{ display: "flex", flexDirection: "row", alignItems: "centers" }}>
+                                <TextField value={info.row.original?.[item][1]} />
+                                <IconButton>
+                                    <SaveTwoToneIcon sx={{ fontSize: '15px' }} color='success' />
+                                </IconButton>
+                                <IconButton onClick={() => setSelectedValues({})} sx={{ padding: "0" }}>
+                                    <CancelTwoToneIcon sx={{ fontSize: '15px' }} color='error' />
+                                </IconButton>
+                            </div>
+                            : info.row.original?.[item][1]?.toLocaleString()}
                     </span>
                 ),
             }
@@ -231,8 +272,8 @@ const SalesTargets = () => {
         if (orderType) {
             queryParams["order_type"] = orderType;
         }
-        if (params.get("from_date")) {
-            queryParams["from_date"] = params.get("from_date");
+        if (params.get("year")) {
+            queryParams["year"] = params.get("year");
         }
         if (params.get("to_date")) {
             queryParams["to_date"] = params.get("to_date");
@@ -267,15 +308,11 @@ const SalesTargets = () => {
 
     useEffect(() => {
         queryPreparations({
-            fromDate: searchParams?.from_date,
-            toDate: searchParams?.to_date,
+            year: searchParams?.year,
             searchValue: searchParams?.search,
         });
-        if (searchParams?.from_date) {
-            setDateFilterDefaultValue([
-                new Date(searchParams?.from_date),
-                new Date(searchParams?.to_date),
-            ]);
+        if (searchParams?.year) {
+            setDefaultYearValue({ year: searchParams.year });
         }
     }, []);
 
@@ -292,8 +329,8 @@ const SalesTargets = () => {
                 <SalesRepsTargetsFilters
                     onUpdateData={onUpdateData}
                     queryPreparations={queryPreparations}
-                    dateFilterDefaultValue={dateFilterDefaultValue}
-                    setDateFilterDefaultValue={setDateFilterDefaultValue}
+                    dateFilterDefaultValue={defaultYearValue}
+                    setDateFilterDefaultValue={setDefaultYearValue}
                     searchParams={searchParams}
                 />
                 <MultipleColumnsTableForSalesRep
