@@ -1,9 +1,12 @@
 "use client"
 import SalesTargets from "@/components/SalesTargets";
+import { Suspense } from "react";
 
 const SalesTargetsPage = () => {
     return (
-        <SalesTargets />
+        <Suspense>
+            <SalesTargets />
+        </Suspense>
     )
 }
 export default SalesTargetsPage;
