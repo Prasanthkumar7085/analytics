@@ -285,7 +285,9 @@ const SalesTargets = () => {
                                             padding: "2.5px !Important",
                                             fontSize: "clamp(12px, 0.72vw, 14px) !important",
                                             height: 30
-                                        },
+                                        }, "& .MuiInputBase-input": {
+                                            padding: "0"
+                                        }
                                     }}
                                     onKeyDown={(e) => {
                                         if (e.key == "Enter") {

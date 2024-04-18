@@ -119,7 +119,7 @@ const Stats = ({
               <div className={styles.titlecontainer}>
                 <div className="statHeader">Volume</div>
                 {pathName.includes("dashboard") || pathName.includes("facilities") ? "" :
-                  <div style={{ fontSize: "15px", display: "flex", flexDirection: "row", alignItems: "center" }}>Target reached:
+                  <div style={{ fontSize: "15px", display: "flex", flexDirection: "row", alignItems: "center" }}>Target:
                     {loading ? (
                       <Skeleton width={30} height={50} />
                     ) : (
