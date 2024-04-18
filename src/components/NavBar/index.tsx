@@ -120,6 +120,20 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   ""
                 )}
 
+                {hasAccessOrNot("/sales-targets", userType) && userType ? (
+                  <li
+                    onClick={() => router.push("/sales-targets")}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                      pathname == "/sales-targets" ? "activePagename" : "active"
+                    ]
+                      }`}
+                  >
+                    Sales Targets
+                  </li>
+                ) : (
+                  ""
+                )}
+
                 <li>
                   <Button
                     onClick={logout}

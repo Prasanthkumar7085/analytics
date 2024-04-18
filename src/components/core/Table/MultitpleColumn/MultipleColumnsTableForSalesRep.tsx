@@ -211,7 +211,7 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                   {row.getVisibleCells().map((cell: any, index: number) => {
                     return (
                       <td
-                        className={styles.tableCell}
+                        className="cell"
                         key={index}
                         style={{
                           width: "100%",
@@ -282,12 +282,13 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
           <tr className="radiusLastChild">
             {totalSumValues?.map((item: any, index: number) => {
               return (
-                <td key={index}>
+                <td key={index} className="cell"
+                >
                   {index == 0 || index == 1
                     ? item.value
                     : item.dolorSymbol
-                    ? formatMoney(item.value)
-                    : item?.value?.toLocaleString()}
+                      ? formatMoney(item.value)
+                      : item?.value?.toLocaleString()}
                 </td>
               );
             })}

@@ -60,6 +60,7 @@ const SignIn = () => {
         password: password,
       };
       let response: any = await signInAPI(payload);
+
       if (response.success) {
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
@@ -170,15 +171,17 @@ const SignIn = () => {
             )}
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+              className={"w-full bg-indigo-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"}
             >
-              {loading ? "Loading...." : "Sign In"}
+              {loading ?
+                <div style={{ margin: "auto", display: "flex", flexDirection: "row", justifyContent: "center" }}><Image src='/loading.svg' width={40} height={40} alt='loading' /></div>
+                : "Sign In"}
             </button>
           </form>
         </div>
       </div>
       <Toaster richColors closeButton position="top-right" />
-    </section>
+    </section >
   );
 };
 
