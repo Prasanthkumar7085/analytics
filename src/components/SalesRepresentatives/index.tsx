@@ -33,6 +33,7 @@ const SalesRepresentatives = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
+    status = searchParams?.status,
   }: any) => {
     let queryParams: any = {};
 
@@ -50,6 +51,9 @@ const SalesRepresentatives = () => {
     }
     if (orderType) {
       queryParams["order_type"] = orderType;
+    }
+    if (status) {
+      queryParams["status"] = status;
     }
     try {
       await getAllSalesReps(queryParams);
@@ -77,6 +81,11 @@ const SalesRepresentatives = () => {
             item.sales_rep_name
               ?.toLowerCase()
               ?.includes(queryParams.search?.toLowerCase()?.trim())
+          );
+        }
+        if (queryParams.status) {
+          data = data.filter(
+            (item: any) => `${item.status}` == `${queryParams.status}`
           );
         }
         data = sortAndGetData(
@@ -258,6 +267,20 @@ const SalesRepresentatives = () => {
       ],
     },
     {
+      accessorFn: (row: any) => row.target_reached,
+      id: "target_reached",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
+      ),
+      footer: (props: any) => props.column.id,
+      width: "100px",
+      maxWidth: "100px",
+      minWidth: "100px",
+      cell: (info: any) => {
+        return <span>{`${info.getValue() ? "Yes" : "No"}`}</span>;
+      },
+    },
+    {
       accessorFn: (row: any) => row?._id,
       id: "actions",
       header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
@@ -281,10 +304,12 @@ const SalesRepresentatives = () => {
     search = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type as "asc" | "desc",
+    status = searchParams?.status,
   }: Partial<{
     search: string;
     orderBy: string;
     orderType: "asc" | "desc";
+    status: string;
   }>) => {
     let queryParams: any = {};
     if (search) {
@@ -295,6 +320,9 @@ const SalesRepresentatives = () => {
     }
     if (orderType) {
       queryParams["order_type"] = orderType;
+    }
+    if (status) {
+      queryParams["status"] = status;
     }
     if (params.get("from_date")) {
       queryParams["from_date"] = params.get("from_date");
@@ -315,6 +343,11 @@ const SalesRepresentatives = () => {
             ?.includes(search?.toLowerCase()?.trim())
         );
       }
+      if (status) {
+        data = data.filter(
+          (item: any) => `${item.target_reached}` == `${status}`
+        );
+      }
     } else {
       data = [...completeData];
       if (search) {
@@ -322,6 +355,11 @@ const SalesRepresentatives = () => {
           item.sales_rep_name
             ?.toLowerCase()
             ?.includes(search?.toLowerCase()?.trim())
+        );
+      }
+      if (status) {
+        data = data.filter(
+          (item: any) => `${item.target_reached}` == `${status}`
         );
       }
     }
@@ -376,6 +414,7 @@ const SalesRepresentatives = () => {
       { value: billedAmoumnt, dolorSymbol: true },
       { value: paidRevenueSum, dolorSymbol: true },
       { value: pendingAmoumnt, dolorSymbol: true },
+      { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
     ];
     setTotalSumValues(result);

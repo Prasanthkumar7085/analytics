@@ -31,6 +31,7 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
   let removeSortingForColumnIds = [
     "id",
     "actions",
+    "target_reached",
     "1_revenue_generated_amount",
     "1_facilities_total_facilities",
     "1_volume_total_cases",
