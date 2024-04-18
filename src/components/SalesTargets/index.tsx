@@ -276,7 +276,7 @@ const SalesTargets = () => {
                 minWidth: "220px",
                 sortDescFirst: false,
                 cell: (info: any) => (
-                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
+                    <div onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
                         {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
                                 <TextField autoFocus
@@ -307,7 +307,7 @@ const SalesTargets = () => {
                                 </IconButton>
                             </div>
                             : info.row.original?.[item][1]?.toLocaleString()}
-                    </span>
+                    </div>
                 ),
             }
         ]
