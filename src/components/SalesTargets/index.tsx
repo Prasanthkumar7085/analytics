@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import { getSalesRepTargetsAPI, updateTargetsAPI } from "@/services/salesTargetsAPIs";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { customSortByMonth, sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
-import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import LoadingComponent from "../core/LoadingComponent";
 import { checkNumbersOrnot, formatMothNameWithYear, getOnlyMonthNames, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import timePipe from "@/lib/Pipes/timePipe";
@@ -15,6 +14,7 @@ import Image from "next/image";
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import SaveTwoToneIcon from '@mui/icons-material/SaveTwoTone';
 import { Toaster, toast } from "sonner";
+import MultipleColumnsTableForTargets from "../core/Table/MultitpleColumn/MultipleColumnTableForTargets";
 
 const SalesTargets = () => {
     const dispatch = useDispatch();
@@ -103,7 +103,7 @@ const SalesTargets = () => {
                             ?.includes(queryParams.search?.toLowerCase()?.trim())
                     );
                 }
-                data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
+                // data = customSortByMonth(data, queryParams.order_by, queryParams.order_type);
                 const modifieData = addSerial(data, 1, data?.length);
                 setAllTargetsData(modifieData);
                 getTotalSumsOfMonths(modifieData)
@@ -132,6 +132,7 @@ const SalesTargets = () => {
             const response = await updateTargetsAPI(body, id);
             if (response.status == 200 || response.status == 201) {
                 toast.success(response.message)
+                setSelectedValues({})
                 await queryPreparations({
                     year: searchParams?.year,
                     searchValue: searchParams?.search,
@@ -221,11 +222,12 @@ const SalesTargets = () => {
                 minWidth: "220px",
                 sortDescFirst: false,
                 cell: (info: any) => (
-                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id)}>
+                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
                         {checkEditOrNot(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id) ?
-                            <div style={{ display: "flex", flexDirection: "row", alignItems: "centers" }}>
+                            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
-                                <TextField value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
+                                <TextField value={editbleValue}
+                                    onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
                                 <IconButton sx={{ padding: "0" }} disabled={editbleValue ? false : true}
                                     onClick={() => {
@@ -256,9 +258,9 @@ const SalesTargets = () => {
                 minWidth: "220px",
                 sortDescFirst: false,
                 cell: (info: any) => (
-                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)}>
+                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
                         {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
-                            <div style={{ display: "flex", flexDirection: "row", alignItems: "centers" }}>
+                            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                                 <TextField value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
                                 <IconButton disabled={editbleValue ? false : true}
@@ -380,7 +382,7 @@ const SalesTargets = () => {
                     setDateFilterDefaultValue={setDefaultYearValue}
                     searchParams={searchParams}
                 />
-                <MultipleColumnsTableForSalesRep
+                <MultipleColumnsTableForTargets
                     data={allTargetsData}
                     columns={addAddtionalColoumns}
                     loading={loading}

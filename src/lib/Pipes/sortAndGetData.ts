@@ -21,3 +21,8 @@ export const sortAndGetData = <T extends DataItem>(
     }
   });
 };
+
+
+export const customSortByMonth = (data: any, monthName: any, index: any) => {
+  return data.sort((a: any, b: any) => a[monthName][index] - b[monthName][index]);
+}
