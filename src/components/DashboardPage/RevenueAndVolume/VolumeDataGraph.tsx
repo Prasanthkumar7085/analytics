@@ -58,7 +58,7 @@ const VolumeDataGraph = ({ labelsData, totalCasesData, completedCases, loading }
                 data: totalCasesData
             },
             {
-                name: 'Completed',
+                name: 'Finalized',
                 data: completedCases
             }
         ]

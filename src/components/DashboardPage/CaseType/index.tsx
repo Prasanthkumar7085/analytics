@@ -99,7 +99,7 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>FINALISED</span>,
+      header: () => <span className={styles.tableHeading}>FINALIZED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },

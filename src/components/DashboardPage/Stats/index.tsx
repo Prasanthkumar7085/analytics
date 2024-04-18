@@ -150,7 +150,7 @@ const Stats = ({
                 />
                 <div className={styles.billed}>
                   <div className={styles.header}>
-                    <label className={styles.lable}>FINALISED</label>
+                    <label className={styles.lable}>FINALIZED</label>
                   </div>
                   <h2 className={styles.totalvalue}>
                     {loading ? (

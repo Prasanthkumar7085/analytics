@@ -258,7 +258,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
     {
       accessorFn: (row: any) => row.completed_cases,
       id: "completed_cases",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>FINALISED</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>FINALIZED</span>,
       width: "200px",
       maxWidth: "200px",
       minWidth: "200px",

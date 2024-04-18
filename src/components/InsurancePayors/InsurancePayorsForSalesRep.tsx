@@ -250,7 +250,7 @@ const InsurancePayorsForSalesRep = ({ searchParams, pageName, tabValue, selected
         {
             accessorFn: (row: any) => row.completed_cases,
             id: "completed_cases",
-            header: () => <span style={{ whiteSpace: "nowrap" }}>FINALISED</span>,
+            header: () => <span style={{ whiteSpace: "nowrap" }}>FINALIZED</span>,
             footer: (props: any) => props.column.id,
             width: "70px",
             maxWidth: "100px",

@@ -232,6 +232,13 @@ const SalesTargets = () => {
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
                                 <TextField autoFocus value={editbleValue}
+                                    sx={{
+                                        "& .MuiInputBase-root": {
+                                            padding: "2.5px !Important",
+                                            fontSize: "clamp(12px, 0.72vw, 14px) !important",
+                                            height: 30,
+                                        },
+                                    }}
                                     onKeyDown={(e) => {
                                         if (e.key == "Enter") {
                                             let monthData = [+editbleValue, info.row.original?.[item][1], info.row.original?.[item][2], info.row.original?.[item][3]]
@@ -273,6 +280,13 @@ const SalesTargets = () => {
                         {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
                                 <TextField autoFocus
+                                    sx={{
+                                        "& .MuiInputBase-root": {
+                                            padding: "2.5px !Important",
+                                            fontSize: "clamp(12px, 0.72vw, 14px) !important",
+                                            height: 30
+                                        },
+                                    }}
                                     onKeyDown={(e) => {
                                         if (e.key == "Enter") {
                                             let monthData = [info.row.original?.[item][0], +editbleValue, info.row.original?.[item][2], info.row.original?.[item][3]]
@@ -281,7 +295,7 @@ const SalesTargets = () => {
                                     }}
                                     value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
-                                <IconButton disabled={editbleValue ? false : true}
+                                <IconButton sx={{ padding: "0" }} disabled={editbleValue ? false : true}
                                     onClick={() => {
                                         let monthData = [info.row.original?.[item][0], +editbleValue, info.row.original?.[item][2], info.row.original?.[item][3]]
                                         updateTargets(item, monthData, info.row.original?.id)
