@@ -23,6 +23,14 @@ export const sortAndGetData = <T extends DataItem>(
 };
 
 
-export const customSortByMonth = (data: any, monthName: any, index: any) => {
-  return data.sort((a: any, b: any) => a[monthName][index] - b[monthName][index]);
+export const customSortByMonth = (data: any, monthName: any, index: any, sortType: any) => {
+  console.log(data, "SDafsdsd")
+  if (sortType === "asc") {
+    return data.sort((a: any, b: any) => a[monthName][index] - b[monthName][index]);
+
+  }
+  else {
+    return data.sort((a: any, b: any) => b[monthName][index] - a[monthName][index]);
+
+  }
 }
