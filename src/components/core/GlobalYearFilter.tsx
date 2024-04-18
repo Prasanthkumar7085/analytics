@@ -2,7 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 
 const GlobalYearFilter = ({ onChangeData, defaultYearValue, setDefaultYearValue }: any) => {
     let yearOptions = [
-        { year: 2022 }, { year: 2023 }, { year: 2024 }
+        { year: "2022" }, { year: "2023" }, { year: "2024" }
     ]
     return (
         <div>
@@ -10,7 +10,7 @@ const GlobalYearFilter = ({ onChangeData, defaultYearValue, setDefaultYearValue 
                 value={
                     defaultYearValue
                         ? defaultYearValue
-                        : null
+                        : { year: "2024" }
                 }
                 disablePortal
                 options={yearOptions?.length ? yearOptions : []}
@@ -18,7 +18,7 @@ const GlobalYearFilter = ({ onChangeData, defaultYearValue, setDefaultYearValue 
                     typeof option === "string" ? option : option.year
                 }
                 onChange={(_: any, newValue: any) => {
-                    if (newValue.year) {
+                    if (newValue?.year) {
                         setDefaultYearValue(newValue)
                         onChangeData(newValue.year)
                     }

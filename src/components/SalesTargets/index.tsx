@@ -54,6 +54,7 @@ const SalesTargets = () => {
 
         try {
             await getAllSalesRepTargets(queryParams)
+
         } catch (err: any) {
             console.error(err);
         } finally {
@@ -89,11 +90,8 @@ const SalesTargets = () => {
 
             const response = await getSalesRepTargetsAPI(queryParams);
             if (response.status == 200 || response.status == 201) {
-
-                let uniqueMonths = getOnlyMonthNames(response?.data);
-                setHeaderMonths(uniqueMonths)
-
                 setCompleteData(response?.data);
+
                 let data = response?.data;
                 if (queryParams.search) {
                     data = data.filter((item: any) =>
@@ -106,6 +104,8 @@ const SalesTargets = () => {
                 const modifieData = addSerial(data, 1, data?.length);
                 setAllTargetsData(modifieData);
                 getTotalSumsOfMonths(modifieData)
+                let uniqueMonths = getOnlyMonthNames(response?.data);
+                setHeaderMonths(uniqueMonths)
 
             } else {
                 throw response;
