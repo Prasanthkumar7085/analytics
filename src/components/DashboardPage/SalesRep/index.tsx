@@ -89,7 +89,7 @@ const SalesRep = () => {
       { value: "Total", dolorSymbol: false },
       { value: null, dolorSymbol: false },
       { value: totalFacilities, dolorSymbol: false },
-      { value: targetFacilities, dolorSymbol: false },
+      // { value: targetFacilities, dolorSymbol: false },
       { value: activeFacilities, dolorSymbol: false },
       { value: totalVolume, dolorSymbol: false },
       { value: targetVolume, dolorSymbol: false },

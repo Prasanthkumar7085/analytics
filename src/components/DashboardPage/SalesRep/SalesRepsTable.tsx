@@ -58,17 +58,17 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
              return <span>{getValue()?.toLocaleString()}</span>;
            },
          },
-         {
-           accessorFn: (row: any) => row.target_facilities,
-           header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
-           id: "target_facilities",
-           width: "300px",
-           maxWidth: "300px",
-           minWidth: "300px",
-           cell: (info: any) => {
-             return <span>{info.getValue()?.toLocaleString()}</span>;
-           },
-         },
+         //  {
+         //    accessorFn: (row: any) => row.target_facilities,
+         //    header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
+         //    id: "target_facilities",
+         //    width: "300px",
+         //    maxWidth: "300px",
+         //    minWidth: "300px",
+         //    cell: (info: any) => {
+         //      return <span>{info.getValue()?.toLocaleString()}</span>;
+         //    },
+         //  },
          {
            accessorFn: (row: any) => row.active_facilities,
            header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIVE</span>,
@@ -89,17 +89,6 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
        width: "800px",
        columns: [
          {
-           accessorFn: (row: any) => row.total_cases,
-           header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
-           id: "total_cases",
-           width: "200px",
-           maxWidth: "200px",
-           minWidth: "200px",
-           cell: ({ getValue }: any) => {
-             return <span>{getValue()?.toLocaleString()}</span>;
-           },
-         },
-         {
            accessorFn: (row: any) => row.target_volume,
            header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
            id: "target_volume",
@@ -108,6 +97,17 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
            minWidth: "200px",
            cell: (info: any) => {
              return <span>{info.getValue()?.toLocaleString()}</span>;
+           },
+         },
+         {
+           accessorFn: (row: any) => row.total_cases,
+           header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+           id: "total_cases",
+           width: "200px",
+           maxWidth: "200px",
+           minWidth: "200px",
+           cell: ({ getValue }: any) => {
+             return <span>{getValue()?.toLocaleString()}</span>;
            },
          },
        ],

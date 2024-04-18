@@ -170,17 +170,17 @@ const SalesRepresentatives = () => {
             return <span>{getValue()?.toLocaleString()}</span>;
           },
         },
-        {
-          accessorFn: (row: any) => row.target_facilities,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
-          id: "target_facilities",
-          width: "300px",
-          maxWidth: "300px",
-          minWidth: "300px",
-          cell: (info: any) => {
-            return <span>{info.getValue()?.toLocaleString()}</span>;
-          },
-        },
+        // {
+        //   accessorFn: (row: any) => row.target_facilities,
+        //   header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
+        //   id: "target_facilities",
+        //   width: "300px",
+        //   maxWidth: "300px",
+        //   minWidth: "300px",
+        //   cell: (info: any) => {
+        //     return <span>{info.getValue()?.toLocaleString()}</span>;
+        //   },
+        // },
         {
           accessorFn: (row: any) => row.active_facilities,
           header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIVE</span>,
@@ -201,17 +201,6 @@ const SalesRepresentatives = () => {
       width: "800px",
       columns: [
         {
-          accessorFn: (row: any) => row.total_cases,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
-          id: "total_cases",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: ({ getValue }: any) => {
-            return <span>{getValue()?.toLocaleString()}</span>;
-          },
-        },
-        {
           accessorFn: (row: any) => row.target_volume,
           header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
           id: "target_volume",
@@ -220,6 +209,17 @@ const SalesRepresentatives = () => {
           minWidth: "200px",
           cell: (info: any) => {
             return <span>{info.getValue()?.toLocaleString()}</span>;
+          },
+        },
+        {
+          accessorFn: (row: any) => row.total_cases,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+          id: "total_cases",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: ({ getValue }: any) => {
+            return <span>{getValue()?.toLocaleString()}</span>;
           },
         },
       ],
@@ -411,7 +411,7 @@ const SalesRepresentatives = () => {
       { value: "Total", dolorSymbol: false },
       { value: null, dolorSymbol: false },
       { value: totalFacilities, dolorSymbol: false },
-      { value: targetFacilities, dolorSymbol: false },
+      // { value: targetFacilities, dolorSymbol: false },
       { value: activeFacilities, dolorSymbol: false },
       { value: totalVolume, dolorSymbol: false },
       { value: targetVolume, dolorSymbol: false },

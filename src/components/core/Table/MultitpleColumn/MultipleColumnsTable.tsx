@@ -229,6 +229,14 @@ const MultipleColumnsTable: FC<pageProps> = ({
                         key={index}
                         style={{
                           width: "100%",
+                          backgroundColor:
+                            row?.original.hasOwnProperty("target_reached") &&
+                            cell?.id &&
+                            cell?.id.includes("total_cases")
+                              ? !row?.original?.target_reached
+                                ? "#ffebe9"
+                                : "#f5fff7"
+                              : "",
                         }}
                       >
                         {flexRender(

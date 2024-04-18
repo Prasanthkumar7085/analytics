@@ -215,12 +215,22 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
               return (
                 <tr className="table-row" key={mainIndex}>
                   {row.getVisibleCells().map((cell: any, index: number) => {
+                    console.log(cell.id, "asdf");
+
                     return (
                       <td
                         className="cell"
                         key={index}
                         style={{
                           width: "100%",
+                          backgroundColor:
+                            row?.original.hasOwnProperty("target_reached") &&
+                            cell?.id &&
+                            cell?.id.includes("total_cases")
+                              ? !row?.original?.target_reached
+                                ? "#ffebe9"
+                                : "#f5fff7"
+                              : "",
                         }}
                       >
                         {flexRender(
