@@ -232,6 +232,12 @@ const SalesTargets = () => {
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
                                 <TextField autoFocus value={editbleValue}
+                                    onKeyDown={(e) => {
+                                        if (e.key == "Enter") {
+                                            let monthData = [+editbleValue, info.row.original?.[item][1], info.row.original?.[item][2], info.row.original?.[item][3]]
+                                            updateTargets(item, monthData, info.row.original?.id)
+                                        }
+                                    }}
                                     onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
                                 <IconButton sx={{ padding: "0" }} disabled={editbleValue ? false : true}
@@ -265,8 +271,15 @@ const SalesTargets = () => {
                 cell: (info: any) => (
                     <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
                         {checkEditOrNot(info.row.original?.[item][1], "facilities", item, info.row.original.sales_rep_id) ?
-                            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                                <TextField autoFocus value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
+                            <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }} >
+                                <TextField autoFocus
+                                    onKeyDown={(e) => {
+                                        if (e.key == "Enter") {
+                                            let monthData = [info.row.original?.[item][0], +editbleValue, info.row.original?.[item][2], info.row.original?.[item][3]]
+                                            updateTargets(item, monthData, info.row.original?.id)
+                                        }
+                                    }}
+                                    value={editbleValue} onChange={(e) => setEditbleValue(e.target.value)} onInput={checkNumbersOrnot} />
 
                                 <IconButton disabled={editbleValue ? false : true}
                                     onClick={() => {
