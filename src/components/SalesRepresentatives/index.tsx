@@ -7,18 +7,15 @@ import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
 import { Button } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
 
 const SalesRepresentatives = () => {
-  const dispatch = useDispatch();
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const marketers = useSelector((state: any) => state?.users.marketers);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -36,6 +33,7 @@ const SalesRepresentatives = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
+    status = searchParams?.status,
   }: any) => {
     let queryParams: any = {};
 
@@ -54,14 +52,17 @@ const SalesRepresentatives = () => {
     if (orderType) {
       queryParams["order_type"] = orderType;
     }
+    if (status) {
+      queryParams["status"] = status;
+    }
     try {
-      await getAllSalesReps(queryParams)
+      await getAllSalesReps(queryParams);
     } catch (err: any) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get all sales reps data event
   const getAllSalesReps = async (queryParams: any) => {
@@ -82,44 +83,20 @@ const SalesRepresentatives = () => {
               ?.includes(queryParams.search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
+        if (queryParams.status) {
+          data = data.filter(
+            (item: any) => `${item.status}` == `${queryParams.status}`
+          );
+        }
+        data = sortAndGetData(
+          data,
+          queryParams.order_by,
+          queryParams.order_type
+        );
         const modifieData = addSerial(data, 1, data?.length);
         setSalesReps(modifieData);
 
-        const totalCases = data.reduce(
-          (sum: any, item: any) => sum + +item.total_cases,
-          0
-        );
-
-        const billedAmoumnt = data.reduce(
-          (sum: any, item: any) => sum + +item.generated_amount,
-          0
-        );
-        const paidRevenueSum = data.reduce(
-          (sum: any, item: any) => sum + +item.paid_amount,
-          0
-        );
-        const pendingAmoumnt = data.reduce(
-          (sum: any, item: any) => sum + +item.pending_amount,
-          0
-        );
-        const totalNoOfFacilities = data.reduce(
-          (sum: any, item: any) => sum + +item.no_of_facilities,
-          0
-        );
-
-        const result: any = [
-          { value: "Total", dolorSymbol: false },
-          { value: null, dolorSymbol: false },
-          { value: totalNoOfFacilities, dolorSymbol: false },
-          { value: totalCases, dolorSymbol: false },
-          { value: billedAmoumnt, dolorSymbol: true },
-          { value: paidRevenueSum, dolorSymbol: true },
-          { value: pendingAmoumnt, dolorSymbol: true },
-          { value: null, dolorSymbol: false },
-
-        ];
-        setTotalSumValues(result);
+        setFooterValuData(data);
       } else {
         throw response;
       }
@@ -165,37 +142,89 @@ const SalesRepresentatives = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
-        return <span style={{ cursor: "pointer" }}
-          onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
-        >{info.row.original.sales_rep_name}</span>;
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
+          >
+            {info.row.original.sales_rep_name}
+          </span>
+        );
       },
+    },
+
+    {
+      accessorFn: (row: any) => row.revenue,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITIES</span>,
+      id: "facilities",
+      width: "800px",
+      columns: [
+        {
+          accessorFn: (row: any) => row.total_facilities,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+          id: "total_facilities",
+          width: "300px",
+          maxWidth: "300px",
+          minWidth: "300px",
+          cell: ({ getValue }: any) => {
+            return <span>{getValue()?.toLocaleString()}</span>;
+          },
+        },
+        {
+          accessorFn: (row: any) => row.target_facilities,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
+          id: "target_facilities",
+          width: "300px",
+          maxWidth: "300px",
+          minWidth: "300px",
+          cell: (info: any) => {
+            return <span>{info.getValue()?.toLocaleString()}</span>;
+          },
+        },
+        {
+          accessorFn: (row: any) => row.active_facilities,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIVE</span>,
+          id: "active_facilities",
+          width: "300px",
+          maxWidth: "300px",
+          minWidth: "300px",
+          cell: (info: any) => {
+            return <span>{info.getValue()?.toLocaleString()}</span>;
+          },
+        },
+      ],
     },
     {
-      accessorFn: (row: any) => row.no_of_facilities,
-      id: "no_of_facilities",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>NO. OF FACILITIES</span>
-      ),
-      footer: (props: any) => props.column.id,
-      width: "220px",
-      maxWidth: "220px",
-      minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()?.toLocaleString()}</span>;
-      },
+      accessorFn: (row: any) => row.volume,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>VOLUME</span>,
+      id: "volume",
+      width: "800px",
+      columns: [
+        {
+          accessorFn: (row: any) => row.total_cases,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+          id: "total_cases",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: ({ getValue }: any) => {
+            return <span>{getValue()?.toLocaleString()}</span>;
+          },
+        },
+        {
+          accessorFn: (row: any) => row.target_volume,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
+          id: "target_volume",
+          width: "200px",
+          maxWidth: "200px",
+          minWidth: "200px",
+          cell: (info: any) => {
+            return <span>{info.getValue()?.toLocaleString()}</span>;
+          },
+        },
+      ],
     },
-    {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      maxWidth: "200px",
-      minWidth: "200px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()?.toLocaleString()}</span>;
-      },
-    },
+
     {
       accessorFn: (row: any) => row.revenue,
       header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
@@ -238,6 +267,20 @@ const SalesRepresentatives = () => {
       ],
     },
     {
+      accessorFn: (row: any) => row.target_reached,
+      id: "target_reached",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>TARGET REACHED</span>
+      ),
+      footer: (props: any) => props.column.id,
+      width: "100px",
+      maxWidth: "100px",
+      minWidth: "100px",
+      cell: (info: any) => {
+        return <span>{`${info.getValue() ? "Yes" : "No"}`}</span>;
+      },
+    },
+    {
       accessorFn: (row: any) => row?._id,
       id: "actions",
       header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
@@ -261,10 +304,12 @@ const SalesRepresentatives = () => {
     search = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type as "asc" | "desc",
+    status = searchParams?.status,
   }: Partial<{
     search: string;
     orderBy: string;
     orderType: "asc" | "desc";
+    status: string;
   }>) => {
     let queryParams: any = {};
     if (search) {
@@ -275,6 +320,9 @@ const SalesRepresentatives = () => {
     }
     if (orderType) {
       queryParams["order_type"] = orderType;
+    }
+    if (status) {
+      queryParams["status"] = status;
     }
     if (params.get("from_date")) {
       queryParams["from_date"] = params.get("from_date");
@@ -295,6 +343,11 @@ const SalesRepresentatives = () => {
             ?.includes(search?.toLowerCase()?.trim())
         );
       }
+      if (status) {
+        data = data.filter(
+          (item: any) => `${item.target_reached}` == `${status}`
+        );
+      }
     } else {
       data = [...completeData];
       if (search) {
@@ -304,15 +357,19 @@ const SalesRepresentatives = () => {
             ?.includes(search?.toLowerCase()?.trim())
         );
       }
+      if (status) {
+        data = data.filter(
+          (item: any) => `${item.target_reached}` == `${status}`
+        );
+      }
     }
     const modifieData = addSerial(data, 1, data?.length);
     setSalesReps(modifieData);
 
-    const totalCases = data.reduce(
-      (sum: any, item: any) => sum + +item.total_cases,
-      0
-    );
+    setFooterValuData(data);
+  };
 
+  const setFooterValuData = (data: any[]) => {
     const billedAmoumnt = data.reduce(
       (sum: any, item: any) => sum + +item.generated_amount,
       0
@@ -325,19 +382,39 @@ const SalesRepresentatives = () => {
       (sum: any, item: any) => sum + +item.pending_amount,
       0
     );
-    const totalNoOfFacilities = data.reduce(
-      (sum: any, item: any) => sum + +item.no_of_facilities,
+    const totalFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.total_facilities,
+      0
+    );
+    const targetFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.target_facilities,
+      0
+    );
+    const activeFacilities = data.reduce(
+      (sum: any, item: any) => sum + +item.active_facilities,
+      0
+    );
+    const targetVolume = data.reduce(
+      (sum: any, item: any) => sum + +item.target_volume,
+      0
+    );
+    const totalVolume = data.reduce(
+      (sum: any, item: any) => sum + +item.total_cases,
       0
     );
 
     const result: any = [
       { value: "Total", dolorSymbol: false },
       { value: null, dolorSymbol: false },
-      { value: totalNoOfFacilities, dolorSymbol: false },
-      { value: totalCases, dolorSymbol: false },
+      { value: totalFacilities, dolorSymbol: false },
+      { value: targetFacilities, dolorSymbol: false },
+      { value: activeFacilities, dolorSymbol: false },
+      { value: totalVolume, dolorSymbol: false },
+      { value: targetVolume, dolorSymbol: false },
       { value: billedAmoumnt, dolorSymbol: true },
       { value: paidRevenueSum, dolorSymbol: true },
       { value: pendingAmoumnt, dolorSymbol: true },
+      { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
     ];
     setTotalSumValues(result);
