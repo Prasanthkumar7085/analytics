@@ -227,7 +227,7 @@ const SalesTargets = () => {
                 minWidth: "220px",
                 sortDescFirst: false,
                 cell: (info: any) => (
-                    <span onDoubleClick={() => handleDoubleClick(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer" }}>
+                    <div onDoubleClick={() => handleDoubleClick(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id)} style={{ cursor: "pointer", width: "100%" }}>
                         {checkEditOrNot(info.row.original?.[item][0], "volume", item, info.row.original.sales_rep_id) ?
                             <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
 
@@ -261,7 +261,7 @@ const SalesTargets = () => {
                                 </IconButton>
                             </div>
                             : info.row.original?.[item][0]?.toLocaleString()}
-                    </span>
+                    </div>
                 ),
             },
             {
