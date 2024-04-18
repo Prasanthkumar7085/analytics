@@ -70,7 +70,7 @@ const SalesTargets = () => {
         const result: any = [[{ value: "Total", dolorSymbol: false },
         { value: null, dolorSymbol: false }]];
         // Calculate totals
-        const months = ["jan", "feb", "mar", "april", "may", "june", "july", "aug", "sep", "oct", "nov", "dec"];
+        const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sept", "oct", "nov", "dec"];
         months.forEach(month => {
             const volumeTotal = data.reduce((acc: any, item: any) => acc + item[month][0], 0);
             const facilitiesTotal = data.reduce((acc: any, item: any) => acc + item[month][1], 0);
@@ -108,6 +108,7 @@ const SalesTargets = () => {
                 setAllTargetsData(modifieData);
                 getTotalSumsOfMonths(modifieData)
                 let uniqueMonths = getOnlyMonthNames(response?.data);
+                console.log(uniqueMonths, "Fds")
                 setHeaderMonths(uniqueMonths)
 
             } else {
