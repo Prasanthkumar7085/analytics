@@ -1,7 +1,24 @@
 import { Autocomplete, TextField } from "@mui/material";
 
 const GlobalYearFilter = ({ onChangeData, defaultYearValue, setDefaultYearValue }: any) => {
-    let yearOptions = [{ month: "04-2024" }, { month: "03-2024" }];
+    let yearOptions = [
+      { month: "04-2024" },
+      { month: "03-2024" },
+      { month: "02-2024" },
+      { month: "01-2024" },
+      { month: "12-2023" },
+      { month: "11-2023" },
+      { month: "10-2023" },
+      { month: "09-2023" },
+      { month: "08-2023" },
+      { month: "07-2023" },
+      { month: "06-2023" },
+      { month: "05-2023" },
+      { month: "04-2023" },
+      { month: "03-2023" },
+      { month: "02-2023" },
+      { month: "01-2023" },
+    ];
     return (
       <div>
         <Autocomplete

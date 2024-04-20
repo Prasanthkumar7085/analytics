@@ -47,7 +47,7 @@ const SalesCaseTypeWiseTargets = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
-    let queryParams: any = {};
+    let queryParams: any = { month: "04-2024" };
     if (month) {
       queryParams["month"] = month;
     }
@@ -304,6 +304,7 @@ const SalesCaseTypeWiseTargets = () => {
             {checkEditOrNot(item, info.row.original.sales_rep_id) ? (
               <TextField
                 autoFocus
+                key={info.row.original.sales_rep_id}
                 sx={{
                   "& .MuiInputBase-root": {
                     padding: "2.5px !Important",
@@ -314,16 +315,11 @@ const SalesCaseTypeWiseTargets = () => {
                     padding: "0",
                   },
                 }}
-                onKeyDown={(e) => {
-                  if (e.key == "Enter") {
-                    updateTargets(item, info.row.original?.id);
-                  }
-                }}
                 value={editbleValue[casetype.value]}
                 onChange={(e) => {
                   setEditbleValue((prev: any) => ({
                     ...prev,
-                    [casetype.value]: e.target.value,
+                    [casetype.value]: +e.target.value,
                   }));
                 }}
                 onInput={checkNumbersOrnot}
@@ -339,7 +335,7 @@ const SalesCaseTypeWiseTargets = () => {
       {
         header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
         accessorFn: (row: any) => row.actions,
-        id: `${item}-action-column`,
+        id: `${item}-{}`,
         width: "200px",
         cell: (info: any) => {
           return (
@@ -352,7 +348,8 @@ const SalesCaseTypeWiseTargets = () => {
                 gap: "0.5rem",
               }}
             >
-              {Object.keys(selectedValues)?.length ? (
+              {Object.keys(selectedValues)?.length &&
+              checkEditOrNot(item, info.row.original.sales_rep_id) ? (
                 <div>
                   <IconButton
                     sx={{ padding: "0" }}
@@ -373,6 +370,8 @@ const SalesCaseTypeWiseTargets = () => {
               ) : (
                 <p
                   onClick={() => {
+                    console.log(info.row.original.id, "'ee");
+
                     handleEditClick(item, info.row.original.sales_rep_id, info);
                   }}
                 >
