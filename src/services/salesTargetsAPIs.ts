@@ -3,7 +3,10 @@ import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
 export const getSalesRepTargetsAPI = async (params: any) => {
     try {
-        const { success, data } = await $fetch.get("/sales-reps-targets", params);
+        const { success, data } = await $fetch.get(
+          "/sales-reps-monthly-targets",
+          params
+        );
         if (!success) {
             return handleAPIErrorResponse(data);
         }

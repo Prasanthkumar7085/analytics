@@ -1,5 +1,5 @@
 "use client"
-import SalesTargets from "@/components/SalesTargets";
+import SalesTargets from "@/components/SalesCaseTypesTargets";
 import { Suspense } from "react";
 
 const SalesTargetsPage = () => {
