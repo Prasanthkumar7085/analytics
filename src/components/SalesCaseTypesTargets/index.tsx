@@ -334,7 +334,7 @@ const SalesCaseTypeWiseTargets = () => {
       })),
       {
         header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
-        accessorFn: (row: any) => row.actions,
+        accessorFn: (row: any) => row.original.monthwiseData[item],
         id: `${item}-{}`,
         width: "200px",
         cell: (info: any) => {

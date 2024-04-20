@@ -392,6 +392,22 @@ table {
         z-index: 999;
 
   }
+  .tableContainer .thead .table-row .cell:last-child {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    position: sticky !important;
+    right: 0px !important;
+    background: #f0edff !important;
+        z-index: 999;
+
+  }
+  .tableContainer .tbody .table-row .cell:nth-child(17) {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    position: sticky !important;
+    right: 0px !important;
+    background: #fff !important;
+        z-index: 999;
+
+  }
   .tableContainer .tfootRow .radiusLastChild .cell:first-child {
     border-left: 0.633951px solid #e0e0e0 !important;
     border-radius: 5px 0px 0px 5px !important;
