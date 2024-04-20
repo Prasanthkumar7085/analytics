@@ -2,6 +2,7 @@ import { addSerial } from "@/lib/Pipes/addSerial";
 import { customSortByMonth } from "@/lib/Pipes/sortAndGetData";
 import { caseTypesData } from "@/lib/constants";
 import {
+  checkNumbersOrnot,
   formatDateToMonthName,
   getUniqueMonths,
 } from "@/lib/helpers/apiHelpers";
@@ -18,7 +19,9 @@ import MultipleColumnsTableForTargets from "../core/Table/MultitpleColumn/Multip
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-
+import { IconButton, TextField } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseIcon from "@mui/icons-material/Close";
 const SalesCaseTypeWiseTargets = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -34,6 +37,7 @@ const SalesCaseTypeWiseTargets = () => {
   );
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [selectedValues, setSelectedValues] = useState<any>({});
+  const [editOrNot, setEditOrNot] = useState<boolean>(false);
   const [editbleValue, setEditbleValue] = useState<any>();
 
   //query preparation method
@@ -111,12 +115,14 @@ const SalesCaseTypeWiseTargets = () => {
     const groupedData = data.reduce((acc: any, obj: any) => {
       const salesRepName = obj.sales_rep_name;
       const salesRepId = obj.sales_rep_id;
+      const id = obj.id;
       const month = obj.month;
 
       if (!acc[salesRepId]) {
         acc[salesRepId] = {
           sales_rep_name: salesRepName,
           sales_rep_id: salesRepId,
+          id: id,
           monthwiseData: {},
         };
       }
@@ -167,12 +173,12 @@ const SalesCaseTypeWiseTargets = () => {
   };
 
   //update cell value or targets values
-  const updateTargets = async (month: string, values: any, id: any) => {
+  const updateTargets = async (month: string, id: any) => {
     setLoading(true);
     try {
       let body = {
         month: month,
-        targets_data: values,
+        targets_data: editbleValue,
       };
       const response = await updateTargetsAPI(body, id);
       if (response.status == 200 || response.status == 201) {
@@ -193,30 +199,33 @@ const SalesCaseTypeWiseTargets = () => {
   };
 
   //when double click on the cell we handle the editble or not (cell)
-  const handleDoubleClick = (
-    value: any,
-    type: string,
-    month: string,
-    salesID: any
-  ) => {
+  const handleEditClick = (month: string, salesID: any, infoData: any) => {
     setSelectedValues({
-      selectedColumnType: type,
-      selectedTypeValue: value,
       selectedMonth: month,
       selectedSalesRepID: salesID,
     });
-    setEditbleValue(value);
+    setEditbleValue({
+      covid: infoData.row.original.monthwiseData[month]["covid"],
+      covid_flu: infoData.row.original.monthwiseData[month]["covid_flu"],
+      clinical: infoData.row.original.monthwiseData[month]["clinical"],
+      gastro: infoData.row.original.monthwiseData[month]["gastro"],
+      nail: infoData.row.original.monthwiseData[month]["nail"],
+      pgx: infoData.row.original.monthwiseData[month]["pgx"],
+      rpp: infoData.row.original.monthwiseData[month]["rpp"],
+      tox: infoData.row.original.monthwiseData[month]["tox"],
+      ua: infoData.row.original.monthwiseData[month]["ua"],
+      uti: infoData.row.original.monthwiseData[month]["uti"],
+      wound: infoData.row.original.monthwiseData[month]["wound"],
+      card: infoData.row.original.monthwiseData[month]["card"],
+      cgx: infoData.row.original.monthwiseData[month]["cgx"],
+      diabetes: infoData.row.original.monthwiseData[month]["diabetes"],
+      pad: infoData.row.original.monthwiseData[month]["pad"],
+      pul: infoData.row.original.monthwiseData[month]["pul"],
+    });
   };
 
-  const checkEditOrNot = (
-    value: any,
-    type: string,
-    month: string,
-    salesID: any
-  ) => {
+  const checkEditOrNot = (month: string, salesID: any) => {
     if (
-      value == selectedValues.selectedTypeValue &&
-      type == selectedValues.selectedColumnType &&
       month == selectedValues.selectedMonth &&
       salesID == selectedValues.selectedSalesRepID
     ) {
@@ -274,20 +283,55 @@ const SalesCaseTypeWiseTargets = () => {
       ...caseTypesData?.map((casetype: any, caseIndex: number) => ({
         accessorFn: (row: any) => row.monthwiseData[item][casetype.value],
         header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>{casetype.title}</span>
+          <span style={{ whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+            {casetype.title}
+          </span>
         ),
         id: `${item}-${casetype.value}`,
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
-        cell: ({ getValue }: any) => (
-          <span>{getValue()?.toLocaleString()}</span>
+        cell: (info: any) => (
+          <div>
+            {checkEditOrNot(item, info.row.original.sales_rep_id) ? (
+              <TextField
+                autoFocus
+                sx={{
+                  "& .MuiInputBase-root": {
+                    padding: "2.5px !Important",
+                    fontSize: "clamp(12px, 0.72vw, 14px) !important",
+                    height: 30,
+                  },
+                  "& .MuiInputBase-input": {
+                    padding: "0",
+                  },
+                }}
+                onKeyDown={(e) => {
+                  if (e.key == "Enter") {
+                    updateTargets(item, info.row.original?.id);
+                  }
+                }}
+                value={editbleValue[casetype.value]}
+                onChange={(e) => {
+                  setEditbleValue((prev: any) => ({
+                    ...prev,
+                    [casetype.value]: e.target.value,
+                  }));
+                }}
+                onInput={checkNumbersOrnot}
+              />
+            ) : (
+              info.row.original.monthwiseData[item][
+                casetype.value
+              ]?.toLocaleString()
+            )}
+          </div>
         ),
       })),
       {
         header: () => <span style={{ whiteSpace: "nowrap" }}>Actions</span>,
-        accessorFn: (row: any) => row.additionalColumnData,
-        id: `${item}-additional-column`,
+        accessorFn: (row: any) => row.actions,
+        id: `${item}-action-column`,
         width: "200px",
         cell: (info: any) => {
           return (
@@ -296,10 +340,39 @@ const SalesCaseTypeWiseTargets = () => {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
+                cursor: "pointer",
+                gap: "0.5rem",
               }}
             >
-              <BorderColorIcon />
-              <p>Edit</p>
+              {Object.keys(selectedValues)?.length ? (
+                <div>
+                  <IconButton
+                    sx={{ padding: "0" }}
+                    disabled={editbleValue ? false : true}
+                    onClick={() => {
+                      updateTargets(item, info.row.original?.id);
+                    }}
+                  >
+                    <SaveIcon color="success" />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => setSelectedValues({})}
+                    sx={{ padding: "0" }}
+                  >
+                    <CloseIcon color="error" />
+                  </IconButton>
+                </div>
+              ) : (
+                <p
+                  onClick={() => {
+                    handleEditClick(item, info.row.original.sales_rep_id, info);
+                  }}
+                >
+                  {" "}
+                  <BorderColorIcon fontSize={"small"} />
+                  Edit
+                </p>
+              )}
             </div>
           );
         },

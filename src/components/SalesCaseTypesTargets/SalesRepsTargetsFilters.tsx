@@ -27,7 +27,7 @@ const SalesRepsTargetsFilters = ({
       queryPreparations({ month: year });
       setDateFilterDefaultValue({ month: year });
     } else {
-      setDateFilterDefaultValue({ month: 2024 });
+      setDateFilterDefaultValue({ month: "" });
       queryPreparations({ month: "" });
     }
   };

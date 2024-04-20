@@ -16,8 +16,8 @@ const GlobalYearFilter = ({ onChangeData, defaultYearValue, setDefaultYearValue 
               setDefaultYearValue(newValue);
               onChangeData(newValue.month);
             } else {
-              setDefaultYearValue(2024);
-              onChangeData(2024);
+              setDefaultYearValue("");
+              onChangeData("");
             }
           }}
           sx={{

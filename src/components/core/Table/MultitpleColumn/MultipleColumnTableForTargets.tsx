@@ -174,6 +174,7 @@ const MultipleColumnsTableForTargets: FC<pageProps> = ({
                                           width: getWidth(header.id),
                                           color: "#000",
                                           background: "#F0EDFF",
+                                          textOverflow: "ellipsis",
                                         }}
                                       >
                                         {header.isPlaceholder ? null : (
