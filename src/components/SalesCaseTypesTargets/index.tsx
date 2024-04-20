@@ -158,10 +158,19 @@ const SalesCaseTypeWiseTargets = () => {
               ?.includes(queryParams.search?.toLowerCase()?.trim())
           );
         }
-        const modifieData = addSerial(groupData, 1, groupData?.length);
-        setAllTargetsData(modifieData); // Grouping data by sales representative
-
-        console.log(Object.values(groupData), "0009999");
+        let modifieData = addSerial(groupData, 1, groupData?.length);
+        if (queryParams.order_by) {
+          const string = queryParams.order_by.split("-");
+          const datePart = string[0] + "-" + string[1];
+          const remainingPart = string[2];
+          modifieData = customSortByMonth(
+            modifieData,
+            datePart,
+            remainingPart,
+            queryParams.order_type
+          );
+        }
+        setAllTargetsData(modifieData);
       } else {
         throw response;
       }
@@ -176,16 +185,15 @@ const SalesCaseTypeWiseTargets = () => {
   const updateTargets = async (month: string, id: any) => {
     setLoading(true);
     try {
-      let body = {
-        month: month,
-        targets_data: editbleValue,
-      };
+      let body = editbleValue;
+
       const response = await updateTargetsAPI(body, id);
       if (response.status == 200 || response.status == 201) {
         toast.success(response.message);
         setSelectedValues({});
+        setEditbleValue({});
         await queryPreparations({
-          year: searchParams?.year,
+          month: searchParams?.month,
           searchValue: searchParams?.search,
         });
       } else {
@@ -205,22 +213,22 @@ const SalesCaseTypeWiseTargets = () => {
       selectedSalesRepID: salesID,
     });
     setEditbleValue({
-      covid: infoData.row.original.monthwiseData[month]["covid"],
-      covid_flu: infoData.row.original.monthwiseData[month]["covid_flu"],
-      clinical: infoData.row.original.monthwiseData[month]["clinical"],
-      gastro: infoData.row.original.monthwiseData[month]["gastro"],
-      nail: infoData.row.original.monthwiseData[month]["nail"],
-      pgx: infoData.row.original.monthwiseData[month]["pgx"],
-      rpp: infoData.row.original.monthwiseData[month]["rpp"],
-      tox: infoData.row.original.monthwiseData[month]["tox"],
-      ua: infoData.row.original.monthwiseData[month]["ua"],
-      uti: infoData.row.original.monthwiseData[month]["uti"],
-      wound: infoData.row.original.monthwiseData[month]["wound"],
-      card: infoData.row.original.monthwiseData[month]["card"],
-      cgx: infoData.row.original.monthwiseData[month]["cgx"],
-      diabetes: infoData.row.original.monthwiseData[month]["diabetes"],
-      pad: infoData.row.original.monthwiseData[month]["pad"],
-      pul: infoData.row.original.monthwiseData[month]["pul"],
+      covid: +infoData.row.original.monthwiseData[month]["covid"],
+      covid_flu: +infoData.row.original.monthwiseData[month]["covid_flu"],
+      clinical: +infoData.row.original.monthwiseData[month]["clinical"],
+      gastro: +infoData.row.original.monthwiseData[month]["gastro"],
+      nail: +infoData.row.original.monthwiseData[month]["nail"],
+      pgx: +infoData.row.original.monthwiseData[month]["pgx"],
+      rpp: +infoData.row.original.monthwiseData[month]["rpp"] || 0,
+      tox: +infoData.row.original.monthwiseData[month]["tox"],
+      ua: +infoData.row.original.monthwiseData[month]["ua"] || 0,
+      uti: +infoData.row.original.monthwiseData[month]["uti"],
+      wound: +infoData.row.original.monthwiseData[month]["wound"],
+      card: +infoData.row.original.monthwiseData[month]["card"],
+      cgx: +infoData.row.original.monthwiseData[month]["cgx"],
+      diabetes: +infoData.row.original.monthwiseData[month]["diabetes"],
+      pad: +infoData.row.original.monthwiseData[month]["pad"],
+      pul: +infoData.row.original.monthwiseData[month]["pul"],
     });
   };
 
@@ -329,7 +337,7 @@ const SalesCaseTypeWiseTargets = () => {
         ),
       })),
       {
-        header: () => <span style={{ whiteSpace: "nowrap" }}>Actions</span>,
+        header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
         accessorFn: (row: any) => row.actions,
         id: `${item}-action-column`,
         width: "200px",
@@ -429,20 +437,15 @@ const SalesCaseTypeWiseTargets = () => {
     let data = [...completeData];
 
     if (orderBy && orderType) {
-      if (orderBy && orderBy.includes("volume")) {
+      if (orderBy) {
+        const string = queryParams.order_by.split("-");
+        const datePart = string[0] + "-" + string[1];
+        const remainingPart = string[2];
         data = customSortByMonth(
           data,
-          orderBy.replace("volume", ""),
-          0,
-          orderType
-        );
-      }
-      if (orderBy && orderBy.includes("facilities")) {
-        data = customSortByMonth(
-          data,
-          orderBy.replace("facilities", ""),
-          1,
-          orderType
+          datePart,
+          remainingPart,
+          queryParams.order_type
         );
       }
       if (search) {
@@ -464,7 +467,6 @@ const SalesCaseTypeWiseTargets = () => {
     }
     const modifieData = addSerial(data, 1, data?.length);
     setAllTargetsData(modifieData);
-    getTotalSumsOfMonths(modifieData);
   };
 
   useEffect(() => {

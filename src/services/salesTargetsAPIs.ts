@@ -18,7 +18,10 @@ export const getSalesRepTargetsAPI = async (params: any) => {
 
 export const updateTargetsAPI = async (body: any, id: string) => {
     try {
-        const { success, data } = await $fetch.patch(`/sales-reps-targets/${id}`, body);
+        const { success, data } = await $fetch.patch(
+          `/sales-reps-monthly-targets/${id}`,
+          body
+        );
         if (!success) {
             return handleAPIErrorResponse(data);
         }
