@@ -1,28 +1,23 @@
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import { addSerial } from "@/lib/Pipes/addSerial";
+import { customSortByMonth } from "@/lib/Pipes/sortAndGetData";
+import { caseTypesData } from "@/lib/constants";
+import {
+  formatDateToMonthName,
+  getUniqueMonths,
+} from "@/lib/helpers/apiHelpers";
 import {
   getSalesRepTargetsAPI,
   updateTargetsAPI,
 } from "@/services/salesTargetsAPIs";
-import { customSortByMonth, sortAndGetData } from "@/lib/Pipes/sortAndGetData";
-import { addSerial } from "@/lib/Pipes/addSerial";
-import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
-import LoadingComponent from "../core/LoadingComponent";
-import {
-  checkNumbersOrnot,
-  formatMothNameWithYear,
-  getOnlyMonthNames,
-  getUniqueMonths,
-} from "@/lib/helpers/apiHelpers";
-import timePipe from "@/lib/Pipes/timePipe";
-import { IconButton, TextField } from "@mui/material";
-import Image from "next/image";
-import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
-import SaveTwoToneIcon from "@mui/icons-material/SaveTwoTone";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Toaster, toast } from "sonner";
+import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForTargets from "../core/Table/MultitpleColumn/MultipleColumnTableForTargets";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 
 const SalesCaseTypeWiseTargets = () => {
   const dispatch = useDispatch();
@@ -43,13 +38,15 @@ const SalesCaseTypeWiseTargets = () => {
 
   //query preparation method
   const queryPreparations = async ({
-    year,
+    month,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
     let queryParams: any = {};
-
+    if (month) {
+      queryParams["month"] = month;
+    }
     if (searchValue) {
       queryParams["search"] = searchValue;
     }
@@ -262,18 +259,55 @@ const SalesCaseTypeWiseTargets = () => {
   ];
 
   //prepare additional coloumns
-  let addtionalcolumns = headerMonths?.map((item: any) => ({
-    accessorFn: (row: any) => row[item],
-    header: () => (
+  let additionalColumns: any = headerMonths?.map((item: any) => ({
+    accessorFn: (row: any) => row.monthwiseData[item],
+    header: (props: any) => (
       <div style={{ textAlign: "center", margin: "auto" }}>
-        <span style={{ whiteSpace: "nowrap" }}>{item}</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          {formatDateToMonthName(props.column.id)}
+        </span>{" "}
       </div>
     ),
     id: item,
     width: "800px",
+    columns: [
+      ...caseTypesData?.map((casetype: any, caseIndex: number) => ({
+        accessorFn: (row: any) => row.monthwiseData[item][casetype.value],
+        header: () => (
+          <span style={{ whiteSpace: "nowrap" }}>{casetype.title}</span>
+        ),
+        id: `${item}-${casetype.value}`,
+        width: "300px",
+        maxWidth: "300px",
+        minWidth: "300px",
+        cell: ({ getValue }: any) => (
+          <span>{getValue()?.toLocaleString()}</span>
+        ),
+      })),
+      {
+        header: () => <span style={{ whiteSpace: "nowrap" }}>Actions</span>,
+        accessorFn: (row: any) => row.additionalColumnData,
+        id: `${item}-additional-column`,
+        width: "200px",
+        cell: (info: any) => {
+          return (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <BorderColorIcon />
+              <p>Edit</p>
+            </div>
+          );
+        },
+      },
+    ],
   }));
 
-  const addAddtionalColoumns = [...columnDef, ...addtionalcolumns];
+  const addAddtionalColoumns = [...columnDef, ...additionalColumns];
 
   //go to single sales rep page
   const goToSingleRepPage = (repId: string) => {
@@ -362,11 +396,11 @@ const SalesCaseTypeWiseTargets = () => {
 
   useEffect(() => {
     queryPreparations({
-      year: searchParams?.year,
+      month: searchParams?.month,
       searchValue: searchParams?.search,
     });
-    if (searchParams?.year) {
-      setDefaultYearValue({ year: searchParams.year });
+    if (searchParams?.month) {
+      setDefaultYearValue({ month: searchParams.month });
     }
   }, []);
 

@@ -164,40 +164,42 @@ const MultipleColumnsTableForTargets: FC<pageProps> = ({
                             <tr className="table-row" key={headerGroup.id}>
                                 {headerGroup.headers.map((header: any, index: number) => {
                                     return (
-                                        <th
-                                            className="cell"
-                                            key={index}
-                                            colSpan={header.colSpan}
+                                      <th
+                                        className="cell"
+                                        key={index}
+                                        align="center"
+                                        colSpan={header.colSpan}
+                                        style={{
+                                          minWidth: getWidth(header.id),
+                                          width: getWidth(header.id),
+                                          color: "#000",
+                                          background: "#F0EDFF",
+                                        }}
+                                      >
+                                        {header.isPlaceholder ? null : (
+                                          <div
+                                            onClick={() =>
+                                              sortAndGetData(header)
+                                            }
                                             style={{
-                                                minWidth: getWidth(header.id),
-                                                width: getWidth(header.id),
-                                                color: "#000",
-                                                background: "#F0EDFF",
+                                              display: "flex",
+                                              gap: "10px",
+                                              cursor: "pointer",
+                                              minWidth: getWidth(header.id),
+                                              width: getWidth(header.id),
                                             }}
-                                        >
-
-                                            {header.isPlaceholder ? null : (
-                                                <div
-                                                    onClick={() => sortAndGetData(header)}
-                                                    style={{
-                                                        display: "flex",
-                                                        gap: "10px",
-                                                        cursor: "pointer",
-                                                        minWidth: getWidth(header.id),
-                                                        width: getWidth(header.id),
-                                                    }}
-                                                >
-                                                    {flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                                    <SortItems
-                                                        searchParams={searchParams}
-                                                        header={header}
-                                                    />
-                                                </div>
+                                          >
+                                            {flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext()
                                             )}
-                                        </th>
+                                            <SortItems
+                                              searchParams={searchParams}
+                                              header={header}
+                                            />
+                                          </div>
+                                        )}
+                                      </th>
                                     );
                                 })}
                             </tr>

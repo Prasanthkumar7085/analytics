@@ -18,3 +18,19 @@ export const graphColors: any = {
     "UTI PANEL": "#4CAF50",
     "WOUND": "#FFB6A6",
 };
+export const caseTypesData = [
+  { title: "CARDIAC", value: "card" },
+  { title: "CGX PANEL", value: "cgx" },
+  { title: "CLINICAL CHEMISTRY", value: "clinical" },
+  { title: "COVID", value: "covid" },
+  { title: "COVID FLU", value: "covid_flu" },
+  { title: "DIABETES", value: "diabetes" },
+  { title: "GASTRO", value: "gastro" },
+  { title: "NAIL", value: "nail" },
+  { title: "PAD ALZHEIMERS", value: "pad" },
+  { title: "PGX TEST", value: "pgx" },
+  { title: "PULMONARY PANEL", value: "pul" },
+  { title: "TOXICOLOGY", value: "tox" },
+  { title: "UTI PANEL", value: "uti" },
+  { title: "WOUND", value: "wound" },
+];

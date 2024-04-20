@@ -24,11 +24,11 @@ const SalesRepsTargetsFilters = ({
 
   const onChangeData = (year: any) => {
     if (year) {
-      queryPreparations({ year: year });
-      setDateFilterDefaultValue({ year: year });
+      queryPreparations({ month: year });
+      setDateFilterDefaultValue({ month: year });
     } else {
-      setDateFilterDefaultValue({ year: 2024 });
-      queryPreparations({ year });
+      setDateFilterDefaultValue({ month: 2024 });
+      queryPreparations({ month: "" });
     }
   };
   return (

@@ -9,6 +9,20 @@ export const formatMonthYear = (monthYear: string) => {
     let year = monthYear.substring(monthYear.length - 2);
     return month + " '" + year;
 }
+export const formatDateToMonthName = (date: any) => {
+  const [month, year] = date.split("-");
+
+  // Convert month number to month name abbreviation
+  const monthAbbr = new Date(`${year}-${month}-01`).toLocaleString("en-US", {
+    month: "short",
+  });
+
+  // Format year to 'YY
+  const yearShort = `'${year.slice(-2)}`;
+
+  const formattedDate = `${monthAbbr} ${yearShort}`;
+  return formattedDate;
+};
 
 export const getOnlyMonthNames = (data: any) => {
     let responseData = [...data];
