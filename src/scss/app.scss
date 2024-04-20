@@ -381,7 +381,7 @@ table {
     position: sticky !important;
     left: 50px !important;
     background: #f0edff !important;
-        z-index: 999;
+        z-index: 9999;
 
   }
   .tableContainer .tbody .table-row .cell:nth-child(2) {
@@ -397,10 +397,10 @@ table {
     position: sticky !important;
     right: 0px !important;
     background: #f0edff !important;
-        z-index: 999;
+        z-index: 9999;
 
   }
-  .tableContainer .tbody .table-row .cell:nth-child(17) {
+  .tableContainer .tbody .table-row .cell:nth-child(19) {
     border-left: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;
     right: 0px !important;

@@ -304,7 +304,7 @@ const SalesCaseTypeWiseTargets = () => {
             {checkEditOrNot(item, info.row.original.sales_rep_id) ? (
               <TextField
                 autoFocus
-                key={info.row.original.sales_rep_id}
+                key={caseIndex}
                 sx={{
                   "& .MuiInputBase-root": {
                     padding: "2.5px !Important",

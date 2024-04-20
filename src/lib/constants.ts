@@ -33,4 +33,6 @@ export const caseTypesData = [
   { title: "TOXICOLOGY", value: "tox" },
   { title: "UTI PANEL", value: "uti" },
   { title: "WOUND", value: "wound" },
+  { title: "RESPIRATORY PANEL", value: "rpp" },
+  { title: "URINALYSIS", value: "ua" },
 ];
