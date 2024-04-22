@@ -281,7 +281,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
   }, [searchParams, tabValue, selectedCaseValue]);
 
   return (
-    <div style={{ position: "relative" }} id={"FacilitiesData"}>
+    <div style={{ position: "relative" }} id="mothWiseCaseTypeData">
       <SingleSalesRepFacilitiesTable
         data={facilitiesData}
         columns={addAddtionalColoumns}

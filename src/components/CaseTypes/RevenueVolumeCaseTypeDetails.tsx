@@ -175,6 +175,7 @@ const RevenuVolumeCaseTypesDetails = ({
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
+    sortType: "basic", // Enable basic sorting for this column
     cell: (info: any) => {
       let coloumnData = info.row.original["month_wise"]?.find(
         (itemMonth: any, monthIndex: number) => itemMonth.month == item

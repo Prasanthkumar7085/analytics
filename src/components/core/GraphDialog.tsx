@@ -2,7 +2,10 @@ import { Dialog, IconButton } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import CloseIcon from "@mui/icons-material/Close";
-import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import {
+  formatDateToMonthName,
+  formatMonthYear,
+} from "@/lib/helpers/apiHelpers";
 
 const GraphDialog = ({
   graphDialogOpen,
@@ -28,7 +31,7 @@ const GraphDialog = ({
         text: "Months",
       },
       categories: graphValuesData?.length
-        ? graphValuesData.map((item: any) => item.month)
+        ? graphValuesData.map((item: any) => formatDateToMonthName(item.month))
         : [],
     },
 

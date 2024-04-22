@@ -11,20 +11,12 @@ const GraphDialogForFacilities = ({
   graphValuesData,
   graphColor,
   tabValue,
+  headerMonths,
 }: any) => {
-  //REIVEW: Move data operations to seperate variables instead of putting in options object
-
-  /*
-  const titleText = graphData?.case_type_name ? graphData?.case_type_name + " " + tabValue.toUpperCase() : "TOTAL" + " " + tabValue.toUpperCase()
-  const xAxisCategories = Object?.values(graphValuesData)?.length
-    ? Object?.keys(graphValuesData).map((item: any) => formatMonthYear(item))
-    : []
-    */
-
   const options = {
     title: {
-      text: graphData?.case_type_name
-        ? graphData?.case_type_name + " " + tabValue.toUpperCase()
+      text: graphData?.facility_name
+        ? graphData?.facility_name + " " + tabValue.toUpperCase()
         : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },

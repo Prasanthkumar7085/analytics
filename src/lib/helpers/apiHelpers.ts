@@ -1,8 +1,43 @@
 export const getUniqueMonths = (data: any) => {
-    let monthArray = data?.map((item: any) => item.month.replace(/\s/g, ''))
-    let uniqueMonths = Array.from(new Set(monthArray));
-    return uniqueMonths;
-}
+  // Extract the month names from the data and remove spaces for sorting
+  let monthArray = data?.map((item: any) => item.month.replace(/\s/g, ""));
+
+  // Sort the month names in descending order
+  monthArray.sort((a: string, b: string) => {
+    // Convert the month names into sortable Date objects
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthIndexA = monthNames.indexOf(a.substr(0, 3));
+    const yearA = parseInt(a.substr(3));
+    const dateA = new Date(yearA, monthIndexA);
+
+    const monthIndexB = monthNames.indexOf(b.substr(0, 3));
+    const yearB = parseInt(b.substr(3));
+    const dateB = new Date(yearB, monthIndexB);
+
+    // Sort in descending order
+    return dateB.getTime() - dateA.getTime();
+  });
+
+  // Get unique sorted months
+  let uniqueMonths = Array.from(new Set(monthArray));
+  console.log(uniqueMonths, "ppp000");
+
+  return uniqueMonths;
+};
+
 export const getUniqueMonthsInCaseTypeTragets = (data: any) => {
   let uniqueMonths: any = [];
   data.forEach((obj: any) => {
@@ -28,10 +63,10 @@ export const getUniqueMonthsInCaseTypeTragets = (data: any) => {
 };
 
 export const formatMonthYear = (monthYear: string) => {
-    let month = monthYear.substring(0, 3);
-    let year = monthYear.substring(monthYear.length - 2);
-    return month + " '" + year;
-}
+  let month = monthYear.substring(0, 3);
+  let year = monthYear.substring(monthYear.length - 2);
+  return month + " '" + year;
+};
 export const formatDateToMonthName = (date: any) => {
   const [month, year] = date.split("-");
 
@@ -48,19 +83,23 @@ export const formatDateToMonthName = (date: any) => {
 };
 
 export const getOnlyMonthNames = (data: any) => {
-    let responseData = [...data];
-    const monthNames = Object.keys(responseData[0]).filter(key => key !== "id" && key !== "sales_rep_id" && key !== "year" && key !== "sales_rep_name");
-    return monthNames;
-
-}
-
-export const formatMothNameWithYear = (month: string, year: string) => {
-    let monthValue = month.substring(0, 1).toUpperCase() + month.substring(1, 3);
-    let yearValue = year?.substring(year.length - 2);
-    return monthValue + " '" + yearValue;
-}
-export const checkNumbersOrnot = (event: any) => {
-    const value = event.target.value.replace(/\D/g, "");
-    event.target.value = value;
+  let responseData = [...data];
+  const monthNames = Object.keys(responseData[0]).filter(
+    (key) =>
+      key !== "id" &&
+      key !== "sales_rep_id" &&
+      key !== "year" &&
+      key !== "sales_rep_name"
+  );
+  return monthNames;
 };
 
+export const formatMothNameWithYear = (month: string, year: string) => {
+  let monthValue = month.substring(0, 1).toUpperCase() + month.substring(1, 3);
+  let yearValue = year?.substring(year.length - 2);
+  return monthValue + " '" + yearValue;
+};
+export const checkNumbersOrnot = (event: any) => {
+  const value = event.target.value.replace(/\D/g, "");
+  event.target.value = value;
+};
