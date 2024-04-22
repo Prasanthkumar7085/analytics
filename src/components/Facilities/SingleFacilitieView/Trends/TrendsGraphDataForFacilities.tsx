@@ -1,5 +1,9 @@
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
-import { } from "@/services/revenueAPIs";
+import {
+  getTrendsForRevenueByFacilityIdAPI,
+  getTrendsForVolumeByFacilityIdAPI,
+} from "@/services/facilitiesAPIs";
+import {} from "@/services/revenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
@@ -11,7 +15,15 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: string, searchParams: any, pageName: string }) => {
+const TrendsDataGraphForFacilities = ({
+  graphType,
+  searchParams,
+  pageName,
+}: {
+  graphType: string;
+  searchParams: any;
+  pageName: string;
+}) => {
   const [trendsData, setTrendsData] = useState<any>([]);
 
   const { id } = useParams();
@@ -31,20 +43,19 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
 
       let response;
       if (graphType == "revenue") {
-        response = await getTrendsForRevenueBySalesRepIdAPI({
+        response = await getTrendsForRevenueByFacilityIdAPI({
           pageName,
           id: id as string,
           queryParams,
         });
-        setTrendsData(response?.data);
       } else if (graphType == "volume") {
-        response = await getTrendsForVolumeBySalesRepIdAPI({
+        response = await getTrendsForVolumeByFacilityIdAPI({
           pageName,
           id: id as string,
           queryParams,
         });
-        setTrendsData(response?.mergedData);
       }
+      setTrendsData(response?.data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -72,35 +83,25 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
       },
     },
     tooltip: {
-      crosshairs: true,
-      shared: true,
-      tooltip: {
-        crosshairs: true,
-        shared: true,
-        formatter: function (
-          this: Highcharts.TooltipFormatterContextObject | any
-        ): string {
-          let month = this.point.category;
-          let totalCases =
-            this.series.chart.series[0].data[
-              this.point.index
-            ].y.toLocaleString();
-          let totalTargets =
-            this.series.chart.series[1].data[
-              this.point.index
-            ].y.toLocaleString();
-
+      formatter: function (
+        this: Highcharts.TooltipFormatterContextObject | any
+      ): string {
+        if (graphType == "revenue")
           return (
-            month +
-            "<br>" +
-            "Total Cases: <b>" +
-            totalCases +
-            "</b><br>" +
-            "Total Targets: <b>" +
-            totalTargets +
+            this.point.category +
+            " <b>" +
+            ": $" +
+            Highcharts.numberFormat(this.point.y, 2, ".", ",") +
             "</b>"
           );
-        },
+        else
+          return (
+            this.point.category +
+            ":" +
+            "<b>" +
+            Highcharts.numberFormat(this.point.y, 0, ".", ",") +
+            "<b>"
+          );
       },
     },
     series: [
@@ -109,21 +110,7 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
         data:
           graphType == "volume"
             ? trendsData?.length
-              ? trendsData?.map((item: any) => +item.total_volume)
-              : []
-            : trendsData?.length
-            ? trendsData?.map((item: any) => +item.paid_amount)
-            : [],
-        animation: {
-          opacity: 1, // Set opacity animation for smoother entrance
-        },
-      },
-      {
-        name: graphType == "volume" ? "Total Targets" : "Total Revenue",
-        data:
-          graphType == "volume"
-            ? trendsData?.length
-              ? trendsData?.map((item: any) => +item.total_target)
+              ? trendsData?.map((item: any) => +item.total_cases)
               : []
             : trendsData?.length
             ? trendsData?.map((item: any) => +item.paid_amount)
@@ -142,10 +129,10 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
 
   return (
     <div style={{ position: "relative" }}>
-      {trendsData?.length ?
+      {trendsData?.length ? (
         <HighchartsReact highcharts={Highcharts} options={options} />
-
-        : !loading ? <div
+      ) : !loading ? (
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -153,16 +140,23 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
             height: "40vh",
           }}
         >
-          <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
-        </div> : <div
+          <Image
+            src="/NoDataImageAnalytics.svg"
+            alt=""
+            height={150}
+            width={250}
+          />
+        </div>
+      ) : (
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "40vh",
           }}
-        >
-        </div>}
+        ></div>
+      )}
       {loading ? (
         <Backdrop
           open={true}
@@ -195,4 +189,4 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
   );
 };
 
-export default TrendsDataGraph;
+export default TrendsDataGraphForFacilities;

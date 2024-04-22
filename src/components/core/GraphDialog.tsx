@@ -6,6 +6,7 @@ import {
   formatDateToMonthName,
   formatMonthYear,
 } from "@/lib/helpers/apiHelpers";
+import { truncate } from "fs";
 
 const GraphDialog = ({
   graphDialogOpen,
@@ -13,9 +14,8 @@ const GraphDialog = ({
   graphData,
   graphValuesData,
   graphColor,
-  tabValue
+  tabValue,
 }: any) => {
-
   const options = {
     title: {
       text:
@@ -34,7 +34,6 @@ const GraphDialog = ({
         ? graphValuesData.map((item: any) => formatDateToMonthName(item.month))
         : [],
     },
-
     plotOptions: {
       series: {
         animation: false,
@@ -122,11 +121,11 @@ const GraphDialog = ({
       },
     },
     legend: {
-      enabled: false,
+      enabled: true,
     },
     series: [
       {
-        name: graphData.case_type,
+        name: "Total Targets",
         data: graphValuesData?.length
           ? graphValuesData.map((item: any) =>
               item.target_cases ? +item.target_cases : 0
@@ -135,7 +134,7 @@ const GraphDialog = ({
         type: "area",
       },
       {
-        name: graphData.case_type,
+        name: "Total cases",
         data: graphValuesData?.length
           ? graphValuesData.map((item: any) =>
               item.total_cases ? +item.total_cases : 0

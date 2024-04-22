@@ -24,6 +24,7 @@ import SingleFacilitieCaseTypeDetails from "./SingleFacilitiesCaseTypeDetails";
 import InsurancePayorsForFacilities from "@/components/InsurancePayors/InsurancePayorsForFacilities";
 import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
+import TrendsForFacilities from "./Trends";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -42,34 +43,40 @@ const FacilitiesView = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
-  const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] = useState<any>(null);
-
+  const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] =
+    useState<any>(null);
 
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
     setLoading(true);
     try {
-      const response = await getFacilitiesRevenueStatsDetailsAPI(id, queryParams);
+      const response = await getFacilitiesRevenueStatsDetailsAPI(
+        id,
+        queryParams
+      );
       setRevenueStatsDetails(response?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get volume stats count
   const getVolumeStatsCount = async (queryParams: any) => {
     setLoading(true);
     try {
-      const response = await getFacilitiesVolumeStatsDetailsAPI(id, queryParams);
+      const response = await getFacilitiesVolumeStatsDetailsAPI(
+        id,
+        queryParams
+      );
       setVolumeStatsDetails(response?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -89,8 +96,7 @@ const FacilitiesView = () => {
       router.push(`${pathName}${queryString}`);
 
       await getRevenueStatsCount(queryParams);
-      await getVolumeStatsCount(queryParams)
-
+      await getVolumeStatsCount(queryParams);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -99,7 +105,11 @@ const FacilitiesView = () => {
   };
 
   //query preparation method
-  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+  const queryPreparations = async (
+    fromDate: any,
+    toDate: any,
+    tabValue: string
+  ) => {
     let queryParams: any = {};
 
     if (fromDate) {
@@ -110,9 +120,8 @@ const FacilitiesView = () => {
     }
     try {
       if (tabValue == "Revenue") {
-        await getCaseTypesRevenueStats(queryParams)
-      }
-      else {
+        await getCaseTypesRevenueStats(queryParams);
+      } else {
         await getCaseTypesVolumeStats(queryParams);
       }
     } catch (err: any) {
@@ -120,15 +129,16 @@ const FacilitiesView = () => {
     } finally {
       setLoading(false);
     }
-  }
-
+  };
 
   //get the caseTypesRevenue data
   const getCaseTypesRevenueStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
     try {
-
-      const response = await getSingleFacilityCaseTypesRevenueAPI(id as string, queryParams);
+      const response = await getSingleFacilityCaseTypesRevenueAPI(
+        id as string,
+        queryParams
+      );
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -162,7 +172,10 @@ const FacilitiesView = () => {
   const getCaseTypesVolumeStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
     try {
-      const response = await getSingleFacilityCaseTypesVolumeAPI(id as string, queryParams);
+      const response = await getSingleFacilityCaseTypesVolumeAPI(
+        id as string,
+        queryParams
+      );
       if (response.status == 200 || response?.status == 201) {
         let totalCases = 0;
         let completedCases = 0;
@@ -201,9 +214,7 @@ const FacilitiesView = () => {
       getStatsCounts(fromDate, toDate);
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
       queryPreparations(fromDate, toDate, tabValue);
-
-    }
-    else {
+    } else {
       setDateFilterDefaultValue("");
       getStatsCounts("", "");
       router.push(`/facilities/${id}`);
@@ -242,7 +253,7 @@ const FacilitiesView = () => {
 
   useEffect(() => {
     queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue);
-  }, [tabValue])
+  }, [tabValue]);
 
   return (
     <div>
@@ -294,7 +305,7 @@ const FacilitiesView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </Grid>
             <Grid item xs={8}>
@@ -333,7 +344,8 @@ const FacilitiesView = () => {
                   <div style={{ width: "30%" }}>
                     <GlobalCaseTypesAutoComplete
                       selectedCaseValue={selectedCaseValueForInsurance}
-                      setSelectedCaseValue={setSelectedCaseValueForInsurance} />
+                      setSelectedCaseValue={setSelectedCaseValueForInsurance}
+                    />
                   </div>
                 </div>
                 <div className="cardBody">
@@ -342,13 +354,16 @@ const FacilitiesView = () => {
                     pageName={"facilities"}
                     tabValue={tabValue}
                     selectedCaseValue={selectedCaseValueForInsurance}
-
                   />
                 </div>
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} pageName={"facilities"} tabValue={tabValue} />
+              <TrendsForFacilities
+                searchParams={searchParams}
+                pageName={"facilities"}
+                tabValue={tabValue}
+              />
             </Grid>
           </Grid>
         </div>

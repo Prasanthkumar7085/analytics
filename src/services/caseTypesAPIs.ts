@@ -110,3 +110,25 @@ export const getMonthWiseRevenueCaseTypesForSinglePageAPI = async ({
     console.error(err);
   }
 };
+export const getMonthWiseVolumeCaseTypesForSinglePageFacilitiesAPI = async ({
+  pageName,
+  id,
+  queryParams,
+}: {
+  pageName: string;
+  id: any;
+  queryParams: any;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/${pageName}/${id}/case-types/months/volume`,
+      queryParams
+    );
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};

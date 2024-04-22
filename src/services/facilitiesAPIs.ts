@@ -102,5 +102,49 @@ export const getRevenueOfInsurancePayorsByFacilitiesIdAPI = async ({
         console.error(err);
     }
 };
+export const getTrendsForRevenueByFacilityIdAPI = async ({
+  pageName,
+  id,
+  queryParams,
+}: {
+  pageName: string;
+  id: string;
+  queryParams: any;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/${pageName}/${id}/trends/revenue`,
+      queryParams
+    );
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+export const getTrendsForVolumeByFacilityIdAPI = async ({
+  pageName,
+  id,
+  queryParams,
+}: {
+  pageName: string;
+  id: string;
+  queryParams: any;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/${pageName}/${id}/trends/volume`,
+      queryParams
+    );
 
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
 

@@ -1,15 +1,8 @@
 import { Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import Image from "next/image";
-import TrendsDataGraph from "@/components/Trends/TrendsDataGraph";
-import TrendsDataGraphForFacilities from "@/components/Facilities/SingleFacilitieView/Trends/TrendsGraphDataForFacilities";
-const TrendsGraphForInsurance = ({ searchParams, pageName }: any) => {
-  const [tabValue, setTabValue] = useState<string>("Volume");
-
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setTabValue(newValue);
-  };
-
+import TrendsDataGraphForFacilities from "./TrendsGraphDataForFacilities";
+const TrendsForFacilities = ({ searchParams, pageName, tabValue }: any) => {
   return (
     <>
       <div className="eachDataCard" id="TrendsData">
@@ -18,10 +11,6 @@ const TrendsGraphForInsurance = ({ searchParams, pageName }: any) => {
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Trends
           </h3>
-          <Tabs onChange={handleChange} value={tabValue}>
-            <Tab value={"Volume"} label={"Volume"} />
-            <Tab value={"Revenue"} label={"Revenue"} />
-          </Tabs>
         </div>
         <div className="cardBody">
           {tabValue == "Volume" ? (
@@ -44,4 +33,4 @@ const TrendsGraphForInsurance = ({ searchParams, pageName }: any) => {
   );
 };
 
-export default TrendsGraphForInsurance;
+export default TrendsForFacilities;
