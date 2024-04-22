@@ -232,12 +232,17 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                         {headerMonths?.map((item: any, index: number) => {
 
                             return (
-
-                                <td key={index} className="cell">
-                                    {tabValue == "Revenue" ?
-                                        formatMoney(totalSumValues[item]) :
-                                        totalSumValues[item]?.toLocaleString()}
-                                </td>
+                              <td key={index} className="cell">
+                                {tabValue == "Revenue"
+                                  ? formatMoney(totalSumValues[item])
+                                  : totalSumValues
+                                      .find((value: any) => item == value.month)
+                                      ?.target_cases?.toLocaleString() +
+                                    "/" +
+                                    totalSumValues
+                                      .find((value: any) => item == value.month)
+                                      ?.total_cases?.toLocaleString()}
+                              </td>
                             );
                         })}
                         <td className="cell" onClick={() => setGraphDialogOpen(true)} style={{ cursor: "pointer" }}>   {headerMonths?.length ? <AreaGraph data={totalSumValues} graphColor={"blue"} /> : ""}

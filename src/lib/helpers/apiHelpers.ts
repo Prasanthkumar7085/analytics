@@ -18,12 +18,9 @@ export const getUniqueMonthsInCaseTypeTragets = (data: any) => {
     const [monthA, yearA] = a.split("-");
     const [monthB, yearB] = b.split("-");
 
-    // Compare years first
     if (yearA !== yearB) {
       return parseInt(yearB) - parseInt(yearA); // Sort years in descending order
     }
-
-    // If years are the same, compare months
     return parseInt(monthB) - parseInt(monthA); // Sort months in descending order
   });
 

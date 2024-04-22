@@ -60,6 +60,23 @@ const RevenuVolumeCaseTypesDetails = ({
     }
   };
 
+  //get the total sum of the casetypes targets and volume with respective months
+  const getTotalSumOfCasetypesVolumeWithMonths = (data: any) => {
+    const totals: any = {};
+    data.forEach(({ case_type, month_wise }: any) => {
+      month_wise.forEach(({ month, total_cases, target_cases }: any) => {
+        if (!totals[month]) {
+          totals[month] = { month, total_cases: 0, target_cases: 0 };
+        }
+        totals[month].total_cases += total_cases;
+        totals[month].target_cases += target_cases;
+      });
+    });
+    const result = Object.values(totals);
+    console.log(result, "efwwf");
+    setTotalSumValues(result);
+  };
+
   //get details Volume of caseTypes
   const getDetailsOfCaseTypesOfVolume = async (queryParams: any) => {
     setLoading(true);
@@ -79,23 +96,7 @@ const RevenuVolumeCaseTypesDetails = ({
         );
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         console.log(modifieData, "ppp00");
-        const totals: any = {};
-
-        // Iterate through the data and calculate total sums
-        modifieData.forEach(({ case_type, month_wise }: any) => {
-          month_wise.forEach(({ month, total_cases, target_cases }: any) => {
-            if (!totals[month]) {
-              totals[month] = { month, total_cases: 0, target_cases: 0 };
-            }
-            totals[month].total_cases += total_cases;
-            totals[month].target_cases += target_cases;
-          });
-        });
-
-        // Convert totals object to an array
-        const totalsArray = Object.values(totals);
-        console.log(totalsArray, "pp0987");
-
+        getTotalSumOfCasetypesVolumeWithMonths(modifieData);
         setCaseData(modifieData);
       }
     } catch (err) {
