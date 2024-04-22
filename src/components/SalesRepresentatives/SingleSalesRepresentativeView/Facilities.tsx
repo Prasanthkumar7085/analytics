@@ -265,6 +265,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
       cell: (info: any) => {
         return (
           <span
+            style={{ cursor: "pointer" }}
             onClick={() => {
               goToSingleFacilityPage(info.row.original.facility_id);
             }}

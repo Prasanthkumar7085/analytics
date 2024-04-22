@@ -104,6 +104,68 @@ const CaseTypes = ({
       width: "150px",
     },
   ];
+  const VolumecolumnsForFacilities = [
+    {
+      accessorFn: (row: any) => row.case_type_name,
+      id: "case_type_name",
+      header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
+      cell: (info: any, index: number) => {
+        return (
+          <span className={styles.caseTypeRow}>
+            <div
+              className={styles.dot}
+              style={{ backgroundColor: graphColors[info.getValue()] }}
+            ></div>
+            {info.getValue()}
+          </span>
+        );
+      },
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
+    {
+      accessorFn: (row: any) => row.total_cases,
+      id: "total_cases",
+      cell: (info: any) => (
+        <span className={styles.totalCasesRow}>
+          {info.getValue()?.toLocaleString()}
+        </span>
+      ),
+      sortDescFirst: false,
+      header: () => <span className={styles.tableHeading}>TOTAL</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+
+    {
+      accessorFn: (row: any) => row.completed_cases,
+      id: "completed_cases",
+      sortDescFirst: false,
+      cell: (info: any) => (
+        <span className={styles.totalCasesRow}>
+          {info.getValue()?.toLocaleString()}
+        </span>
+      ),
+      header: () => <span className={styles.tableHeading}>FINALIZED</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.pending_cases,
+      id: "pending_cases",
+      sortDescFirst: false,
+      cell: (info: any) => (
+        <span className={styles.revenueBlock}>
+          {info.getValue()?.toLocaleString()}
+        </span>
+      ),
+      header: () => <span className={styles.tableHeading}>PENDING</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+  ];
 
   const Revenuecolumns = [
     {
@@ -171,14 +233,17 @@ const CaseTypes = ({
     const totalNumber = totalRevenueSum[1]?.value
       ? totalRevenueSum[1]?.value
       : 0;
-    return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"}</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${
+      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+    }</span>
         <br>
         <span style="font-size: 13px;">
             <b> 
-            ${tabValue == "Revenue"
-        ? formatMoney(totalNumber)
-        : totalNumber?.toLocaleString()
-      }</b>
+            ${
+              tabValue == "Revenue"
+                ? formatMoney(totalNumber)
+                : totalNumber?.toLocaleString()
+            }</b>
         </span>`;
   }
 
@@ -187,7 +252,9 @@ const CaseTypes = ({
     chart: {
       type: "pie",
     },
-    colors: caseTypesStatsData?.map((item: any) => graphColors[item?.case_type_name]),
+    colors: caseTypesStatsData?.map(
+      (item: any) => graphColors[item?.case_type_name]
+    ),
     subtitle: {
       useHTML: false,
       text: getSubtitle(),
@@ -204,16 +271,18 @@ const CaseTypes = ({
       ): string {
         if (tabValue == "Revenue")
           return (
-
             this.point.name +
             "<b>" +
-            ": $" + Highcharts.numberFormat(this.point.y, 2, ".", ",") + "<b>"
+            ": $" +
+            Highcharts.numberFormat(this.point.y, 2, ".", ",") +
+            "<b>"
           );
         else
           return (
-
-            this.point.name + ":" +
-            "<b>" + Highcharts.numberFormat(this.point.y, 0, ".", ",") +
+            this.point.name +
+            ":" +
+            "<b>" +
+            Highcharts.numberFormat(this.point.y, 0, ".", ",") +
             "</b>"
           );
       },
@@ -243,8 +312,6 @@ const CaseTypes = ({
     queryPreparations(fromDate, toDate, tabValue);
   };
 
-
-
   return (
     <div style={{ position: "relative" }}>
       <div className="eachDataCard" id="CaseTypesGraphsData">
@@ -258,7 +325,12 @@ const CaseTypes = ({
           ) : (
             ""
           )}
-          <div style={{ display: pathName?.includes("dashboard") ? "flex" : "none", justifyContent: "center" }}>
+          <div
+            style={{
+              display: pathName?.includes("dashboard") ? "flex" : "none",
+              justifyContent: "center",
+            }}
+          >
             <Tabs
               className="overViewTabs"
               value={tabValue}
@@ -289,7 +361,13 @@ const CaseTypes = ({
             </div>
             <TanStackTableComponent
               data={caseTypesStatsData}
-              columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
+              columns={
+                tabValue == "Revenue"
+                  ? Revenuecolumns
+                  : pathName.includes("facilities")
+                  ? VolumecolumnsForFacilities
+                  : Volumecolumns
+              }
               totalSumValues={totalRevenueSum}
               loading={loading}
             />
