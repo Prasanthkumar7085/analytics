@@ -18,11 +18,9 @@ const GraphDialog = ({
 }: any) => {
   const options = {
     title: {
-      text:
-        graphData?.case_type || graphData?.facility_name
-          ? graphData?.case_type.toUpperCase() ||
-            graphData?.facility_name + " " + tabValue.toUpperCase()
-          : "TOTAL" + " " + tabValue.toUpperCase(),
+      text: graphData?.case_type
+        ? graphData?.case_type.toUpperCase() + " " + tabValue.toUpperCase()
+        : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },
 
@@ -90,9 +88,9 @@ const GraphDialog = ({
       ): string {
         let month = this.point.category;
         let totalCases =
-          this.series.chart.series[0].data[this.point.index].y.toLocaleString();
-        let totalTargets =
           this.series.chart.series[1].data[this.point.index].y.toLocaleString();
+        let totalTargets =
+          this.series.chart.series[0].data[this.point.index].y.toLocaleString();
 
         if (tabValue == "Revenue")
           return (
