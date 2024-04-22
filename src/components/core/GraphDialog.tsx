@@ -13,19 +13,11 @@ const GraphDialog = ({
   tabValue
 }: any) => {
 
-
-  //REIVEW: Move data operations to seperate variables instead of putting in options object
-
-  /*
-  const titleText = graphData?.case_type_name ? graphData?.case_type_name + " " + tabValue.toUpperCase() : "TOTAL" + " " + tabValue.toUpperCase()
-  const xAxisCategories = Object?.values(graphValuesData)?.length
-    ? Object?.keys(graphValuesData).map((item: any) => formatMonthYear(item))
-    : []
-    */
-
   const options = {
     title: {
-      text: graphData?.case_type_name ? graphData?.case_type_name + " " + tabValue.toUpperCase() : "TOTAL" + " " + tabValue.toUpperCase(),
+      text: graphData?.case_type
+        ? graphData?.case_type.toUpperCase() + " " + tabValue.toUpperCase()
+        : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },
 
@@ -33,8 +25,8 @@ const GraphDialog = ({
       title: {
         text: "Months",
       },
-      categories: Object?.values(graphValuesData)?.length
-        ? Object?.keys(graphValuesData).map((item: any) => formatMonthYear(item))
+      categories: graphValuesData?.length
+        ? graphValuesData.map((item: any) => item.month)
         : [],
     },
 
@@ -66,9 +58,8 @@ const GraphDialog = ({
           },
           stops: [
             [0, graphColor ? graphColor : ""],
-            [1, Highcharts.color('white').setOpacity(0).get('rgba')]
-          ]
-
+            [1, Highcharts.color("white").setOpacity(0).get("rgba")],
+          ],
         },
         marker: {
           radius: 2,
@@ -83,18 +74,31 @@ const GraphDialog = ({
       },
       plotOptions: {
         series: {
-          clip: true
-        }
-      }
-
+          clip: true,
+        },
+      },
     },
     tooltip: {
-      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
+      formatter: function (
+        this: Highcharts.TooltipFormatterContextObject | any
+      ): string {
         if (tabValue == "Revenue")
-          return this.point.category + '<b>' + ' : $' + Highcharts.numberFormat(this.point.y, 2, '.', ', ') + '</b>';
+          return (
+            this.point.category +
+            "<b>" +
+            " : $" +
+            Highcharts.numberFormat(this.point.y, 2, ".", ", ") +
+            "</b>"
+          );
         else
-          return this.point.category + ' : ' + '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ', ') + '</b>';
-      }
+          return (
+            this.point.category +
+            " : " +
+            "<b>" +
+            Highcharts.numberFormat(this.point.y, 0, ".", ", ") +
+            "</b>"
+          );
+      },
     },
     yAxis: {
       title: {
@@ -106,11 +110,23 @@ const GraphDialog = ({
     },
     series: [
       {
-        name: graphData.case_type_name,
-        data: Object?.values(graphValuesData)?.length
-          ? Object.values(graphValuesData).map((item: any) => item)
+        name: graphData.case_type,
+        data: graphValuesData?.length
+          ? graphValuesData.map((item: any) =>
+              item.target_cases ? +item.target_cases : 0
+            )
           : [],
         type: "area",
+      },
+      {
+        name: graphData.case_type,
+        data: graphValuesData?.length
+          ? graphValuesData.map((item: any) =>
+              item.total_cases ? +item.total_cases : 0
+            )
+          : [],
+        type: "line",
+        color: "#000000",
       },
     ],
   };

@@ -3,6 +3,32 @@ export const getUniqueMonths = (data: any) => {
     let uniqueMonths = Array.from(new Set(monthArray));
     return uniqueMonths;
 }
+export const getUniqueMonthsInCaseTypeTragets = (data: any) => {
+  let uniqueMonths: any = [];
+  data.forEach((obj: any) => {
+    obj.month_wise.forEach((item: any) => {
+      if (!uniqueMonths.includes(item.month)) {
+        uniqueMonths.push(item.month);
+      }
+    });
+  });
+  // Sort unique months in high to low order based on calendar order
+  uniqueMonths.sort((a: any, b: any) => {
+    // Extract month and year from the strings
+    const [monthA, yearA] = a.split("-");
+    const [monthB, yearB] = b.split("-");
+
+    // Compare years first
+    if (yearA !== yearB) {
+      return parseInt(yearB) - parseInt(yearA); // Sort years in descending order
+    }
+
+    // If years are the same, compare months
+    return parseInt(monthB) - parseInt(monthA); // Sort months in descending order
+  });
+
+  return uniqueMonths;
+};
 
 export const formatMonthYear = (monthYear: string) => {
     let month = monthYear.substring(0, 3);

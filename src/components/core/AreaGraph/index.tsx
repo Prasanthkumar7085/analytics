@@ -23,10 +23,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible:
-        Object?.values(data)?.length && Object?.values(data)?.length == 1
-          ? true
-          : false,
+      visible: data?.length && data?.length == 1 ? true : false,
     },
     yAxis: {
       labels: {
@@ -35,10 +32,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       title: {
         text: null,
       },
-      visible:
-        Object?.values(data)?.length && Object?.values(data)?.length == 1
-          ? true
-          : false,
+      visible: data?.length && data?.length == 1 ? true : false,
     },
     legend: {
       enabled: false,
@@ -50,10 +44,7 @@ const AreaGraph = ({ data, graphColor }: any) => {
       series: {
         animation: true,
         marker: {
-          enabled:
-            Object?.values(data)?.length && Object?.values(data)?.length == 1
-              ? true
-              : false,
+          enabled: data?.length && data?.length == 1 ? true : false,
         },
         tooltip: {
           enabled: false,
@@ -100,12 +91,22 @@ const AreaGraph = ({ data, graphColor }: any) => {
     series: [
       {
         name: null,
-        data: Object?.values(data)?.length
-          ? Object.values(data).map((item: any) => (item ? item : 0))
+        data: data?.length
+          ? data.map((item: any) =>
+              item.target_cases ? +item.target_cases : 0
+            )
           : [],
         animation: {
           opacity: 0.4,
         },
+      },
+      {
+        name: null,
+        data: data?.length
+          ? data.map((item: any) => (item.total_cases ? +item.total_cases : 0))
+          : [],
+        type: "line",
+        color: "#000000",
       },
     ],
   };
