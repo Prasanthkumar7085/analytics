@@ -94,7 +94,6 @@ const RevenuVolumeCaseTypesDetails = ({
           }
         );
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        console.log(modifieData, "ppp00");
         getTotalSumOfCasetypesVolumeWithMonths(modifieData);
         setCaseData(modifieData);
       }
@@ -185,16 +184,16 @@ const RevenuVolumeCaseTypesDetails = ({
           <span>
             {tabValue == "Revenue"
               ? formatMoney(info.getValue())
-              : coloumnData?.target_cases
-              ? coloumnData?.target_cases?.toLocaleString()
+              : coloumnData?.total_cases
+              ? coloumnData?.total_cases?.toLocaleString()
               : 0}
           </span>
           /
           <span>
             {tabValue == "Revenue"
               ? formatMoney(info.getValue())
-              : coloumnData?.total_cases
-              ? coloumnData?.total_cases?.toLocaleString()
+              : coloumnData?.target_cases
+              ? coloumnData?.target_cases?.toLocaleString()
               : 0}
           </span>
         </div>

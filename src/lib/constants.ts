@@ -36,3 +36,25 @@ export const caseTypesData = [
   { title: "RESPIRATORY", value: "rpp" },
   { title: "URINALYSIS", value: "ua" },
 ];
+export const colorCodes = [
+  "#86c7f3", // Light Blue
+  "#f9a87e", // Peach
+  "#a0d8a3", // Light Green
+  "#f3b3da", // Light Pink
+  "#ffd666", // Light Yellow
+  "#b4a0ff", // Light Purple
+  "#7fd1b9", // Light Turquoise
+  "#f1a3cb", // Light Lavender
+  "#bbe3a7", // Pastel Green
+  "#ff9191", // Pastel Red
+  "#a8c4ff", // Pastel Blue
+  "#ffee88", // Pastel Yellow
+  "#b4a0ff", // Pastel Purple
+  "#7fd1b9", // Pastel Turquoise
+  "#ffc3c3", // Light Coral
+  "#99e5e5", // Light Cyan
+  "#e0bbff", // Light Lilac
+  "#ffa8a8", // Light Salmon
+  "#b2e0e0", // Light Aquamarine
+  "#ffb3ff", // Light Orchid
+];

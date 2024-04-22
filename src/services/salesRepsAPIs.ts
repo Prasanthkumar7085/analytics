@@ -109,9 +109,18 @@ export const getTrendsForVolumeBySalesRepIdAPI = async ({
   }
 };
 
-export const getVolumeDetailsOfFacilitiesBySalesRepIdAPI = async ({ id, queryParams }: { id: string, queryParams: any }) => {
+export const getVolumeDetailsOfFacilitiesBySalesRepIdAPI = async ({
+  id,
+  queryParams,
+}: {
+  id: string;
+  queryParams: any;
+}) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/facilities/volume`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/sales-reps/${id}/facilities/volume-month-wise`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -121,9 +130,18 @@ export const getVolumeDetailsOfFacilitiesBySalesRepIdAPI = async ({ id, queryPar
   }
 };
 
-export const getRevenueDetailsOfFacilitiesBySalesRepIdAPI = async ({ id, queryParams }: { id: string, queryParams: any }) => {
+export const getRevenueDetailsOfFacilitiesBySalesRepIdAPI = async ({
+  id,
+  queryParams,
+}: {
+  id: string;
+  queryParams: any;
+}) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/facilities/revenue`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/sales-reps/${id}/facilities/revenue-month-wise`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }

@@ -43,7 +43,6 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
           queryParams,
         });
       }
-      console.log(response?.mergedData, "p00p0p0");
       setTrendsData(response?.mergedData);
     } catch (err) {
       console.error(err);
@@ -81,18 +80,23 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
           this: Highcharts.TooltipFormatterContextObject | any
         ): string {
           let month = this.point.category;
-          let totalCases = this.series.chart.series[0].data[this.point.index].y;
+          let totalCases =
+            this.series.chart.series[0].data[
+              this.point.index
+            ].y.toLocaleString();
           let totalTargets =
-            this.series.chart.series[1].data[this.point.index].y;
+            this.series.chart.series[1].data[
+              this.point.index
+            ].y.toLocaleString();
 
           return (
             month +
             "<br>" +
             "Total Cases: <b>" +
-            totalCases.toLocaleString() +
+            totalCases +
             "</b><br>" +
             "Total Targets: <b>" +
-            totalTargets.toLocaleString() +
+            totalTargets +
             "</b>"
           );
         },

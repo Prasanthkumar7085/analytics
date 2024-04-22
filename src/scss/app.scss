@@ -527,6 +527,87 @@ table {
     right: 0;
   }
 }
+#FacilitiesData {
+  .table {
+    padding: 0;
+  }
+
+  .tableContainer {
+    height: 550px;
+    overflow: auto;
+    padding: 0 !important;
+  }
+
+  .tableContainer .thead .table-row .cell:first-child {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    border-radius: 5px 0px 0px 5px !important;
+    position: sticky !important;
+    left: 0 !important;
+    background: #f0edff !important;
+  }
+
+  .tableContainer .tbody .table-row .cell:first-child {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    border-radius: 5px 0px 0px 5px !important;
+    position: sticky !important;
+    left: 0 !important;
+    background: #fff !important;
+  }
+
+  .tableContainer .thead .table-row .cell:last-child {
+    border-right: 0.633951px solid #e0e0e0 !important;
+    border-radius: 0px 5px 5px 0px !important;
+    position: sticky !important;
+    background: #f0edff !important;
+    box-shadow: -1px 0px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    right: 0;
+  }
+
+  .tableContainer .tbody .table-row .cell:last-child {
+    border-right: 0.633951px solid #e0e0e0 !important;
+    border-radius: 0px 5px 5px 0px !important;
+    position: sticky !important;
+    background: #fff !important;
+    box-shadow: -1px 0px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    right: 0;
+  }
+
+  .tableContainer .tfoot .table-row .cell:first-child {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    border-radius: 5px 0px 0px 5px !important;
+    position: sticky !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12) !important;
+    left: 0 !important;
+    background: #eff1fa !important;
+  }
+
+  .tableContainer .tfoot .table-row .cell:first-child {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12) !important;
+    border-radius: 5px 0px 0px 5px !important;
+    position: sticky !important;
+    left: 0 !important;
+    background: #eff1fa !important;
+  }
+
+  .tableContainer .tfoot .table-row .cell:last-child {
+    border-right: 0.633951px solid #e0e0e0 !important;
+    border-radius: 0px 5px 5px 0px !important;
+    position: sticky !important;
+    background: #f0edff !important;
+    box-shadow: -1px 0px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    right: 0;
+  }
+
+  .tableContainer .tfoot .table-row .cell:last-child {
+    border-right: 0.633951px solid #e0e0e0 !important;
+    border-radius: 0px 5px 5px 0px !important;
+    position: sticky !important;
+    background: #fff !important;
+    box-shadow: -1px 0px 3px 0px rgba(0, 0, 0, 0.12) !important;
+    right: 0;
+  }
+}
 
 #CaseTypesGraphsData {
   .table {
@@ -1083,30 +1164,6 @@ $actionButtonWidth: 95px;
   }
 }
 
-#FacilitiesData {
-  table {
-    tbody {
-      tr {
-        td {
-          &:nth-child(3) {
-            color: #ff9932;
-            background-color: #f9feff;
-          }
-
-          &:nth-child(4) {
-            color: #36c24d;
-            background-color: #f5fff7;
-          }
-
-          &:nth-child(5) {
-            color: #fe5046;
-            background-color: #fff9f9;
-          }
-        }
-      }
-    }
-  }
-}
 
 .s-no-column {
   table {

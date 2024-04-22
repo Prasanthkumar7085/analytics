@@ -4,22 +4,28 @@ import HighchartsReact from "highcharts-react-official";
 import CloseIcon from "@mui/icons-material/Close";
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 
-const GraphDialog = ({
+const GraphDialogForFacilities = ({
   graphDialogOpen,
   setGraphDialogOpen,
   graphData,
   graphValuesData,
   graphColor,
-  tabValue
+  tabValue,
 }: any) => {
+  //REIVEW: Move data operations to seperate variables instead of putting in options object
+
+  /*
+  const titleText = graphData?.case_type_name ? graphData?.case_type_name + " " + tabValue.toUpperCase() : "TOTAL" + " " + tabValue.toUpperCase()
+  const xAxisCategories = Object?.values(graphValuesData)?.length
+    ? Object?.keys(graphValuesData).map((item: any) => formatMonthYear(item))
+    : []
+    */
 
   const options = {
     title: {
-      text:
-        graphData?.case_type || graphData?.facility_name
-          ? graphData?.case_type.toUpperCase() ||
-            graphData?.facility_name + " " + tabValue.toUpperCase()
-          : "TOTAL" + " " + tabValue.toUpperCase(),
+      text: graphData?.case_type_name
+        ? graphData?.case_type_name + " " + tabValue.toUpperCase()
+        : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },
 
@@ -27,8 +33,10 @@ const GraphDialog = ({
       title: {
         text: "Months",
       },
-      categories: graphValuesData?.length
-        ? graphValuesData.map((item: any) => item.month)
+      categories: Object?.values(graphValuesData)?.length
+        ? Object?.keys(graphValuesData).map((item: any) =>
+            formatMonthYear(item)
+          )
         : [],
     },
 
@@ -81,17 +89,9 @@ const GraphDialog = ({
       },
     },
     tooltip: {
-      crosshairs: true,
-      shared: true,
       formatter: function (
         this: Highcharts.TooltipFormatterContextObject | any
       ): string {
-        let month = this.point.category;
-        let totalCases =
-          this.series.chart.series[0].data[this.point.index].y.toLocaleString();
-        let totalTargets =
-          this.series.chart.series[1].data[this.point.index].y.toLocaleString();
-
         if (tabValue == "Revenue")
           return (
             this.point.category +
@@ -102,13 +102,10 @@ const GraphDialog = ({
           );
         else
           return (
-            month +
-            "<br>" +
-            "Total Cases: <b>" +
-            totalCases +
-            "</b><br>" +
-            "Total Targets: <b>" +
-            totalTargets +
+            this.point.category +
+            " : " +
+            "<b>" +
+            Highcharts.numberFormat(this.point.y, 0, ".", ", ") +
             "</b>"
           );
       },
@@ -123,23 +120,11 @@ const GraphDialog = ({
     },
     series: [
       {
-        name: graphData.case_type,
-        data: graphValuesData?.length
-          ? graphValuesData.map((item: any) =>
-              item.target_cases ? +item.target_cases : 0
-            )
+        name: graphData.case_type_name,
+        data: Object?.values(graphValuesData)?.length
+          ? Object.values(graphValuesData).map((item: any) => item)
           : [],
         type: "area",
-      },
-      {
-        name: graphData.case_type,
-        data: graphValuesData?.length
-          ? graphValuesData.map((item: any) =>
-              item.total_cases ? +item.total_cases : 0
-            )
-          : [],
-        type: "line",
-        color: "#000000",
       },
     ],
   };
@@ -178,4 +163,4 @@ const GraphDialog = ({
     </Dialog>
   );
 };
-export default GraphDialog;
+export default GraphDialogForFacilities;
