@@ -15,7 +15,10 @@ export const getSalesRepsAPI = async (params: any) => {
 
 export const getSingleSalesRepCaseTypesVolumeAPI = async (id: string, queryParams: any) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/case-types-volume`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/sales-reps/${id}/case-types-volume-targets`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }

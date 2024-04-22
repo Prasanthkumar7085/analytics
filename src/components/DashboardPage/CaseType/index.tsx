@@ -91,28 +91,15 @@ const CaseTypes = ({
       width: "150px",
     },
     {
-      accessorFn: (row: any) => row.completed_cases,
-      id: "completed_cases",
+      accessorFn: (row: any) => row.total_targets,
+      id: "total_targets",
       sortDescFirst: false,
       cell: (info: any) => (
         <span className={styles.totalCasesRow}>
           {info.getValue()?.toLocaleString()}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>FINALIZED</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-    {
-      accessorFn: (row: any) => row.pending_cases,
-      id: "pending_cases",
-      sortDescFirst: false,
-      cell: (info: any) => (
-        <span className={styles.revenueBlock}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>PENDING</span>,
+      header: () => <span className={styles.tableHeading}>TOTAL TARGETS</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },

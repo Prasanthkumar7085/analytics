@@ -28,7 +28,10 @@ export const getAllCaseTypesListAPI = async () => {
 
 export const getDashboardCaseTypesVolumeStatsAPI = async (params: any) => {
   try {
-    const { data, success } = await $fetch.get("/overview/case-types-volume", params);
+    const { data, success } = await $fetch.get(
+      "/overview/case-types-volume-targets",
+      params
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }

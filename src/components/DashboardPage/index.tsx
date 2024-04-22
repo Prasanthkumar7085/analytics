@@ -98,22 +98,19 @@ const DashboardPage = () => {
     try {
       const response = await getDashboardCaseTypesVolumeStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
-        let totalCases = 0;
-        let completedCases = 0;
-        let pendingCases = 0;
+         let totalCases = 0;
+         let totalTargets = 0;
 
-        response?.data?.forEach((entry: any) => {
-          totalCases += entry.total_cases ? +entry.total_cases : 0;
-          completedCases += entry.completed_cases ? +entry.completed_cases : 0;
-          pendingCases += entry.pending_cases ? +entry.pending_cases : 0;
-        });
+         response?.data?.forEach((entry: any) => {
+           totalCases += entry.total_cases ? +entry.total_cases : 0;
+           totalTargets += entry.total_targets ? +entry.total_targets : 0;
+         });
 
-        const result = [
-          { value: "Total", dolorSymbol: false },
-          { value: totalCases, dolorSymbol: false },
-          { value: completedCases, dolorSymbol: false },
-          { value: pendingCases, dolorSymbol: false },
-        ];
+         const result = [
+           { value: "Total", dolorSymbol: false },
+           { value: totalCases, dolorSymbol: false },
+           { value: totalTargets, dolorSymbol: false },
+         ];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);
       }
