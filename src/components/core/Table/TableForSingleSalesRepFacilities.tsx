@@ -247,7 +247,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                 <td key={index} className="cell">
                   {tabValue == "Revenue"
                     ? formatMoney(totalSumValues[item])
-                    : totalSumValues[item].toLocaleString()}
+                    : totalSumValues[item]?.toLocaleString()}
                 </td>
               );
             })}

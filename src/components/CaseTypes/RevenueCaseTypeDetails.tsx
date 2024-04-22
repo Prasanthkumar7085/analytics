@@ -7,15 +7,13 @@ import { useEffect, useState } from "react";
 import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
-import { getMonthWiseRevenueCaseTypesForSinglePageAPI, getMonthWiseVolumeCaseTypesForSinglePageAPI } from "@/services/caseTypesAPIs";
 import {
-  formatDateToMonthName,
-  formatMonthYear,
-  getUniqueMonths,
-  getUniqueMonthsInCaseTypeTragets,
-} from "@/lib/helpers/apiHelpers";
+  getMonthWiseRevenueCaseTypesForSinglePageAPI,
+  getMonthWiseVolumeCaseTypesForSinglePageAPI,
+} from "@/services/caseTypesAPIs";
+import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 
-const VolumeCaseTypesDetails = ({
+const RevenuCaseTypesDetails = ({
   tabValue,
   pageName,
   searchParams,
@@ -44,60 +42,11 @@ const VolumeCaseTypesDetails = ({
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
-    if (id) {
-      queryParams["sales_rep"] = id;
-    }
     try {
       if (tabValue == "Revenue") {
         await getDetailsOfCaseTypesOfRevenue(queryParams);
-      } else {
-        await getDetailsOfCaseTypesOfVolume(queryParams);
       }
     } catch (err: any) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //get the total sum of the casetypes targets and volume with respective months
-  const getTotalSumOfCasetypesVolumeWithMonths = (data: any) => {
-    const totals: any = {};
-    data.forEach(({ case_type, month_wise }: any) => {
-      month_wise.forEach(({ month, total_cases, target_cases }: any) => {
-        if (!totals[month]) {
-          totals[month] = { month, total_cases: 0, target_cases: 0 };
-        }
-        totals[month].total_cases += total_cases;
-        totals[month].target_cases += target_cases;
-      });
-    });
-    const result = Object.values(totals);
-    setTotalSumValues(result);
-  };
-
-  //get details Volume of caseTypes
-  const getDetailsOfCaseTypesOfVolume = async (queryParams: any) => {
-    setLoading(true);
-    try {
-      const response = await getMonthWiseVolumeCaseTypesForSinglePageAPI({
-        queryParams,
-      });
-      if (response.status == 200 || response.status == 201) {
-        let uniqueMonths = getUniqueMonthsInCaseTypeTragets(response?.data);
-        setHeaderMonths(uniqueMonths);
-
-        // Converting object to array
-        const sortedData = Object.values(response?.data).sort(
-          (a: any, b: any) => {
-            return a.case_type.localeCompare(b.case_type);
-          }
-        );
-        const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        getTotalSumOfCasetypesVolumeWithMonths(modifieData);
-        setCaseData(modifieData);
-      }
-    } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
@@ -166,40 +115,20 @@ const VolumeCaseTypesDetails = ({
     accessorFn: (row: any) => row[item],
     id: item,
     header: () => (
-      <span style={{ whiteSpace: "nowrap" }}>
-        {formatDateToMonthName(item)}
-      </span>
+      <span style={{ whiteSpace: "nowrap" }}>{formatMonthYear(item)}</span>
     ),
     footer: (props: any) => props.column.id,
     width: "80px",
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
-    sortType: "basic", // Enable basic sorting for this column
-    cell: (info: any) => {
-      let coloumnData = info.row.original["month_wise"]?.find(
-        (itemMonth: any, monthIndex: number) => itemMonth.month == item
-      );
-      return (
-        <div>
-          <span>
-            {tabValue == "Revenue"
-              ? formatMoney(info.getValue())
-              : coloumnData?.total_cases
-              ? coloumnData?.total_cases?.toLocaleString()
-              : 0}
-          </span>
-          /
-          <span>
-            {tabValue == "Revenue"
-              ? formatMoney(info.getValue())
-              : coloumnData?.target_cases
-              ? coloumnData?.target_cases?.toLocaleString()
-              : 0}
-          </span>
-        </div>
-      );
-    },
+    cell: (info: any) => (
+      <span>
+        {tabValue == "Revenue"
+          ? formatMoney(info.getValue())
+          : info.getValue()?.toLocaleString()}
+      </span>
+    ),
   }));
 
   const graphColoumn = [
@@ -214,7 +143,7 @@ const VolumeCaseTypesDetails = ({
       cell: (info: any) => {
         let data = { ...info.row.original };
         delete data?.case_type_id;
-        delete data?.case_type;
+        delete data?.case_type_name;
         delete data?.serial;
 
         return (
@@ -223,17 +152,13 @@ const VolumeCaseTypesDetails = ({
             onClick={() => {
               setGraphDialogOpen(true);
               setSelectedGraphData(info.row.original);
-              setGraphValuesData(data["month_wise"]);
-              setGraphColor(
-                graphColors[info.row.original.case_type.toUpperCase()]
-              );
+              setGraphValuesData(data);
+              setGraphColor(graphColors[info.row.original.case_type_name]);
             }}
           >
             <AreaGraph
-              data={data["month_wise"]}
-              graphColor={
-                graphColors[info.row.original.case_type.toUpperCase()]
-              }
+              data={data}
+              graphColor={graphColors[info.row.original.case_type_name]}
             />
           </div>
         );
@@ -259,15 +184,15 @@ const VolumeCaseTypesDetails = ({
     },
 
     {
-      accessorFn: (row: any) => row.case_type,
-      id: "case_type",
+      accessorFn: (row: any) => row.case_type_name,
+      id: "case_type_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>Case Types</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue().toUpperCase()}</span>;
+        return <span>{getValue()}</span>;
       },
     },
   ];
@@ -344,4 +269,4 @@ const VolumeCaseTypesDetails = ({
     </div>
   );
 };
-export default VolumeCaseTypesDetails;
+export default RevenuCaseTypesDetails;

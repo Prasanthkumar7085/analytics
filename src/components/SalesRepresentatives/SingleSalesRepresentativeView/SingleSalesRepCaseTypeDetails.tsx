@@ -1,10 +1,12 @@
-import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
-import styles from "./salesCaseTypes.module.css";
-import { Tab, Tabs } from "@mui/material";
-import { useState } from "react";
+import RevenuCaseTypesDetails from "@/components/CaseTypes/RevenueCaseTypeDetails";
+import VolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import Image from "next/image";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams, tabValue }: any) => {
+import { useState } from "react";
+const SingleSalesRepCaseTypeDetails = ({
+  pageName,
+  searchParams,
+  tabValue,
+}: any) => {
   const [value, setValue] = useState(tabValue);
   const [selectedDate, setSelectedDate] = useState<any>([]);
 
@@ -27,25 +29,23 @@ const SingleSalesRepCaseTypeDetails = ({ pageName, searchParams, tabValue }: any
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
           Month Wise Case Type Data
         </h3>
-        {/* <Tabs
-          value={value}
-          onChange={handleChange}
-          textColor="secondary"
-          indicatorColor="secondary"
-          aria-label="secondary tabs example"
-        >
-          <Tab value="Volume" label="Volume" />
-          <Tab value="Revenue" label="Revenue" />
-        </Tabs> */}
-        {/* <GlobalDateRangeFilter onChangeData={onChangeData} /> */}
       </div>
       <div className="cardBody">
-        <RevenuVolumeCaseTypesDetails
-          tabValue={tabValue}
-          pageName={pageName}
-          searchParams={searchParams}
-          selectedDate={selectedDate}
-        />
+        {tabValue == "Revenue" ? (
+          <RevenuCaseTypesDetails
+            tabValue={tabValue}
+            pageName={pageName}
+            searchParams={searchParams}
+            selectedDate={selectedDate}
+          />
+        ) : (
+          <VolumeCaseTypesDetails
+            tabValue={tabValue}
+            pageName={pageName}
+            searchParams={searchParams}
+            selectedDate={selectedDate}
+          />
+        )}
       </div>
     </div>
   );

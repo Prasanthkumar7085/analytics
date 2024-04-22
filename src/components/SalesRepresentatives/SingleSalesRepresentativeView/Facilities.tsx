@@ -121,30 +121,40 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
         queryParams,
       });
       if (response?.status == 200 || response.status == 201) {
-        let totalCases = 0;
-        let totalAmount = 0;
-        let totalPaid = 0;
-        let totalPending = 0;
+        let uniqueMonths = getUniqueMonths(response?.data);
+        setHeaderMonths(uniqueMonths);
 
-        response?.data?.forEach((entry: any) => {
-          totalAmount += entry.generated_amount ? +entry.generated_amount : 0;
-          totalPaid += entry.paid_amount ? +entry.paid_amount : 0;
-          totalPending += entry.pending_amount ? +entry.pending_amount : 0;
+        const groupedData: any = {};
+        response?.data?.forEach((item: any) => {
+          const { facility_id, facility_name, month, paid_amount } = item;
+          if (!groupedData[facility_id]) {
+            groupedData[facility_id] = { facility_id, facility_name };
+          }
+          const formattedMonth = month.replace(/\s/g, "");
+          groupedData[facility_id][formattedMonth] = paid_amount;
         });
 
-        const result = [
-          { value: "Total", dolorSymbol: false },
-          { value: null, dolorSymbol: false },
-          { value: totalAmount, dolorSymbol: true },
-          { value: totalPaid, dolorSymbol: true },
-          { value: totalPending, dolorSymbol: true },
-        ];
-        setTotalSumFacilityValues(result);
-        const modifieData = addSerial(
-          response?.data,
-          1,
-          response?.data?.length
-        );
+        // Sorting alphabetically based on case_type_name
+        const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
+          return a.facility_name.localeCompare(b.facility_name);
+        });
+        // Converting object to array
+        const modifieData = addSerial(sortedData, 1, sortedData?.length);
+
+        const groupedDataSum: any = {};
+        // Grouping the data by month sum
+        response?.data?.forEach((item: any) => {
+          const { month, paid_amount } = item;
+          const formattedMonth = month.replace(/\s/g, "");
+          const amount = parseFloat(paid_amount);
+          if (!groupedDataSum[formattedMonth]) {
+            groupedDataSum[formattedMonth] = 0;
+          }
+          // Add amount to the total_sum for the respective month
+          groupedDataSum[formattedMonth] += amount;
+        });
+        // Convert the object to an array
+        setTotalSumFacilityValues(groupedDataSum);
         setFacilitiesData(modifieData);
       }
     } catch (err) {

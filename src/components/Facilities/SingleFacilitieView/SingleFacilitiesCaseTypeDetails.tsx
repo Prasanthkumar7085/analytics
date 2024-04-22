@@ -1,8 +1,13 @@
-import RevenuVolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
+import RevenuCaseTypesDetails from "@/components/CaseTypes/RevenueCaseTypeDetails";
+import VolumeCaseTypesDetails from "@/components/CaseTypes/RevenueVolumeCaseTypeDetails";
 import { Tab, Tabs } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
-const SingleFacilitieCaseTypeDetails = ({ pageName, searchParams, tabValue }: any) => {
+const SingleFacilitieCaseTypeDetails = ({
+  pageName,
+  searchParams,
+  tabValue,
+}: any) => {
   const [value, setValue] = useState(tabValue);
   const [selectedDate, setSelectedDate] = useState<any>([]);
 
@@ -30,12 +35,21 @@ const SingleFacilitieCaseTypeDetails = ({ pageName, searchParams, tabValue }: an
         {/* <GlobalDateRangeFilter onChangeData={onChangeData} /> */}
       </div>
       <div className="cardBody">
-        <RevenuVolumeCaseTypesDetails
-          tabValue={tabValue}
-          pageName={pageName}
-          searchParams={searchParams}
-          selectedDate={selectedDate}
-        />
+        {tabValue == "Revenue" ? (
+          <RevenuCaseTypesDetails
+            tabValue={tabValue}
+            pageName={pageName}
+            searchParams={searchParams}
+            selectedDate={selectedDate}
+          />
+        ) : (
+          <VolumeCaseTypesDetails
+            tabValue={tabValue}
+            pageName={pageName}
+            searchParams={searchParams}
+            selectedDate={selectedDate}
+          />
+        )}
       </div>
     </div>
   );
