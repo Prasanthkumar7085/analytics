@@ -3,11 +3,11 @@ interface DataItem {
 }
 export const sortAndGetData = <T extends DataItem>(
   data: T[],
-  sortBy: keyof T,
+  sortBy: any,
   sortType: "asc" | "desc"
 ): T[] => {
   if (!data || data.length === 0 || !sortBy || !sortType) {
-    return data; // Return the original data if it's empty or sorting parameters are missing
+    return data;
   }
 
   return data.slice().sort((a, b) => {
@@ -22,25 +22,36 @@ export const sortAndGetData = <T extends DataItem>(
   });
 };
 
+export const customSortByMonth = (data: any, sortType?: any, sortValue?: any) => {
+  let specialColoumns = ["sales_rep_name", "new-facilities", "total"];
 
-export const customSortByMonth = (
-  data: any,
-  monthName: any,
-  casetype: any,
-  sortType: any
-) => {
-  console.log(monthName, casetype);
-  if (sortType === "asc") {
-    return data.sort(
-      (a: any, b: any) =>
-        a["monthwiseData"][monthName][casetype] -
-        b["monthwiseData"][monthName][casetype]
-    );
+  if (specialColoumns.includes(sortValue)) {
+    return data.slice().sort((a: any, b: any) => {
+      const sortValueA = a[sortValue];
+      const sortValueB = b[sortValue];
+
+      if (sortType === "asc") {
+        return sortValueA < sortValueB ? -1 : sortValueA > sortValueB ? 1 : 0;
+      } else {
+        return sortValueA > sortValueB ? -1 : sortValueA < sortValueB ? 1 : 0;
+      }
+    });
   } else {
-    return data.sort(
-      (a: any, b: any) =>
-        b["monthwiseData"][monthName][casetype] -
-        a["monthwiseData"][monthName][casetype]
-    );
+    const string = sortValue.split("-");
+    const datePart = string[0] + "-" + string[1];
+    const remainingPart = string[2];
+    if (sortType === "asc") {
+      return data.sort(
+        (a: any, b: any) =>
+          a["monthwiseData"][datePart][remainingPart] -
+          b["monthwiseData"][datePart][remainingPart]
+      );
+    } else {
+      return data.sort(
+        (a: any, b: any) =>
+          b["monthwiseData"][datePart][remainingPart] -
+          a["monthwiseData"][datePart][remainingPart]
+      );
+    }
   }
 };

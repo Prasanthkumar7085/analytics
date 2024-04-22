@@ -40,3 +40,4 @@ export const checkNumbersOrnot = (event: any) => {
     const value = event.target.value.replace(/\D/g, "");
     event.target.value = value;
 };
+

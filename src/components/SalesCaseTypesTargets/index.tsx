@@ -1,6 +1,7 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { customSortByMonth } from "@/lib/Pipes/sortAndGetData";
 import { caseTypesData } from "@/lib/constants";
+import React from "react";
 import {
   checkNumbersOrnot,
   formatDateToMonthName,
@@ -39,7 +40,9 @@ const SalesCaseTypeWiseTargets = () => {
   const [selectedValues, setSelectedValues] = useState<any>({});
   const [editOrNot, setEditOrNot] = useState<boolean>(false);
   const [editbleValue, setEditbleValue] = useState<any>();
+  const [focusedIndex, setFocusedIndex] = useState(-1); // Initialize with -1 to focus on the first input field
 
+  console.log(allTargetsData, "p000000");
   //query preparation method
   const queryPreparations = async ({
     month,
@@ -70,52 +73,18 @@ const SalesCaseTypeWiseTargets = () => {
     }
   };
 
-  //get total sum of the every month
-  const getTotalSumsOfMonths = (data: any) => {
-    const result: any = [
-      [
-        { value: "Total", dolorSymbol: false },
-        { value: null, dolorSymbol: false },
-      ],
-    ];
-    // Calculate totals
-    const months = [
-      "jan",
-      "feb",
-      "mar",
-      "apr",
-      "may",
-      "jun",
-      "jul",
-      "aug",
-      "sept",
-      "oct",
-      "nov",
-      "dec",
-    ];
-    months.forEach((month) => {
-      const volumeTotal = data.reduce(
-        (acc: any, item: any) => acc + item[month][0],
-        0
-      );
-      const facilitiesTotal = data.reduce(
-        (acc: any, item: any) => acc + item[month][1],
-        0
-      );
-
-      let makeVolumeObj = { value: volumeTotal, dolorSymbol: false };
-      let makeFacilitiesObj = { value: facilitiesTotal, dolorSymbol: false };
-      result.push([makeVolumeObj, makeFacilitiesObj]);
-    });
-    setTotalSumValues(result.flat());
-  };
-
   //group the given data into monthwise salesrep data
   const groupedTargetsData = (data: any) => {
     const groupedData = data.reduce((acc: any, obj: any) => {
       const salesRepName = obj.sales_rep_name;
       const salesRepId = obj.sales_rep_id;
       const id = obj.id;
+      const newFacilites = obj.new_facilities;
+      const createdAt = obj.created_at;
+      const updatedAt = obj.updated_at;
+      const total = obj.total;
+      const start_date = obj.start_date;
+      const end_date = obj.end_date;
       const month = obj.month;
 
       if (!acc[salesRepId]) {
@@ -123,11 +92,25 @@ const SalesCaseTypeWiseTargets = () => {
           sales_rep_name: salesRepName,
           sales_rep_id: salesRepId,
           id: id,
+          new_facilities: newFacilites,
+          created_at: createdAt,
+          updated_at: updatedAt,
+          total: total,
+          start_date: start_date,
+          end_date: end_date,
+          month: month,
           monthwiseData: {},
         };
       }
+      // Filter out fields already present in the main object
+      const filteredObj = Object.keys(obj)
+        .filter((key) => !(key in acc[salesRepId]))
+        .reduce((acc: any, key) => {
+          acc[key] = obj[key];
+          return acc;
+        }, {});
       acc[salesRepId].monthwiseData[month] = {
-        ...obj,
+        ...filteredObj,
       };
 
       return acc;
@@ -135,6 +118,13 @@ const SalesCaseTypeWiseTargets = () => {
     return Object.values(groupedData);
   };
 
+  //calculate total sum of the casetypewise targets
+  const getTotalSumOfAllCaseTypesTargets = (month: string, data: any) => {
+    const total = Object.values(
+      data.row.original["monthwiseData"][month]
+    ).reduce((acc: any, value: any) => acc + value, 0);
+    return total ? total : 0;
+  };
   //get all sales reps data event
   const getAllSalesRepCaseTypeWiseTargets = async (queryParams: any) => {
     setLoading(true);
@@ -160,14 +150,10 @@ const SalesCaseTypeWiseTargets = () => {
         }
         let modifieData = addSerial(groupData, 1, groupData?.length);
         if (queryParams.order_by) {
-          const string = queryParams.order_by.split("-");
-          const datePart = string[0] + "-" + string[1];
-          const remainingPart = string[2];
           modifieData = customSortByMonth(
             modifieData,
-            datePart,
-            remainingPart,
-            queryParams.order_type
+            queryParams.order_type,
+            queryParams.order_by
           );
         }
         setAllTargetsData(modifieData);
@@ -303,16 +289,13 @@ const SalesCaseTypeWiseTargets = () => {
           <div>
             {checkEditOrNot(item, info.row.original.sales_rep_id) ? (
               <TextField
-                autoFocus
+                autoFocus={focusedIndex === caseIndex}
                 key={caseIndex}
                 sx={{
                   "& .MuiInputBase-root": {
                     padding: "2.5px !Important",
                     fontSize: "clamp(12px, 0.72vw, 14px) !important",
                     height: 30,
-                  },
-                  "& .MuiInputBase-input": {
-                    padding: "0",
                   },
                 }}
                 value={editbleValue[casetype.value]}
@@ -321,6 +304,7 @@ const SalesCaseTypeWiseTargets = () => {
                     ...prev,
                     [casetype.value]: +e.target.value,
                   }));
+                  setFocusedIndex(caseIndex);
                 }}
                 onInput={checkNumbersOrnot}
               />
@@ -333,9 +317,29 @@ const SalesCaseTypeWiseTargets = () => {
         ),
       })),
       {
+        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+        accessorFn: (row: any) => row.original.total,
+        id: `total`,
+        width: "200px",
+        cell: (info: any) => {
+          return <div>{`${getTotalSumOfAllCaseTypesTargets(item, info)}`}</div>;
+        },
+      },
+      {
+        header: () => (
+          <span style={{ whiteSpace: "nowrap" }}>NEW FACILITIES</span>
+        ),
+        accessorFn: (row: any) => row.original.new_facilities,
+        id: `new-facilities`,
+        width: "200px",
+        cell: (info: any) => {
+          return <div>{info.row.original.new_facilities}</div>;
+        },
+      },
+      {
         header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
         accessorFn: (row: any) => row.original.monthwiseData[item],
-        id: `${item}-{}`,
+        id: `actions`,
         width: "200px",
         cell: (info: any) => {
           return (
@@ -425,11 +429,8 @@ const SalesCaseTypeWiseTargets = () => {
     if (orderType) {
       queryParams["order_type"] = orderType;
     }
-    if (params.get("year")) {
-      queryParams["year"] = params.get("year");
-    }
-    if (params.get("to_date")) {
-      queryParams["to_date"] = params.get("to_date");
+    if (params.get("month")) {
+      queryParams["month"] = params.get("month");
     }
 
     router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
@@ -437,14 +438,10 @@ const SalesCaseTypeWiseTargets = () => {
 
     if (orderBy && orderType) {
       if (orderBy) {
-        const string = queryParams.order_by.split("-");
-        const datePart = string[0] + "-" + string[1];
-        const remainingPart = string[2];
         data = customSortByMonth(
           data,
-          datePart,
-          remainingPart,
-          queryParams.order_type
+          queryParams.order_type,
+          queryParams.order_by
         );
       }
       if (search) {
