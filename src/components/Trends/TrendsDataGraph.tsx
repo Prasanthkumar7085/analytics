@@ -20,7 +20,6 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
   const getSalesRepRevenue = async (fromDate: any, toDate: any) => {
     setLoading(true);
     try {
-
       let queryParams: any = {};
 
       if (fromDate) {
@@ -34,22 +33,24 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
       if (graphType == "revenue") {
         response = await getTrendsForRevenueBySalesRepIdAPI({
           pageName,
-          id: id as string, queryParams
+          id: id as string,
+          queryParams,
         });
       } else if (graphType == "volume") {
         response = await getTrendsForVolumeBySalesRepIdAPI({
           pageName,
-          id: id as string, queryParams
+          id: id as string,
+          queryParams,
         });
       }
-      setTrendsData(response?.data);
+      console.log(response?.mergedData, "p00p0p0");
+      setTrendsData(response?.mergedData);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
-
 
   let options = {
     chart: {
@@ -71,31 +72,63 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
       },
     },
     tooltip: {
-      formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
-        if (graphType == "revenue")
-          return this.point.category + " <b>" + ': $' + Highcharts.numberFormat(this.point.y, 2, '.', ',') + "</b>";
-        else
-          return this.point.category + ':' + '<b>' + Highcharts.numberFormat(this.point.y, 0, '.', ',') + '<b>';
-      }
+      crosshairs: true,
+      shared: true,
+      tooltip: {
+        crosshairs: true,
+        shared: true,
+        formatter: function (
+          this: Highcharts.TooltipFormatterContextObject | any
+        ): string {
+          let month = this.point.category;
+          let totalCases = this.series.chart.series[0].data[this.point.index].y;
+          let totalTargets =
+            this.series.chart.series[1].data[this.point.index].y;
+
+          return (
+            month +
+            "<br>" +
+            "Total Cases: <b>" +
+            totalCases.toLocaleString() +
+            "</b><br>" +
+            "Total Targets: <b>" +
+            totalTargets.toLocaleString() +
+            "</b>"
+          );
+        },
+      },
     },
     series: [
       {
-        name:
-          graphType == "volume"
-            ? "Total Volume"
-            : "Total Revenue",
+        name: graphType == "volume" ? "Total Volume" : "Total Revenue",
         data:
           graphType == "volume"
-            ? trendsData?.length ? trendsData?.map((item: any) => +item.total_cases) : []
-            : trendsData?.length ? trendsData?.map((item: any) => +item.paid_amount) : [],
+            ? trendsData?.length
+              ? trendsData?.map((item: any) => +item.total_volume)
+              : []
+            : trendsData?.length
+            ? trendsData?.map((item: any) => +item.paid_amount)
+            : [],
+        animation: {
+          opacity: 1, // Set opacity animation for smoother entrance
+        },
+      },
+      {
+        name: graphType == "volume" ? "Total Targets" : "Total Revenue",
+        data:
+          graphType == "volume"
+            ? trendsData?.length
+              ? trendsData?.map((item: any) => +item.total_target)
+              : []
+            : trendsData?.length
+            ? trendsData?.map((item: any) => +item.paid_amount)
+            : [],
         animation: {
           opacity: 1, // Set opacity animation for smoother entrance
         },
       },
     ],
-
-
-  }
+  };
 
   useEffect(() => {
     // setTrendsData({});

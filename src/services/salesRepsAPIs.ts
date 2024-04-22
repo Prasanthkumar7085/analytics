@@ -97,7 +97,8 @@ export const getTrendsForVolumeBySalesRepIdAPI = async ({
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/${pageName}/${id}/trends/volume`, queryParams
+      `/${pageName}/${id}/trends/volume-targets`,
+      queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);

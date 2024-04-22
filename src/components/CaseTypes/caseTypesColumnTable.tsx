@@ -235,13 +235,17 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                               <td key={index} className="cell">
                                 {tabValue == "Revenue"
                                   ? formatMoney(totalSumValues[item])
-                                  : totalSumValues
-                                      .find((value: any) => item == value.month)
+                                  : totalSumValues[0]?.month
+                                  ? totalSumValues
+                                      ?.find(
+                                        (value: any) => item == value.month
+                                      )
                                       ?.target_cases?.toLocaleString() +
                                     "/" +
                                     totalSumValues
                                       .find((value: any) => item == value.month)
-                                      ?.total_cases?.toLocaleString()}
+                                      ?.total_cases?.toLocaleString()
+                                  : totalSumValues[item].toLocaleString()}
                               </td>
                             );
                         })}

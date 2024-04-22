@@ -73,7 +73,6 @@ const RevenuVolumeCaseTypesDetails = ({
       });
     });
     const result = Object.values(totals);
-    console.log(result, "efwwf");
     setTotalSumValues(result);
   };
 
