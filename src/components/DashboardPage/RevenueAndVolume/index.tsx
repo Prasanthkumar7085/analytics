@@ -34,7 +34,7 @@ const RevenueBlock = () => {
     }
     const months = data.map((item: any) => item.month);
     const TotalCases = data.map((item: any) => +item.total_cases);
-    const CompletedCases = data.map((item: any) => +item.completed_cases);
+    const CompletedCases = data.map((item: any) => +item.total_targets);
     setLablesData(months);
     setTotalCasesData(TotalCases);
     setCompletedCases(CompletedCases);

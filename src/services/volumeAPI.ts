@@ -3,7 +3,7 @@ import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
 export const getVolumeAPI = async (params: any) => {
     try {
-        const { success, data } = await $fetch.get("/overview/volume", params);
+        const { success, data } = await $fetch.get("/overview/volume-targets", params);
         if (!success) {
             return handleAPIErrorResponse(data);
         }
