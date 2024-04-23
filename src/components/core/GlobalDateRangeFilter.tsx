@@ -116,13 +116,13 @@ const GlobalDateRangeFilter = ({
         placement={DatePickerplacement ? DatePickerplacement : "bottomEnd"}
         ranges={predefinedRanges}
         value={dateFilterDefaultValue}
+        format="MM/dd/yyyy"
         disabledDate={(date: any) => {
           return date.getTime() > new Date().getTime();
         }}
         placeholder={"Start Date - End Date"}
-
         onChange={(newDate: any) => {
-          updateDateValues(newDate)
+          updateDateValues(newDate);
         }}
       />
     </div>
