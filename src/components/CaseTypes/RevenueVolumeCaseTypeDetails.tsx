@@ -62,18 +62,23 @@ const VolumeCaseTypesDetails = ({
 
   //get the total sum of the casetypes targets and volume with respective months
   const getTotalSumOfCasetypesVolumeWithMonths = (data: any) => {
-    const totals: any = {};
-    data.forEach(({ case_type, month_wise }: any) => {
-      month_wise.forEach(({ month, total_cases, target_cases }: any) => {
-        if (!totals[month]) {
-          totals[month] = { month, total_cases: 0, target_cases: 0 };
-        }
-        totals[month].total_cases += total_cases;
-        totals[month].target_cases += target_cases;
-      });
+    const groupedDataSum: any = {};
+    data?.forEach((item: any) => {
+      const { month, total_cases, total_targets } = item;
+      const formattedMonth = month.replace(/\s/g, "");
+      const amount = parseFloat(total_cases);
+      const targetsAmount = parseFloat(total_targets);
+
+      if (!groupedDataSum[formattedMonth]) {
+        groupedDataSum[formattedMonth] = [0, 0];
+      }
+
+      // Add amount to the total_sum for the respective month
+      groupedDataSum[formattedMonth][0] += amount; // Adding total cases
+      groupedDataSum[formattedMonth][1] += targetsAmount; // Adding total targets
     });
-    const result = Object.values(totals);
-    setTotalSumValues(result);
+    // Convert the object to an array
+    setTotalSumValues(groupedDataSum);
   };
 
   //get details Volume of caseTypes
@@ -81,21 +86,42 @@ const VolumeCaseTypesDetails = ({
     setLoading(true);
     try {
       const response = await getMonthWiseVolumeCaseTypesForSinglePageAPI({
+        pageName,
+        id,
         queryParams,
       });
       if (response.status == 200 || response.status == 201) {
-        let uniqueMonths = getUniqueMonthsInCaseTypeTragets(response?.data);
+        let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
 
-        const sortedData = Object.values(response?.data).sort(
-          (a: any, b: any) => {
-            return a.case_type.localeCompare(b.case_type);
+        const groupedData: any = {};
+        // Grouping the data by case_type_id and then by month
+        response?.data?.forEach((item: any) => {
+          const {
+            case_type_id,
+            case_type_name,
+            month,
+            total_cases,
+            total_targets,
+          } = item;
+          if (!groupedData[case_type_name]) {
+            groupedData[case_type_name] = { case_type_id, case_type_name };
           }
-        );
+
+          const formattedMonth = month.replace(/\s/g, "");
+
+          groupedData[case_type_name][formattedMonth] = [
+            total_cases,
+            total_targets,
+          ];
+        });
+        // Converting object to array
+        const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
+          return a.case_type_name.localeCompare(b.case_type_name);
+        });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        getTotalSumOfCasetypesVolumeWithMonths(modifieData);
-        console.log(modifieData, "ppeppp3p3");
         setCaseData(modifieData);
+        getTotalSumOfCasetypesVolumeWithMonths(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -163,61 +189,23 @@ const VolumeCaseTypesDetails = ({
 
   //prepare the table coloumns
   let addtionalcolumns = headerMonths?.map((item: any) => ({
-    accessorFn: (row: any) => {
-      // Find the month data for the current column (item)
-      const monthData = row.original?.["month_wise"].find(
-        (month: any) => month.month === item
-      );
-      // Return the total_cases value for the current month
-      return monthData ? monthData.total_cases : 0;
-    },
+    accessorFn: (row: any) => row[item],
     id: item,
     header: () => (
-      <span style={{ whiteSpace: "nowrap" }}>
-        {formatDateToMonthName(item)}
-      </span>
+      <span style={{ whiteSpace: "nowrap" }}>{formatMonthYear(item)}</span>
     ),
     footer: (props: any) => props.column.id,
     width: "80px",
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
-    sortingFn: (rowA: any, rowB: any, columnId: any) => {
-      // Extract total_cases for sorting
-      const colA = rowA.original.month_wise.find(
-        (month: any) => month.month === columnId
-      ).total_cases;
-      const colB = rowB.original.month_wise.find(
-        (month: any) => month.month === columnId
-      ).total_cases;
-      // Compare total_cases for sorting
-      return colA - colB;
-    },
-
-    cell: (info: any) => {
-      let coloumnData = info.row.original["month_wise"]?.find(
-        (itemMonth: any, monthIndex: number) => itemMonth.month == item
-      );
-      return (
-        <div>
-          <span>
-            {tabValue == "Revenue"
-              ? formatMoney(info.getValue())
-              : coloumnData?.total_cases
-              ? coloumnData?.total_cases?.toLocaleString()
-              : 0}
-          </span>
-          /
-          <span>
-            {tabValue == "Revenue"
-              ? formatMoney(info.getValue())
-              : coloumnData?.target_cases
-              ? coloumnData?.target_cases?.toLocaleString()
-              : 0}
-          </span>
-        </div>
-      );
-    },
+    cell: (info: any) => (
+      <span>
+        {tabValue == "Revenue"
+          ? formatMoney(info.getValue())
+          : info.row.original?.[item]?.[0]?.toLocaleString()}
+      </span>
+    ),
   }));
 
   const graphColoumn = [
@@ -232,7 +220,7 @@ const VolumeCaseTypesDetails = ({
       cell: (info: any) => {
         let data = { ...info.row.original };
         delete data?.case_type_id;
-        delete data?.case_type;
+        delete data?.case_type_name;
         delete data?.serial;
 
         return (
@@ -241,17 +229,13 @@ const VolumeCaseTypesDetails = ({
             onClick={() => {
               setGraphDialogOpen(true);
               setSelectedGraphData(info.row.original);
-              setGraphValuesData(data["month_wise"]);
-              setGraphColor(
-                graphColors[info.row.original.case_type.toUpperCase()]
-              );
+              setGraphValuesData(data);
+              setGraphColor(graphColors[info.row.original.case_type_name]);
             }}
           >
             <AreaGraph
-              data={data["month_wise"]}
-              graphColor={
-                graphColors[info.row.original.case_type.toUpperCase()]
-              }
+              data={data}
+              graphColor={graphColors[info.row.original.case_type_name]}
             />
           </div>
         );
@@ -277,18 +261,19 @@ const VolumeCaseTypesDetails = ({
     },
 
     {
-      accessorFn: (row: any) => row.case_type,
-      id: "case_type",
+      accessorFn: (row: any) => row.case_type_name,
+      id: "case_type_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>Case Types</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue().toUpperCase()}</span>;
+        return <span>{getValue()}</span>;
       },
     },
   ];
+
 
   const addAddtionalColoumns = [
     ...columnDef,

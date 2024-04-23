@@ -252,7 +252,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                         totalSumValues
                           .find((value: any) => item == value.month)
                           ?.target_cases?.toLocaleString()
-                      : totalSumValues[item].toLocaleString()}
+                      : totalSumValues[item]?.[0].toLocaleString()}
                   </td>
                 );
               })}

@@ -76,13 +76,17 @@ export const getMonthWiseRevenueCaseDetailsAPI = async (pageName: string, queryP
 };
 
 export const getMonthWiseVolumeCaseTypesForSinglePageAPI = async ({
+  pageName,
+  id,
   queryParams,
 }: {
+  pageName: any;
+  id: any;
   queryParams: any;
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/sales-reps-monthly-achieves`,
+      `/${pageName}/${id}/case-types/months/volume-targets`,
       queryParams
     );
     if (!success) {

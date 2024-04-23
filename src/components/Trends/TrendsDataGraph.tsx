@@ -117,6 +117,7 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
         animation: {
           opacity: 1, // Set opacity animation for smoother entrance
         },
+        type: "column",
       },
       {
         name: graphType == "volume" ? "Total Targets" : "Total Revenue",

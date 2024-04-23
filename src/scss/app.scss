@@ -384,6 +384,36 @@ table {
         z-index: 9999;
 
   }
+  .tableContainer .thead .table-row .cell:nth-child(19) {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    position: sticky !important;
+    right: 220px !important;
+    background: #f0edff !important;
+    z-index: 999;
+  }
+   .tableContainer .thead .table-row .cell:nth-child(20) {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    position: sticky !important;
+    right: 100px !important;
+    background: #f0edff !important;
+    z-index: 999;
+  }
+   .tableContainer .tbody .table-row .cell:nth-child(19) {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    position: sticky !important;
+    right: 220px !important;
+    background: #fff !important;
+        z-index: 999;
+
+  }
+   .tableContainer .tbody .table-row .cell:nth-child(20) {
+    border-left: 0.633951px solid #e0e0e0 !important;
+    position: sticky !important;
+    right: 100px !important;
+    background: #fff !important;
+        z-index: 999;
+
+  }
   .tableContainer .tbody .table-row .cell:nth-child(2) {
     border-left: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;

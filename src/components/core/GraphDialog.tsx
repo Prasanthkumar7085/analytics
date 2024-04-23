@@ -28,8 +28,10 @@ const GraphDialog = ({
       title: {
         text: "Months",
       },
-      categories: graphValuesData?.length
-        ? graphValuesData.map((item: any) => formatDateToMonthName(item.month))
+      categories: Object?.values(graphValuesData)?.length
+        ? Object?.keys(graphValuesData).map((item: any) =>
+            formatMonthYear(item)
+          )
         : [],
     },
     plotOptions: {
@@ -47,32 +49,6 @@ const GraphDialog = ({
       },
       marker: {
         enabled: false,
-      },
-
-      area: {
-        color: graphColor ? graphColor : "",
-        fillColor: {
-          linearGradient: {
-            x1: 0,
-            y1: 0,
-            x2: 0,
-            y2: 1,
-          },
-          stops: [
-            [0, graphColor ? graphColor : ""],
-            [1, Highcharts.color("white").setOpacity(0).get("rgba")],
-          ],
-        },
-        marker: {
-          radius: 2,
-        },
-        lineWidth: 1,
-        states: {
-          hover: {
-            lineWidth: 1,
-          },
-        },
-        threshold: null,
       },
       plotOptions: {
         series: {
@@ -124,22 +100,19 @@ const GraphDialog = ({
     series: [
       {
         name: "Total Targets",
-        data: graphValuesData?.length
-          ? graphValuesData.map((item: any) =>
-              item.target_cases ? +item.target_cases : 0
-            )
+        data: Object?.values(graphValuesData)?.length
+          ? Object.values(graphValuesData).map((item: any) => item[1])
           : [],
-        type: "area",
+        type: "line",
+        zIndex: 9999,
       },
       {
         name: "Total cases",
-        data: graphValuesData?.length
-          ? graphValuesData.map((item: any) =>
-              item.total_cases ? +item.total_cases : 0
-            )
+        data: Object?.values(graphValuesData)?.length
+          ? Object.values(graphValuesData).map((item: any) => item[0])
           : [],
-        type: "line",
-        color: "#000000",
+        type: "column",
+        color: graphColor,
       },
     ],
   };

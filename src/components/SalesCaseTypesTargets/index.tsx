@@ -317,15 +317,6 @@ const SalesCaseTypeWiseTargets = () => {
         ),
       })),
       {
-        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
-        accessorFn: (row: any) => row.original.total,
-        id: `total`,
-        width: "200px",
-        cell: (info: any) => {
-          return <div>{`${getTotalSumOfAllCaseTypesTargets(item, info)}`}</div>;
-        },
-      },
-      {
         header: () => (
           <span style={{ whiteSpace: "nowrap" }}>NEW FACILITIES</span>
         ),
@@ -336,6 +327,16 @@ const SalesCaseTypeWiseTargets = () => {
           return <div>{info.row.original.new_facilities}</div>;
         },
       },
+      {
+        header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+        accessorFn: (row: any) => row.original.total,
+        id: `total`,
+        width: "200px",
+        cell: (info: any) => {
+          return <div>{`${getTotalSumOfAllCaseTypesTargets(item, info)}`}</div>;
+        },
+      },
+
       {
         header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
         accessorFn: (row: any) => row.original.monthwiseData[item],
