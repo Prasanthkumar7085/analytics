@@ -42,8 +42,7 @@ const SalesCaseTypeWiseTargets = () => {
   const [editbleValue, setEditbleValue] = useState<any>();
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [updatedRowTotal, setUpdatedRowTotal] = useState<any>(0);
-
-  console.log(allTargetsData, "p000000");
+  const [coloumSums, setColoumnsSums] = useState({});
   //query preparation method
   const queryPreparations = async ({
     month,
@@ -174,7 +173,7 @@ const SalesCaseTypeWiseTargets = () => {
           );
         }
         setAllTargetsData(modifieData);
-        console.log(modifieData, "p23324234");
+        getColoumnWiseTotalCount(modifieData);
       } else {
         throw response;
       }
@@ -183,6 +182,27 @@ const SalesCaseTypeWiseTargets = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getColoumnWiseTotalCount = (modifieData: any) => {
+    const caseTypeTotals: { [key: string]: number } = {};
+    modifieData.forEach((obj: any) => {
+      Object.values(obj.monthwiseData).forEach((monthData: any) => {
+        Object.entries(monthData).forEach(([caseType, value]: any) => {
+          caseTypeTotals[caseType] = (caseTypeTotals[caseType] || 0) + value;
+        });
+      });
+    });
+    setColoumnsSums(caseTypeTotals);
+    let newFacilitiesTotal = 0;
+    let rowTotalSum = 0;
+    modifieData.forEach((obj: any) => {
+      newFacilitiesTotal += obj.new_facilities;
+      rowTotalSum += obj.rowTotal;
+    });
+
+    const totalSums = [newFacilitiesTotal, rowTotalSum];
+    setTotalSumValues(totalSums);
   };
 
   //update cell value or targets values
@@ -386,8 +406,8 @@ const SalesCaseTypeWiseTargets = () => {
             <div>
               {" "}
               {checkEditOrNot(item, info.row.original.sales_rep_id)
-                ? updatedRowTotal
-                : info.row.original.rowTotal}
+                ? updatedRowTotal?.toLocaleString()
+                : info.row.original.rowTotal?.toLocaleString()}
             </div>
           );
         },
@@ -556,7 +576,8 @@ const SalesCaseTypeWiseTargets = () => {
           loading={loading}
           searchParams={searchParams}
           getData={onUpdateData}
-          totalSumValues={totalSumValues}
+          totalSumValues={coloumSums}
+          anotherSumValues={totalSumValues}
         />
         <LoadingComponent loading={loading} />
       </div>
