@@ -1,19 +1,23 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
-import { Backdrop } from "@mui/material";
+import { Backdrop, Tooltip } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import CaseTypesColumnTable from "./caseTypesColumnTable";
-import { getMonthWiseRevenueCaseTypesForSinglePageAPI, getMonthWiseVolumeCaseTypesForSinglePageAPI } from "@/services/caseTypesAPIs";
+import {
+  getMonthWiseRevenueCaseTypesForSinglePageAPI,
+  getMonthWiseVolumeCaseTypesForSinglePageAPI,
+} from "@/services/caseTypesAPIs";
 import {
   formatDateToMonthName,
   formatMonthYear,
   getUniqueMonths,
   getUniqueMonthsInCaseTypeTragets,
 } from "@/lib/helpers/apiHelpers";
+import { sortingFns } from "@tanstack/react-table";
 
 const VolumeCaseTypesDetails = ({
   tabValue,
@@ -121,6 +125,7 @@ const VolumeCaseTypesDetails = ({
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setCaseData(modifieData);
+        console.log(modifieData, "ewpew00e");
         getTotalSumOfCasetypesVolumeWithMonths(response?.data);
       }
     } catch (err) {
@@ -199,11 +204,64 @@ const VolumeCaseTypesDetails = ({
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
+    sortingFn: (rowA: any, rowB: any, columnId: any) => {
+      const rowDataA = rowA.original[columnId];
+      const rowDataB = rowB.original[columnId];
+
+      // Extract the case values from the row data
+      const valueA = rowDataA[0] || 0; // Default to 0 if value is undefined
+      const valueB = rowDataB[0] || 0; // Default to 0 if value is undefined
+
+      // Compare the case values for sorting
+      return valueA - valueB;
+    },
     cell: (info: any) => (
-      <span>
-        {tabValue == "Revenue"
-          ? formatMoney(info.getValue())
-          : info.row.original?.[item]?.[0]?.toLocaleString()}
+      <span style={{ cursor: "pointer" }}>
+        {tabValue == "Revenue" ? (
+          formatMoney(info.getValue())
+        ) : (
+          <Tooltip
+            arrow
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -5],
+                    },
+                  },
+                ],
+              },
+            }}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  width: "100px",
+                  bgcolor: "#ffffff",
+                  color: "black",
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  padding: 0,
+                  fontSize: "15px",
+                  textAlign: "center",
+                  "& .MuiTooltip-arrow": {
+                    color: "black",
+                    "&::before": {
+                      border: " 1px solid rgba(0, 0, 0, 0.1)!important",
+                    },
+                  },
+                },
+              },
+            }}
+            title={
+              "Target: " + info.row.original?.[item]?.[1]?.toLocaleString()
+            }
+          >
+            <div className="statusTags">
+              {info.row.original?.[item]?.[0]?.toLocaleString()}
+            </div>
+          </Tooltip>
+        )}
       </span>
     ),
   }));
@@ -273,7 +331,6 @@ const VolumeCaseTypesDetails = ({
       },
     },
   ];
-
 
   const addAddtionalColoumns = [
     ...columnDef,
