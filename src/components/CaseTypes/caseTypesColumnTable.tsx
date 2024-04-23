@@ -247,14 +247,8 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                 <td key={index} className="cell" style={{ cursor: "pointer" }}>
                   {tabValue == "Revenue" ? (
                     formatMoney(totalSumValues[item])
-                  ) : totalSumValues[0]?.month ? (
-                    totalSumValues
-                      ?.find((value: any) => item == value.month)
-                      ?.total_cases?.toLocaleString() +
-                    "/" +
-                    totalSumValues
-                      .find((value: any) => item == value.month)
-                      ?.target_cases?.toLocaleString()
+                  ) : !totalSumValues[item]?.[1] ? (
+                    totalSumValues[item]?.[0]
                   ) : (
                     <Tooltip
                       arrow
@@ -274,8 +268,12 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                         tooltip: {
                           sx: {
                             width: "100px",
-                            bgcolor: "#ffffff",
-                            color: "black",
+                            bgcolor:
+                              totalSumValues[item]?.[1] <=
+                              totalSumValues[item]?.[0]
+                                ? "green"
+                                : "red",
+                            color: "white",
                             border: "1px solid rgba(0,0,0,0.1)",
                             padding: 0,
                             fontSize: "15px",
@@ -292,11 +290,11 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                       }}
                       title={
                         "Target total: " +
-                        totalSumValues[item]?.[1].toLocaleString()
+                        totalSumValues[item]?.[1]?.toLocaleString()
                       }
                     >
                       <div className="statusTags">
-                        {totalSumValues[item]?.[0].toLocaleString()}
+                        {totalSumValues[item]?.[0]?.toLocaleString()}
                       </div>
                     </Tooltip>
                   )}

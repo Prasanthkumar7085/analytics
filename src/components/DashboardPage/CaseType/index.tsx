@@ -81,7 +81,7 @@ const CaseTypes = ({
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
       cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
+        <span className={styles.totalCasesRow} style={{ color: "#5b5b5b" }}>
           {info.getValue()?.toLocaleString()}
         </span>
       ),

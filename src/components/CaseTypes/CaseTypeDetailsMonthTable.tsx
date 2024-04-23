@@ -112,10 +112,10 @@ const CaseTypesDetailsMonthTable = ({
           const formattedMonth = month.replace(/\s/g, "");
           const amount = parseFloat(total_cases);
           if (!groupedDataSum[formattedMonth]) {
-            groupedDataSum[formattedMonth] = 0;
+            groupedDataSum[formattedMonth] = [0];
           }
           // Add amount to the total_sum for the respective month
-          groupedDataSum[formattedMonth] += amount;
+          groupedDataSum[formattedMonth][0] += amount; // Adding total cases
         });
 
         // Convert the object to an array
@@ -179,10 +179,10 @@ const CaseTypesDetailsMonthTable = ({
           const formattedMonth = month.replace(/\s/g, "");
           const amount = parseFloat(paid_amount);
           if (!groupedDataSum[formattedMonth]) {
-            groupedDataSum[formattedMonth] = 0;
+            groupedDataSum[formattedMonth] = [0];
           }
           // Add amount to the total_sum for the respective month
-          groupedDataSum[formattedMonth] += amount;
+          groupedDataSum[formattedMonth][0] += amount; // Adding total cases
         });
         // Convert the object to an array
         setTotalSumValues(groupedDataSum);

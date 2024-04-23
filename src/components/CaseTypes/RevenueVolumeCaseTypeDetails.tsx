@@ -209,8 +209,8 @@ const VolumeCaseTypesDetails = ({
       const rowDataB = rowB.original[columnId];
 
       // Extract the case values from the row data
-      const valueA = rowDataA[0] || 0; // Default to 0 if value is undefined
-      const valueB = rowDataB[0] || 0; // Default to 0 if value is undefined
+      const valueA = rowDataA[0] || 0;
+      const valueB = rowDataB[0] || 0;
 
       // Compare the case values for sorting
       return valueA - valueB;
@@ -238,8 +238,12 @@ const VolumeCaseTypesDetails = ({
               tooltip: {
                 sx: {
                   width: "100px",
-                  bgcolor: "#ffffff",
-                  color: "black",
+                  bgcolor:
+                    info.row.original?.[item]?.[1] <=
+                    info.row.original?.[item]?.[0]
+                      ? "green"
+                      : "red",
+                  color: "white",
                   border: "1px solid rgba(0,0,0,0.1)",
                   padding: 0,
                   fontSize: "15px",

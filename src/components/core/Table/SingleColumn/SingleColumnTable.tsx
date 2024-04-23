@@ -166,13 +166,15 @@ const SingleColumnTable: FC<pageProps> = ({
                         key={index}
                         style={{
                           width: "100%",
-                          backgroundColor: row?.original.hasOwnProperty(
-                            "target_reached"
-                          )
-                            ? !row?.original?.target_reached
-                              ? "#ffebe9"
-                              : ""
-                            : "",
+                          backgroundColor:
+                            row?.original.hasOwnProperty("total_targets") &&
+                            cell?.id &&
+                            cell?.id.includes("total_cases")
+                              ? row?.original?.total_targets <=
+                                row.original.total_cases
+                                ? "#f5fff7"
+                                : "#ffebe9"
+                              : "",
                         }}
                       >
                         {flexRender(
