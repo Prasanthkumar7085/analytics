@@ -627,7 +627,7 @@ table {
     }
 
     thead {
-      z-index: 9999 !important;
+      z-index: 999 !important;
     }
 
     thead,
@@ -1083,30 +1083,7 @@ $actionButtonWidth: 95px;
   }
 }
 
-#FacilitiesData {
-  table {
-    tbody {
-      tr {
-        td {
-          &:nth-child(3) {
-            color: #ff9932;
-            background-color: #f9feff;
-          }
 
-          &:nth-child(4) {
-            color: #36c24d;
-            background-color: #f5fff7;
-          }
-
-          &:nth-child(5) {
-            color: #fe5046;
-            background-color: #fff9f9;
-          }
-        }
-      }
-    }
-  }
-}
 
 .s-no-column {
   table {

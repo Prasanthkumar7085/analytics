@@ -87,7 +87,6 @@ const VolumeCaseTypesDetails = ({
         let uniqueMonths = getUniqueMonthsInCaseTypeTragets(response?.data);
         setHeaderMonths(uniqueMonths);
 
-        // Converting object to array
         const sortedData = Object.values(response?.data).sort(
           (a: any, b: any) => {
             return a.case_type.localeCompare(b.case_type);
@@ -95,6 +94,7 @@ const VolumeCaseTypesDetails = ({
         );
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         getTotalSumOfCasetypesVolumeWithMonths(modifieData);
+        console.log(modifieData, "ppeppp3p3");
         setCaseData(modifieData);
       }
     } catch (err) {
@@ -163,7 +163,14 @@ const VolumeCaseTypesDetails = ({
 
   //prepare the table coloumns
   let addtionalcolumns = headerMonths?.map((item: any) => ({
-    accessorFn: (row: any) => row[item],
+    accessorFn: (row: any) => {
+      // Find the month data for the current column (item)
+      const monthData = row.original?.["month_wise"].find(
+        (month: any) => month.month === item
+      );
+      // Return the total_cases value for the current month
+      return monthData ? monthData.total_cases : 0;
+    },
     id: item,
     header: () => (
       <span style={{ whiteSpace: "nowrap" }}>
@@ -175,7 +182,18 @@ const VolumeCaseTypesDetails = ({
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
-    sortType: "basic", // Enable basic sorting for this column
+    sortingFn: (rowA: any, rowB: any, columnId: any) => {
+      // Extract total_cases for sorting
+      const colA = rowA.original.month_wise.find(
+        (month: any) => month.month === columnId
+      ).total_cases;
+      const colB = rowB.original.month_wise.find(
+        (month: any) => month.month === columnId
+      ).total_cases;
+      // Compare total_cases for sorting
+      return colA - colB;
+    },
+
     cell: (info: any) => {
       let coloumnData = info.row.original["month_wise"]?.find(
         (itemMonth: any, monthIndex: number) => itemMonth.month == item

@@ -29,44 +29,41 @@ const GlobalCaseTypesAutoComplete = ({ selectedCaseValue, setSelectedCaseValue }
     }, [])
 
     return (
-        <div>
-            <Autocomplete
-                className="caseCreationAutoComplete"
-                loading={loading}
-                value={
-                    selectedCaseValue
-                        ? selectedCaseValue
-                        : null
-                }
-                disablePortal
-                options={caseTypeOptions?.length ? caseTypeOptions : []}
-                getOptionDisabled={(option) =>
-                    option.status == "INACTIVE"
-                }
-                getOptionLabel={(option: any) =>
-                    typeof option === "string" ? option : option.displayName
-                }
-                onChange={(_: any, newValue: any) => {
-                    setSelectedCaseValue(newValue)
-                }}
-                sx={{
-                    "& .MuiInputBase-root": {
-                        padding: "2.5px !Important",
-                        fontSize: "clamp(12px, 0.72vw, 14px) !important",
-                    },
-                    "& .MuiInputBase-input": {
-                        paddingRight: "2rem !important",
-                    },
-                }}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        placeholder="Select Case Type"
-                        size="small"
-                    />
-                )}
+      <div>
+        <Autocomplete
+          className="caseCreationAutoComplete"
+          loading={loading}
+          value={selectedCaseValue ? selectedCaseValue : null}
+          disablePortal
+          options={caseTypeOptions?.length ? caseTypeOptions : []}
+          getOptionDisabled={(option) => option.status == "INACTIVE"}
+          getOptionLabel={(option: any) =>
+            typeof option === "string" ? option : option.displayName
+          }
+          onChange={(_: any, newValue: any) => {
+            setSelectedCaseValue(newValue);
+          }}
+          sx={{
+            zIndex: "99999 !important",
+
+            "& .MuiInputBase-root": {
+              padding: "2.5px !Important",
+              fontSize: "clamp(12px, 0.72vw, 14px) !important",
+              zIndex: "99999 !important",
+            },
+            "& .MuiInputBase-input": {
+              paddingRight: "2rem !important",
+            },
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="Select Case Type"
+              size="small"
             />
-        </div>
-    )
+          )}
+        />
+      </div>
+    );
 }
 export default GlobalCaseTypesAutoComplete;
