@@ -5,63 +5,74 @@ import Image from "next/image";
 const VolumeDataGraph = ({ labelsData, totalCasesData, completedCases, loading }: any) => {
 
     const options = {
-        chart: {
-            height: 375,
-            type: 'column'
-        },
-        title: {
-            text: ' ',
-            align: 'left'
-        },
+      chart: {
+        height: 375,
+        type: "column",
+      },
+      title: {
+        text: " ",
+        align: "left",
+      },
 
-        xAxis: {
-            categories: labelsData?.map((item: any) => formatMonthYear(item)),
-            crosshair: true,
-            accessibility: {
-                description: 'Months'
-            }
+      xAxis: {
+        categories: labelsData?.map((item: any) => formatMonthYear(item)),
+        crosshair: true,
+        accessibility: {
+          description: "Months",
         },
-        subtitle: {
-            useHTML: true,
-            text: "",
-            floating: true,
-            verticalAlign: 'middle',
-            y: 10
+      },
+      subtitle: {
+        useHTML: true,
+        text: "",
+        floating: true,
+        verticalAlign: "middle",
+        y: 10,
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: "",
         },
-        yAxis: {
-            min: 0,
-            title: {
-                text: ''
-            }
+      },
+      tooltip: {
+        shared: true,
+        useHTML: true,
+        formatter: function (
+          this: Highcharts.TooltipFormatterContextObject | any
+        ): string {
+          if (!this) return ""; // Return empty string if `this` is undefined
+          let tooltipHTML = "<b>" + this.x + "</b><br/>";
+          this.points.forEach(function (point: any) {
+            tooltipHTML +=
+              '<span style="color:' +
+              point.color +
+              '">\u25CF</span> ' +
+              point.series.name +
+              ": " +
+              Highcharts.numberFormat(point.y, 0, ".", ",") +
+              "<br/>";
+          });
+          return tooltipHTML;
         },
-        tooltip: {
-            shared: true,
-            useHTML: true,
-            formatter: function (this: Highcharts.TooltipFormatterContextObject | any): string {
-                if (!this) return ''; // Return empty string if `this` is undefined
-                let tooltipHTML = '<b>' + this.x + '</b><br/>';
-                this.points.forEach(function (point: any) {
-                    tooltipHTML += '<span style="color:' + point.color + '">\u25CF</span> ' + point.series.name + ': ' + Highcharts.numberFormat(point.y, 0, '.', ',') + '<br/>';
-                });
-                return tooltipHTML;
-            }
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0.2,
+          borderWidth: 0,
         },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
+      },
+      series: [
+        {
+          name: "Targets",
+          data: completedCases,
+          color: "#46c8ff",
         },
-        series: [
-            {
-                name: 'Total',
-                data: totalCasesData
-            },
-            {
-                name: 'Targets',
-                data: completedCases
-            }
-        ]
+        {
+          name: "Total",
+          data: totalCasesData,
+          color: "#544fc5",
+        },
+      ],
     };
 
 

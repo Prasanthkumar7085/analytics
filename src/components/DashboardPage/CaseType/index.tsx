@@ -77,19 +77,7 @@ const CaseTypes = ({
       minWidth: "60px",
       maxWidth: "60px",
     },
-    {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow} style={{ color: "#5b5b5b" }}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      sortDescFirst: false,
-      header: () => <span className={styles.tableHeading}>TOTAL</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
+
     {
       accessorFn: (row: any) => row.total_targets,
       id: "total_targets",
@@ -100,6 +88,19 @@ const CaseTypes = ({
         </span>
       ),
       header: () => <span className={styles.tableHeading}>TARGETS</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.total_cases,
+      id: "total_cases",
+      cell: (info: any) => (
+        <span className={styles.totalCasesRow} style={{ color: "#5b5b5b" }}>
+          {info.getValue()?.toLocaleString()}
+        </span>
+      ),
+      sortDescFirst: false,
+      header: () => <span className={styles.tableHeading}>TOTAL</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },

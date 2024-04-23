@@ -201,9 +201,9 @@ const SalesRepresentatives = () => {
       width: "800px",
       columns: [
         {
-          accessorFn: (row: any) => row.target_volume,
+          accessorFn: (row: any) => row.total_targets,
           header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
-          id: "target_volume",
+          id: "total_targets",
           width: "200px",
           maxWidth: "200px",
           minWidth: "200px",
@@ -357,7 +357,7 @@ const SalesRepresentatives = () => {
       0
     );
     const targetVolume = data.reduce(
-      (sum: any, item: any) => sum + +item.target_volume,
+      (sum: any, item: any) => sum + +item.total_targets,
       0
     );
     const totalVolume = data.reduce(
@@ -371,11 +371,8 @@ const SalesRepresentatives = () => {
       { value: totalFacilities, dolorSymbol: false },
       // { value: targetFacilities, dolorSymbol: false },
       { value: activeFacilities, dolorSymbol: false },
-      { value: totalVolume, dolorSymbol: false },
       { value: targetVolume, dolorSymbol: false },
-      // { value: billedAmoumnt, dolorSymbol: true },
-      // { value: paidRevenueSum, dolorSymbol: true },
-      // { value: pendingAmoumnt, dolorSymbol: true },
+      { value: totalVolume, dolorSymbol: false },
       { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
     ];

@@ -77,7 +77,7 @@ const SalesRep = () => {
       0
     );
     const targetVolume = data.reduce(
-      (sum: any, item: any) => sum + +item.target_volume,
+      (sum: any, item: any) => sum + +item.total_targets,
       0
     );
     const totalVolume = data.reduce(
@@ -91,8 +91,9 @@ const SalesRep = () => {
       { value: totalFacilities, dolorSymbol: false },
       // { value: targetFacilities, dolorSymbol: false },
       { value: activeFacilities, dolorSymbol: false },
-      { value: totalVolume, dolorSymbol: false },
       { value: targetVolume, dolorSymbol: false },
+
+      { value: totalVolume, dolorSymbol: false },
       // { value: billedAmoumnt, dolorSymbol: true },
       // { value: paidRevenueSum, dolorSymbol: true },
       // { value: pendingAmoumnt, dolorSymbol: true },

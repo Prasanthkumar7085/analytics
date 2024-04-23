@@ -105,6 +105,22 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
     },
     series: [
       {
+        name: graphType == "volume" ? "Total Targets" : "Total Revenue",
+        data:
+          graphType == "volume"
+            ? trendsData?.length
+              ? trendsData?.map((item: any) => +item.total_target)
+              : []
+            : trendsData?.length
+            ? trendsData?.map((item: any) => +item.paid_amount)
+            : [],
+        animation: {
+          opacity: 1, // Set opacity animation for smoother entrance
+        },
+        type: "line",
+        color: "#46c8ff",
+      },
+      {
         name: graphType == "volume" ? "Total Volume" : "Total Revenue",
         data:
           graphType == "volume"
@@ -118,20 +134,7 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
           opacity: 1, // Set opacity animation for smoother entrance
         },
         type: "column",
-      },
-      {
-        name: graphType == "volume" ? "Total Targets" : "Total Revenue",
-        data:
-          graphType == "volume"
-            ? trendsData?.length
-              ? trendsData?.map((item: any) => +item.total_target)
-              : []
-            : trendsData?.length
-            ? trendsData?.map((item: any) => +item.paid_amount)
-            : [],
-        animation: {
-          opacity: 1, // Set opacity animation for smoother entrance
-        },
+        color: "#544fc5",
       },
     ],
   };

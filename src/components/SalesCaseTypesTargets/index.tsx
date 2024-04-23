@@ -40,7 +40,8 @@ const SalesCaseTypeWiseTargets = () => {
   const [selectedValues, setSelectedValues] = useState<any>({});
   const [editOrNot, setEditOrNot] = useState<boolean>(false);
   const [editbleValue, setEditbleValue] = useState<any>();
-  const [focusedIndex, setFocusedIndex] = useState(-1); // Initialize with -1 to focus on the first input field
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  const [updatedRowTotal, setUpdatedRowTotal] = useState<any>(0);
 
   console.log(allTargetsData, "p000000");
   //query preparation method
@@ -76,32 +77,26 @@ const SalesCaseTypeWiseTargets = () => {
   //group the given data into monthwise salesrep data
   const groupedTargetsData = (data: any) => {
     const groupedData = data.reduce((acc: any, obj: any) => {
-      const salesRepName = obj.sales_rep_name;
       const salesRepId = obj.sales_rep_id;
-      const id = obj.id;
-      const newFacilites = obj.new_facilities;
-      const createdAt = obj.created_at;
-      const updatedAt = obj.updated_at;
-      const total = obj.total;
-      const start_date = obj.start_date;
-      const end_date = obj.end_date;
       const month = obj.month;
 
       if (!acc[salesRepId]) {
         acc[salesRepId] = {
-          sales_rep_name: salesRepName,
+          sales_rep_name: obj.sales_rep_name,
           sales_rep_id: salesRepId,
-          id: id,
-          new_facilities: newFacilites,
-          created_at: createdAt,
-          updated_at: updatedAt,
-          total: total,
-          start_date: start_date,
-          end_date: end_date,
-          month: month,
+          id: obj.id,
+          new_facilities: obj.new_facilities,
+          created_at: obj.created_at,
+          updated_at: obj.updated_at,
+          total: obj.total,
+          start_date: obj.start_date,
+          end_date: obj.end_date,
+          month: obj.month,
           monthwiseData: {},
+          rowTotal: 0, // Initialize row-wise total sum
         };
       }
+
       // Filter out fields already present in the main object
       const filteredObj = Object.keys(obj)
         .filter((key) => !(key in acc[salesRepId]))
@@ -109,22 +104,44 @@ const SalesCaseTypeWiseTargets = () => {
           acc[key] = obj[key];
           return acc;
         }, {});
+
       acc[salesRepId].monthwiseData[month] = {
         ...filteredObj,
       };
 
+      // Calculate row-wise total sum
+      let rowTotal = 0;
+      for (const entry of Object.values(acc[salesRepId].monthwiseData[month])) {
+        if (typeof entry === "number") {
+          rowTotal += entry;
+        }
+      }
+      acc[salesRepId].rowTotal += rowTotal;
+
       return acc;
     }, {});
+
     return Object.values(groupedData);
   };
 
   //calculate total sum of the casetypewise targets
-  const getTotalSumOfAllCaseTypesTargets = (month: string, data: any) => {
-    const total = Object.values(
-      data.row.original["monthwiseData"][month]
-    ).reduce((acc: any, value: any) => acc + value, 0);
-    return total ? total : 0;
+  const getTotalSumOfAllCaseTypesTargets = (data: any) => {
+    const total = Object?.values(data).reduce((acc: any, value: any) => {
+      // Exclude 'new_facilities' key from the sum
+      if (typeof value !== "number" || value === data.new_facilities) {
+        return acc;
+      }
+      return acc + value;
+    }, 0);
+
+    setUpdatedRowTotal(total);
   };
+
+  useEffect(() => {
+    if (updatedRowTotal) {
+      getTotalSumOfAllCaseTypesTargets(editbleValue);
+    }
+  }, [editbleValue]);
   //get all sales reps data event
   const getAllSalesRepCaseTypeWiseTargets = async (queryParams: any) => {
     setLoading(true);
@@ -157,6 +174,7 @@ const SalesCaseTypeWiseTargets = () => {
           );
         }
         setAllTargetsData(modifieData);
+        console.log(modifieData, "p23324234");
       } else {
         throw response;
       }
@@ -182,6 +200,8 @@ const SalesCaseTypeWiseTargets = () => {
           month: searchParams?.month,
           searchValue: searchParams?.search,
         });
+        setUpdatedRowTotal(null);
+        setFocusedIndex(0);
       } else {
         toast.error(response.message);
       }
@@ -217,6 +237,7 @@ const SalesCaseTypeWiseTargets = () => {
       pul: +infoData.row.original.monthwiseData[month]["pul"],
       new_facilities: +infoData.row.original.new_facilities,
     });
+    setUpdatedRowTotal(+infoData.row.original.rowTotal);
   };
 
   const checkEditOrNot = (month: string, salesID: any) => {
@@ -336,12 +357,15 @@ const SalesCaseTypeWiseTargets = () => {
                       height: 30,
                     },
                   }}
+                  autoFocus={focusedIndex === 17}
+                  key={17}
                   value={editbleValue["new_facilities"]}
                   onChange={(e) => {
                     setEditbleValue((prev: any) => ({
                       ...prev,
                       ["new_facilities"]: +e.target.value,
                     }));
+                    setFocusedIndex(17);
                   }}
                   onInput={checkNumbersOrnot}
                 />
@@ -355,10 +379,17 @@ const SalesCaseTypeWiseTargets = () => {
       {
         header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
         accessorFn: (row: any) => row.original.total,
-        id: `total`,
+        id: `rowTotal`,
         width: "200px",
         cell: (info: any) => {
-          return <div>{`${getTotalSumOfAllCaseTypesTargets(item, info)}`}</div>;
+          return (
+            <div>
+              {" "}
+              {checkEditOrNot(item, info.row.original.sales_rep_id)
+                ? updatedRowTotal
+                : info.row.original.rowTotal}
+            </div>
+          );
         },
       },
 
@@ -391,7 +422,11 @@ const SalesCaseTypeWiseTargets = () => {
                     <SaveIcon color="success" />
                   </IconButton>
                   <IconButton
-                    onClick={() => setSelectedValues({})}
+                    onClick={() => {
+                      setSelectedValues({});
+                      setUpdatedRowTotal(null);
+                      setFocusedIndex(0);
+                    }}
                     sx={{ padding: "0" }}
                   >
                     <CloseIcon color="error" />

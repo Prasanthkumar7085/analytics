@@ -89,9 +89,9 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
        width: "800px",
        columns: [
          {
-           accessorFn: (row: any) => row.target_volume,
+           accessorFn: (row: any) => row.total_targets,
            header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
-           id: "target_volume",
+           id: "total_targets",
            width: "200px",
            maxWidth: "200px",
            minWidth: "200px",

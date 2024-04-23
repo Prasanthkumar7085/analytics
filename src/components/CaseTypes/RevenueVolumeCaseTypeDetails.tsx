@@ -48,9 +48,6 @@ const VolumeCaseTypesDetails = ({
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
-    if (id) {
-      queryParams["sales_rep"] = id;
-    }
     try {
       if (tabValue == "Revenue") {
         await getDetailsOfCaseTypesOfRevenue(queryParams);

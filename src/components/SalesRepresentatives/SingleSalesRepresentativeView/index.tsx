@@ -178,8 +178,8 @@ const SalesRepView = () => {
 
         const result = [
           { value: "Total", dolorSymbol: false },
-          { value: totalCases, dolorSymbol: false },
           { value: totalTargets, dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
         ];
         setTotalSumValues(result);
         setCaseTypesStatsData(response?.data);

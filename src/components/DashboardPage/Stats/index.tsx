@@ -118,8 +118,18 @@ const Stats = ({
             <div className={styles.card}>
               <div className={styles.titlecontainer}>
                 <div className="statHeader">Volume</div>
-                {pathName.includes("dashboard") || pathName.includes("facilities") ? "" :
-                  <div style={{ fontSize: "15px", display: "flex", flexDirection: "row", alignItems: "center" }}>Target:
+                {pathName.includes("facilities") ? (
+                  ""
+                ) : (
+                  <div
+                    style={{
+                      fontSize: "15px",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
+                  >
+                    Target:
                     {loading ? (
                       <Skeleton width={30} height={50} />
                     ) : (
@@ -127,8 +137,10 @@ const Stats = ({
                         start={0}
                         decimal="."
                         end={volumeStatsDetails?.[0]?.target_volume}
-                      />)}</div>}
-
+                      />
+                    )}
+                  </div>
+                )}
               </div>
               <div className={styles.row}>
                 <div className={styles.billed}>
