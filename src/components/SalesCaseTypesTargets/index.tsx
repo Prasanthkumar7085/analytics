@@ -215,6 +215,7 @@ const SalesCaseTypeWiseTargets = () => {
       diabetes: +infoData.row.original.monthwiseData[month]["diabetes"],
       pad: +infoData.row.original.monthwiseData[month]["pad"],
       pul: +infoData.row.original.monthwiseData[month]["pul"],
+      new_facilities: +infoData.row.original.new_facilities,
     });
   };
 
@@ -321,10 +322,34 @@ const SalesCaseTypeWiseTargets = () => {
           <span style={{ whiteSpace: "nowrap" }}>NEW FACILITIES</span>
         ),
         accessorFn: (row: any) => row.original.new_facilities,
-        id: `new-facilities`,
+        id: `new_facilities`,
         width: "200px",
         cell: (info: any) => {
-          return <div>{info.row.original.new_facilities}</div>;
+          return (
+            <div>
+              {checkEditOrNot(item, info.row.original.sales_rep_id) ? (
+                <TextField
+                  sx={{
+                    "& .MuiInputBase-root": {
+                      padding: "2.5px !Important",
+                      fontSize: "clamp(12px, 0.72vw, 14px) !important",
+                      height: 30,
+                    },
+                  }}
+                  value={editbleValue["new_facilities"]}
+                  onChange={(e) => {
+                    setEditbleValue((prev: any) => ({
+                      ...prev,
+                      ["new_facilities"]: +e.target.value,
+                    }));
+                  }}
+                  onInput={checkNumbersOrnot}
+                />
+              ) : (
+                info.row.original.new_facilities?.toLocaleString()
+              )}
+            </div>
+          );
         },
       },
       {
@@ -375,8 +400,6 @@ const SalesCaseTypeWiseTargets = () => {
               ) : (
                 <p
                   onClick={() => {
-                    console.log(info.row.original.id, "'ee");
-
                     handleEditClick(item, info.row.original.sales_rep_id, info);
                   }}
                 >

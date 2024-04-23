@@ -23,7 +23,7 @@ export const sortAndGetData = <T extends DataItem>(
 };
 
 export const customSortByMonth = (data: any, sortType?: any, sortValue?: any) => {
-  let specialColoumns = ["sales_rep_name", "new-facilities", "total"];
+  let specialColoumns = ["sales_rep_name", "new_facilities", "total"];
 
   if (specialColoumns.includes(sortValue)) {
     return data.slice().sort((a: any, b: any) => {
