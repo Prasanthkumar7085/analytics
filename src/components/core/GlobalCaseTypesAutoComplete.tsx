@@ -1,5 +1,5 @@
 import { getAllCaseTypesListAPI } from "@/services/caseTypesAPIs";
-import { Autocomplete, Paper, TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const GlobalCaseTypesAutoComplete = ({
@@ -43,17 +43,6 @@ const GlobalCaseTypesAutoComplete = ({
         onChange={(_: any, newValue: any) => {
           setSelectedCaseValue(newValue);
         }}
-        PaperComponent={({ children }) => (
-          <Paper
-            style={{
-              fontSize: "12px",
-              fontFamily: "'Poppins', Sans-serif",
-              fontWeight: "500",
-            }}
-          >
-            {children}
-          </Paper>
-        )}
         sx={{
           zIndex: "99999 !important",
           "& .MuiFormControl-root": {
@@ -62,6 +51,8 @@ const GlobalCaseTypesAutoComplete = ({
             borderRadius: "5px",
           },
           "& .MuiInputBase-root": {
+            padding: "2.5px !Important",
+            fontSize: "clamp(12px, 0.72vw, 14px) !important",
             zIndex: "99999 !important",
             padding: "2.5px !Important",
             fontSize: "clamp(12px, 0.72vw, 14px) !important",

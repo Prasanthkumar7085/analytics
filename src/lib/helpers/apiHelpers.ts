@@ -33,8 +33,6 @@ export const getUniqueMonths = (data: any) => {
 
   // Get unique sorted months
   let uniqueMonths = Array.from(new Set(monthArray));
-  console.log(uniqueMonths, "ppp000");
-
   return uniqueMonths;
 };
 

@@ -52,7 +52,7 @@ const SalesCaseTypeWiseTargets = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
-    let queryParams: any = { month: "04-2024" };
+    let queryParams: any = { month: "05-2024" };
     if (month) {
       queryParams["month"] = month;
     }
@@ -152,6 +152,7 @@ const SalesCaseTypeWiseTargets = () => {
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
+        console.log(uniqueMonths, "09876543");
 
         let groupData: any = groupedTargetsData(response?.data);
         setCompleteData(groupData);

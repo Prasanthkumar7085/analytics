@@ -119,6 +119,7 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
         },
         type: "line",
         color: "#46c8ff",
+        zIndex: 9999,
       },
       {
         name: graphType == "volume" ? "Total Volume" : "Total Revenue",

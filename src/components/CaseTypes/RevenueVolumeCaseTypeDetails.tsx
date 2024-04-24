@@ -305,7 +305,7 @@ const VolumeCaseTypesDetails = ({
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
-      id: "serial",
+      id: "id",
       enableSorting: false,
       header: () => <span>S.No</span>,
       footer: (props: any) => props.column.id,

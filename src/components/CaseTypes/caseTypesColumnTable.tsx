@@ -101,8 +101,6 @@ const CaseTypesColumnTable: FC<pageProps> = ({
       className="tableContainer"
       style={{ width: "100%", overflowX: "auto" }}
     >
-      <button onClick={exportToExcel}>Export to Excel</button>
-
       <table style={{ width: "100%" }}>
         <thead
           className="thead"
