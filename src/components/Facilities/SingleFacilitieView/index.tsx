@@ -25,6 +25,7 @@ import InsurancePayorsForFacilities from "@/components/InsurancePayors/Insurance
 import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import TrendsForFacilities from "./Trends";
+import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -159,7 +160,8 @@ const FacilitiesView = () => {
           { value: pendingRevenueSum, dolorSymbol: true },
         ];
         setTotalSumValues(result);
-        setCaseTypesStatsData(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
+        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -194,7 +196,8 @@ const FacilitiesView = () => {
           { value: pendingCases, dolorSymbol: false },
         ];
         setTotalSumValues(result);
-        setCaseTypesStatsData(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
+        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);

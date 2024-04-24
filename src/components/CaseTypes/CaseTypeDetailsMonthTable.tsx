@@ -11,7 +11,11 @@ import CaseTypesColumnTable from "./caseTypesColumnTable";
 import AreaGraph from "../core/AreaGraph";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { graphColors } from "@/lib/constants";
-import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import {
+  formatMonthYear,
+  getUniqueMonths,
+  rearrangeDataWithCasetypes,
+} from "@/lib/helpers/apiHelpers";
 import GraphDialogForFacilities from "../core/GraphDilogForFacilities";
 import AreaGraphForFacilities from "../core/AreaGraph/AreaGraphForFacilities";
 
@@ -102,7 +106,13 @@ const CaseTypesDetailsMonthTable = ({
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
-        const modifieData = addSerial(sortedData, 1, sortedData?.length);
+        let rearrangedData = rearrangeDataWithCasetypes(sortedData);
+
+        const modifieData = addSerial(
+          rearrangedData,
+          1,
+          rearrangedData?.length
+        );
         setCaseData(modifieData);
 
         const groupedDataSum: any = {};
@@ -167,9 +177,14 @@ const CaseTypesDetailsMonthTable = ({
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
+        let rearrangedData = rearrangeDataWithCasetypes(sortedData);
 
         // Converting object to array
-        const modifieData = addSerial(sortedData, 1, sortedData?.length);
+        const modifieData = addSerial(
+          rearrangedData,
+          1,
+          rearrangedData?.length
+        );
         setCaseData(modifieData);
 
         const groupedDataSum: any = {};

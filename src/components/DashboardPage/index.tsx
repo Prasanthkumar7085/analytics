@@ -13,6 +13,7 @@ import CaseType from "./CaseType";
 import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
+import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -21,7 +22,6 @@ const DashboardPage = () => {
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
-
 
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
@@ -34,7 +34,7 @@ const DashboardPage = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get volume stats count
   const getVolumeStatsCount = async (queryParams: any) => {
@@ -47,7 +47,7 @@ const DashboardPage = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -61,16 +61,19 @@ const DashboardPage = () => {
     }
 
     try {
-      await getRevenueStatsCount(queryParams)
-      await getVolumeStatsCount(queryParams)
+      await getRevenueStatsCount(queryParams);
+      await getVolumeStatsCount(queryParams);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-
   //prepare query params
-  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+  const queryPreparations = async (
+    fromDate: any,
+    toDate: any,
+    tabValue: string
+  ) => {
     let queryParams: any = {};
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -80,9 +83,8 @@ const DashboardPage = () => {
     }
     try {
       if (tabValue == "Revenue") {
-        await getCaseTypesRevenueStats(queryParams)
-      }
-      else {
+        await getCaseTypesRevenueStats(queryParams);
+      } else {
         await getCaseTypesVolumeStats(queryParams);
       }
     } catch (err: any) {
@@ -90,7 +92,7 @@ const DashboardPage = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get the caseTypesVolume data
   const getCaseTypesVolumeStats = async (queryParams: any) => {
@@ -98,21 +100,22 @@ const DashboardPage = () => {
     try {
       const response = await getDashboardCaseTypesVolumeStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
-         let totalCases = 0;
-         let totalTargets = 0;
+        let totalCases = 0;
+        let totalTargets = 0;
 
-         response?.data?.forEach((entry: any) => {
-           totalCases += entry.total_cases ? +entry.total_cases : 0;
-           totalTargets += entry.total_targets ? +entry.total_targets : 0;
-         });
+        response?.data?.forEach((entry: any) => {
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          totalTargets += entry.total_targets ? +entry.total_targets : 0;
+        });
 
-         const result = [
-           { value: "Total", dolorSymbol: false },
-           { value: totalTargets, dolorSymbol: false },
-           { value: totalCases, dolorSymbol: false },
-         ];
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalTargets, dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+        ];
         setTotalSumValues(result);
-        setCaseTypesStatsData(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
+        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -145,7 +148,8 @@ const DashboardPage = () => {
           { value: pendingRevenueSum, dolorSymbol: true },
         ];
         setTotalSumValues(result);
-        setCaseTypesStatsData(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
+        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -168,7 +172,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => { }}
+            onChange={() => {}}
             getStatsCounts={getStatsCounts}
           />
         </Grid>

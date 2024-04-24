@@ -200,7 +200,6 @@ font-size: clamp(14px,0.72vw, 16px );
 }
 .card {
   border-radius: 6px;
-  background: linear-gradient(110.31deg, #4386c5, #004e92);
   box-shadow: 0 2px 14px -2px rgba(24, 39, 75, 0.03),
     0 4px 14px -2px transparent;
   display: flex;

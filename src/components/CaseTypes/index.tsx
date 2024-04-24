@@ -16,6 +16,7 @@ import CaseTypeFilters from "./CaseTypeFilters";
 import LoadingComponent from "../core/LoadingComponent";
 import SingleFacilitieCaseTypeDetails from "../Facilities/SingleFacilitieView/SingleFacilitiesCaseTypeDetails";
 import MonthWiseCaseTypeDetails from "./MonthWiseCaseTypeDetails";
+import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 
 const CaseTypes = () => {
   const router = useRouter();
@@ -31,18 +32,14 @@ const CaseTypes = () => {
   const [completeData, setCompleteData] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-
-
   //query preparation method
-  const queryPreparations = async (
-    {
-      fromDate,
-      toDate,
-      searchValue = searchParams?.search,
-      orderBy = searchParams?.order_by,
-      orderType = searchParams?.order_type,
-    }: any
-  ) => {
+  const queryPreparations = async ({
+    fromDate,
+    toDate,
+    searchValue = searchParams?.search,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type,
+  }: any) => {
     let queryParams: any = {};
 
     if (fromDate) {
@@ -62,21 +59,18 @@ const CaseTypes = () => {
     }
 
     try {
-      await getAllCaseTypes(queryParams)
-    }
-    catch (err: any) {
+      await getAllCaseTypes(queryParams);
+    } catch (err: any) {
       console.error(err);
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get all case types details
   const getAllCaseTypes = async (queryParams: any) => {
     setLoading(true);
     try {
-
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
@@ -95,9 +89,17 @@ const CaseTypes = () => {
               ?.includes(queryParams.search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
-
-        const modifieData = addSerial(data, 1, data?.length);
+        data = sortAndGetData(
+          data,
+          queryParams.order_by,
+          queryParams.order_type
+        );
+        let rearrangedData = rearrangeDataWithCasetypes(data);
+        const modifieData = addSerial(
+          rearrangedData,
+          1,
+          rearrangedData?.length
+        );
         setAllCaseTypes(modifieData);
         const totalCases = data.reduce(
           (sum: any, item: any) => sum + +item.total_cases,
@@ -187,6 +189,7 @@ const CaseTypes = () => {
         );
       }
     }
+
     const modifieData = addSerial(data, 1, data?.length);
     setAllCaseTypes(modifieData);
 

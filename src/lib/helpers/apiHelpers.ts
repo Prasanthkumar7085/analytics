@@ -103,3 +103,33 @@ export const checkNumbersOrnot = (event: any) => {
   const value = event.target.value.replace(/\D/g, "");
   event.target.value = value;
 };
+
+export const rearrangeDataWithCasetypes = (data: any) => {
+  let casetypes = [
+    "UTI PANEL",
+    "WOUND",
+    "TOXICOLOGY",
+    "RESPIRATORY PANEL",
+    "CLINICAL CHEMISTRY",
+    "GASTRO",
+    "NAIL",
+    "COVID",
+    "COVID FLU",
+    "DIABETES",
+    "URINALYSIS",
+    "PGX TEST",
+    "PULMONARY PANEL",
+    "PAD ALZHEIMERS",
+    "CARDIAC",
+    "CGX PANEL",
+    "GTI STI",
+    "GTI WOMENS",
+  ];
+  const rearrangedData = casetypes
+    .map((caseType: any) => {
+      const item = data.find((d: any) => d.case_type_name === caseType);
+      return item ? { ...item } : null;
+    })
+    .filter(Boolean);
+  return rearrangedData;
+};

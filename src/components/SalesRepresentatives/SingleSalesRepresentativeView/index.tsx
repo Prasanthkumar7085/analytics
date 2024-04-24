@@ -27,12 +27,15 @@ import { useSelector } from "react-redux";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
+import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
   const pathName = usePathname();
 
-  const userType = useSelector((state: any) => state.auth.user?.user_details?.user_type)
+  const userType = useSelector(
+    (state: any) => state.auth.user?.user_details?.user_type
+  );
 
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -47,10 +50,11 @@ const SalesRepView = () => {
   );
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
-  const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] = useState<any>(null);
+  const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] =
+    useState<any>(null);
 
-  const [selectedCaseValueForFacilities, setSelectedCaseValueForFacilities] = useState<any>(null);
-
+  const [selectedCaseValueForFacilities, setSelectedCaseValueForFacilities] =
+    useState<any>(null);
 
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
@@ -60,7 +64,7 @@ const SalesRepView = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
+  };
 
   //get volume stats count
   const getVolumeStatsCount = async (queryParams: any) => {
@@ -70,8 +74,7 @@ const SalesRepView = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  }
-
+  };
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
@@ -92,8 +95,7 @@ const SalesRepView = () => {
       router.push(`${pathName}${queryString}`);
 
       await getVolumeStatsCount(queryParams);
-      await getRevenueStatsCount(queryParams)
-
+      await getRevenueStatsCount(queryParams);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -101,10 +103,12 @@ const SalesRepView = () => {
     }
   };
 
-
-
   //query preparation method
-  const queryPreparations = async (fromDate: any, toDate: any, tabValue: string) => {
+  const queryPreparations = async (
+    fromDate: any,
+    toDate: any,
+    tabValue: string
+  ) => {
     let queryParams: any = {};
 
     if (fromDate) {
@@ -115,9 +119,8 @@ const SalesRepView = () => {
     }
     try {
       if (tabValue == "Revenue") {
-        await getCaseTypesRevenueStats(queryParams)
-      }
-      else {
+        await getCaseTypesRevenueStats(queryParams);
+      } else {
         await getCaseTypesVolumeStats(queryParams);
       }
     } catch (err: any) {
@@ -125,14 +128,16 @@ const SalesRepView = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get the caseTypesRevenue data
   const getCaseTypesRevenueStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
     try {
-
-      const response = await getSingleSalesRepCaseTypesRevenueAPI(id as string, queryParams);
+      const response = await getSingleSalesRepCaseTypesRevenueAPI(
+        id as string,
+        queryParams
+      );
       if (response.status == 200 || response?.status == 201) {
         let paidRevenueSum = 0;
         let totalRevenueSum = 0;
@@ -153,7 +158,8 @@ const SalesRepView = () => {
           { value: pendingRevenueSum, dolorSymbol: true },
         ];
         setTotalSumValues(result);
-        setCaseTypesStatsData(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
+        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -166,7 +172,10 @@ const SalesRepView = () => {
   const getCaseTypesVolumeStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
     try {
-      const response = await getSingleSalesRepCaseTypesVolumeAPI(id as string, queryParams);
+      const response = await getSingleSalesRepCaseTypesVolumeAPI(
+        id as string,
+        queryParams
+      );
       if (response.status == 200 || response?.status == 201) {
         let totalCases = 0;
         let totalTargets = 0;
@@ -182,7 +191,8 @@ const SalesRepView = () => {
           { value: totalCases, dolorSymbol: false },
         ];
         setTotalSumValues(result);
-        setCaseTypesStatsData(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
+        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -230,7 +240,7 @@ const SalesRepView = () => {
 
   useEffect(() => {
     queryPreparations(searchParams?.from_date, searchParams?.to_date, tabValue);
-  }, [tabValue])
+  }, [tabValue]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
@@ -245,21 +255,22 @@ const SalesRepView = () => {
     }
   };
 
-
-
   return (
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
           <div className="grid grid-cols-2 w-full items-center">
             <div className="gridItem flex items-center">
-              {userType == "MARKETER" ? "" :
+              {userType == "MARKETER" ? (
+                ""
+              ) : (
                 <div
                   onClick={() => router.back()}
                   className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
                 >
                   <ArrowBack className="w-[20px] text-[#bf1b39]" />
-                </div>}
+                </div>
+              )}
 
               <div className="person flex items-center mr-10">
                 <Avatar sx={{ height: "30px", width: "30px" }} />
@@ -295,7 +306,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => { }}
+                onChange={() => {}}
               />
             </Grid>
             <Grid item xs={8}>
@@ -321,7 +332,7 @@ const SalesRepView = () => {
                 className="eachDataCard s-no-column"
                 id="InsurancePayorsData"
               >
-                <div className="cardHeader" >
+                <div className="cardHeader">
                   <h3>
                     <Image
                       alt=""
@@ -334,7 +345,8 @@ const SalesRepView = () => {
                   <div style={{ width: "30%" }}>
                     <GlobalCaseTypesAutoComplete
                       selectedCaseValue={selectedCaseValueForInsurance}
-                      setSelectedCaseValue={setSelectedCaseValueForInsurance} />
+                      setSelectedCaseValue={setSelectedCaseValueForInsurance}
+                    />
                   </div>
                 </div>
                 <div className="cardBody">
@@ -348,7 +360,10 @@ const SalesRepView = () => {
               </div>
             </Grid>
             <Grid item xs={5}>
-              <Trends searchParams={searchParams} pageName={"sales-reps"} tabValue={tabValue}
+              <Trends
+                searchParams={searchParams}
+                pageName={"sales-reps"}
+                tabValue={tabValue}
               />
             </Grid>
             <Grid item xs={12}>
@@ -366,7 +381,8 @@ const SalesRepView = () => {
                   <div style={{ width: "20%" }}>
                     <GlobalCaseTypesAutoComplete
                       selectedCaseValue={selectedCaseValueForFacilities}
-                      setSelectedCaseValue={setSelectedCaseValueForFacilities} />
+                      setSelectedCaseValue={setSelectedCaseValueForFacilities}
+                    />
                   </div>
                 </div>
                 <div className="cardBody">
@@ -374,7 +390,6 @@ const SalesRepView = () => {
                     searchParams={searchParams}
                     tabValue={tabValue}
                     selectedCaseValue={selectedCaseValueForFacilities}
-
                   />
                 </div>
               </div>

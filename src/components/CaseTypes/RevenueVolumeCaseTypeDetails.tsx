@@ -16,8 +16,8 @@ import {
   formatMonthYear,
   getUniqueMonths,
   getUniqueMonthsInCaseTypeTragets,
+  rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
-import { sortingFns } from "@tanstack/react-table";
 
 const VolumeCaseTypesDetails = ({
   tabValue,
@@ -121,8 +121,8 @@ const VolumeCaseTypesDetails = ({
           return a.case_type_name.localeCompare(b.case_type_name);
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        setCaseData(modifieData);
-        console.log(modifieData, "ewpew00e");
+        let rearrangedData = rearrangeDataWithCasetypes(modifieData);
+        setCaseData(rearrangedData);
         getTotalSumOfCasetypesVolumeWithMonths(response?.data);
       }
     } catch (err) {

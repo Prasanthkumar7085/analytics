@@ -13,6 +13,7 @@ import { FC, useEffect, useState } from "react";
 import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import { Tooltip } from "@mui/material";
+import * as XLSX from "xlsx-color";
 
 interface pageProps {
   columns: any[];
@@ -33,7 +34,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [sorting, setSorting] = useState<SortingState>([]);
 
-  const table = useReactTable({
+  const table: any = useReactTable({
     columns,
     data,
     state: {
@@ -45,6 +46,8 @@ const CaseTypesColumnTable: FC<pageProps> = ({
     getSortedRowModel: getSortedRowModel(),
     debugTable: true,
   });
+
+  console.log("332233", data);
   let removeSortingForColumnIds = [
     "id",
     "actions",
@@ -68,11 +71,51 @@ const CaseTypesColumnTable: FC<pageProps> = ({
     return width;
   };
 
+  const exportToExcel = () => {
+    console.log(table.headerGroups, "dsasd");
+    console.log(table, "sda");
+    const header = table.getHeaderGroups()?.map((headerGroup: any) =>
+      headerGroup.headers.map((column: any) => {
+        // Ensure column has a render function before accessing it
+        const columnRender = column.render;
+        if (typeof columnRender !== "function") {
+          console.error("Column does not have a render function:", column);
+          return null;
+        }
+        return columnRender("Header");
+      })
+    );
+    const rows = data.map((row) => {
+      const rowData: any = {};
+      Object.entries(row).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          // Handle nested arrays (assuming each nested array contains two values)
+          const [value1, value2] = value;
+          rowData[key] = value1;
+          rowData[`${key}_2`] = value2;
+        } else {
+          rowData[key] = value;
+        }
+      });
+      return rowData;
+    });
+    const excelData = [
+      header?.flat(),
+      ...rows?.map((row) => Object.values(row)),
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet(excelData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "table_data.xlsx");
+  };
   return (
     <div
       className="tableContainer"
       style={{ width: "100%", overflowX: "auto" }}
     >
+      <button onClick={exportToExcel}>Export to Excel</button>
+
       <table style={{ width: "100%" }}>
         <thead
           className="thead"
