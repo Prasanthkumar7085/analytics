@@ -28,6 +28,8 @@ import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import moment from "moment";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -77,8 +79,15 @@ const SalesRepView = () => {
   };
 
   //get the stats counts
-  const getStatsCounts = async (fromDate: any, toDate: any) => {
+  const getStatsCounts = async () => {
     setLoading(true);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let fromDate = new Date(moment(new Date(thisMonth[0])).format("YYYY-MM-DD"))
+      .toISOString()
+      .substring(0, 10);
+    let toDate = new Date(moment(new Date(thisMonth[1])).format("YYYY-MM-DD"))
+      .toISOString()
+      .substring(0, 10);
 
     try {
       let queryParams: any = {};
@@ -89,11 +98,6 @@ const SalesRepView = () => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
-
-      let queryString = prepareURLEncodedParams("", queryParams);
-
-      router.push(`${pathName}${queryString}`);
-
       await getVolumeStatsCount(queryParams);
       await getRevenueStatsCount(queryParams);
     } catch (error) {
@@ -118,6 +122,9 @@ const SalesRepView = () => {
       queryParams["to_date"] = toDate;
     }
     try {
+      let queryString = prepareURLEncodedParams("", queryParams);
+
+      router.push(`${pathName}${queryString}`);
       if (tabValue == "Revenue") {
         await getCaseTypesRevenueStats(queryParams);
       } else {
@@ -225,7 +232,7 @@ const SalesRepView = () => {
   //api call to get stats count
   useEffect(() => {
     if (id) {
-      getStatsCounts(searchParams?.from_date, searchParams?.to_date);
+      getStatsCounts();
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
         setDateFilterDefaultValue([
@@ -244,12 +251,10 @@ const SalesRepView = () => {
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      getStatsCounts(fromDate, toDate);
       setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
       queryPreparations(fromDate, toDate, tabValue);
     } else {
       setDateFilterDefaultValue("");
-      getStatsCounts("", "");
       router.push(`/sales-representatives/${id}`);
       queryPreparations("", "", tabValue);
     }

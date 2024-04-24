@@ -19,6 +19,18 @@ const Stats = ({
     getStatsCounts(fromDate, toDate);
   };
 
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    const percentage = (totalCases / targetVolume) * 100;
+    if (percentage >= 100) {
+      return "linear-gradient(110.31deg, #43c55d, #009264)";
+    } else if (percentage >= 50) {
+      return "linear-gradient(110.31deg, #f0ad4e, #ff6700)";
+    } else {
+      return "linear-gradient(110.31deg, #c54357, #920020)";
+    }
+  };
+
+
   return (
     <>
       <div className="eachDataCard" id="StatsData">
@@ -42,10 +54,10 @@ const Stats = ({
               className={styles.card}
               style={{
                 background: volumeStatsDetails?.length
-                  ? volumeStatsDetails?.[0]?.total_cases >=
-                    volumeStatsDetails?.[0]?.target_volume
-                    ? "linear-gradient(110.31deg, #43c55d, #009264)"
-                    : "linear-gradient(110.31deg, #c54357, #920020)"
+                  ? getBackgroundColor(
+                      volumeStatsDetails?.[0]?.total_cases,
+                      volumeStatsDetails?.[0]?.target_volume
+                    )
                   : "linear-gradient(110.31deg, #4386c5, #004e92)",
               }}
             >
