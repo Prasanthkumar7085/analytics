@@ -41,11 +41,12 @@ const Stats = ({
             <div
               className={styles.card}
               style={{
-                background:
-                  volumeStatsDetails?.[0]?.total_cases >=
-                  volumeStatsDetails?.[0]?.target_volume
+                background: volumeStatsDetails?.length
+                  ? volumeStatsDetails?.[0]?.total_cases >=
+                    volumeStatsDetails?.[0]?.target_volume
                     ? "linear-gradient(110.31deg, #43c55d, #009264)"
-                    : "linear-gradient(110.31deg, #c54357, #920020)",
+                    : "linear-gradient(110.31deg, #c54357, #920020)"
+                  : "linear-gradient(110.31deg, #4386c5, #004e92)",
               }}
             >
               <div className={styles.titlecontainer}>

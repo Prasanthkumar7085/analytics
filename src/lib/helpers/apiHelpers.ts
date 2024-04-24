@@ -67,19 +67,30 @@ export const formatMonthYear = (monthYear: string) => {
   let year = monthYear.substring(monthYear.length - 2);
   return month + " '" + year;
 };
+
+//Function to get the abbreviation of the month
+const getMonthAbbreviation = (month:string) => {
+    const months:any = {
+        '01': 'Jan',
+        '02': 'Feb',
+        '03': 'Mar',
+        '04': 'Apr',
+        '05': 'May',
+        '06': 'Jun',
+        '07': 'Jul',
+        '08': 'Aug',
+        '09': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec',
+    };
+    return months[month];
+};
 export const formatDateToMonthName = (date: any) => {
   const [month, year] = date.split("-");
-
-  // Convert month number to month name abbreviation
-  const monthAbbr = new Date(`${year}-${month}-01`).toLocaleString("en-US", {
-    month: "short",
-  });
-
-  // Format year to 'YY
-  const yearShort = `'${year.slice(-2)}`;
-
-  const formattedDate = `${monthAbbr} ${yearShort}`;
-  return formattedDate;
+ const monthAbbreviation = getMonthAbbreviation(month);
+ const formattedYear = year.slice(2);
+ return `${monthAbbreviation} '${formattedYear}`;
 };
 
 export const getOnlyMonthNames = (data: any) => {

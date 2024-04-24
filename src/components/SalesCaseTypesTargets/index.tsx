@@ -39,10 +39,12 @@ const SalesCaseTypeWiseTargets = () => {
   const [totalSumValues, setTotalSumValues] = useState<any>([]);
   const [selectedValues, setSelectedValues] = useState<any>({});
   const [editOrNot, setEditOrNot] = useState<boolean>(false);
-  const [editbleValue, setEditbleValue] = useState<any>();
+  const [editbleValue, setEditbleValue] = useState<any>({});
   const [focusedIndex, setFocusedIndex] = useState(-1);
   const [updatedRowTotal, setUpdatedRowTotal] = useState<any>(0);
   const [coloumSums, setColoumnsSums] = useState({});
+  const [facilityUpdatedValue, setFacilityUpdatedValue] = useState<any>(0);
+
   //query preparation method
   const queryPreparations = async ({
     month,
@@ -125,21 +127,18 @@ const SalesCaseTypeWiseTargets = () => {
 
   //calculate total sum of the casetypewise targets
   const getTotalSumOfAllCaseTypesTargets = (data: any) => {
+    console.log("ewrwe");
     const total = Object?.values(data).reduce((acc: any, value: any) => {
-      // Exclude 'new_facilities' key from the sum
-      if (typeof value !== "number" || value === data.new_facilities) {
+      if (value === data.new_facilities) {
         return acc;
       }
-      return acc + value;
+      return acc + +value;
     }, 0);
-
     setUpdatedRowTotal(total);
   };
 
   useEffect(() => {
-    if (updatedRowTotal) {
-      getTotalSumOfAllCaseTypesTargets(editbleValue);
-    }
+    getTotalSumOfAllCaseTypesTargets(editbleValue);
   }, [editbleValue]);
   //get all sales reps data event
   const getAllSalesRepCaseTypeWiseTargets = async (queryParams: any) => {
@@ -173,6 +172,7 @@ const SalesCaseTypeWiseTargets = () => {
           );
         }
         setAllTargetsData(modifieData);
+        console.log(modifieData, "32413");
         getColoumnWiseTotalCount(modifieData);
       } else {
         throw response;
@@ -184,6 +184,7 @@ const SalesCaseTypeWiseTargets = () => {
     }
   };
 
+  //get the coloumn wise sum count
   const getColoumnWiseTotalCount = (modifieData: any) => {
     const caseTypeTotals: { [key: string]: number } = {};
     modifieData.forEach((obj: any) => {
@@ -209,7 +210,7 @@ const SalesCaseTypeWiseTargets = () => {
   const updateTargets = async (month: string, id: any) => {
     setLoading(true);
     try {
-      let body = editbleValue;
+      let body = { ...editbleValue, new_facilities: facilityUpdatedValue };
 
       const response = await updateTargetsAPI(body, id);
       if (response.status == 200 || response.status == 201) {
@@ -222,6 +223,7 @@ const SalesCaseTypeWiseTargets = () => {
         });
         setUpdatedRowTotal(null);
         setFocusedIndex(0);
+        setFacilityUpdatedValue(0);
       } else {
         toast.error(response.message);
       }
@@ -255,8 +257,8 @@ const SalesCaseTypeWiseTargets = () => {
       diabetes: +infoData.row.original.monthwiseData[month]["diabetes"],
       pad: +infoData.row.original.monthwiseData[month]["pad"],
       pul: +infoData.row.original.monthwiseData[month]["pul"],
-      new_facilities: +infoData.row.original.new_facilities,
     });
+    setFacilityUpdatedValue(+infoData.row.original.new_facilities);
     setUpdatedRowTotal(+infoData.row.original.rowTotal);
   };
 
@@ -338,6 +340,7 @@ const SalesCaseTypeWiseTargets = () => {
                     padding: "2.5px !Important",
                     fontSize: "clamp(12px, 0.72vw, 14px) !important",
                     height: 30,
+                    zIndex: "9 !important",
                   },
                 }}
                 value={editbleValue[casetype.value]}
@@ -379,12 +382,9 @@ const SalesCaseTypeWiseTargets = () => {
                   }}
                   autoFocus={focusedIndex === 17}
                   key={17}
-                  value={editbleValue["new_facilities"]}
+                  value={facilityUpdatedValue}
                   onChange={(e) => {
-                    setEditbleValue((prev: any) => ({
-                      ...prev,
-                      ["new_facilities"]: +e.target.value,
-                    }));
+                    setFacilityUpdatedValue(+e.target.value);
                     setFocusedIndex(17);
                   }}
                   onInput={checkNumbersOrnot}
@@ -446,6 +446,7 @@ const SalesCaseTypeWiseTargets = () => {
                       setSelectedValues({});
                       setUpdatedRowTotal(null);
                       setFocusedIndex(0);
+                      setFacilityUpdatedValue(0);
                     }}
                     sx={{ padding: "0" }}
                   >

@@ -47,7 +47,6 @@ const CaseTypesColumnTable: FC<pageProps> = ({
     debugTable: true,
   });
 
-  console.log("332233", data);
   let removeSortingForColumnIds = [
     "id",
     "actions",
@@ -72,43 +71,31 @@ const CaseTypesColumnTable: FC<pageProps> = ({
   };
 
   const exportToExcel = () => {
-    console.log(table.headerGroups, "dsasd");
-    console.log(table, "sda");
-    const header = table.getHeaderGroups()?.map((headerGroup: any) =>
-      headerGroup.headers.map((column: any) => {
-        // Ensure column has a render function before accessing it
-        const columnRender = column.render;
-        if (typeof columnRender !== "function") {
-          console.error("Column does not have a render function:", column);
-          return null;
-        }
-        return columnRender("Header");
-      })
-    );
-    const rows = data.map((row) => {
-      const rowData: any = {};
-      Object.entries(row).forEach(([key, value]) => {
-        if (Array.isArray(value)) {
-          // Handle nested arrays (assuming each nested array contains two values)
-          const [value1, value2] = value;
-          rowData[key] = value1;
-          rowData[`${key}_2`] = value2;
-        } else {
-          rowData[key] = value;
-        }
-      });
-      return rowData;
-    });
-    const excelData = [
-      header?.flat(),
-      ...rows?.map((row) => Object.values(row)),
+    const headers = table
+      .getHeaderGroups()
+      .map((x: any) => x.headers)
+      .flat()
+      .map((column: any) => column.id);
+    console.log(headers, "po9324");
+    const rows = table.getCoreRowModel().rows.map((row: any) => row);
+    console.log(rows, "po9324");
+    // Combine headers and rows into a single array
+    const data = [
+      headers,
+      ...rows.map((row: any) => Object.values(row.original)),
     ];
 
-    const worksheet = XLSX.utils.aoa_to_sheet(excelData);
+    // Create a worksheet
+    const worksheet = XLSX.utils.aoa_to_sheet(data);
+
+    // Create a workbook and add the worksheet
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Save the workbook as a file
     XLSX.writeFile(workbook, "table_data.xlsx");
   };
+
   return (
     <div
       className="tableContainer"
