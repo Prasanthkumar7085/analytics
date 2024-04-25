@@ -640,6 +640,20 @@ table {
     padding: 0;
   }
 
+  .searchInput {
+    margin-right: 150px;
+  }
+
+  .cardBody {
+    position: relative;
+
+    .exportButton {
+      position: absolute;
+      top: -50px;
+      right: 5px;
+    }
+  }
+
   .customTableContainer {
     height: 300px;
     overflow: auto;
@@ -754,6 +768,16 @@ table {
       left: 0;
       background: white;
       z-index: 1;
+    }
+  }
+
+  .cardBody {
+    position: relative;
+
+    .exportButton {
+      position: absolute;
+      top: -50px;
+      right: 10px;
     }
   }
 }
@@ -1366,5 +1390,19 @@ $actionButtonWidth: 95px;
       max-width: 30px;
       text-align: center;
     }
+  }
+}
+
+.editButton {
+  background: #1B2459;
+  color: #fff;
+  border-radius: 3px;
+  padding: 1px 10px;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 16px;
+    margin-right: 5px;
   }
 }

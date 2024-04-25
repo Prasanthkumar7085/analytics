@@ -280,11 +280,11 @@ const VolumeCaseTypesDetails = ({
 
     const percentage = totalCases / targetVolume;
     if (totalCases >= targetVolume) {
-      return "#f5fff7"; 
+      return "#f5fff7";
     } else if (percentage >= 0.5) {
-      return "#feecd1"; 
+      return "#feecd1";
     } else {
-      return "#ffebe9"; 
+      return "#ffebe9";
     }
   };
 
@@ -388,6 +388,7 @@ const VolumeCaseTypesDetails = ({
       >
         <Button
           variant="outlined"
+          className="exportButton"
           onClick={() => {
             exportToExcelMonthWiseCaseTypes(
               caseData,
@@ -397,6 +398,7 @@ const VolumeCaseTypesDetails = ({
           }}
         >
           Export
+          <img src="/log-out.svg" alt="" />
         </Button>
       </div>
       <CaseTypesColumnTable
