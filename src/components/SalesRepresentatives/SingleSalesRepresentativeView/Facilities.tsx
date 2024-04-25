@@ -8,12 +8,13 @@ import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { colorCodes, graphColors } from "@/lib/constants";
 import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import { exportToExcelMonthWiseFacilitiesVolume } from "@/lib/helpers/exportsHelpers";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
   getRevenueDetailsOfFacilitiesBySalesRepIdAPI,
   getVolumeDetailsOfFacilitiesBySalesRepIdAPI,
 } from "@/services/salesRepsAPIs";
-import { Backdrop } from "@mui/material";
+import { Backdrop, Button } from "@mui/material";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -293,6 +294,26 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
 
   return (
     <div style={{ position: "relative" }} id="mothWiseCaseTypeData">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          variant="outlined"
+          onClick={() => {
+            exportToExcelMonthWiseFacilitiesVolume(
+              facilitiesData,
+              headerMonths,
+              totalSumFacilityValues
+            );
+          }}
+        >
+          Export
+        </Button>
+      </div>
       <SingleSalesRepFacilitiesTable
         data={facilitiesData}
         columns={addAddtionalColoumns}

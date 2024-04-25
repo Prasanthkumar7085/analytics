@@ -1,7 +1,7 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
-import { Backdrop, Tooltip } from "@mui/material";
+import { Backdrop, Button, Tooltip } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AreaGraph from "../core/AreaGraph";
@@ -18,6 +18,7 @@ import {
   getUniqueMonthsInCaseTypeTragets,
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
+import { exportToExcelMonthWiseCaseTypes } from "@/lib/helpers/exportsHelpers";
 
 const VolumeCaseTypesDetails = ({
   tabValue,
@@ -29,6 +30,7 @@ const VolumeCaseTypesDetails = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
+  console.log(totalSumValues, "poiuytre");
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
   const [headerMonths, setHeaderMonths] = useState<any>([]);
@@ -123,6 +125,7 @@ const VolumeCaseTypesDetails = ({
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         let rearrangedData = rearrangeDataWithCasetypes(modifieData);
         setCaseData(rearrangedData);
+        console.log(rearrangedData, "ppwqpewq");
         getTotalSumOfCasetypesVolumeWithMonths(response?.data);
       }
     } catch (err) {
@@ -358,6 +361,26 @@ const VolumeCaseTypesDetails = ({
 
   return (
     <div style={{ position: "relative" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+        }}
+      >
+        <Button
+          variant="outlined"
+          onClick={() => {
+            exportToExcelMonthWiseCaseTypes(
+              caseData,
+              headerMonths,
+              totalSumValues
+            );
+          }}
+        >
+          Export
+        </Button>
+      </div>
       <CaseTypesColumnTable
         data={caseData}
         columns={addAddtionalColoumns}

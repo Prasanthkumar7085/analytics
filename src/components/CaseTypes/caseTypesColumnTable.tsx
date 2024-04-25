@@ -13,7 +13,6 @@ import { FC, useEffect, useState } from "react";
 import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import { Tooltip } from "@mui/material";
-import * as XLSX from "xlsx-color";
 
 interface pageProps {
   columns: any[];
@@ -68,32 +67,6 @@ const CaseTypesColumnTable: FC<pageProps> = ({
     const widthObj = columns.find((item: any) => item.id == id);
     const width = widthObj?.width;
     return width;
-  };
-
-  const exportToExcel = () => {
-    const headers = table
-      .getHeaderGroups()
-      .map((x: any) => x.headers)
-      .flat()
-      .map((column: any) => column.id);
-    console.log(headers, "po9324");
-    const rows = table.getCoreRowModel().rows.map((row: any) => row);
-    console.log(rows, "po9324");
-    // Combine headers and rows into a single array
-    const data = [
-      headers,
-      ...rows.map((row: any) => Object.values(row.original)),
-    ];
-
-    // Create a worksheet
-    const worksheet = XLSX.utils.aoa_to_sheet(data);
-
-    // Create a workbook and add the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
-    // Save the workbook as a file
-    XLSX.writeFile(workbook, "table_data.xlsx");
   };
 
   return (
