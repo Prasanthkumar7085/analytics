@@ -186,20 +186,27 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
         <tbody className="tbody">
           {data?.length ? (
             table.getRowModel().rows.map((row: any, mainIndex: number) => {
+              console.log(row.original, "poiuytrewq");
               return (
                 <tr className="table-row" key={mainIndex}>
                   {row.getVisibleCells().map((cell: any, index: number) => {
-                    console.log(cell.column.columnDef.cell, "poiuytrewq");
+                    console.log(cell.getValue(), "8888888");
+                    let cases;
+                    let targets;
+                    if (Array.isArray(cell.getValue())) {
+                      const [totalCases, totalTargets] = cell.getValue();
+                      cases = totalCases;
+                      targets = totalTargets;
+                    }
                     return (
                       <td
                         className="cell"
                         key={index}
                         style={{
                           width: "100%",
-                          backgroundColor: getBackgroundColor(
-                            row.original.total_cases,
-                            row?.original?.total_achievements
-                          ),
+                          background: Array.isArray(cell.getValue())
+                            ? `${getBackgroundColor(cases, targets)}`
+                            : "#fff",
                         }}
                       >
                         {flexRender(

@@ -58,7 +58,7 @@ const TargetStausFilters = ({
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
         <Grid item xs={3}>
-          <h4>Sales Representatives</h4>
+          <h4>Sales Representatives Achievements</h4>
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">

@@ -153,7 +153,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                       ]
                     }`}
                   >
-                    Targets Status
+                    Sales Achievements
                   </li>
                 ) : (
                   ""
