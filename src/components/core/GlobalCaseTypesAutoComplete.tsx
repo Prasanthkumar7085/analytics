@@ -36,7 +36,6 @@ const GlobalCaseTypesAutoComplete = ({
         value={selectedCaseValue ? selectedCaseValue : null}
         disablePortal
         options={caseTypeOptions?.length ? caseTypeOptions : []}
-        getOptionDisabled={(option) => option.status == "INACTIVE"}
         getOptionLabel={(option: any) =>
           typeof option === "string" ? option : option.displayName
         }
@@ -54,8 +53,6 @@ const GlobalCaseTypesAutoComplete = ({
             padding: "2.5px !Important",
             fontSize: "clamp(12px, 0.72vw, 14px) !important",
             zIndex: "99999 !important",
-            padding: "2.5px !Important",
-            fontSize: "clamp(12px, 0.72vw, 14px) !important",
             paddingBlock: "0",
             fontFamily: "'Poppins', Sans-serif",
           },
