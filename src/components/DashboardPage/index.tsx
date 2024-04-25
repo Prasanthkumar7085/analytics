@@ -14,6 +14,8 @@ import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import moment from "moment";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -22,6 +24,7 @@ const DashboardPage = () => {
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
+  const [statsSeletedDate, setSeletedStatsDate] = useState<any>([]);
 
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
@@ -51,7 +54,30 @@ const DashboardPage = () => {
 
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
-    let queryParams: any = {};
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let defaultfromDate = new Date(
+      Date.UTC(
+        thisMonth[0].getFullYear(),
+        thisMonth[0].getMonth(),
+        thisMonth[0].getDate()
+      )
+    )
+      .toISOString()
+      .substring(0, 10);
+    let defaulttoDate = new Date(
+      Date.UTC(
+        thisMonth[1].getFullYear(),
+        thisMonth[1].getMonth(),
+        thisMonth[1].getDate()
+      )
+    )
+      .toISOString()
+      .substring(0, 10);
+
+    let queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -59,7 +85,7 @@ const DashboardPage = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
-
+    setSeletedStatsDate([queryParams.from_date, queryParams.to_date]);
     try {
       await getRevenueStatsCount(queryParams);
       await getVolumeStatsCount(queryParams);
@@ -174,6 +200,7 @@ const DashboardPage = () => {
             loading={loading}
             onChange={() => {}}
             getStatsCounts={getStatsCounts}
+            statsSeletedDate={statsSeletedDate}
           />
         </Grid>
         <Grid item xs={8}>

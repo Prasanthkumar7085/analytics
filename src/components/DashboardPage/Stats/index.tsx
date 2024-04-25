@@ -5,6 +5,7 @@ import Image from "next/image";
 import styles from "./index.module.css";
 import { usePathname } from "next/navigation";
 import CountUp from "react-countup";
+import { useState } from "react";
 
 const Stats = ({
   revenueStatsDetails,
@@ -12,9 +13,21 @@ const Stats = ({
   loading,
   onChange,
   getStatsCounts,
+  statsSeletedDate,
 }: any) => {
   const pathName = usePathname();
+  const formatDate = (fromDatevalue: any, toDatevalue: any) => {
+    const fromDate = new Date(fromDatevalue);
+    const toDate = new Date(toDatevalue);
 
+    const options: any = { month: "short", day: "2-digit", year: "2-digit" };
+
+    const formattedFromDate = fromDate.toLocaleDateString("en-US", options);
+    const formattedToDate = toDate.toLocaleDateString("en-US", options);
+
+    const formattedDateRange = `${formattedFromDate} - ${formattedToDate}`;
+    return formattedDateRange;
+  };
   const onChangeData = (fromDate: any, toDate: any) => {
     getStatsCounts(fromDate, toDate);
   };
@@ -29,7 +42,6 @@ const Stats = ({
       return "linear-gradient(110.31deg, #c54357, #920020)";
     }
   };
-
 
   return (
     <>
@@ -139,6 +151,14 @@ const Stats = ({
               >
                 <div className={styles.titlecontainer}>
                   <div className="statHeader">Volume</div>
+                  {statsSeletedDate?.[0] ? (
+                    <p className="statHeader" style={{ fontSize: "12px" }}>
+                      Date:
+                      {formatDate(statsSeletedDate?.[0], statsSeletedDate?.[1])}
+                    </p>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className={styles.row}>
                   <div className={styles.billed}>

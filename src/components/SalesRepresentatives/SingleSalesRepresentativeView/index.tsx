@@ -29,7 +29,6 @@ import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import { startOfMonth } from "rsuite/esm/utils/dateUtils";
-import moment from "moment";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -38,7 +37,7 @@ const SalesRepView = () => {
   const userType = useSelector(
     (state: any) => state.auth.user?.user_details?.user_type
   );
-
+  const [statsSeletedDate, setSeletedStatsDate] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
@@ -82,10 +81,22 @@ const SalesRepView = () => {
   const getStatsCounts = async () => {
     setLoading(true);
     let thisMonth = [startOfMonth(new Date()), new Date()];
-    let fromDate = new Date(moment(new Date(thisMonth[0])).format("YYYY-MM-DD"))
+    let fromDate = new Date(
+      Date.UTC(
+        thisMonth[0].getFullYear(),
+        thisMonth[0].getMonth(),
+        thisMonth[0].getDate()
+      )
+    )
       .toISOString()
       .substring(0, 10);
-    let toDate = new Date(moment(new Date(thisMonth[1])).format("YYYY-MM-DD"))
+    let toDate = new Date(
+      Date.UTC(
+        thisMonth[1].getFullYear(),
+        thisMonth[1].getMonth(),
+        thisMonth[1].getDate()
+      )
+    )
       .toISOString()
       .substring(0, 10);
 
@@ -98,6 +109,8 @@ const SalesRepView = () => {
       if (toDate) {
         queryParams["to_date"] = toDate;
       }
+      setSeletedStatsDate([queryParams.from_date, queryParams.to_date]);
+
       await getVolumeStatsCount(queryParams);
       await getRevenueStatsCount(queryParams);
     } catch (error) {
@@ -312,6 +325,7 @@ const SalesRepView = () => {
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
                 onChange={() => {}}
+                statsSeletedDate={statsSeletedDate}
               />
             </Grid>
             <Grid item xs={8}>
