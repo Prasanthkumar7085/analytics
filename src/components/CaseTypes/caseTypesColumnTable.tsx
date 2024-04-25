@@ -69,266 +69,292 @@ const CaseTypesColumnTable: FC<pageProps> = ({
     return width;
   };
 
-  return (
-    <div
-      className="tableContainer"
-      style={{ width: "100%", overflowX: "auto" }}
-    >
-      <table style={{ width: "100%" }}>
-        <thead
-          className="thead"
-          style={{
-            height: "32px",
-            position: "sticky",
-            top: "0px",
-            zIndex: "2",
-            color: "white",
-          }}
-        >
-          {table
-            .getHeaderGroups()
-            .map((headerGroup: any, mainIndex: number) => (
-              <tr className="table-row" key={headerGroup.id}>
-                {headerGroup.headers.map((header: any, index: number) => {
-                  return (
-                    <th
-                      className="cell"
-                      key={index}
-                      colSpan={header.colSpan}
-                      style={{
-                        minWidth: getWidth(header.id),
-                        width: getWidth(header.id),
-                        color: "#000",
-                        background: "#F0EDFF",
-                      }}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div
-                          // onClick={() => sortAndGetData(header)}
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
-                          style={{
-                            display: "flex",
-                            gap: "10px",
-                            cursor: "pointer",
-                            minWidth: getWidth(header.id),
-                            width: getWidth(header.id),
-                          }}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                          {{
-                            asc: (
-                              <Image
-                                src="/core/sort/sort-asc.svg"
-                                height={8}
-                                width={8}
-                                alt="image"
-                              />
-                            ),
-                            desc: (
-                              <Image
-                                src="/core/sort/sort-desc.svg"
-                                height={8}
-                                width={8}
-                                alt="image"
-                              />
-                            ),
-                          }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  header.id === "actions" ||
-                                  removeSortingForColumnIds.includes(header.id)
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
-                        </div>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-        </thead>
-        <tbody className="tbody">
-          {data?.length ? (
-            table.getRowModel().rows.map((row: any, mainIndex: number) => {
-              return (
-                <tr className="table-row" key={mainIndex}>
-                  {row.getVisibleCells().map((cell: any, index: number) => {
+    const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+      if (targetVolume === 0) {
+        if (totalCases === 0) {
+          return "#f5fff7"; // Both total cases and target volume are zero
+        } else if (totalCases >= targetVolume) {
+          return "#f5fff7"; // Both total cases and target volume are zero
+        } else {
+          return "#ffebe9";
+        }
+      }
+
+      const percentage = totalCases / targetVolume;
+      if (totalCases >= targetVolume) {
+        return "#f5fff7"; // Green for completion
+      } else if (percentage >= 0.5) {
+        return "#ffcc80"; // Orange for partial completion
+      } else {
+        return "#ffebe9"; // Red for incomplete
+      }
+    };
+
+    return (
+      <div
+        className="tableContainer"
+        style={{ width: "100%", overflowX: "auto" }}
+      >
+        <table style={{ width: "100%" }}>
+          <thead
+            className="thead"
+            style={{
+              height: "32px",
+              position: "sticky",
+              top: "0px",
+              zIndex: "2",
+              color: "white",
+            }}
+          >
+            {table
+              .getHeaderGroups()
+              .map((headerGroup: any, mainIndex: number) => (
+                <tr className="table-row" key={headerGroup.id}>
+                  {headerGroup.headers.map((header: any, index: number) => {
                     return (
-                      <td
+                      <th
                         className="cell"
                         key={index}
+                        colSpan={header.colSpan}
                         style={{
-                          width: "100%",
-                          backgroundColor: row?.original.hasOwnProperty(
-                            "target_reached"
-                          )
-                            ? !row?.original?.target_reached
-                              ? "#ffebe9"
-                              : ""
-                            : "",
+                          minWidth: getWidth(header.id),
+                          width: getWidth(header.id),
+                          color: "#000",
+                          background: "#F0EDFF",
                         }}
                       >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+                        {header.isPlaceholder ? null : (
+                          <div
+                            // onClick={() => sortAndGetData(header)}
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}
+                            style={{
+                              display: "flex",
+                              gap: "10px",
+                              cursor: "pointer",
+                              minWidth: getWidth(header.id),
+                              width: getWidth(header.id),
+                            }}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                            {{
+                              asc: (
+                                <Image
+                                  src="/core/sort/sort-asc.svg"
+                                  height={8}
+                                  width={8}
+                                  alt="image"
+                                />
+                              ),
+                              desc: (
+                                <Image
+                                  src="/core/sort/sort-desc.svg"
+                                  height={8}
+                                  width={8}
+                                  alt="image"
+                                />
+                              ),
+                            }[header.column.getIsSorted() as string] ?? (
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    header.id === "actions" ||
+                                    removeSortingForColumnIds.includes(
+                                      header.id
+                                    )
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
+                          </div>
                         )}
-                      </td>
+                      </th>
                     );
                   })}
                 </tr>
-              );
-            })
-          ) : !loading ? (
-            <tr>
-              <td colSpan={10}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "40vh",
-                  }}
-                >
-                  <Image
-                    src="/NoDataImageAnalytics.svg"
-                    alt=""
-                    height={150}
-                    width={250}
-                  />
-                </div>
-              </td>
-            </tr>
-          ) : (
-            <tr>
-              <td colSpan={10}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "40vh",
-                  }}
-                ></div>
-              </td>
-            </tr>
-          )}
-        </tbody>
-        <tfoot className="tfoot">
-          <tr
-            className="table-row"
-            style={{
-              fontSize: "clamp(12px, 0.62vw, 14px)",
-              border: "1px solid #a5a5a5",
-              textTransform: "uppercase",
-              fontWeight: "600",
-              color: "#1B2459",
-              background: "#EFF1FA",
-            }}
-          >
-            <td className="cell">Total</td>
-            <td className="cell"></td>
-            {headerMonths?.map((item: any, index: number) => {
-              return (
-                <td key={index} className="cell" style={{ cursor: "pointer" }}>
-                  {tabValue == "Revenue" ? (
-                    formatMoney(totalSumValues[item])
-                  ) : !totalSumValues[item]?.[1] ? (
-                    totalSumValues[item]?.[0]
-                  ) : (
-                    <Tooltip
-                      arrow
-                      slotProps={{
-                        popper: {
-                          modifiers: [
-                            {
-                              name: "offset",
-                              options: {
-                                offset: [0, -5],
+              ))}
+          </thead>
+          <tbody className="tbody">
+            {data?.length ? (
+              table.getRowModel().rows.map((row: any, mainIndex: number) => {
+                return (
+                  <tr className="table-row" key={mainIndex}>
+                    {row.getVisibleCells().map((cell: any, index: number) => {
+                      return (
+                        <td
+                          className="cell"
+                          key={index}
+                          style={{
+                            width: "100%",
+                            backgroundColor: row?.original.hasOwnProperty(
+                              "target_reached"
+                            )
+                              ? !row?.original?.target_reached
+                                ? "#ffebe9"
+                                : ""
+                              : "",
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })
+            ) : !loading ? (
+              <tr>
+                <td colSpan={10}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "40vh",
+                    }}
+                  >
+                    <Image
+                      src="/NoDataImageAnalytics.svg"
+                      alt=""
+                      height={150}
+                      width={250}
+                    />
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              <tr>
+                <td colSpan={10}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "40vh",
+                    }}
+                  ></div>
+                </td>
+              </tr>
+            )}
+          </tbody>
+          <tfoot className="tfoot">
+            <tr
+              className="table-row"
+              style={{
+                fontSize: "clamp(12px, 0.62vw, 14px)",
+                border: "1px solid #a5a5a5",
+                textTransform: "uppercase",
+                fontWeight: "600",
+                color: "#1B2459",
+                background: "#EFF1FA",
+              }}
+            >
+              <td className="cell">Total</td>
+              <td className="cell"></td>
+              {headerMonths?.map((item: any, index: number) => {
+                return (
+                  <td
+                    key={index}
+                    className="cell"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {tabValue == "Revenue" ? (
+                      formatMoney(totalSumValues[item])
+                    ) : totalSumValues[item]?.length == 1 ? (
+                      totalSumValues[item]?.[0]
+                    ) : (
+                      <Tooltip
+                        arrow
+                        slotProps={{
+                          popper: {
+                            modifiers: [
+                              {
+                                name: "offset",
+                                options: {
+                                  offset: [0, -5],
+                                },
                               },
-                            },
-                          ],
-                        },
-                      }}
-                      componentsProps={{
-                        tooltip: {
-                          sx: {
-                            width: "100px",
-                            bgcolor:
-                              totalSumValues[item]?.[1] <=
-                              totalSumValues[item]?.[0]
-                                ? "green"
-                                : "red",
-                            color: "white",
-                            border: "1px solid rgba(0,0,0,0.1)",
-                            padding: 0,
-                            fontSize: "15px",
-                            textAlign: "center",
-                            "& .MuiTooltip-arrow": {
+                            ],
+                          },
+                        }}
+                        componentsProps={{
+                          tooltip: {
+                            sx: {
+                              width: "100px",
+                              bgcolor: getBackgroundColor(
+                                totalSumValues[item]?.[0],
+                                totalSumValues[item]?.[1]
+                              ),
                               color: "black",
-                              "&::before": {
-                                border:
-                                  " 1px solid rgba(0, 0, 0, 0.1)!important",
+                              border: "1px solid rgba(0,0,0,0.1)",
+                              padding: 0,
+                              fontSize: "15px",
+                              textAlign: "center",
+                              "& .MuiTooltip-arrow": {
+                                color: "black",
+                                "&::before": {
+                                  border:
+                                    " 1px solid rgba(0, 0, 0, 0.1)!important",
+                                },
                               },
                             },
                           },
-                        },
-                      }}
-                      title={
-                        "Target total: " +
-                        totalSumValues[item]?.[1]?.toLocaleString()
-                      }
-                    >
-                      <div className="statusTags">
-                        {totalSumValues[item]?.[0]?.toLocaleString()}
-                      </div>
-                    </Tooltip>
-                  )}
-                </td>
-              );
-            })}
-            <td
-              className="cell"
-              onClick={() => setGraphDialogOpen(true)}
-              style={{ cursor: "pointer" }}
-            >
-              {headerMonths?.length ? (
-                <AreaGraph data={totalSumValues} graphColor={"blue"} />
-              ) : (
-                ""
-              )}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-      {headerMonths?.length ? (
-        <GraphDialog
-          graphDialogOpen={graphDialogOpen}
-          setGraphDialogOpen={setGraphDialogOpen}
-          graphData={totalSumValues}
-          graphValuesData={totalSumValues}
-          graphColor={"blue"}
-          tabValue={tabValue}
-        />
-      ) : (
-        ""
-      )}
-    </div>
-  );
+                        }}
+                        title={
+                          "Target total: " +
+                          totalSumValues[item]?.[1]?.toLocaleString()
+                        }
+                      >
+                        <div className="statusTags">
+                          {totalSumValues[item]?.[0]?.toLocaleString()}
+                        </div>
+                      </Tooltip>
+                    )}
+                  </td>
+                );
+              })}
+              <td
+                className="cell"
+                onClick={() => setGraphDialogOpen(true)}
+                style={{ cursor: "pointer" }}
+              >
+                {headerMonths?.length ? (
+                  <AreaGraph data={totalSumValues} graphColor={"blue"} />
+                ) : (
+                  ""
+                )}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+        {headerMonths?.length ? (
+          <GraphDialog
+            graphDialogOpen={graphDialogOpen}
+            setGraphDialogOpen={setGraphDialogOpen}
+            graphData={totalSumValues}
+            graphValuesData={totalSumValues}
+            graphColor={"blue"}
+            tabValue={tabValue}
+          />
+        ) : (
+          ""
+        )}
+      </div>
+    );
 };
 export default CaseTypesColumnTable;

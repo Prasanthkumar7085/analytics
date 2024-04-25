@@ -60,6 +60,27 @@ const SingleColumnTable: FC<pageProps> = ({
     return width;
   };
 
+
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "#f5fff7"; // Both total cases and target volume are zero
+      } else if (totalCases >= targetVolume) {
+        return "#f5fff7"; // Both total cases and target volume are zero
+      } else {
+        return "#ffebe9";
+      }
+    }
+
+    const percentage = totalCases / targetVolume;
+    if (totalCases >= targetVolume) {
+      return "#f5fff7"; // Green for completion
+    } else if (percentage >= 0.5) {
+      return "#ffcc80"; // Orange for partial completion
+    } else {
+      return "#ffebe9"; // Red for incomplete
+    }
+  };
   return (
     <div
       className="tableContainer"
@@ -132,20 +153,20 @@ const SingleColumnTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{
-                                  display:
-                                    header.id === "actions" ||
-                                      removeSortingForColumnIds.includes(header.id)
-                                      ? "none"
-                                      : "",
-                                }}
-                              />
-                            )}
+                            <Image
+                              src="/core/sort/un-sort.svg"
+                              height={8}
+                              width={8}
+                              alt="Unsorted"
+                              style={{
+                                display:
+                                  header.id === "actions" ||
+                                  removeSortingForColumnIds.includes(header.id)
+                                    ? "none"
+                                    : "",
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     </th>
@@ -170,10 +191,10 @@ const SingleColumnTable: FC<pageProps> = ({
                             row?.original.hasOwnProperty("total_targets") &&
                             cell?.id &&
                             cell?.id.includes("total_cases")
-                              ? row?.original?.total_targets <=
-                                row.original.total_cases
-                                ? "#f5fff7"
-                                : "#ffebe9"
+                              ? getBackgroundColor(
+                                  row.original.total_cases,
+                                  row?.original?.total_targets
+                                )
                               : "",
                         }}
                       >
@@ -228,8 +249,8 @@ const SingleColumnTable: FC<pageProps> = ({
                     ? index == 0
                       ? item.value
                       : item?.dolorSymbol
-                        ? formatMoney(item.value)
-                        : item.value?.toLocaleString()
+                      ? formatMoney(item.value)
+                      : item.value?.toLocaleString()
                     : ""}
                 </td>
               );

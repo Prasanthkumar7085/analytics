@@ -238,12 +238,11 @@ const VolumeCaseTypesDetails = ({
               tooltip: {
                 sx: {
                   width: "100px",
-                  bgcolor:
-                    info.row.original?.[item]?.[1] <=
-                    info.row.original?.[item]?.[0]
-                      ? "green"
-                      : "red",
-                  color: "white",
+                  bgcolor: getBackgroundColor(
+                    info.row.original?.[item]?.[0],
+                    info.row.original?.[item]?.[1]
+                  ),
+                  color: "black",
                   border: "1px solid rgba(0,0,0,0.1)",
                   padding: 0,
                   fontSize: "15px",
@@ -269,6 +268,27 @@ const VolumeCaseTypesDetails = ({
       </span>
     ),
   }));
+
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "#f5fff7"; // Both total cases and target volume are zero
+      } else if (totalCases >= targetVolume) {
+        return "#f5fff7"; // Both total cases and target volume are zero
+      } else {
+        return "#ffebe9";
+      }
+    }
+
+    const percentage = totalCases / targetVolume;
+    if (totalCases >= targetVolume) {
+      return "#f5fff7"; // Green for completion
+    } else if (percentage >= 0.5) {
+      return "#ffcc80"; // Orange for partial completion
+    } else {
+      return "#ffebe9"; // Red for incomplete
+    }
+  };
 
   const graphColoumn = [
     {

@@ -44,6 +44,15 @@ export const exportToExcelMonthWiseCaseTypes = (
       },
     };
   }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "case-types-month-volume.xlsx");
@@ -88,6 +97,16 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
   // Setting background color for header cells
   for (let i = 0; i < headers.length; i++) {
     const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    console.log(cellAddress, "poiuytrew");
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
     worksheet[cellAddress].s = {
       fill: {
         fgColor: { rgb: "f0edff" },
@@ -153,6 +172,8 @@ export const exportToExcelCaseTypesVolumes = (
       const total = row[3];
       const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 2 });
       const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 3 });
+      const percentCompleted = total / targets; // Calculate percentage completed
+
       worksheet[cellAddressTarget].s = {
         fill: {
           fgColor: { rgb: "f9feff" },
@@ -160,7 +181,14 @@ export const exportToExcelCaseTypesVolumes = (
       };
       worksheet[cellAddressTotal].s = {
         fill: {
-          fgColor: { rgb: total >= targets ? "f5fff7" : "ffebe9" },
+          fgColor: {
+            rgb:
+              total >= targets
+                ? "f5fff7"
+                : percentCompleted >= 0.5
+                ? "ffcc80"
+                : "ffebe9",
+          },
         },
       };
     }
