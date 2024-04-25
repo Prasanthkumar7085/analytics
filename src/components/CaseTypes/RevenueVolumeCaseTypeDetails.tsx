@@ -124,7 +124,6 @@ const VolumeCaseTypesDetails = ({
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         let rearrangedData = rearrangeDataWithCasetypes(modifieData);
         setCaseData(rearrangedData);
-        console.log(rearrangedData, "ppwqpewq");
         getTotalSumOfCasetypesVolumeWithMonths(response?.data);
       }
     } catch (err) {

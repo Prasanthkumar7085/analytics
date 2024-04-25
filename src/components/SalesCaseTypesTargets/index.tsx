@@ -127,7 +127,6 @@ const SalesCaseTypeWiseTargets = () => {
 
   //calculate total sum of the casetypewise targets
   const getTotalSumOfAllCaseTypesTargets = (data: any) => {
-    console.log("ewrwe");
     const total = Object?.values(data).reduce((acc: any, value: any) => {
       if (value === data.new_facilities) {
         return acc;
@@ -152,7 +151,6 @@ const SalesCaseTypeWiseTargets = () => {
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
-        console.log(uniqueMonths, "09876543");
 
         let groupData: any = groupedTargetsData(response?.data);
         setCompleteData(groupData);
@@ -173,7 +171,6 @@ const SalesCaseTypeWiseTargets = () => {
           );
         }
         setAllTargetsData(modifieData);
-        console.log(modifieData, "32413");
         getColoumnWiseTotalCount(modifieData);
       } else {
         throw response;

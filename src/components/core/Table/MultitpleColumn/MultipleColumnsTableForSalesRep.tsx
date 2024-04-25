@@ -236,8 +236,6 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                return (
                  <tr className="table-row" key={mainIndex}>
                    {row.getVisibleCells().map((cell: any, index: number) => {
-                     console.log(cell.id, "asdf");
-
                      return (
                        <td
                          className="cell"

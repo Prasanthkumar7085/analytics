@@ -69,7 +69,6 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
   };
 
   const getBackgroundColor = (totalCases: any, targetVolume: any) => {
-    console.log(totalCases, "poiuytrew");
     if (targetVolume === 0) {
       if (totalCases === 0) {
         return "#f5fff7";
@@ -190,7 +189,7 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
               return (
                 <tr className="table-row" key={mainIndex}>
                   {row.getVisibleCells().map((cell: any, index: number) => {
-                    console.log(row);
+                    console.log(cell.column.columnDef.cell, "poiuytrewq");
                     return (
                       <td
                         className="cell"

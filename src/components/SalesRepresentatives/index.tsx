@@ -327,8 +327,6 @@ const SalesRepresentatives = () => {
     }
     const modifieData = addSerial(data, 1, data?.length);
     setSalesReps(modifieData);
-    console.log(modifieData, "23");
-
     setFooterValuData(data);
   };
 

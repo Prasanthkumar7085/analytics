@@ -1,7 +1,12 @@
 "use client";
 import MonthWiseTargetStatus from "@/components/TargetStatus";
+import { Suspense } from "react";
 
 const MonthWiseTargetStatusPage = () => {
-  return <MonthWiseTargetStatus />;
+  return (
+    <Suspense>
+      <MonthWiseTargetStatus />
+    </Suspense>
+  );
 };
 export default MonthWiseTargetStatusPage;
