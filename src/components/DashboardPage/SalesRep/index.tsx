@@ -2,8 +2,9 @@
 import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
-import { Backdrop } from "@mui/material";
+import { Backdrop, Button } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,8 +13,8 @@ const SalesRep = () => {
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [fromDate, setFromDate] = useState("")
-  const [toDate, setToDate] = useState("")
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   //query preparation method
   const queryPreparations = async ({ fromDate = "", toDate = "" }: any) => {
     let queryParams: any = {};
@@ -24,13 +25,13 @@ const SalesRep = () => {
       queryParams["to_date"] = toDate;
     }
     try {
-      await getAllSalesReps(queryParams)
+      await getAllSalesReps(queryParams);
     } catch (err: any) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
+  };
   const getAllSalesReps = async (queryParams: any) => {
     try {
       setLoading(true);
@@ -123,7 +124,17 @@ const SalesRep = () => {
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
           Sales Representatives
         </h3>
-        <GlobalDateRangeFilter onChangeData={onChangeData} />
+        <div style={{ display: "flex", flexDirection: "row", gap: "0.9rem" }}>
+          <GlobalDateRangeFilter onChangeData={onChangeData} />
+          <Button
+            variant="outlined"
+            onClick={() => {
+              exportToExcelSalesRepTable(salesReps, totalRevenueSum);
+            }}
+          >
+            Export
+          </Button>
+        </div>
       </div>
       <div className="cardBody">
         <SalesRepsTable

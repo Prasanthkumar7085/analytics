@@ -11,7 +11,6 @@ import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
-import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 
 const SalesRepresentatives = () => {
   const router = useRouter();

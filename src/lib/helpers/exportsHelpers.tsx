@@ -166,12 +166,11 @@ export const exportToExcelCaseTypesVolumes = (
         }
       }
     } else {
-      // Data rows
       const targets = row[2];
       const total = row[3];
       const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 2 });
       const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 3 });
-      const percentCompleted = total / targets; // Calculate percentage completed
+      const percentCompleted = total / targets;
 
       worksheet[cellAddressTarget].s = {
         fill: {
@@ -251,6 +250,48 @@ export const exportToExcelSalesRepTable = (
       },
     };
   }
+  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "f0edff" },
+          },
+        };
+      }
+    } else {
+      const targets = row[4];
+      const total = row[5];
+      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
+      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+      const percentCompleted = total / targets;
+
+      worksheet[cellAddressTarget].s = {
+        fill: {
+          fgColor: { rgb: "f9feff" },
+        },
+      };
+      worksheet[cellAddressTotal].s = {
+        fill: {
+          fgColor: {
+            rgb:
+              total >= targets
+                ? "f5fff7"
+                : percentCompleted >= 0.5
+                ? "ffcc80"
+                : "ffebe9",
+          },
+        },
+      };
+    }
+  }
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "sales-rep-table.xlsx");
