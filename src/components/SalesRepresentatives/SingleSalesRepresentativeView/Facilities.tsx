@@ -303,6 +303,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
       >
         <Button
           variant="outlined"
+          className="exportButton"
           onClick={() => {
             exportToExcelMonthWiseFacilitiesVolume(
               facilitiesData,
@@ -312,6 +313,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
           }}
         >
           Export
+          <img src="/log-out.svg" alt="" />
         </Button>
       </div>
       <SingleSalesRepFacilitiesTable

@@ -11,7 +11,10 @@ import {
   getSingleSalesRepCaseTypesRevenueAPI,
   getSingleSalesRepCaseTypesVolumeAPI,
 } from "@/services/salesRepsAPIs";
-import { getSalesRepRevenueStatsDetailsAPI, getSalesRepVolumeStatsDetailsAPI } from "@/services/statsAPI";
+import {
+  getSalesRepRevenueStatsDetailsAPI,
+  getSalesRepVolumeStatsDetailsAPI,
+} from "@/services/statsAPI";
 import { ArrowBack } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -397,7 +400,7 @@ const SalesRepView = () => {
                     />
                     Facilities {tabValue}
                   </h3>
-                  <div style={{ width: "20%" }}>
+                  <div style={{ width: "20%" }} className="searchInput">
                     <GlobalCaseTypesAutoComplete
                       selectedCaseValue={selectedCaseValueForFacilities}
                       setSelectedCaseValue={setSelectedCaseValueForFacilities}
