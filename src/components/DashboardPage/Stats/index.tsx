@@ -50,62 +50,139 @@ const Stats = ({
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>
-            <div
-              className={styles.card}
-              style={{
-                background: volumeStatsDetails?.length
-                  ? getBackgroundColor(
-                      volumeStatsDetails?.[0]?.total_cases,
-                      volumeStatsDetails?.[0]?.target_volume
-                    )
-                  : "linear-gradient(110.31deg, #4386c5, #004e92)",
-              }}
-            >
-              <div className={styles.titlecontainer}>
-                <div className="statHeader">Volume</div>
-              </div>
-              <div className={styles.row}>
-                <div className={styles.billed}>
-                  <div className={styles.header}>
-                    <label className={styles.lable}>TOTAL</label>
-                  </div>
-                  <h2 className={styles.totalvalue}>
-                    {loading ? (
-                      <Skeleton width={100} height={50} />
-                    ) : (
-                      <CountUp
-                        start={0}
-                        decimal="."
-                        end={volumeStatsDetails?.[0]?.total_cases}
-                      />
-                    )}
-                  </h2>
+            {pathName?.includes("facilities") ? (
+              <div
+                className={styles.card}
+                style={{
+                  background: "linear-gradient(110.31deg, #4386c5, #004e92)",
+                }}
+              >
+                <div className={styles.titlecontainer}>
+                  <div className="statHeader">Volume</div>
                 </div>
-                <Image
-                  className={styles.dividerIcon}
-                  alt=""
-                  src="/navbar/divider.svg"
-                  height={20}
-                  width={20}
-                />
-                <div className={styles.billed}>
-                  <div className={styles.header}>
-                    <label className={styles.lable}>TARGETS</label>
+                <div className={styles.row}>
+                  <div className={styles.billed}>
+                    <div className={styles.header}>
+                      <label className={styles.lable}>TOTAL</label>
+                    </div>
+                    <h2 className={styles.totalvalue}>
+                      {loading ? (
+                        <Skeleton width={100} height={50} />
+                      ) : (
+                        <CountUp
+                          start={0}
+                          decimal="."
+                          end={volumeStatsDetails?.[0]?.total_cases}
+                        />
+                      )}
+                    </h2>
                   </div>
-                  <h2 className={styles.totalvalue}>
-                    {loading ? (
-                      <Skeleton width={100} height={50} />
-                    ) : (
-                      <CountUp
-                        start={0}
-                        decimal="."
-                        end={volumeStatsDetails?.[0]?.target_volume}
-                      />
-                    )}
-                  </h2>
+                  <Image
+                    className={styles.dividerIcon}
+                    alt=""
+                    src="/navbar/divider.svg"
+                    height={20}
+                    width={20}
+                  />
+                  <div className={styles.billed}>
+                    <div className={styles.header}>
+                      <label className={styles.lable}>FINALIZED</label>
+                    </div>
+                    <h2 className={styles.totalvalue}>
+                      {loading ? (
+                        <Skeleton width={100} height={50} />
+                      ) : (
+                        <CountUp
+                          start={0}
+                          decimal="."
+                          end={volumeStatsDetails?.[0]?.completed_cases}
+                        />
+                      )}
+                    </h2>
+                  </div>
+                  <Image
+                    className={styles.dividerIcon}
+                    alt=""
+                    src="/navbar/line-21.svg"
+                    height={20}
+                    width={20}
+                  />
+                  <div className={styles.billed}>
+                    <div className={styles.header}>
+                      <p className={styles.value}>PENDING</p>
+                    </div>
+                    <h2 className={styles.totalvalue}>
+                      {loading ? (
+                        <Skeleton width={100} height={50} />
+                      ) : (
+                        <CountUp
+                          start={0}
+                          decimal="."
+                          end={volumeStatsDetails?.[0]?.pending_cases}
+                        />
+                      )}
+                    </h2>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div
+                className={styles.card}
+                style={{
+                  background: volumeStatsDetails?.length
+                    ? getBackgroundColor(
+                        volumeStatsDetails?.[0]?.total_cases,
+                        volumeStatsDetails?.[0]?.target_volume
+                      )
+                    : "linear-gradient(110.31deg, #4386c5, #004e92)",
+                }}
+              >
+                <div className={styles.titlecontainer}>
+                  <div className="statHeader">Volume</div>
+                </div>
+                <div className={styles.row}>
+                  <div className={styles.billed}>
+                    <div className={styles.header}>
+                      <label className={styles.lable}>TOTAL</label>
+                    </div>
+                    <h2 className={styles.totalvalue}>
+                      {loading ? (
+                        <Skeleton width={100} height={50} />
+                      ) : (
+                        <CountUp
+                          start={0}
+                          decimal="."
+                          end={volumeStatsDetails?.[0]?.total_cases}
+                        />
+                      )}
+                    </h2>
+                  </div>
+                  <Image
+                    className={styles.dividerIcon}
+                    alt=""
+                    src="/navbar/divider.svg"
+                    height={20}
+                    width={20}
+                  />
+                  <div className={styles.billed}>
+                    <div className={styles.header}>
+                      <label className={styles.lable}>TARGETS</label>
+                    </div>
+                    <h2 className={styles.totalvalue}>
+                      {loading ? (
+                        <Skeleton width={100} height={50} />
+                      ) : (
+                        <CountUp
+                          start={0}
+                          decimal="."
+                          end={volumeStatsDetails?.[0]?.target_volume}
+                        />
+                      )}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className={styles.card11}>
               <Image

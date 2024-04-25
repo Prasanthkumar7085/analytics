@@ -365,7 +365,7 @@ table {
     position: sticky !important;
     left: 0 !important;
     background: #f0edff !important;
-    z-index: 9;
+    // z-index: 9;
   }
 
   .tableContainer .tbody .table-row .cell:first-child {
@@ -373,7 +373,7 @@ table {
     position: sticky !important;
     left: 0 !important;
     background: #fff !important;
-        z-index: 999;
+        // z-index: 999;
 
   }
   .tableContainer .thead .table-row .cell:nth-child(2) {
@@ -381,7 +381,7 @@ table {
     position: sticky !important;
     left: 50px !important;
     background: #f0edff !important;
-        z-index: 9999;
+        // z-index: 9999;
 
   }
   .tableContainer .thead .table-row .cell:nth-child(19) {
@@ -389,21 +389,21 @@ table {
     position: sticky !important;
     right: 220px !important;
     background: #f0edff !important;
-    z-index: 999;
+    // z-index: 999;
   }
    .tableContainer .thead .table-row .cell:nth-child(20) {
     border-left: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;
     right: 100px !important;
     background: #f0edff !important;
-    z-index: 999;
+    // z-index: 999;
   }
    .tableContainer .tbody .table-row .cell:nth-child(19) {
     border-left: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;
     right: 220px !important;
     background: #fff !important;
-        z-index: 999;
+        // z-index: 999;
 
   }
    .tableContainer .tbody .table-row .cell:nth-child(20) {
@@ -411,7 +411,7 @@ table {
     position: sticky !important;
     right: 100px !important;
     background: #fff !important;
-        z-index: 999;
+        // z-index: 999;
 
   }
   .tableContainer .tbody .table-row .cell:nth-child(2) {
@@ -419,7 +419,7 @@ table {
     position: sticky !important;
     left: 50px !important;
     background: #fff !important;
-        z-index: 999;
+        // z-index: 999;
 
   }
   .tableContainer .thead .table-row .cell:last-child {
@@ -427,7 +427,7 @@ table {
     position: sticky !important;
     right: 0px !important;
     background: #f0edff !important;
-        z-index: 9999;
+        // z-index: 9999;
 
   }
   .tableContainer .tbody .table-row .cell:last-child {
@@ -435,7 +435,7 @@ table {
     position: sticky !important;
     right: 0px !important;
     background: #fff !important;
-        z-index: 999;
+        // z-index: 999;
 
   }
   .tableContainer .tfootRow .radiusLastChild .cell:first-child {
@@ -477,21 +477,21 @@ table {
     position: sticky !important;
     right: 100px !important;
     background: #eff1fa !important;
-        z-index: 999;
+        // z-index: 999;
   }
     .tableContainer .tfootRow .radiusLastChild .cell:last-child {
      border-left: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;
     right:0px !important;
     background: #eff1fa !important;
-        z-index: 999;
+        // z-index: 999;
   }
    .tableContainer .tfootRow .radiusLastChild .cell:nth-child(19) {
      border-left: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;
     right: 220px !important;
     background: #eff1fa !important;
-        z-index: 999;
+        // z-index: 999;
   }
 }
 
