@@ -76,7 +76,7 @@ const SingleColumnTable: FC<pageProps> = ({
     if (totalCases >= targetVolume) {
       return "#f5fff7"; // Green for completion
     } else if (percentage >= 0.5) {
-      return "#ffcc80"; // Orange for partial completion
+      return "#feecd1"; // Orange for partial completion
     } else {
       return "#ffebe9"; // Red for incomplete
     }

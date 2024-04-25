@@ -127,177 +127,218 @@ const MultipleColumnsTable: FC<pageProps> = ({
     }
   };
 
-  return (
-    <div
-      className="tableContainer"
-      style={{ width: "100%", overflowX: "auto" }}
-    >
-      <table style={{ width: "100%" }}>
-        <thead
-          className="thead"
-          style={{
-            height: "32px",
-            position: "sticky",
-            top: "0px",
-            zIndex: "2",
-            color: "white",
-          }}
-        >
-          {table
-            .getHeaderGroups()
-            .map((headerGroup: any, mainIndex: number) => (
-              <tr className="table-row" key={headerGroup.id}>
-                {headerGroup.headers.map((header: any, index: number) => {
-                  return (
-                    <th
-                      className="cell"
-                      key={index}
-                      colSpan={header.colSpan}
-                      style={{
-                        minWidth: getWidth(header.id),
-                        width: getWidth(header.id),
-                        color: "#000",
-                        background: "#F0EDFF",
-                      }}
-                    >
-                      {header.isPlaceholder ? null : (
-                        <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}
-                          style={{
-                            display: "flex",
-                            gap: "10px",
-                            cursor: "pointer",
-                            minWidth: getWidth(header.id),
-                            width: getWidth(header.id),
-                          }}
-                        >
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+   const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+     if (targetVolume === 0) {
+       if (totalCases === 0) {
+         return "#f5fff7";
+       } else if (totalCases >= targetVolume) {
+         return "#f5fff7";
+       } else {
+         return "#ffebe9";
+       }
+     }
 
-                          {{
-                            asc: (
-                              <Image
-                                src="/core/sort/sort-asc.svg"
-                                height={8}
-                                width={8}
-                                style={{ display: removeSortingForColumnIds?.includes(header.id) ? "none" : "" }}
-                                alt="image"
-                              />
-                            ),
-                            desc: (
-                              <Image
-                                src="/core/sort/sort-desc.svg"
-                                height={8}
-                                width={8}
-                                style={{ display: removeSortingForColumnIds?.includes(header.id) ? "none" : "" }}
-                                alt="image"
-                              />
-                            ),
-                          }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{ display: header.id === "actions" || removeSortingForColumnIds.includes(header.id) ? "none" : "" }}
-                              />
-                            )}
-                        </div>
-                      )}
-                    </th>
-                  );
-                })}
-              </tr>
-            ))}
-        </thead>
-        <tbody className="tbody">
-          {data?.length ? (
-            table.getRowModel().rows.map((row: any, mainIndex: number) => {
-              return (
-                <tr className="table-row" key={mainIndex}>
-                  {row.getVisibleCells().map((cell: any, index: number) => {
-                    return (
-                      <td
-                        className={styles.tableCell}
-                        key={index}
-                        style={{
-                          width: "100%",
-                          backgroundColor:
-                            row?.original.hasOwnProperty("target_reached") &&
-                            cell?.id &&
-                            cell?.id.includes("total_cases")
-                              ? !row?.original?.target_reached
-                                ? "#ffebe9"
-                                : "#f5fff7"
-                              : "",
-                        }}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })
-          ) : !loading ? (
-            <tr>
-              <td colSpan={10}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "40vh",
-                  }}
-                >
-                  <Image
-                    src="/NoDataImageAnalytics.svg"
-                    alt=""
-                    height={150}
-                    width={250}
-                  />
-                </div>
-              </td>
-            </tr>
-          ) : (
-            ""
-          )}
-        </tbody>
-        <tfoot
-          style={{
-            fontSize: "clamp(12px, 0.62vw, 14px)",
-            border: "1px solid #a5a5a5",
-            textTransform: "uppercase",
-            fontWeight: "600",
-            color: "#1B2459",
-            background: "#EFF1FA",
-          }}
-        >
-          <tr>
-            {totalSumValues?.map((item: any, index: number) => {
-              return (
-                <td key={index}>
+     const percentage = totalCases / targetVolume;
+     if (totalCases >= targetVolume) {
+       return "#f5fff7"; // Green for completion
+     } else if (percentage >= 0.5) {
+       return "#feecd1"; // Orange for partial completion
+     } else {
+       return "#ffebe9"; // Red for incomplete
+     }
+   };
 
-                  {
-                    index == 0 ? item.value : item.dolorSymbol ? formatMoney(item.value) : item?.value?.toLocaleString()}
-                </td>
-              );
-            })}
+   return (
+     <div
+       className="tableContainer"
+       style={{ width: "100%", overflowX: "auto" }}
+     >
+       <table style={{ width: "100%" }}>
+         <thead
+           className="thead"
+           style={{
+             height: "32px",
+             position: "sticky",
+             top: "0px",
+             zIndex: "2",
+             color: "white",
+           }}
+         >
+           {table
+             .getHeaderGroups()
+             .map((headerGroup: any, mainIndex: number) => (
+               <tr className="table-row" key={headerGroup.id}>
+                 {headerGroup.headers.map((header: any, index: number) => {
+                   return (
+                     <th
+                       className="cell"
+                       key={index}
+                       colSpan={header.colSpan}
+                       style={{
+                         minWidth: getWidth(header.id),
+                         width: getWidth(header.id),
+                         color: "#000",
+                         background: "#F0EDFF",
+                       }}
+                     >
+                       {header.isPlaceholder ? null : (
+                         <div
+                           {...{
+                             className: header.column.getCanSort()
+                               ? "cursor-pointer select-none"
+                               : "",
+                             onClick: header.column.getToggleSortingHandler(),
+                           }}
+                           style={{
+                             display: "flex",
+                             gap: "10px",
+                             cursor: "pointer",
+                             minWidth: getWidth(header.id),
+                             width: getWidth(header.id),
+                           }}
+                         >
+                           {flexRender(
+                             header.column.columnDef.header,
+                             header.getContext()
+                           )}
 
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-  );
+                           {{
+                             asc: (
+                               <Image
+                                 src="/core/sort/sort-asc.svg"
+                                 height={8}
+                                 width={8}
+                                 style={{
+                                   display: removeSortingForColumnIds?.includes(
+                                     header.id
+                                   )
+                                     ? "none"
+                                     : "",
+                                 }}
+                                 alt="image"
+                               />
+                             ),
+                             desc: (
+                               <Image
+                                 src="/core/sort/sort-desc.svg"
+                                 height={8}
+                                 width={8}
+                                 style={{
+                                   display: removeSortingForColumnIds?.includes(
+                                     header.id
+                                   )
+                                     ? "none"
+                                     : "",
+                                 }}
+                                 alt="image"
+                               />
+                             ),
+                           }[header.column.getIsSorted() as string] ?? (
+                             <Image
+                               src="/core/sort/un-sort.svg"
+                               height={8}
+                               width={8}
+                               alt="Unsorted"
+                               style={{
+                                 display:
+                                   header.id === "actions" ||
+                                   removeSortingForColumnIds.includes(header.id)
+                                     ? "none"
+                                     : "",
+                               }}
+                             />
+                           )}
+                         </div>
+                       )}
+                     </th>
+                   );
+                 })}
+               </tr>
+             ))}
+         </thead>
+         <tbody className="tbody">
+           {data?.length ? (
+             table.getRowModel().rows.map((row: any, mainIndex: number) => {
+               return (
+                 <tr className="table-row" key={mainIndex}>
+                   {row.getVisibleCells().map((cell: any, index: number) => {
+                     return (
+                       <td
+                         className={styles.tableCell}
+                         key={index}
+                         style={{
+                           width: "100%",
+                           backgroundColor:
+                             row?.original.hasOwnProperty("target_reached") &&
+                             cell?.id &&
+                             cell?.id.includes("total_cases")
+                               ? getBackgroundColor(
+                                   row?.original?.total_cases,
+                                   row?.original?.total_targets
+                                 )
+                               : "",
+                         }}
+                       >
+                         {flexRender(
+                           cell.column.columnDef.cell,
+                           cell.getContext()
+                         )}
+                       </td>
+                     );
+                   })}
+                 </tr>
+               );
+             })
+           ) : !loading ? (
+             <tr>
+               <td colSpan={10}>
+                 <div
+                   style={{
+                     display: "flex",
+                     justifyContent: "center",
+                     alignItems: "center",
+                     height: "40vh",
+                   }}
+                 >
+                   <Image
+                     src="/NoDataImageAnalytics.svg"
+                     alt=""
+                     height={150}
+                     width={250}
+                   />
+                 </div>
+               </td>
+             </tr>
+           ) : (
+             ""
+           )}
+         </tbody>
+         <tfoot
+           style={{
+             fontSize: "clamp(12px, 0.62vw, 14px)",
+             border: "1px solid #a5a5a5",
+             textTransform: "uppercase",
+             fontWeight: "600",
+             color: "#1B2459",
+             background: "#EFF1FA",
+           }}
+         >
+           <tr>
+             {totalSumValues?.map((item: any, index: number) => {
+               return (
+                 <td key={index}>
+                   {index == 0
+                     ? item.value
+                     : item.dolorSymbol
+                     ? formatMoney(item.value)
+                     : item?.value?.toLocaleString()}
+                 </td>
+               );
+             })}
+           </tr>
+         </tfoot>
+       </table>
+     </div>
+   );
 };
 export default MultipleColumnsTable;

@@ -184,7 +184,7 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "ffcc80"
+                ? "feecd1"
                 : "ffebe9",
           },
         },
@@ -284,7 +284,7 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "ffcc80"
+                ? "feecd1"
                 : "ffebe9",
           },
         },

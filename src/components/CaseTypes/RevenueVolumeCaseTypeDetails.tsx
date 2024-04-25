@@ -282,11 +282,11 @@ const VolumeCaseTypesDetails = ({
 
     const percentage = totalCases / targetVolume;
     if (totalCases >= targetVolume) {
-      return "#f5fff7"; // Green for completion
+      return "#f5fff7"; 
     } else if (percentage >= 0.5) {
-      return "#ffcc80"; // Orange for partial completion
+      return "#feecd1"; 
     } else {
-      return "#ffebe9"; // Red for incomplete
+      return "#ffebe9"; 
     }
   };
 
