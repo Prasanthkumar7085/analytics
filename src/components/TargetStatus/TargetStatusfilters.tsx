@@ -90,6 +90,7 @@ const TargetStausFilters = ({
             <li className="eachFilterLists">
               <Button
                 variant="outlined"
+                className="exportButton"
                 onClick={() => {
                   exportToExcelMonthWiseTargetsVolume(
                     targetData,
@@ -99,6 +100,7 @@ const TargetStausFilters = ({
                 }}
               >
                 Export
+                <img src="/log-out.svg" alt="" />
               </Button>
             </li>
           </ul>

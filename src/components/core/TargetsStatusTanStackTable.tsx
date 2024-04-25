@@ -161,20 +161,20 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  header.id === "actions" ||
-                                  removeSortingForColumnIds.includes(header.id)
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    header.id === "actions" ||
+                                      removeSortingForColumnIds.includes(header.id)
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>
@@ -194,7 +194,7 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
                     let cases;
                     let targets;
                     if (Array.isArray(cell.getValue())) {
-                      const [totalCases, totalTargets] = cell.getValue();
+                      const [totalTargets, totalCases] = cell.getValue();
                       cases = totalCases;
                       targets = totalTargets;
                     }

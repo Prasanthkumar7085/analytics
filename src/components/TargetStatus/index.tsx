@@ -106,8 +106,8 @@ const MonthWiseTargetStatus = () => {
         if (!groupedDataSum[formattedMonth]) {
           groupedDataSum[formattedMonth] = [0, 0];
         }
-        groupedDataSum[formattedMonth][0] += targets;
-        groupedDataSum[formattedMonth][1] += volume;
+        groupedDataSum[formattedMonth][1] += targets;
+        groupedDataSum[formattedMonth][0] += volume;
       });
     });
     setTotalSumValues(groupedDataSum);
@@ -177,9 +177,9 @@ const MonthWiseTargetStatus = () => {
     cell: (info: any) => (
       <span style={{ cursor: "pointer" }}>
         <div className="statusTags">
-          {info.row.original?.[item]?.[1]?.toLocaleString() +
+          {info.row.original?.[item]?.[0]?.toLocaleString() +
             "/" +
-            info.row.original?.[item]?.[0]?.toLocaleString()}
+            info.row.original?.[item]?.[1]?.toLocaleString()}
         </div>
       </span>
     ),
@@ -245,11 +245,28 @@ const MonthWiseTargetStatus = () => {
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}
+          onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}>{info.row.original.sales_rep_name}</span>;
       },
     },
   ];
+
+  const goToSingleRepPage = (repId: string) => {
+    let queryString = "";
+    const queryParams: any = {};
+    if (params.get("from_date")) {
+      queryParams["from_date"] = params.get("from_date");
+    }
+    if (params.get("to_date")) {
+      queryParams["to_date"] = params.get("to_date");
+    }
+    if (Object.keys(queryParams)?.length) {
+      queryString = prepareURLEncodedParams("", queryParams);
+    }
+
+    router.push(`/sales-representatives/${repId}${queryString}`);
+  };
 
   const onUpdateData = ({
     search = searchParams?.search,

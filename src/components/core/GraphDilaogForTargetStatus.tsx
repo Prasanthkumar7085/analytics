@@ -30,8 +30,8 @@ const GraphDialogForTargetStatus = ({
       },
       categories: Object?.values(graphValuesData)?.length
         ? Object?.keys(graphValuesData).map((item: any) =>
-            formatMonthYear(item)
-          )
+          formatMonthYear(item)
+        )
         : [],
     },
     plotOptions: {
@@ -101,7 +101,7 @@ const GraphDialogForTargetStatus = ({
       {
         name: "Total Targets",
         data: Object?.values(graphValuesData)?.length
-          ? Object.values(graphValuesData).map((item: any) => item[1])
+          ? Object.values(graphValuesData).map((item: any) => item[0])
           : [],
         type: "line",
         zIndex: 9999,
@@ -109,7 +109,7 @@ const GraphDialogForTargetStatus = ({
       {
         name: "Total cases",
         data: Object?.values(graphValuesData)?.length
-          ? Object.values(graphValuesData).map((item: any) => item[0])
+          ? Object.values(graphValuesData).map((item: any) => item[1])
           : [],
         type: "column",
         color: graphColor,

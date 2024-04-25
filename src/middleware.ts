@@ -8,6 +8,8 @@ const protectedRoutes = [
   "/sales-representatives/",
   "/insurances",
   "/facilities",
+  "/target-status",
+  "/sales-targets"
 ];
 
 const unProtectedRoutes = ["/signin"];
