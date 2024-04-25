@@ -1,16 +1,19 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { Autocomplete, Paper, TextField } from "@mui/material";
+import { Autocomplete, Button, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
+import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 const SalesRepsFilters = ({
   onUpdateData,
   queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
   searchParams,
+  salesRepsData,
+  totalSumValues,
 }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState<any>(null);
@@ -125,6 +128,16 @@ const SalesRepsFilters = ({
                   onUpdateData({ search: e.target.value });
                 }}
               />
+            </li>
+            <li className="eachFilterLists">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  exportToExcelSalesRepTable(salesRepsData, totalSumValues);
+                }}
+              >
+                Export
+              </Button>
             </li>
           </ul>
         </Grid>

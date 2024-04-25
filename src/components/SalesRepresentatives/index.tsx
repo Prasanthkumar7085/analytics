@@ -4,13 +4,14 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
-import { Button } from "@mui/material";
+import { Button, ButtonBase } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
+import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 
 const SalesRepresentatives = () => {
   const router = useRouter();
@@ -327,6 +328,7 @@ const SalesRepresentatives = () => {
     }
     const modifieData = addSerial(data, 1, data?.length);
     setSalesReps(modifieData);
+    console.log(modifieData, "23");
 
     setFooterValuData(data);
   };
@@ -408,7 +410,10 @@ const SalesRepresentatives = () => {
           dateFilterDefaultValue={dateFilterDefaultValue}
           setDateFilterDefaultValue={setDateFilterDefaultValue}
           searchParams={searchParams}
+          salesRepsData={salesReps}
+          totalSumValues={totalSumValues}
         />
+
         <MultipleColumnsTableForSalesRep
           data={salesReps}
           columns={columnDef}

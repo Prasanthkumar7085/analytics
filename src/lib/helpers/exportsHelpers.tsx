@@ -97,7 +97,6 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
   // Setting background color for header cells
   for (let i = 0; i < headers.length; i++) {
     const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
-    console.log(cellAddress, "poiuytrew");
     worksheet[cellAddress].s = {
       fill: {
         fgColor: { rgb: "f0edff" },
@@ -197,4 +196,62 @@ export const exportToExcelCaseTypesVolumes = (
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "casetypes-volume.xlsx");
+};
+export const exportToExcelSalesRepTable = (
+  salesRepData: any,
+  totalSumValues: any
+) => {
+  const formattedData = salesRepData.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.sales_rep_name,
+      obj.total_facilities,
+      obj.active_facilities,
+      obj.total_targets,
+      obj.total_cases,
+      obj.target_reached,
+    ];
+  });
+  let mainHeaders = ["", "", "FACILITIES", "", "VOLUME", "", ""];
+  let headers = [
+    "Sl.no",
+    "MARKETER NAME",
+    "TOTAL",
+    "ACTIVE",
+    "TARGET",
+    "TOTAL",
+    "TARGET REACHED",
+  ];
+
+  const toatalSumValuesRow = totalSumValues.map((obj: any) =>
+    obj.value === null ? "" : obj.value
+  );
+  let totalData = [
+    ...[mainHeaders],
+    ...[headers],
+    ...formattedData,
+    ...[toatalSumValuesRow],
+  ];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "sales-rep-table.xlsx");
 };
