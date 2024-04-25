@@ -14,6 +14,7 @@ import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import { Tooltip } from "@mui/material";
 import GraphDialogForTargetStatus from "./GraphDilaogForTargetStatus";
+import AreaGraphForTargetStatus from "./AreaGraph/AreaGraphForTargetstaus";
 
 interface pageProps {
   columns: any[];
@@ -272,9 +273,9 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
               return (
                 <td key={index} className="cell" style={{ cursor: "pointer" }}>
                   <div className="statusTags">
-                    {totalSumValues[item]?.[1]?.toLocaleString() +
+                    {totalSumValues[item]?.[0]?.toLocaleString() +
                       "/" +
-                      totalSumValues[item]?.[0]?.toLocaleString()}
+                      totalSumValues[item]?.[1]?.toLocaleString()}
                   </div>
                 </td>
               );
@@ -285,7 +286,7 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
               style={{ cursor: "pointer" }}
             >
               {headerMonths?.length ? (
-                <AreaGraph data={totalSumValues} graphColor={"blue"} />
+                <AreaGraphForTargetStatus data={totalSumValues} graphColor={"blue"} />
               ) : (
                 ""
               )}

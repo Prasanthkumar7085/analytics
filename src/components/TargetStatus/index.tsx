@@ -106,8 +106,8 @@ const MonthWiseTargetStatus = () => {
         if (!groupedDataSum[formattedMonth]) {
           groupedDataSum[formattedMonth] = [0, 0];
         }
-        groupedDataSum[formattedMonth][1] += targets;
-        groupedDataSum[formattedMonth][0] += volume;
+        groupedDataSum[formattedMonth][0] += targets;
+        groupedDataSum[formattedMonth][1] += volume;
       });
     });
     setTotalSumValues(groupedDataSum);
@@ -170,8 +170,8 @@ const MonthWiseTargetStatus = () => {
       const rowDataB = rowB.original[columnId];
 
       // Extract the case values from the row data
-      const valueA = rowDataA[0] || 0;
-      const valueB = rowDataB[0] || 0;
+      const valueA = rowDataA[1] || 0;
+      const valueB = rowDataB[1] || 0;
       return valueA - valueB;
     },
     cell: (info: any) => (

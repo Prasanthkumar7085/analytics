@@ -101,7 +101,7 @@ const AreaGraphForTargetStatus = ({ data, graphColor }: any) => {
       {
         name: null,
         data: Object?.values(data)?.length
-          ? Object?.values(data).map((item: any) => (item[1] ? +item[1] : 0))
+          ? Object?.values(data).map((item: any) => (item[0] ? +item[0] : 0))
           : [],
         animation: {
           opacity: 0.4,
@@ -111,7 +111,7 @@ const AreaGraphForTargetStatus = ({ data, graphColor }: any) => {
       {
         name: null,
         data: Object?.values(data)?.length
-          ? Object?.values(data).map((item: any) => (item[0] ? +item[0] : 0))
+          ? Object?.values(data).map((item: any) => (item[1] ? +item[1] : 0))
           : [],
         type: "column",
         color: graphColor,

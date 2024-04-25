@@ -184,8 +184,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -284,8 +284,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -318,7 +318,7 @@ export const exportToExcelMonthWiseTargetsVolume = (
         ).getTime();
         return monthB - monthA;
       })
-      .map(([_, value]: any) => value[1] + "/" + value[0]);
+      .map(([_, value]: any) => value[0] + "/" + value[1]);
     return [index + 1, obj.sales_rep_name, ...sortedValues];
   });
   let headers = ["Sl.No", "Markerter Name", ...headerMonths];
@@ -328,7 +328,7 @@ export const exportToExcelMonthWiseTargetsVolume = (
       const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
       return dateB - dateA;
     })
-    .map(([_, value]: any) => value[1] + "/" + value[0]);
+    .map(([_, value]: any) => value[0] + "/" + value[1]);
 
   let totalSumSortedValues = ["Total", "", ...total];
   const filteredArray = totalSumSortedValues.filter(
