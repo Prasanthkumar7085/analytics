@@ -132,11 +132,13 @@ const SalesRepsFilters = ({
             <li className="eachFilterLists">
               <Button
                 variant="outlined"
+                className="exportButton"
                 onClick={() => {
                   exportToExcelSalesRepTable(salesRepsData, totalSumValues);
                 }}
               >
                 Export
+                <img src="/log-out.svg" alt="" />
               </Button>
             </li>
           </ul>

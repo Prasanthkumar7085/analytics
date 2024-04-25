@@ -128,11 +128,13 @@ const SalesRep = () => {
           <GlobalDateRangeFilter onChangeData={onChangeData} />
           <Button
             variant="outlined"
+            className="exportButton"
             onClick={() => {
               exportToExcelSalesRepTable(salesReps, totalRevenueSum);
             }}
           >
             Export
+            <img src="/log-out.svg" alt="" />
           </Button>
         </div>
       </div>

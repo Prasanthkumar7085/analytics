@@ -238,7 +238,7 @@ const CaseTypes = ({
     }</span>
         <br>
         <span style="font-size: 13px;">
-            <b> 
+            <b>
             ${
               tabValue == "Revenue"
                 ? formatMoney(totalNumber)
@@ -352,6 +352,7 @@ const CaseTypes = ({
           >
             <Button
               variant="outlined"
+              className="exportButton"
               onClick={() => {
                 exportToExcelCaseTypesVolumes(
                   caseTypesStatsData,
@@ -360,6 +361,7 @@ const CaseTypes = ({
               }}
             >
               Export
+              <img src="/log-out.svg" alt="" />
             </Button>
           </div>
         </div>
