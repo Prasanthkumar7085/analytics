@@ -194,5 +194,24 @@ export const getRevenueInsurancePayorsBySalesRepIdAPI = async ({
   }
 };
 
+export const getDetailsOfTargetsForEverySalesRep = async ({
+  queryParams,
+}: {
+  queryParams: any;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/sales-reps-monthly-achieves`,
+      queryParams
+    );
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
 

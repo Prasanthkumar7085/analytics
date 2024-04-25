@@ -30,7 +30,6 @@ const VolumeCaseTypesDetails = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
-  console.log(totalSumValues, "poiuytre");
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
   const [headerMonths, setHeaderMonths] = useState<any>([]);
