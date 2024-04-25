@@ -15,8 +15,8 @@ import TargetStatusTanStackTable from "../core/TargetsStatusTanStackTable";
 import TargetStausFilters from "./TargetStatusfilters";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
-import AreaGraphForTargetStatus from "../core/AreaGraph/AreaGraphForFacilities";
 import GraphDialogForTargetStatus from "../core/GraphDilaogForTargetStatus";
+import AreaGraphForTargetStatus from "../core/AreaGraph/AreaGraphForTargetstaus";
 
 const MonthWiseTargetStatus = () => {
   const params = useSearchParams();
@@ -36,15 +36,29 @@ const MonthWiseTargetStatus = () => {
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
-
   //query preparation method
-  const queryPreparations = async (fromDate: any, toDate: any) => {
+  const queryPreparations = async (
+    fromDate: any,
+    toDate: any,
+    searchValue = searchParams?.search,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type
+  ) => {
     let queryParams: any = {};
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
     if (toDate) {
       queryParams["to_date"] = toDate;
+    }
+    if (searchValue) {
+      queryParams["search"] = searchValue;
+    }
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
     }
     try {
       await getTargetData(queryParams);
@@ -78,27 +92,34 @@ const MonthWiseTargetStatus = () => {
     });
     return groupedData;
   };
+
   //get the total sum of the casetypes targets and volume with respective months
   const getTotalSumOfCasetypesVolumeWithMonths = (data: any) => {
     const groupedDataSum: any = {};
     data?.forEach((item: any) => {
-      const { month, total_targets, total_achievements } = item;
-      const formattedMonth = month?.replace(/\s/g, "");
-      const volume = parseFloat(total_achievements);
-      const targets = parseFloat(total_targets);
+      const { sales_rep_name, ...monthsData } = item;
+      Object.entries(monthsData).forEach(([month, values]: any) => {
+        const formattedMonth = month;
+        const volume = parseFloat(values[1]);
+        const targets = parseFloat(values[0]);
 
-      if (!groupedDataSum[formattedMonth]) {
-        groupedDataSum[formattedMonth] = [0, 0];
-      }
-      groupedDataSum[formattedMonth][0] += targets;
-      groupedDataSum[formattedMonth][1] += volume;
+        if (!groupedDataSum[formattedMonth]) {
+          groupedDataSum[formattedMonth] = [0, 0];
+        }
+        groupedDataSum[formattedMonth][0] += targets;
+        groupedDataSum[formattedMonth][1] += volume;
+      });
     });
     setTotalSumValues(groupedDataSum);
   };
+
   //get details of targets for every sales rep
   const getTargetData = async (queryParams: any) => {
     setLoading(true);
     try {
+      let queryString = prepareURLEncodedParams("", queryParams);
+
+      router.push(`${pathname}${queryString}`);
       const response = await getDetailsOfTargetsForEverySalesRep({
         queryParams,
       });
@@ -106,9 +127,16 @@ const MonthWiseTargetStatus = () => {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
 
-        const groupedData: any = groupTargetsData(response?.data);
+        let data = response?.data;
+        if (queryParams.search) {
+          data = data.filter((item: any) =>
+            item.sales_rep_name
+              ?.toLowerCase()
+              ?.includes(queryParams.search?.toLowerCase()?.trim())
+          );
+        }
+        const groupedData: any = groupTargetsData(data);
         setCompleteData(groupedData);
-
         // Converting object to array
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.sales_rep_name.localeCompare(b.sales_rep_name);
@@ -117,7 +145,7 @@ const MonthWiseTargetStatus = () => {
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         setTargetData(modifieData);
         setCompleteData(modifieData);
-        getTotalSumOfCasetypesVolumeWithMonths(response?.data);
+        getTotalSumOfCasetypesVolumeWithMonths(modifieData);
       }
     } catch (err) {
       console.error(err);
@@ -258,7 +286,6 @@ const MonthWiseTargetStatus = () => {
     let data = [...completeData];
 
     if (orderBy && orderType) {
-      data = sortAndGetData(data, orderBy, orderType);
       if (search) {
         data = data.filter((item: any) =>
           item.sales_rep_name
@@ -288,6 +315,7 @@ const MonthWiseTargetStatus = () => {
     }
     const modifieData = addSerial(data, 1, data?.length);
     setTargetData(modifieData);
+    getTotalSumOfCasetypesVolumeWithMonths(modifieData);
   };
 
   const addAddtionalColoumns = [
@@ -297,7 +325,11 @@ const MonthWiseTargetStatus = () => {
   ];
 
   useEffect(() => {
-    queryPreparations(searchParams?.from_date, searchParams?.to_date);
+    queryPreparations(
+      searchParams?.from_date,
+      searchParams?.to_date,
+      searchParams?.search
+    );
     if (searchParams?.from_date) {
       setDateFilterDefaultValue([
         new Date(searchParams?.from_date),
@@ -325,8 +357,9 @@ const MonthWiseTargetStatus = () => {
           dateFilterDefaultValue={dateFilterDefaultValue}
           setDateFilterDefaultValue={setDateFilterDefaultValue}
           searchParams={searchParams}
-          salesRepsData={targetData}
+          targetData={targetData}
           totalSumValues={totalSumValues}
+          headerMonths={headerMonths}
         />
         <TargetStatusTanStackTable
           data={targetData}
