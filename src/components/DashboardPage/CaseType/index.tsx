@@ -4,7 +4,7 @@ import { Chart } from "react-google-charts";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { Backdrop, Badge, CircularProgress } from "@mui/material";
+import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import Image from "next/image";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
@@ -12,6 +12,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import CountUp from "react-countup";
 import { Tab, Tabs } from "@mui/material";
 import { graphColors } from "@/lib/constants";
+import { exportToExcelCaseTypesVolumes } from "@/lib/helpers/exportsHelpers";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -19,9 +20,8 @@ const CaseTypes = ({
   totalRevenueSum,
   tabValue,
   setTabValue,
-  queryPreparations
+  queryPreparations,
 }: any) => {
-
   const params = useSearchParams();
   const pathName = usePathname();
   const [selectedDates, setSelectedDates] = useState<any>([]);
@@ -343,6 +343,25 @@ const CaseTypes = ({
               <Tab value="Revenue" label="Revenue" />
             </Tabs>
           </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => {
+                exportToExcelCaseTypesVolumes(
+                  caseTypesStatsData,
+                  totalRevenueSum
+                );
+              }}
+            >
+              Export
+            </Button>
+          </div>
         </div>
         <div className="cardBody">
           <div style={{ display: "flex", height: "40vh" }}>
@@ -365,8 +384,8 @@ const CaseTypes = ({
                 tabValue == "Revenue"
                   ? Revenuecolumns
                   : pathName.includes("facilities")
-                    ? VolumecolumnsForFacilities
-                    : Volumecolumns
+                  ? VolumecolumnsForFacilities
+                  : Volumecolumns
               }
               totalSumValues={totalRevenueSum}
               loading={loading}
