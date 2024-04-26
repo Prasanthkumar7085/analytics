@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { exportToExcelInsurancesTable } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 const InsurancesFilters = ({
   totalSumValues,
   completeData,
@@ -67,19 +68,14 @@ const InsurancesFilters = ({
               />
             </li>
             <li className="eachFilterLists">
-              <Button
-                variant="outlined"
-                className="exportButton"
+              <ExportButton
                 onClick={() => {
                   exportToExcelInsurancesTable(
                     completeData,
                     totalSumValues
                   );
                 }}
-              >
-                Export
-                <img src="/log-out.svg" alt="" />
-              </Button>
+              />
             </li>
           </ul>
         </Grid>

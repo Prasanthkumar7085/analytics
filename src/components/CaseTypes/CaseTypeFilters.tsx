@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { exportToExcelCaseTypesTable } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultValue, setDateFilterDefaultValue, totalSumValues,
   completeData, }: any) => {
   const params = useSearchParams();
@@ -61,19 +62,14 @@ const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultVal
               />
             </li>
             <li className="eachFilterLists">
-              <Button
-                variant="outlined"
-                className="exportButton"
+              <ExportButton
                 onClick={() => {
                   exportToExcelCaseTypesTable(
                     completeData,
                     totalSumValues
                   );
                 }}
-              >
-                Export
-                <img src="/log-out.svg" alt="" />
-              </Button>
+              />
             </li>
           </ul>
         </Grid>
