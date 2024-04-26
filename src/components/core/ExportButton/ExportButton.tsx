@@ -5,16 +5,12 @@ const ExportButton = ({
 }: any) => {
 
     return (
-        <div>
-            <Button
-                variant="outlined"
-                className="exportButton"
-                onClick={onClick}
-            >
-                Export
-                <img src="/log-out.svg" alt="" />
-            </Button>
-        </div>
+      <div>
+        <Button variant="outlined" className="exportButton" onClick={onClick}>
+          Export
+          <img src="/log-out.svg" alt="export button" />
+        </Button>
+      </div>
     );
 }
 export default ExportButton;

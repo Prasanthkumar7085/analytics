@@ -297,120 +297,6 @@ export const exportToExcelSalesRepTable = (
   XLSX.writeFile(workbook, "sales-rep-table.xlsx");
 };
 
-export const exportToExcelMonthWiseTargetsVolume = (
-  targetsData: any,
-  headerMonths: any,
-  totalSumValues: any
-) => {
-  const formattedData = targetsData.map((obj: any, index: number) => {
-    const sortedValues = Object.entries(obj)
-      .filter(
-        ([key, value]) =>
-          key !== "sales_rep_id" && key !== "serial" && key !== "sales_rep_name"
-      )
-      .sort((a, b) => {
-        const monthA = new Date(
-          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        const monthB = new Date(
-          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        return monthA - monthB;
-      })
-      .map(([_, value]: any) => value[0] + "/" + value[1]);
-    return [index + 1, obj.sales_rep_name, ...sortedValues];
-  });
-  let headers = ["Sl.No", "Markerter Name", ...headerMonths];
-  const total: any = Object.entries(totalSumValues)
-    .sort((a, b) => {
-      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      return dateA - dateB;
-    })
-    .map(([_, value]: any) => value[0] + "/" + value[1]);
-
-  let totalSumSortedValues = ["Total", "", ...total];
-  const filteredArray = totalSumSortedValues.filter(
-    (value) => value !== "NaN/NaN"
-  );
-
-  let totalData = [...[headers], ...formattedData, ...[filteredArray]];
-
-  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
-  // Setting background color for header cells
-  for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
-  }
-  const footerRowIndex = totalData.length - 1;
-  for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
-  }
-
-  // for (let rowIndex = 1; rowIndex < formattedData.length; rowIndex++) {
-  //   const row = formattedData[rowIndex];
-
-  //   // Calculate the worksheet row index based on the current rowIndex and the number of header rows
-  //   const worksheetRowIndex = rowIndex + headers.length;
-
-  //   // Iterate over the columns within the row starting from index 2
-  //   for (let colIndex = 2; colIndex < row.length; colIndex++) {
-  //     const cell = row[colIndex];
-
-  //     // Check if the cell contains the format value[0]/value[1]
-  //     if (typeof cell === "string" && cell.includes("/")) {
-  //       const values = cell.split("/").map((value) => parseInt(value)); // Split the cell value and convert them to integers
-  //       const targets = values[0];
-  //       const total = values[1];
-
-  //       const percentCompleted = total / targets;
-
-  //       let bgColor = "ffffff"; // Default background color
-
-  //       // Apply color based on conditions
-  //       if (total >= targets) {
-  //         bgColor = "f5fff7";
-  //       } else if (percentCompleted >= 0.5) {
-  //         bgColor = "feecd1";
-  //       } else {
-  //         bgColor = "ffebe9";
-  //       }
-
-  //       const cellAddress = XLSX.utils.encode_cell({
-  //         r: worksheetRowIndex,
-  //         c: colIndex,
-  //       });
-
-  //       // Check if the cell exists in the worksheet before setting its style
-  //       if (!worksheet[cellAddress]) {
-  //         worksheet[cellAddress] = {}; // Initialize the cell if it doesn't exist
-  //       }
-
-  //       // Set the style of the cell
-  //       worksheet[cellAddress].s = {
-  //         fill: {
-  //           fgColor: { rgb: bgColor },
-  //         },
-  //       };
-  //     }
-  //   }
-  // }
-
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-  XLSX.writeFile(workbook, "salesrep-month-wise-targets-status.xlsx");
-};
-
-
 export const exportToExcelInsurancesTable = (
   completeData: any,
   totalSumValues: any
@@ -741,4 +627,113 @@ export const exportToExcelInsurancePayorsVolumeTable = (
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "insurance-payors-volume-table.xlsx");
+};
+
+export const exportToExcelMonthWiseTargetsVolume = (
+  targetsData: any,
+  headerMonths: any,
+  totalSumValues: any
+) => {
+  const formattedData = targetsData.map((obj: any, index: number) => {
+    const sortedValues = Object.entries(obj)
+      .filter(
+        ([key, value]) =>
+          key !== "sales_rep_id" && key !== "serial" && key !== "sales_rep_name"
+      )
+      .sort((a, b) => {
+        const monthA = new Date(
+          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+        ).getTime();
+        const monthB = new Date(
+          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+        ).getTime();
+        return monthA - monthB;
+      })
+      .map(([_, value]: any) => value[0] + "/" + value[1]);
+    return [index + 1, obj.sales_rep_name, ...sortedValues];
+  });
+  let headers = ["Sl.No", "Markerter Name", ...headerMonths];
+  const total: any = Object.entries(totalSumValues)
+    .sort((a, b) => {
+      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      return dateA - dateB;
+    })
+    .map(([_, value]: any) => value[0] + "/" + value[1]);
+
+  let totalSumSortedValues = ["Total", "", ...total];
+  const filteredArray = totalSumSortedValues.filter(
+    (value) => value !== "NaN/NaN"
+  );
+
+  let totalData = [...[headers], ...formattedData, ...[filteredArray]];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  // Setting background color for header cells
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+
+  for (let rowIndex = 1; rowIndex < formattedData.length; rowIndex++) {
+    const row = formattedData[rowIndex];
+    const worksheetRowIndex = rowIndex;
+
+    for (let colIndex = 2; colIndex < row.length; colIndex++) {
+      if (colIndex < 2) continue;
+      const cell = row[colIndex];
+
+      if (typeof cell === "string" && cell.includes("/")) {
+        const values = cell.split("/").map((value) => parseInt(value));
+        const targets = +values[0];
+        const total = +values[1];
+
+        const percentCompleted = total / targets;
+
+        let bgColor = "ffffff"; // Default background color
+        // Apply color based on conditions
+        if (total >= targets) {
+          bgColor = "f5fff7";
+        } else if (percentCompleted >= 0.5) {
+          bgColor = "feecd1";
+        } else {
+          bgColor = "ffebe9";
+        }
+
+        const cellAddress = XLSX.utils.encode_cell({
+          r: worksheetRowIndex,
+          c: colIndex,
+        });
+
+        // Check if the cell exists in the worksheet before setting its style
+        if (!worksheet[cellAddress]) {
+          worksheet[cellAddress] = {}; // Initialize the cell if it doesn't exist
+        }
+
+        // Set the style of the cell
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: bgColor },
+          },
+        };
+      }
+    }
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "salesrep-month-wise-targets-status.xlsx");
 };
