@@ -1,11 +1,13 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultValue, setDateFilterDefaultValue }: any) => {
+import { exportToExcelCaseTypesTable } from "@/lib/helpers/exportsHelpers";
+const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultValue, setDateFilterDefaultValue, totalSumValues,
+  completeData, }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -58,7 +60,21 @@ const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultVal
                 }}
               />
             </li>
-
+            <li className="eachFilterLists">
+              <Button
+                variant="outlined"
+                className="exportButton"
+                onClick={() => {
+                  exportToExcelCaseTypesTable(
+                    completeData,
+                    totalSumValues
+                  );
+                }}
+              >
+                Export
+                <img src="/log-out.svg" alt="" />
+              </Button>
+            </li>
           </ul>
         </Grid>
       </Grid>
