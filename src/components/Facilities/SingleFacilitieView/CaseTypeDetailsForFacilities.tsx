@@ -13,6 +13,8 @@ import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
 import SingleSalesRepFacilitiesTable from "@/components/core/Table/TableForSingleSalesRepFacilities";
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
+import { exportToExcelMonthWiseCaseTypeFacilities } from "@/lib/helpers/exportsHelpers";
 
 const CaseTypeDetailsForFacilities = ({
   tabValue,
@@ -282,6 +284,15 @@ const CaseTypeDetailsForFacilities = ({
 
   return (
     <div style={{ position: "relative" }}>
+      <ExportButton
+        onClick={() => {
+          exportToExcelMonthWiseCaseTypeFacilities(
+            caseData,
+            headerMonths,
+            totalSumValues
+          );
+        }}
+      ></ExportButton>
       <SingleSalesRepFacilitiesTable
         data={caseData}
         columns={addAddtionalColoumns}

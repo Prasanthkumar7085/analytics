@@ -12,7 +12,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import CountUp from "react-countup";
 import { Tab, Tabs } from "@mui/material";
 import { graphColors } from "@/lib/constants";
-import { exportToExcelCaseTypesVolumes } from "@/lib/helpers/exportsHelpers";
+import { exportToExcelCaseTypesVolumes, exportToExcelCaseTypesVolumesForFacilites } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 
 const CaseTypes = ({
@@ -349,14 +349,23 @@ const CaseTypes = ({
               justifyContent: "flex-end",
             }}
           >
-            <ExportButton
-              onClick={() => {
-                exportToExcelCaseTypesVolumes(
-                  caseTypesStatsData,
-                  totalRevenueSum
-                );
-              }}
-            />
+            {pathName?.includes("facilities") ?
+               <ExportButton
+                onClick={() => {
+                  exportToExcelCaseTypesVolumesForFacilites(
+                    caseTypesStatsData,
+                    totalRevenueSum
+                  );
+                }}
+              />:
+              <ExportButton
+                onClick={() => {
+                  exportToExcelCaseTypesVolumes(
+                    caseTypesStatsData,
+                    totalRevenueSum
+                  );
+                }}
+              />}
           </div>
         </div>
         <div className="cardBody">

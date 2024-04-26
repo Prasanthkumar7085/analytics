@@ -364,7 +364,7 @@ const SalesRepView = () => {
                     />
                     Insurance Payors {tabValue}
                   </h3>
-                  <div style={{ width: "30%" }}>
+                  <div style={{ width: "20%" }} className="searchInput">
                     <GlobalCaseTypesAutoComplete
                       selectedCaseValue={selectedCaseValueForInsurance}
                       setSelectedCaseValue={setSelectedCaseValueForInsurance}

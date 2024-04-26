@@ -5,11 +5,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
+import { exportToExcelFacilitiesTable } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 const FacilitiesFilters = ({
   onUpdateData,
   queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
+  facilitiesData,
+  totalSumValue,
 }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
@@ -61,6 +65,13 @@ const FacilitiesFilters = ({
                   onUpdateData({ search: e.target.value });
                 }}
               />
+            </li>
+            <li className="eachFilterLists">
+              <ExportButton
+                onClick={() => {
+                  exportToExcelFacilitiesTable(facilitiesData, totalSumValue);
+                }}
+              ></ExportButton>
             </li>
           </ul>
         </Grid>

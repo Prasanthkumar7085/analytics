@@ -298,6 +298,18 @@ table {
   .table {
     padding: 0;
   }
+  .searchInput {
+    margin-right: 250px;
+  }
+  .cardBody {
+    position: relative;
+
+    .exportButton {
+      position: absolute;
+      top: -50px;
+      right: 5px;
+    }
+  }
 
   .tableContainer {
     height: 450px;
@@ -1377,12 +1389,11 @@ $actionButtonWidth: 95px;
   }
 }
 
-#salesTarget .tableContainer .thead .table-row .cell:nth-child(2),
 #salesTarget .tableContainer .tbody .table-row .cell:nth-child(2),
-#salesTarget .tableContainer .thead .table-row .cell:first-child,
 #salesTarget .tableContainer .tbody .table-row .cell:first-child {
-  z-index: 2 !important;
+  z-index: 1 !important;
 }
+
 
 .tableContainer {
   td {

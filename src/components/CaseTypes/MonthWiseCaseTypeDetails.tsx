@@ -12,7 +12,7 @@ const MonthWiseCaseTypeDetails = ({ pageName, searchParams }: any) => {
 
   return (
     <div className="eachDataCard s-no-column" id="mothWiseCaseTypeData">
-      <div className="cardHeader">
+      <div className="cardHeader" style={{ marginRight: "150px" }}>
         <h3>
           <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
           Month Wise Case Type Data

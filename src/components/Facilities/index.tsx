@@ -392,6 +392,8 @@ const FacilitiesList = () => {
         queryPreparations={queryPreparations}
         dateFilterDefaultValue={dateFilterDefaultValue}
         setDateFilterDefaultValue={setDateFilterDefaultValue}
+        facilitiesData={facilitiesData}
+        totalSumValue={totalSumValues}
       />
       <MultipleColumnsTableForSalesRep
         data={facilitiesData}

@@ -196,6 +196,66 @@ export const exportToExcelCaseTypesVolumes = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "casetypes-volume.xlsx");
 };
+
+export const exportToExcelCaseTypesVolumesForFacilites = (
+  caseTypesStatsData: any,
+  totalVolumeSum: any
+) => {
+  const formattedData = caseTypesStatsData
+    .map((obj: any, index: number) => {
+      const sortedValues = Object.entries(obj).map(([_, value]: any) => value);
+      return [index + 1, ...sortedValues];
+    })
+    .map((array: any) => array.slice(1));
+  let headers = ["Sl.No", "CASE TYPE", "TOTAL", "FINALIZED", "PENDING"];
+
+  let totalSumSortedValues = [
+    "Total",
+    "",
+    totalVolumeSum[1]?.value,
+    totalVolumeSum[2]?.value,
+    totalVolumeSum[3]?.value,
+  ];
+  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let rowIndex = 1; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        if (columnIndex === 2 || (columnIndex === 3 && row[2] <= row[3])) {
+          worksheet[cellAddress].s = {
+            fill: {
+              fgColor: { rgb: columnIndex === 2 ? "f0edff" : "f0edff" },
+            },
+          };
+        } else {
+          worksheet[cellAddress].s = {
+            fill: {
+              fgColor: { rgb: "f0edff" },
+            },
+          };
+        }
+      }
+    }
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "casetypes-volume.xlsx");
+};
+
 export const exportToExcelSalesRepTable = (
   salesRepData: any,
   totalSumValues: any
@@ -736,4 +796,325 @@ export const exportToExcelMonthWiseTargetsVolume = (
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "salesrep-month-wise-targets-status.xlsx");
+};
+
+export const exportToExcelFacilitiesTable = (
+  facilitiesData: any,
+  totalSumValue: any
+) => {
+  const formattedData = facilitiesData?.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.facility_name,
+      obj.sales_rep_name,
+      obj.total_cases,
+      obj.generated_amount,
+      obj.paid_amount,
+      obj.pending_amount,
+    ];
+  });
+  let mainHeaders = ["", "", "REVENUE", "", "", "", ""];
+  let headers = [
+    "Sl.no",
+    "FACILITY NAME",
+    "MARKETER NAME",
+    "TOTAL CASES",
+    "BILLED",
+    "RECEIVED",
+    "ARREARS",
+  ];
+  const totalSumValuesRow = totalSumValue?.map((obj: any) =>
+    obj.value == null ? "" : obj.value
+  );
+  let totalData = [
+    ...[mainHeaders],
+    ...[headers],
+    ...formattedData,
+    ...[totalSumValuesRow],
+  ];
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 1, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let i = 0; i < mainHeaders.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "f0edff" },
+          },
+        };
+      }
+    } else {
+      const billed = row[4];
+      const received = row[5];
+      const arrears = row[6];
+      const cellAddressBilled = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
+      const cellAddressReceived = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+      const cellAddressArrears = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
+      const percentCompleted = received / billed / arrears;
+
+      worksheet[cellAddressBilled].s = {
+        font: {
+          color: { rgb: "ff9932" },
+        },
+        fill: {
+          fgColor: { rgb: "f9feff" },
+        },
+      };
+      worksheet[cellAddressReceived].s = {
+        font: {
+          color: { rgb: "36c24d" },
+        },
+        fill: {
+          fgColor: { rgb: "f5fff7" },
+        },
+      };
+      worksheet[cellAddressArrears].s = {
+        font: {
+          color: { rgb: "fe5046" },
+        },
+        fill: {
+          fgColor: { rgb: "fff9f9" },
+        },
+      };
+    }
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "facilities-table.xlsx");
+};
+
+export const exportToExcelCaseTypeTable = (
+  caseData: any,
+  headerMonths: any,
+  totalSumValues: any
+) => {
+  const formattedData = caseData.map((obj: any, index: number) => {
+    const sortedValues = Object.entries(obj)
+      .filter(
+        ([key, value]) =>
+          key !== "case_type_name" && key !== "serial" && key !== "case_type_id"
+      )
+      .sort((a, b) => {
+        const monthA = new Date(
+          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+        ).getTime();
+        const monthB = new Date(
+          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+        ).getTime();
+        return monthA - monthB;
+      })
+      .map(([_, value]: any) => value);
+    return [index + 1, obj.case_type_name, ...sortedValues];
+  });
+  let headers = ["Sl.No", "Case Type Name", ...headerMonths];
+  const total: any = Object.entries(totalSumValues)
+    .sort((a, b) => {
+      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      return dateA - dateB;
+    })
+    .map(([_, value]: any) => value[0]);
+
+  let totalSumSortedValues = ["Total", "", ...total];
+  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "case-types-month-volume.xlsx");
+};
+
+export const exportToExcelMonthWiseCaseTypeFacilities = (
+  caseData: any,
+  headerMonths: any,
+  totalSumValues: any
+) => {
+  console.log(totalSumValues, 100);
+  const formattedData = caseData.map((obj: any, index: number) => {
+    const sortedValues = Object.entries(obj)
+      .filter(
+        ([key, value]) =>
+          key !== "case_type_name" && key !== "serial" && key !== "case_type_id"
+      )
+      .sort((a, b) => {
+        const monthA = new Date(
+          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+        ).getTime();
+        const monthB = new Date(
+          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+        ).getTime();
+        return monthA - monthB;
+      })
+      .map(([_, value]: any) => value);
+    return [index + 1, obj.case_type_name, ...sortedValues];
+  });
+  let headers = ["Sl.No", "Case Type Name", ...headerMonths];
+  const total: any = Object.entries(totalSumValues)
+    .sort((a, b) => {
+      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      return dateA - dateB;
+    })
+    .map(([_, value]: any) => value);
+  let totalSumSortedValues = ["Total", "", ...total];
+  console.log(totalSumSortedValues, "poiuyt");
+  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+  console.log(totalData, "totaldata");
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "facilitiesmonth-wise-casetype.xlsx");
+};
+
+export const exportToExcelInsurancePayorsFacilities = (
+  insuranceData: any,
+  totalInsurancePayors: any
+) => {
+  const formattedData = insuranceData?.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.insurance_name,
+      obj.total_cases,
+      obj.completed_cases,
+      obj.pending_cases,
+    ];
+  });
+  let headers = ["Sl.no", "INSURANCE NAME", "TOTAL", "FINALIZED", "PENDING"];
+  const totalSumValuesRow = totalInsurancePayors?.map((obj: any) =>
+    obj.value == null ? "" : obj.value
+  );
+  let totalData = [...[headers], ...formattedData, ...[totalSumValuesRow]];
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+    for (let rowIndex = 1; rowIndex < totalData.length; rowIndex++) {
+      const row = totalData[rowIndex];
+
+      if (rowIndex === totalData.length - 1) {
+        for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+          const cellAddress = XLSX.utils.encode_cell({
+            r: rowIndex,
+            c: columnIndex,
+          });
+          worksheet[cellAddress].s = {
+            fill: {
+              fgColor: { rgb: "f0edff" },
+            },
+          };
+        }
+      } else {
+        const total = row[2];
+        const finalized = row[3];
+        const pending = row[4];
+        const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 2 });
+        const cellAddressFinalized = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: 3,
+        });
+        const cellAddressPending = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: 4,
+        });
+        const percentCompleted = finalized / total / pending;
+
+        worksheet[cellAddressTotal].s = {
+          font: {
+            color: { rgb: "ff9932" },
+          },
+        };
+        worksheet[cellAddressFinalized].s = {
+          font: {
+            color: { rgb: "36c24d" },
+          },
+        };
+        worksheet[cellAddressPending].s = {
+          font: {
+            color: { rgb: "fe5046" },
+          },
+        };
+      }
+    }
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.writeFile(workbook, "insurance-payors.xlsx");
+  }
 };

@@ -7,6 +7,8 @@ import { getRevenueOfInsurancePayorsByFacilitiesIdAPI, getVolumeOfInsurancePayor
 import { Backdrop } from "@mui/material";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import ExportButton from "../core/ExportButton/ExportButton";
+import { exportToExcelInsurancePayorsFacilities } from "@/lib/helpers/exportsHelpers";
 
 const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue, selectedCaseValue }: any) => {
     const { id } = useParams();
@@ -284,41 +286,49 @@ const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue, select
 
 
     return (
-        <div style={{ position: "relative" }}>
-            <SingleColumnTable
-                data={insuranceData}
-                columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
-                totalSumValues={totalInsurancePayors}
-                loading={loading}
+      <div style={{ position: "relative" }}>
+        <ExportButton
+          onClick={() => {
+            exportToExcelInsurancePayorsFacilities(
+              insuranceData,
+              totalInsurancePayors
+            );
+          }}
+        ></ExportButton>
+        <SingleColumnTable
+          data={insuranceData}
+          columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
+          totalSumValues={totalInsurancePayors}
+          loading={loading}
+        />
+        {loading ? (
+          <Backdrop
+            open={true}
+            style={{
+              zIndex: 999,
+              color: "red",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(256,256,256,0.8)",
+            }}
+          >
+            <object
+              type="image/svg+xml"
+              data={"/core/loading.svg"}
+              width={150}
+              height={150}
             />
-            {loading ? (
-                <Backdrop
-                    open={true}
-                    style={{
-                        zIndex: 999,
-                        color: "red",
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        background: "rgba(256,256,256,0.8)",
-                    }}
-                >
-                    <object
-                        type="image/svg+xml"
-                        data={"/core/loading.svg"}
-                        width={150}
-                        height={150}
-                    />
-                </Backdrop>
-            ) : (
-                ""
-            )}
-        </div>
+          </Backdrop>
+        ) : (
+          ""
+        )}
+      </div>
     );
 };
 

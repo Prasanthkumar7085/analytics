@@ -18,6 +18,8 @@ import {
 } from "@/lib/helpers/apiHelpers";
 import GraphDialogForFacilities from "../core/GraphDilogForFacilities";
 import AreaGraphForFacilities from "../core/AreaGraph/AreaGraphForFacilities";
+import ExportButton from "../core/ExportButton/ExportButton";
+import { exportToExcelCaseTypeTable } from "@/lib/helpers/exportsHelpers";
 
 const CaseTypesDetailsMonthTable = ({
   tabValue,
@@ -325,6 +327,11 @@ const CaseTypesDetailsMonthTable = ({
 
   return (
     <div style={{ position: "relative" }}>
+      <ExportButton
+        onClick={() => {
+          exportToExcelCaseTypeTable(caseData, headerMonths, totalSumValues);
+        }}
+      ></ExportButton>
       <CaseTypesColumnTable
         data={caseData}
         columns={addAddtionalColoumns}
