@@ -15,9 +15,11 @@ const GraphDialogForFacilities = ({
 }: any) => {
   const options = {
     title: {
-      text: graphData?.facility_name
-        ? graphData?.facility_name + " " + tabValue.toUpperCase()
-        : "TOTAL" + " " + tabValue.toUpperCase(),
+      text:
+        graphData?.facility_name || graphData?.case_type_name
+          ? graphData?.facility_name ||
+            graphData?.case_type_name + " " + tabValue.toUpperCase()
+          : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },
 

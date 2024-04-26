@@ -1,7 +1,12 @@
 export const getUniqueMonths = (data: any) => {
-  // Extract the month names from the data and remove spaces for sorting
   let monthArray = data?.map((item: any) => item.month.replace(/\s/g, ""));
 
+  let descendingOrder: any = getAcendingOrder(monthArray);
+  // Get unique sorted months
+  let uniqueMonths = Array.from(new Set(descendingOrder));
+  return uniqueMonths;
+};
+const getDescendingOrder = (monthArray: any) => {
   // Sort the month names in descending order
   monthArray.sort((a: string, b: string) => {
     // Convert the month names into sortable Date objects
@@ -30,10 +35,74 @@ export const getUniqueMonths = (data: any) => {
     // Sort in descending order
     return dateB.getTime() - dateA.getTime();
   });
+  return monthArray;
+};
+export const getAcendingOrder = (monthArray: any) => {
+  // Sort the month names in descending order
+  monthArray.sort((a: string, b: string) => {
+    // Convert the month names into sortable Date objects
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthIndexA = monthNames.indexOf(a.substr(0, 3));
+    const yearA = parseInt(a.substr(3));
+    const dateA = new Date(yearA, monthIndexA);
 
-  // Get unique sorted months
-  let uniqueMonths = Array.from(new Set(monthArray));
-  return uniqueMonths;
+    const monthIndexB = monthNames.indexOf(b.substr(0, 3));
+    const yearB = parseInt(b.substr(3));
+    const dateB = new Date(yearB, monthIndexB);
+
+    // Sort in descending order
+    return dateA.getTime() - dateB.getTime();
+  });
+  return monthArray;
+};
+export const getAcesdingOrderMonthsForGraphs = (monthArray: any) => {
+  const monthArrayKeys = Object.keys(monthArray);
+  monthArrayKeys.sort((a, b) => {
+    const [monthA, yearA] = a.split(/(\d+)/).filter(Boolean);
+    const [monthB, yearB] = b.split(/(\d+)/).filter(Boolean);
+
+    const yearComparison = parseInt(yearA) - parseInt(yearB);
+    if (yearComparison !== 0) {
+      return yearComparison; // Sort by year
+    }
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthIndexA = monthNames.indexOf(monthA);
+    const monthIndexB = monthNames.indexOf(monthB);
+
+    return monthIndexA - monthIndexB;
+  });
+  const sortedMonthArray: any = {};
+  monthArrayKeys.forEach((key) => {
+    sortedMonthArray[key] = monthArray[key];
+  });
+
+  return sortedMonthArray;
 };
 
 export const getUniqueMonthsInCaseTypeTragets = (data: any) => {
@@ -67,28 +136,28 @@ export const formatMonthYear = (monthYear: string) => {
 };
 
 //Function to get the abbreviation of the month
-const getMonthAbbreviation = (month:string) => {
-    const months:any = {
-        '01': 'Jan',
-        '02': 'Feb',
-        '03': 'Mar',
-        '04': 'Apr',
-        '05': 'May',
-        '06': 'Jun',
-        '07': 'Jul',
-        '08': 'Aug',
-        '09': 'Sep',
-        '10': 'Oct',
-        '11': 'Nov',
-        '12': 'Dec',
-    };
-    return months[month];
+const getMonthAbbreviation = (month: string) => {
+  const months: any = {
+    "01": "Jan",
+    "02": "Feb",
+    "03": "Mar",
+    "04": "Apr",
+    "05": "May",
+    "06": "Jun",
+    "07": "Jul",
+    "08": "Aug",
+    "09": "Sep",
+    "10": "Oct",
+    "11": "Nov",
+    "12": "Dec",
+  };
+  return months[month];
 };
 export const formatDateToMonthName = (date: any) => {
   const [month, year] = date.split("-");
- const monthAbbreviation = getMonthAbbreviation(month);
- const formattedYear = year.slice(2);
- return `${monthAbbreviation} '${formattedYear}`;
+  const monthAbbreviation = getMonthAbbreviation(month);
+  const formattedYear = year.slice(2);
+  return `${monthAbbreviation} '${formattedYear}`;
 };
 
 export const getOnlyMonthNames = (data: any) => {
@@ -137,6 +206,35 @@ export const rearrangeDataWithCasetypes = (data: any) => {
   const rearrangedData = casetypes
     .map((caseType: any) => {
       const item = data.find((d: any) => d.case_type_name === caseType);
+      return item ? { ...item } : null;
+    })
+    .filter(Boolean);
+  return rearrangedData;
+};
+export const rearrangeDataWithCasetypesInFilters = (data: any) => {
+  let casetypes = [
+    "UTI PANEL",
+    "WOUND",
+    "TOXICOLOGY",
+    "RESPIRATORY PANEL",
+    "CLINICAL CHEMISTRY",
+    "GASTRO",
+    "NAIL",
+    "COVID",
+    "COVID FLU",
+    "DIABETES",
+    "URINALYSIS",
+    "PGX TEST",
+    "PULMONARY PANEL",
+    "PAD ALZHEIMERS",
+    "CARDIAC",
+    "CGX PANEL",
+    "GTI STI",
+    "GTI WOMENS",
+  ];
+  const rearrangedData = casetypes
+    .map((caseType: any) => {
+      const item = data.find((d: any) => d.displayName === caseType);
       return item ? { ...item } : null;
     })
     .filter(Boolean);

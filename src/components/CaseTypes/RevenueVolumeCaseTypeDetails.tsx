@@ -15,7 +15,7 @@ import {
   formatDateToMonthName,
   formatMonthYear,
   getUniqueMonths,
-  getUniqueMonthsInCaseTypeTragets,
+  getAcesdingOrderMonthsForGraphs,
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
 import { exportToExcelMonthWiseCaseTypes } from "@/lib/helpers/exportsHelpers";
@@ -302,19 +302,19 @@ const VolumeCaseTypesDetails = ({
         delete data?.case_type_id;
         delete data?.case_type_name;
         delete data?.serial;
-
+        let rearrangeData = getAcesdingOrderMonthsForGraphs(data);
         return (
           <div
             style={{ cursor: "pointer" }}
             onClick={() => {
               setGraphDialogOpen(true);
               setSelectedGraphData(info.row.original);
-              setGraphValuesData(data);
+              setGraphValuesData(rearrangeData);
               setGraphColor(graphColors[info.row.original.case_type_name]);
             }}
           >
             <AreaGraph
-              data={data}
+              data={rearrangeData}
               graphColor={graphColors[info.row.original.case_type_name]}
             />
           </div>

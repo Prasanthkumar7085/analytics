@@ -17,7 +17,7 @@ export const exportToExcelMonthWiseCaseTypes = (
         const monthB = new Date(
           b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
         ).getTime();
-        return monthB - monthA;
+        return monthA - monthB;
       })
       .map(([_, value]: any) => value[0]);
     return [index + 1, obj.case_type_name, ...sortedValues];
@@ -27,7 +27,7 @@ export const exportToExcelMonthWiseCaseTypes = (
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
       const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      return dateB - dateA;
+      return dateA - dateB;
     })
     .map(([_, value]: any) => value[0]);
 
@@ -76,9 +76,9 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
         const monthB = new Date(
           b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
         ).getTime();
-        return monthB - monthA;
+        return monthA - monthB;
       })
-      .map(([_, value]: any) => value);
+      .map(([_, value]: any) => value.toLocaleString());
     return [index + 1, obj.facility_name, ...sortedValues];
   });
   let headers = ["Sl.No", "Facility Name", ...headerMonths];
@@ -86,9 +86,9 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
       const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      return dateB - dateA;
+      return dateA - dateB;
     })
-    .map(([_, value]: any) => value);
+    .map(([_, value]: any) => value.toLocaleString());
 
   let totalSumSortedValues = ["Total", "", ...total];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
@@ -184,8 +184,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -284,8 +284,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -296,7 +296,6 @@ export const exportToExcelSalesRepTable = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "sales-rep-table.xlsx");
 };
-
 
 export const exportToExcelMonthWiseTargetsVolume = (
   targetsData: any,
@@ -316,7 +315,7 @@ export const exportToExcelMonthWiseTargetsVolume = (
         const monthB = new Date(
           b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
         ).getTime();
-        return monthB - monthA;
+        return monthA - monthB;
       })
       .map(([_, value]: any) => value[0] + "/" + value[1]);
     return [index + 1, obj.sales_rep_name, ...sortedValues];
@@ -326,7 +325,7 @@ export const exportToExcelMonthWiseTargetsVolume = (
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
       const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      return dateB - dateA;
+      return dateA - dateB;
     })
     .map(([_, value]: any) => value[0] + "/" + value[1]);
 
@@ -356,6 +355,56 @@ export const exportToExcelMonthWiseTargetsVolume = (
       },
     };
   }
+
+  // for (let rowIndex = 1; rowIndex < formattedData.length; rowIndex++) {
+  //   const row = formattedData[rowIndex];
+
+  //   // Calculate the worksheet row index based on the current rowIndex and the number of header rows
+  //   const worksheetRowIndex = rowIndex + headers.length;
+
+  //   // Iterate over the columns within the row starting from index 2
+  //   for (let colIndex = 2; colIndex < row.length; colIndex++) {
+  //     const cell = row[colIndex];
+
+  //     // Check if the cell contains the format value[0]/value[1]
+  //     if (typeof cell === "string" && cell.includes("/")) {
+  //       const values = cell.split("/").map((value) => parseInt(value)); // Split the cell value and convert them to integers
+  //       const targets = values[0];
+  //       const total = values[1];
+
+  //       const percentCompleted = total / targets;
+
+  //       let bgColor = "ffffff"; // Default background color
+
+  //       // Apply color based on conditions
+  //       if (total >= targets) {
+  //         bgColor = "f5fff7";
+  //       } else if (percentCompleted >= 0.5) {
+  //         bgColor = "feecd1";
+  //       } else {
+  //         bgColor = "ffebe9";
+  //       }
+
+  //       const cellAddress = XLSX.utils.encode_cell({
+  //         r: worksheetRowIndex,
+  //         c: colIndex,
+  //       });
+
+  //       // Check if the cell exists in the worksheet before setting its style
+  //       if (!worksheet[cellAddress]) {
+  //         worksheet[cellAddress] = {}; // Initialize the cell if it doesn't exist
+  //       }
+
+  //       // Set the style of the cell
+  //       worksheet[cellAddress].s = {
+  //         fill: {
+  //           fgColor: { rgb: bgColor },
+  //         },
+  //       };
+  //     }
+  //   }
+  // }
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "salesrep-month-wise-targets-status.xlsx");

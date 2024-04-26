@@ -162,20 +162,20 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{
-                                  display:
-                                    header.id === "actions" ||
-                                      removeSortingForColumnIds.includes(header.id)
-                                      ? "none"
-                                      : "",
-                                }}
-                              />
-                            )}
+                            <Image
+                              src="/core/sort/un-sort.svg"
+                              height={8}
+                              width={8}
+                              alt="Unsorted"
+                              style={{
+                                display:
+                                  header.id === "actions" ||
+                                  removeSortingForColumnIds.includes(header.id)
+                                    ? "none"
+                                    : "",
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     </th>
@@ -187,11 +187,9 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
         <tbody className="tbody">
           {data?.length ? (
             table.getRowModel().rows.map((row: any, mainIndex: number) => {
-              console.log(row.original, "poiuytrewq");
               return (
                 <tr className="table-row" key={mainIndex}>
                   {row.getVisibleCells().map((cell: any, index: number) => {
-                    console.log(cell.getValue(), "8888888");
                     let cases;
                     let targets;
                     if (Array.isArray(cell.getValue())) {
@@ -286,7 +284,10 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
               style={{ cursor: "pointer" }}
             >
               {headerMonths?.length ? (
-                <AreaGraphForTargetStatus data={totalSumValues} graphColor={"blue"} />
+                <AreaGraphForTargetStatus
+                  data={totalSumValues}
+                  graphColor={"blue"}
+                />
               ) : (
                 ""
               )}

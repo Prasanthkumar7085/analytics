@@ -1,5 +1,10 @@
+import { graphColors } from "@/lib/constants";
+import {
+  rearrangeDataWithCasetypes,
+  rearrangeDataWithCasetypesInFilters,
+} from "@/lib/helpers/apiHelpers";
 import { getAllCaseTypesListAPI } from "@/services/caseTypesAPIs";
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Box, Paper, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
 const GlobalCaseTypesAutoComplete = ({
@@ -15,7 +20,10 @@ const GlobalCaseTypesAutoComplete = ({
     try {
       let response = await getAllCaseTypesListAPI();
       if (response.success) {
-        setCaseTypeOptions(response?.data);
+        let rearrangedData = rearrangeDataWithCasetypesInFilters(
+          response?.data
+        );
+        setCaseTypeOptions(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -36,6 +44,17 @@ const GlobalCaseTypesAutoComplete = ({
         value={selectedCaseValue ? selectedCaseValue : null}
         disablePortal
         options={caseTypeOptions?.length ? caseTypeOptions : []}
+        PaperComponent={({ children }) => (
+          <Paper
+            style={{
+              fontSize: "12px",
+              fontFamily: "'Poppins', Sans-serif",
+              fontWeight: "500",
+            }}
+          >
+            {children}
+          </Paper>
+        )}
         getOptionLabel={(option: any) =>
           typeof option === "string" ? option : option.displayName
         }

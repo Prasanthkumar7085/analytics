@@ -67,6 +67,7 @@ const GraphDialog = ({
           this.series.chart.series[1].data[this.point.index].y.toLocaleString();
         let totalTargets =
           this.series.chart.series[0].data[this.point.index].y.toLocaleString();
+        let pointColor = this.point.color;
 
         if (tabValue == "Revenue")
           return (
@@ -89,6 +90,7 @@ const GraphDialog = ({
           );
       },
     },
+
     yAxis: {
       title: {
         text: tabValue,

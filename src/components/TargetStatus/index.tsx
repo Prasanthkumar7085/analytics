@@ -97,7 +97,7 @@ const MonthWiseTargetStatus = () => {
   const getTotalSumOfCasetypesVolumeWithMonths = (data: any) => {
     const groupedDataSum: any = {};
     data?.forEach((item: any) => {
-      const { sales_rep_name, ...monthsData } = item;
+      const { sales_rep_name, sales_rep_id, serial, ...monthsData } = item;
       Object.entries(monthsData).forEach(([month, values]: any) => {
         const formattedMonth = month;
         const volume = parseFloat(values[1]);
