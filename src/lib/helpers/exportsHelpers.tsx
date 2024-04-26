@@ -1,4 +1,5 @@
 import * as XLSX from "xlsx-color";
+import { formatMonthYear } from "./apiHelpers";
 export const exportToExcelMonthWiseCaseTypes = (
   caseData: any,
   headerMonths: any,
@@ -22,7 +23,8 @@ export const exportToExcelMonthWiseCaseTypes = (
       .map(([_, value]: any) => value[0]);
     return [index + 1, obj.case_type_name, ...sortedValues];
   });
-  let headers = ["Sl.No", "Case Type Name", ...headerMonths];
+  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
@@ -81,7 +83,8 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
       .map(([_, value]: any) => value.toLocaleString());
     return [index + 1, obj.facility_name, ...sortedValues];
   });
-  let headers = ["Sl.No", "Facility Name", ...headerMonths];
+  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let headers = ["Sl.No", "Facility Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
@@ -184,8 +187,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -344,8 +347,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -712,7 +715,8 @@ export const exportToExcelMonthWiseTargetsVolume = (
       .map(([_, value]: any) => value[0] + "/" + value[1]);
     return [index + 1, obj.sales_rep_name, ...sortedValues];
   });
-  let headers = ["Sl.No", "Markerter Name", ...headerMonths];
+  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let headers = ["Sl.No", "Markerter Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
@@ -937,7 +941,8 @@ export const exportToExcelCaseTypeTable = (
       .map(([_, value]: any) => value);
     return [index + 1, obj.case_type_name, ...sortedValues];
   });
-  let headers = ["Sl.No", "Case Type Name", ...headerMonths];
+  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
@@ -996,7 +1001,8 @@ export const exportToExcelMonthWiseCaseTypeFacilities = (
       .map(([_, value]: any) => value);
     return [index + 1, obj.case_type_name, ...sortedValues];
   });
-  let headers = ["Sl.No", "Case Type Name", ...headerMonths];
+  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
