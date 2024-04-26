@@ -1,5 +1,7 @@
+import ExportButton from "@/components/core/ExportButton/ExportButton";
 import SingleColumnTable from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
+import { exportToExcelInsuranceCaseTypeTable } from "@/lib/helpers/exportsHelpers";
 import { Backdrop } from "@mui/material";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -9,7 +11,6 @@ const InsuranceCaseTypes = ({
   totalInsurancePayors,
   loading,
 }: any) => {
-
   const columns = [
     {
       accessorFn: (row: any) => row.serial,
@@ -21,7 +22,10 @@ const InsuranceCaseTypes = ({
       minWidth: "60px",
       maxWidth: "60px",
       cell: ({ row, table }: any) =>
-        (table.getSortedRowModel()?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) + 1,
+        (table
+          .getSortedRowModel()
+          ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
+        1,
     },
     {
       accessorFn: (row: any) => row.case_type_name,
@@ -107,7 +111,7 @@ const InsuranceCaseTypes = ({
             style={{
               color:
                 info.row.original.paid_amount ==
-                  info.row.original.expected_amount
+                info.row.original.expected_amount
                   ? "green"
                   : "red",
             }}
@@ -179,6 +183,14 @@ const InsuranceCaseTypes = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Case Types
           </h3>
+          <ExportButton
+            onClick={() => {
+              exportToExcelInsuranceCaseTypeTable(
+                insuranceData,
+                totalInsurancePayors
+              );
+            }}
+          />
         </div>
         <div className="cardBody">
           <SingleColumnTable

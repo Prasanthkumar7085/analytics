@@ -1118,3 +1118,98 @@ export const exportToExcelInsurancePayorsFacilities = (
     XLSX.writeFile(workbook, "insurance-payors.xlsx");
   }
 };
+
+
+export const exportToExcelInsuranceCaseTypeTable = (
+  insuranceData: any,
+  totalInsurancePayors: any
+) => {
+  const formattedData = insuranceData.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.case_type_name,
+      obj.total_cases,
+      obj.completed_cases,
+      obj.generated_amount,
+      obj.expected_amount,
+      obj.paid_amount,
+      obj.pending_cases,
+      obj.pending_amount,
+      obj.paid_amount + "/" + obj.expected_amount,
+    ];
+  });
+  let headers = [
+    "S.No",
+    "CASE TYPE",
+    "VOLUME",
+    "CLEARED VOL",
+    "BILLED",
+    "EXPECTED",
+    "CLEARED BILL",
+    "PEN VOL",
+    "PENDING REV",
+    "PAID PRICE/TARGET PRICE",
+  ];
+
+  const toatalSumValuesRow = totalInsurancePayors.map((obj: any) =>
+    obj.value === null ? "" : obj.value
+  );
+  let totalData = [...[headers], ...formattedData, ...[toatalSumValuesRow]];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let rowIndex = 1; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "f0edff" },
+          },
+        };
+      }
+    } else {
+      const expected = row[4];
+      const cleared = row[5];
+      const cellAddressExpected = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
+      const cellAddressCleared = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+      const percentCompleted = cleared / expected;
+
+      worksheet[cellAddressExpected].s = {
+        font: {
+          color: { rgb: "36c24d" },
+        },
+      };
+      worksheet[cellAddressCleared].s = {
+        font: {
+          color: { rgb: "36c24d" },
+        },
+      };
+    }
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "insurance-case-type-table.xlsx");
+};

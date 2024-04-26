@@ -551,6 +551,7 @@ const SalesCaseTypeWiseTargets = () => {
     }
     const modifieData = addSerial(data, 1, data?.length);
     setAllTargetsData(modifieData);
+    getColoumnWiseTotalCount(modifieData);
   };
 
   useEffect(() => {

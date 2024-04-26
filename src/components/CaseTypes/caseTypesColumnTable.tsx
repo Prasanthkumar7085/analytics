@@ -14,6 +14,7 @@ import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
 import { Tooltip } from "@mui/material";
 import { getAcesdingOrderMonthsForGraphs } from "@/lib/helpers/apiHelpers";
+import GraphDialogForFacilities from "../core/GraphDilogForFacilities";
 
 interface pageProps {
   columns: any[];
@@ -337,7 +338,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
           </tr>
         </tfoot>
       </table>
-      {headerMonths?.length ? (
+      {headerMonths?.length && totalSumValues[headerMonths[0]]?.length == 2 ? (
         <GraphDialog
           graphDialogOpen={graphDialogOpen}
           setGraphDialogOpen={setGraphDialogOpen}
@@ -347,7 +348,14 @@ const CaseTypesColumnTable: FC<pageProps> = ({
           tabValue={tabValue}
         />
       ) : (
-        ""
+        <GraphDialogForFacilities
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={totalSumValues}
+          graphValuesData={totalSumValues}
+          graphColor={"blue"}
+          tabValue={tabValue}
+        />
       )}
     </div>
   );

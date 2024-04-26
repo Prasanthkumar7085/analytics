@@ -33,6 +33,16 @@ const Stats = ({
   };
 
   const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "linear-gradient(110.31deg, #43c55d, #009264)";
+      } else if (totalCases >= targetVolume) {
+        return "linear-gradient(110.31deg, #43c55d, #009264)";
+      } else {
+        return "linear-gradient(110.31deg, #c54357, #920020)";
+      }
+    }
+
     const percentage = (totalCases / targetVolume) * 100;
     if (percentage >= 100) {
       return "linear-gradient(110.31deg, #43c55d, #009264)";
