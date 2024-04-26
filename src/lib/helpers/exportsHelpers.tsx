@@ -579,3 +579,98 @@ export const exportToExcelCaseTypesTable = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "case-types-table.xlsx");
 };
+
+export const exportToExcelInsurancePayorsVolumeTable = (
+  insuranceData: any,
+  totalInsurancePayors: any
+) => {
+  const formattedData = insuranceData.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.insurance_name,
+      obj.total_cases,
+      obj.completed_cases,
+      obj.pending_cases
+    ];
+  });
+  let headers = [
+    "S.No",
+    "INSURANCE NAME",
+    "TOTAL",
+    "FINALIZED",
+    "PENDING"
+  ];
+
+  const toatalSumValuesRow = totalInsurancePayors.map((obj: any) =>
+    obj.value === null ? "" : obj.value
+  );
+  let totalData = [
+    ...[headers],
+    ...formattedData,
+    ...[toatalSumValuesRow],
+  ];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "f0edff" },
+          },
+        };
+      }
+    } else {
+      const total = row[2];
+      const finalized = row[3];
+      const pending = row[4];
+      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 2 });
+      const cellAddressFinalized = XLSX.utils.encode_cell({ r: rowIndex, c: 3 });
+      const cellAddressPending = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
+      const percentCompleted = finalized / total / pending;
+
+      worksheet[cellAddressTotal].s = {
+        font: {
+          color: { rgb: "ff9932" },
+        },
+      };
+      worksheet[cellAddressFinalized].s = {
+        font: {
+          color: { rgb: "36c24d" },
+        },
+      };
+      worksheet[cellAddressPending].s = {
+        font: {
+          color: { rgb: "fe5046" },
+        },
+      };
+    }
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "insurance-payors-volume-table.xlsx");
+};

@@ -9,6 +9,7 @@ import {
   exportToExcelMonthWiseTargetsVolume,
   exportToExcelSalesRepTable,
 } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 const TargetStausFilters = ({
   onUpdateData,
   queryPreparations,
@@ -88,9 +89,7 @@ const TargetStausFilters = ({
               />
             </li>
             <li className="eachFilterLists">
-              <Button
-                variant="outlined"
-                className="exportButton"
+              <ExportButton
                 onClick={() => {
                   exportToExcelMonthWiseTargetsVolume(
                     targetData,
@@ -98,10 +97,7 @@ const TargetStausFilters = ({
                     totalSumValues
                   );
                 }}
-              >
-                Export
-                <img src="/log-out.svg" alt="" />
-              </Button>
+              />
             </li>
           </ul>
         </Grid>

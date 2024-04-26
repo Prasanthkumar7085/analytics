@@ -7,6 +7,8 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Backdrop } from "@mui/material";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import ExportButton from "../core/ExportButton/ExportButton";
+import { exportToExcelInsurancePayorsVolumeTable } from "@/lib/helpers/exportsHelpers";
 
 const InsurancePayorsForSalesRep = ({ searchParams, pageName, tabValue, selectedCaseValue }: any) => {
     const { id } = useParams();
@@ -282,6 +284,11 @@ const InsurancePayorsForSalesRep = ({ searchParams, pageName, tabValue, selected
 
     return (
         <div style={{ position: "relative" }}>
+            <ExportButton
+                onClick={() => {
+                    exportToExcelInsurancePayorsVolumeTable(insuranceData, totalInsurancePayors);
+                }}
+            />
             <SingleColumnTable
                 data={insuranceData}
                 columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
