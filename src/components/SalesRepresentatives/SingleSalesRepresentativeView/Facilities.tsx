@@ -1,6 +1,7 @@
 import CaseTypesColumnTable from "@/components/CaseTypes/caseTypesColumnTable";
 import AreaGraph from "@/components/core/AreaGraph";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
 import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
 import SingleSalesRepFacilitiesTable from "@/components/core/Table/TableForSingleSalesRepFacilities";
@@ -301,9 +302,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
           justifyContent: "flex-end",
         }}
       >
-        <Button
-          variant="outlined"
-          className="exportButton"
+        <ExportButton
           onClick={() => {
             exportToExcelMonthWiseFacilitiesVolume(
               facilitiesData,
@@ -311,10 +310,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
               totalSumFacilityValues
             );
           }}
-        >
-          Export
-          <img src="/log-out.svg" alt="" />
-        </Button>
+        />
       </div>
       <SingleSalesRepFacilitiesTable
         data={facilitiesData}

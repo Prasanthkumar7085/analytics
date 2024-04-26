@@ -328,11 +328,8 @@ const CaseTypesColumnTable: FC<pageProps> = ({
               onClick={() => setGraphDialogOpen(true)}
               style={{ cursor: "pointer" }}
             >
-              {headerMonths?.length ? (
-                <AreaGraph
-                  data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-                  graphColor={"blue"}
-                />
+              {headerMonths?.length && totalSumValues ? (
+                <AreaGraph data={totalSumValues} graphColor={"blue"} />
               ) : (
                 ""
               )}

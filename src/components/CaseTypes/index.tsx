@@ -344,6 +344,8 @@ const CaseTypes = () => {
     <div className="caseTypesPage s-no-column">
       <div id="caseTypesTablePage">
         <CaseTypeFilters
+          totalSumValues={totalCaseTypesSum}
+          completeData={allCaseTypes}
           onUpdateData={onUpdateData}
           queryPreparations={queryPreparations}
           dateFilterDefaultValue={dateFilterDefaultValue}

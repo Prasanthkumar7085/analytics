@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 const SalesRepsFilters = ({
   onUpdateData,
   queryPreparations,
@@ -130,16 +131,11 @@ const SalesRepsFilters = ({
               />
             </li>
             <li className="eachFilterLists">
-              <Button
-                variant="outlined"
-                className="exportButton"
+              <ExportButton
                 onClick={() => {
                   exportToExcelSalesRepTable(salesRepsData, totalSumValues);
                 }}
-              >
-                Export
-                <img src="/log-out.svg" alt="" />
-              </Button>
+              />
             </li>
           </ul>
         </Grid>

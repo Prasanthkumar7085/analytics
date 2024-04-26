@@ -13,6 +13,7 @@ import CountUp from "react-countup";
 import { Tab, Tabs } from "@mui/material";
 import { graphColors } from "@/lib/constants";
 import { exportToExcelCaseTypesVolumes } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -48,8 +49,8 @@ const CaseTypes = ({
                 ? +item["generated_amount"]
                 : 0
               : item["total_cases"]
-              ? +item["total_cases"]
-              : 0,
+                ? +item["total_cases"]
+                : 0,
         });
       });
       return tempArray;
@@ -233,17 +234,15 @@ const CaseTypes = ({
     const totalNumber = totalRevenueSum[2]?.value
       ? totalRevenueSum[2]?.value
       : 0;
-    return `<span style="font-size: 6px,margin-left:"45px">${
-      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
-    }</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+      }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
-            ${
-              tabValue == "Revenue"
-                ? formatMoney(totalNumber)
-                : totalNumber?.toLocaleString()
-            }</b>
+            ${tabValue == "Revenue"
+        ? formatMoney(totalNumber)
+        : totalNumber?.toLocaleString()
+      }</b>
         </span>`;
   }
 
@@ -350,19 +349,14 @@ const CaseTypes = ({
               justifyContent: "flex-end",
             }}
           >
-            <Button
-              variant="outlined"
-              className="exportButton"
+            <ExportButton
               onClick={() => {
                 exportToExcelCaseTypesVolumes(
                   caseTypesStatsData,
                   totalRevenueSum
                 );
               }}
-            >
-              Export
-              <img src="/log-out.svg" alt="" />
-            </Button>
+            />
           </div>
         </div>
         <div className="cardBody">
@@ -386,8 +380,8 @@ const CaseTypes = ({
                 tabValue == "Revenue"
                   ? Revenuecolumns
                   : pathName.includes("facilities")
-                  ? VolumecolumnsForFacilities
-                  : Volumecolumns
+                    ? VolumecolumnsForFacilities
+                    : Volumecolumns
               }
               totalSumValues={totalRevenueSum}
               loading={loading}

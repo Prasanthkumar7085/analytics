@@ -19,6 +19,7 @@ import {
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
 import { exportToExcelMonthWiseCaseTypes } from "@/lib/helpers/exportsHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 
 const VolumeCaseTypesDetails = ({
   tabValue,
@@ -386,9 +387,7 @@ const VolumeCaseTypesDetails = ({
           justifyContent: "flex-end",
         }}
       >
-        <Button
-          variant="outlined"
-          className="exportButton"
+        <ExportButton
           onClick={() => {
             exportToExcelMonthWiseCaseTypes(
               caseData,
@@ -396,10 +395,7 @@ const VolumeCaseTypesDetails = ({
               totalSumValues
             );
           }}
-        >
-          Export
-          <img src="/log-out.svg" alt="" />
-        </Button>
+        />
       </div>
       <CaseTypesColumnTable
         data={caseData}

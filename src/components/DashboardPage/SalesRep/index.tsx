@@ -1,5 +1,6 @@
 "use client";
 import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
@@ -126,16 +127,11 @@ const SalesRep = () => {
         </h3>
         <div style={{ display: "flex", flexDirection: "row", gap: "0.9rem" }}>
           <GlobalDateRangeFilter onChangeData={onChangeData} />
-          <Button
-            variant="outlined"
-            className="exportButton"
+          <ExportButton
             onClick={() => {
               exportToExcelSalesRepTable(salesReps, totalRevenueSum);
             }}
-          >
-            Export
-            <img src="/log-out.svg" alt="" />
-          </Button>
+          />
         </div>
       </div>
       <div className="cardBody">
