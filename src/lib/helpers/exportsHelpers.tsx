@@ -360,3 +360,113 @@ export const exportToExcelMonthWiseTargetsVolume = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "salesrep-month-wise-targets-status.xlsx");
 };
+
+
+export const exportToExcelInsurancesTable = (
+  completeData: any,
+  totalSumValues: any
+) => {
+  const formattedData = completeData.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.insurance_payor_name,
+      obj.no_of_facilities,
+      obj.total_cases,
+      obj.generated_amount,
+      obj.paid_amount,
+      obj.pending_amount,
+    ];
+  });
+  let mainHeaders = ["", "", "", "", "REVENU"];
+  let headers = [
+    "S.No",
+    "INSURANCE",
+    "NO.OF FACILITIES",
+    "TOTAL CASES",
+    "BILLED",
+    "RECEIVED",
+    "ARREARS",
+  ];
+
+  const toatalSumValuesRow = totalSumValues.map((obj: any) =>
+    obj.value === null ? "" : obj.value
+  );
+  let totalData = [
+    ...[mainHeaders],
+    ...[headers],
+    ...formattedData,
+    ...[toatalSumValuesRow],
+  ];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 1, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let i = 0; i < mainHeaders.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  // for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
+  //   const row = totalData[rowIndex];
+
+  //   if (rowIndex === totalData.length - 1) {
+  //     for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+  //       const cellAddress = XLSX.utils.encode_cell({
+  //         r: rowIndex,
+  //         c: columnIndex,
+  //       });
+  //       worksheet[cellAddress].s = {
+  //         fill: {
+  //           fgColor: { rgb: "f0edff" },
+  //         },
+  //       };
+  //     }
+  //   } else {
+  //     const targets = row[4];
+  //     const total = row[5];
+  //     const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
+  //     const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+  //     const percentCompleted = total / targets;
+
+  //     worksheet[cellAddressTarget].s = {
+  //       fill: {
+  //         fgColor: { rgb: "f9feff" },
+  //       },
+  //     };
+  //     worksheet[cellAddressTotal].s = {
+  //       fill: {
+  //         fgColor: {
+  //           rgb:
+  //             total >= targets
+  //               ? "f5fff7"
+  //               : percentCompleted >= 0.5
+  //                 ? "feecd1"
+  //                 : "ffebe9",
+  //         },
+  //       },
+  //     };
+  //   }
+  // }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "insurances-table.xlsx");
+};

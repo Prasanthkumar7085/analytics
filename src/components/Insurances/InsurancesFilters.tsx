@@ -1,4 +1,4 @@
-import { MenuItem, Select, TextField } from "@mui/material";
+import { Button, MenuItem, Select, TextField } from "@mui/material";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import styles from "./facilities-filters.module.css";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -6,7 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
+import { exportToExcelInsurancesTable } from "@/lib/helpers/exportsHelpers";
 const InsurancesFilters = ({
+  totalSumValues,
+  completeData,
   onUpdateData,
   queryPreparations,
   dateFilterDefaultValue,
@@ -62,6 +65,21 @@ const InsurancesFilters = ({
                   onUpdateData({ search: e.target.value });
                 }}
               />
+            </li>
+            <li className="eachFilterLists">
+              <Button
+                variant="outlined"
+                className="exportButton"
+                onClick={() => {
+                  exportToExcelInsurancesTable(
+                    completeData,
+                    totalSumValues
+                  );
+                }}
+              >
+                Export
+                <img src="/log-out.svg" alt="" />
+              </Button>
             </li>
           </ul>
         </Grid>
