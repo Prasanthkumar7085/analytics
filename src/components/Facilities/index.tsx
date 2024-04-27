@@ -9,6 +9,7 @@ import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import FacilitiesFilters from "./FacilitiesFilters";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 
 const FacilitiesList = () => {
   const router = useRouter();
@@ -49,15 +50,13 @@ const FacilitiesList = () => {
       queryParams["order_type"] = orderType;
     }
     try {
-      await getFacilitiesList(queryParams)
-
+      await getFacilitiesList(queryParams);
     } catch (err: any) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
-
+  };
 
   //get the list of Facilities
   const getFacilitiesList = async (queryParams: any) => {
@@ -85,7 +84,11 @@ const FacilitiesList = () => {
                 ?.includes(search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
+        data = sortAndGetData(
+          data,
+          queryParams.order_by,
+          queryParams.order_type
+        );
         const modifieData = addSerial(data, 1, data?.length);
         setFacilitiesData(modifieData);
         const totalCases = data.reduce(
@@ -114,7 +117,6 @@ const FacilitiesList = () => {
           { value: paidRevenueSum, dolorSymbol: true },
           { value: pendingAmoumnt, dolorSymbol: true },
           { value: null, dolorSymbol: false },
-
         ];
         setTotalSumValues(result);
       }
@@ -159,7 +161,6 @@ const FacilitiesList = () => {
     router.push(`/sales-representatives/${Id}${queryString}`);
   };
 
-
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
@@ -179,9 +180,16 @@ const FacilitiesList = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
-        return <span style={{ cursor: "pointer" }}
-          onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
-        >{info.row.original.facility_name}</span>;
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              gotoSingleFacilityPage(info.row.original.facility_id)
+            }
+          >
+            {info.row.original.facility_name}
+          </span>
+        );
       },
     },
     {
@@ -193,9 +201,16 @@ const FacilitiesList = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
-        return <span style={{ cursor: "pointer" }}
-          onClick={() => gotoSingleSalesRepPage(info.row.original.sales_rep_id)}>
-          {info.row.original.sales_rep_name}</span>;
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              gotoSingleSalesRepPage(info.row.original.sales_rep_id)
+            }
+          >
+            {info.row.original.sales_rep_name}
+          </span>
+        );
       },
     },
     {
@@ -264,7 +279,9 @@ const FacilitiesList = () => {
           <span>
             <Button
               className="actionButton"
-              onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+              onClick={() =>
+                gotoSingleFacilityPage(info.row.original.facility_id)
+              }
             >
               View
             </Button>
@@ -360,7 +377,6 @@ const FacilitiesList = () => {
       { value: paidRevenueSum, dolorSymbol: true },
       { value: pendingAmoumnt, dolorSymbol: true },
       { value: null, dolorSymbol: false },
-
     ];
     setTotalSumValues(result);
   };
@@ -372,10 +388,9 @@ const FacilitiesList = () => {
       searchValue: searchParams?.search,
     });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([
-        new Date(searchParams?.from_date),
-        new Date(searchParams?.to_date),
-      ]);
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, []);
 

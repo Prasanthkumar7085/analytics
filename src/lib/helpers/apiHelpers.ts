@@ -240,3 +240,11 @@ export const rearrangeDataWithCasetypesInFilters = (data: any) => {
     .filter(Boolean);
   return rearrangedData;
 };
+
+export const changeDateToUTC = (fromDate: any, toDate: any) => {
+  const fromDateUTC = new Date(fromDate);
+  fromDateUTC.setUTCHours(23, 59, 59, 999);
+  const toDateUTC = new Date(toDate);
+  toDateUTC.setUTCHours(23, 59, 59, 999);
+  return [fromDateUTC, toDateUTC];
+};

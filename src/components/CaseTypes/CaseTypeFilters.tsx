@@ -7,8 +7,15 @@ import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { exportToExcelCaseTypesTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
-const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultValue, setDateFilterDefaultValue, totalSumValues,
-  completeData, }: any) => {
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+const CaseTypeFilters = ({
+  onUpdateData,
+  queryPreparations,
+  dateFilterDefaultValue,
+  setDateFilterDefaultValue,
+  totalSumValues,
+  completeData,
+}: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -21,12 +28,10 @@ const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultVal
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       queryPreparations({ fromDate, toDate });
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)])
-    }
-    else {
-      setDateFilterDefaultValue("", "")
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
+    } else {
+      setDateFilterDefaultValue("", "");
       queryPreparations({});
-
     }
   };
   return (
@@ -37,9 +42,11 @@ const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultVal
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-
             <li className="eachFilterLists">
-              <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
             </li>
             <li className="eachFilterLists">
               <TextField
@@ -64,10 +71,7 @@ const CaseTypeFilters = ({ onUpdateData, queryPreparations, dateFilterDefaultVal
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelCaseTypesTable(
-                    completeData,
-                    totalSumValues
-                  );
+                  exportToExcelCaseTypesTable(completeData, totalSumValues);
                 }}
               />
             </li>

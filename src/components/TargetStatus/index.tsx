@@ -1,6 +1,10 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { colorCodes, graphColors } from "@/lib/constants";
-import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import {
+  changeDateToUTC,
+  formatMonthYear,
+  getUniqueMonths,
+} from "@/lib/helpers/apiHelpers";
 import { getDetailsOfTargetsForEverySalesRep } from "@/services/salesRepsAPIs";
 import {
   useParams,
@@ -246,8 +250,14 @@ const MonthWiseTargetStatus = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
-        return <span style={{ cursor: "pointer" }}
-          onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}>{info.row.original.sales_rep_name}</span>;
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
+          >
+            {info.row.original.sales_rep_name}
+          </span>
+        );
       },
     },
   ];
@@ -348,10 +358,9 @@ const MonthWiseTargetStatus = () => {
       searchParams?.search
     );
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([
-        new Date(searchParams?.from_date),
-        new Date(searchParams?.to_date),
-      ]);
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, []);
 

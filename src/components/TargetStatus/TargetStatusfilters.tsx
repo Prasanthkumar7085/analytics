@@ -10,6 +10,7 @@ import {
   exportToExcelSalesRepTable,
 } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 const TargetStausFilters = ({
   onUpdateData,
   queryPreparations,
@@ -49,7 +50,7 @@ const TargetStausFilters = ({
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       queryPreparations(fromDate, toDate);
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
     } else {
       setDateFilterDefaultValue("", "");
       queryPreparations("", "");

@@ -240,7 +240,7 @@ const SalesCaseTypeWiseTargets = () => {
     });
     setEditbleValue({
       covid: +infoData.row.original.monthwiseData[month]["covid"],
-      covid_flu: +infoData.row.original.monthwiseData[month]["covid_flu"],
+      covidFlu: +infoData.row.original.monthwiseData[month]["covid_flu"],
       clinical: +infoData.row.original.monthwiseData[month]["clinical"],
       gastro: +infoData.row.original.monthwiseData[month]["gastro"],
       nail: +infoData.row.original.monthwiseData[month]["nail"],

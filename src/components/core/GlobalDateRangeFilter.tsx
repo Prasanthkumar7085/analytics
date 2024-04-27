@@ -92,22 +92,25 @@ const GlobalDateRangeFilter = ({
   //update date values or format the date values 
   const updateDateValues = (newDate: any) => {
     if (newDate) {
-      let date1 = new Date(
-        moment(new Date(newDate[0])).format("YYYY-MM-DD")
-      )
-        .toISOString()
-        .substring(0, 10);
-      let date2 = new Date(
-        moment(new Date(newDate[1])).format("YYYY-MM-DD")
-      )
-        .toISOString()
-        .substring(0, 10);
+      const date1 = moment(new Date(newDate[0])).utc().format("YYYY-MM-DD");
+      const date2 = moment(new Date(newDate[1])).utc().format("YYYY-MM-DD");
+
+      // let date1 = new Date(
+      //   moment(new Date(newDate[0])).format("YYYY-MM-DD")
+      // )
+      //   .toISOString()
+      //   .substring(0, 10);
+      // let date2 = new Date(
+      //   moment(new Date(newDate[1])).format("YYYY-MM-DD")
+      // )
+      //   .toISOString()
+      //   .substring(0, 10);
 
       onChangeData(date1, date2);
     } else {
       onChangeData("", "");
     }
-  }
+  };
 
   return (
     <div>
@@ -118,7 +121,7 @@ const GlobalDateRangeFilter = ({
         value={dateFilterDefaultValue}
         format="MM/dd/yyyy"
         disabledDate={(date: any) => {
-          return date.getTime() > new Date().getTime();
+          return date.getTime() >= new Date().getTime();
         }}
         placeholder={"Start Date - End Date"}
         onChange={(newDate: any) => {

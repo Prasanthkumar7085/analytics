@@ -981,7 +981,6 @@ export const exportToExcelMonthWiseCaseTypeFacilities = (
   headerMonths: any,
   totalSumValues: any
 ) => {
-  console.log(totalSumValues, 100);
   const formattedData = caseData.map((obj: any, index: number) => {
     const sortedValues = Object.entries(obj)
       .filter(
@@ -1000,7 +999,9 @@ export const exportToExcelMonthWiseCaseTypeFacilities = (
       .map(([_, value]: any) => value);
     return [index + 1, obj.case_type_name, ...sortedValues];
   });
-  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
   let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
@@ -1010,9 +1011,7 @@ export const exportToExcelMonthWiseCaseTypeFacilities = (
     })
     .map(([_, value]: any) => value);
   let totalSumSortedValues = ["Total", "", ...total];
-  console.log(totalSumSortedValues, "poiuyt");
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
-  console.log(totalData, "totaldata");
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   for (let i = 0; i < headers.length; i++) {
     const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });

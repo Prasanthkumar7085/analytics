@@ -25,7 +25,10 @@ import InsurancePayorsForFacilities from "@/components/InsurancePayors/Insurance
 import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import TrendsForFacilities from "./Trends";
-import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import {
+  changeDateToUTC,
+  rearrangeDataWithCasetypes,
+} from "@/lib/helpers/apiHelpers";
 import { useSelector } from "react-redux";
 
 const FacilitiesView = () => {
@@ -218,7 +221,7 @@ const FacilitiesView = () => {
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       getStatsCounts(fromDate, toDate);
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
       queryPreparations(fromDate, toDate, tabValue);
     } else {
       setDateFilterDefaultValue("");
@@ -250,10 +253,9 @@ const FacilitiesView = () => {
       getSingleFacilityDetails();
     }
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([
-        new Date(searchParams?.from_date),
-        new Date(searchParams?.to_date),
-      ]);
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, []);
 

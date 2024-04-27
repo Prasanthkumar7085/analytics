@@ -7,6 +7,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { exportToExcelFacilitiesTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 const FacilitiesFilters = ({
   onUpdateData,
   queryPreparations,
@@ -27,7 +28,7 @@ const FacilitiesFilters = ({
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       queryPreparations({ fromDate, toDate });
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
     } else {
       setDateFilterDefaultValue("", "");
       queryPreparations({});
@@ -49,7 +50,7 @@ const FacilitiesFilters = ({
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search Facility / Sales"
+                placeholder="Search Facility / marketer"
                 type="search"
                 InputProps={{
                   startAdornment: (

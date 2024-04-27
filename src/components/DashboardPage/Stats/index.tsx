@@ -20,10 +20,31 @@ const Stats = ({
     const fromDate = new Date(fromDatevalue);
     const toDate = new Date(toDatevalue);
 
-    const options: any = { month: "short", day: "2-digit", year: "2-digit" };
+    // Convert dates to UTC
+    const fromDateUTC = new Date(
+      Date.UTC(
+        fromDate.getUTCFullYear(),
+        fromDate.getUTCMonth(),
+        fromDate.getUTCDate()
+      )
+    );
+    const toDateUTC = new Date(
+      Date.UTC(
+        toDate.getUTCFullYear(),
+        toDate.getUTCMonth(),
+        toDate.getUTCDate()
+      )
+    );
 
-    const formattedFromDate = fromDate.toLocaleDateString("en-US", options);
-    const formattedToDate = toDate.toLocaleDateString("en-US", options);
+    const options: any = {
+      year: "2-digit",
+      month: "short",
+      day: "2-digit",
+      timeZone: "UTC",
+    };
+
+    const formattedFromDate = fromDateUTC.toLocaleDateString("en-US", options);
+    const formattedToDate = toDateUTC.toLocaleDateString("en-US", options);
 
     const formattedDateRange = `${formattedFromDate} - ${formattedToDate}`;
     return formattedDateRange;

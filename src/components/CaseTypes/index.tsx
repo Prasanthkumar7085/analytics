@@ -16,7 +16,10 @@ import CaseTypeFilters from "./CaseTypeFilters";
 import LoadingComponent from "../core/LoadingComponent";
 import SingleFacilitieCaseTypeDetails from "../Facilities/SingleFacilitieView/SingleFacilitiesCaseTypeDetails";
 import MonthWiseCaseTypeDetails from "./MonthWiseCaseTypeDetails";
-import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import {
+  changeDateToUTC,
+  rearrangeDataWithCasetypes,
+} from "@/lib/helpers/apiHelpers";
 
 const CaseTypes = () => {
   const router = useRouter();
@@ -328,10 +331,9 @@ const CaseTypes = () => {
       searchValue: searchParams?.search,
     });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([
-        new Date(searchParams?.from_date),
-        new Date(searchParams?.to_date),
-      ]);
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, []);
 

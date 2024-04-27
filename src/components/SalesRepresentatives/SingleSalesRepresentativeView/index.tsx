@@ -30,7 +30,10 @@ import { useSelector } from "react-redux";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
-import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import {
+  changeDateToUTC,
+  rearrangeDataWithCasetypes,
+} from "@/lib/helpers/apiHelpers";
 import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 const SalesRepView = () => {
   const { id } = useParams();
@@ -251,10 +254,9 @@ const SalesRepView = () => {
       getStatsCounts();
       getSignleSalesRepDetails();
       if (searchParams?.from_date) {
-        setDateFilterDefaultValue([
-          new Date(searchParams?.from_date),
-          new Date(searchParams?.to_date),
-        ]);
+        setDateFilterDefaultValue(
+          changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+        );
       }
     } else {
       router.back();
@@ -267,7 +269,7 @@ const SalesRepView = () => {
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
       queryPreparations(fromDate, toDate, tabValue);
     } else {
       setDateFilterDefaultValue("");

@@ -11,6 +11,7 @@ import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 
 const SalesRepresentatives = () => {
   const router = useRouter();
@@ -385,10 +386,9 @@ const SalesRepresentatives = () => {
       searchValue: searchParams?.search,
     });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([
-        new Date(searchParams?.from_date),
-        new Date(searchParams?.to_date),
-      ]);
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, []);
 

@@ -10,6 +10,7 @@ import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import InsurancesFilters from "./InsurancesFilters";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 
 const InsurancesComponent = () => {
   const router = useRouter();
@@ -23,7 +24,6 @@ const InsurancesComponent = () => {
   const [completeData, setCompleteData] = useState([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
-
 
   //query preparation method
   const queryPreparations = async ({
@@ -51,13 +51,13 @@ const InsurancesComponent = () => {
       queryParams["order_type"] = orderType;
     }
     try {
-      await getInsurancesList(queryParams)
+      await getInsurancesList(queryParams);
     } catch (err: any) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   //get the list of Facilities
   const getInsurancesList = async (queryParams: any) => {
@@ -85,7 +85,11 @@ const InsurancesComponent = () => {
                 ?.includes(search?.toLowerCase()?.trim())
           );
         }
-        data = sortAndGetData(data, queryParams.order_by, queryParams.order_type);
+        data = sortAndGetData(
+          data,
+          queryParams.order_by,
+          queryParams.order_type
+        );
         const modifieData = addSerial(data, 1, data?.length);
         setinsurancesData(modifieData);
         const totalCases = data.reduce(
@@ -118,7 +122,6 @@ const InsurancesComponent = () => {
           { value: paidRevenueSum, dolorSymbol: true },
           { value: pendingAmoumnt, dolorSymbol: true },
           { value: null, dolorSymbol: false },
-
         ];
         setTotalSumValues(result);
       }
@@ -164,11 +167,16 @@ const InsurancesComponent = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
-        return <span style={{ cursor: "pointer" }}
-          onClick={() =>
-            gotoSingleInsurancePage(info.row.original.insurance_payor_id)
-          }
-        >{info.row.original.insurance_payor_name}</span>;
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              gotoSingleInsurancePage(info.row.original.insurance_payor_id)
+            }
+          >
+            {info.row.original.insurance_payor_name}
+          </span>
+        );
       },
     },
     {
@@ -353,7 +361,6 @@ const InsurancesComponent = () => {
       { value: paidRevenueSum, dolorSymbol: true },
       { value: pendingAmoumnt, dolorSymbol: true },
       { value: null, dolorSymbol: false },
-
     ];
     setTotalSumValues(result);
   };
@@ -365,10 +372,9 @@ const InsurancesComponent = () => {
       searchValue: searchParams?.search,
     });
     if (searchParams?.from_date) {
-      setDateFilterDefaultValue([
-        new Date(searchParams?.from_date),
-        new Date(searchParams?.to_date),
-      ]);
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, []);
 
@@ -379,10 +385,7 @@ const InsurancesComponent = () => {
   }, [params]);
 
   return (
-    <section
-      id="InsuranceTablePage"
-      className="insurancesPage s-no-column"
-    >
+    <section id="InsuranceTablePage" className="insurancesPage s-no-column">
       <InsurancesFilters
         totalSumValues={totalSumValues}
         completeData={completeData}

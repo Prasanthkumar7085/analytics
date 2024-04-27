@@ -8,6 +8,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import { exportToExcelInsurancesTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 const InsurancesFilters = ({
   totalSumValues,
   completeData,
@@ -28,7 +29,7 @@ const InsurancesFilters = ({
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       queryPreparations({ fromDate, toDate });
-      setDateFilterDefaultValue([new Date(fromDate), new Date(toDate)]);
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
     } else {
       setDateFilterDefaultValue("", "");
       queryPreparations({});
@@ -70,10 +71,7 @@ const InsurancesFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelInsurancesTable(
-                    completeData,
-                    totalSumValues
-                  );
+                  exportToExcelInsurancesTable(completeData, totalSumValues);
                 }}
               />
             </li>
