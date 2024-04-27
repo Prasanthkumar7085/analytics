@@ -309,10 +309,14 @@ const SalesRepView = () => {
             </div>
 
             <div className="gridItem flex items-center justify-end">
-              <GlobalTabsForSinglePage
-                setTabValue={setTabValue}
-                tabValue={tabValue}
-              />
+              {userType == "LAB_ADMIN" ? (
+                <GlobalTabsForSinglePage
+                  setTabValue={setTabValue}
+                  tabValue={tabValue}
+                />
+              ) : (
+                ""
+              )}
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}
                 dateFilterDefaultValue={dateFilterDefaultValue}

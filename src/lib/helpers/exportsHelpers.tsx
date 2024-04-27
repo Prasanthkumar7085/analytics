@@ -752,12 +752,11 @@ export const exportToExcelMonthWiseTargetsVolume = (
     };
   }
 
-  for (let rowIndex = 1; rowIndex < formattedData.length; rowIndex++) {
-    const row = formattedData[rowIndex];
+  for (let rowIndex = 1; rowIndex < totalData.length - 1; rowIndex++) {
+    const row = totalData[rowIndex];
     const worksheetRowIndex = rowIndex;
 
-    for (let colIndex = 2; colIndex < row.length; colIndex++) {
-      if (colIndex < 2) continue;
+    for (let colIndex = 2; colIndex < row?.length; colIndex++) {
       const cell = row[colIndex];
 
       if (typeof cell === "string" && cell.includes("/")) {

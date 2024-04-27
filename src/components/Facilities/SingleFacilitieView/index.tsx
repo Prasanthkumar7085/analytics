@@ -26,6 +26,7 @@ import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import TrendsForFacilities from "./Trends";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import { useSelector } from "react-redux";
 
 const FacilitiesView = () => {
   const { id } = useParams();
@@ -46,7 +47,9 @@ const FacilitiesView = () => {
   const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
   const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] =
     useState<any>(null);
-
+  const userType = useSelector(
+    (state: any) => state.auth.user?.user_details?.user_type
+  );
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
     setLoading(true);
@@ -290,10 +293,14 @@ const FacilitiesView = () => {
               </div>
             </div>
             <div className="gridItem flex items-center justify-end">
-              <GlobalTabsForSinglePage
-                setTabValue={setTabValue}
-                tabValue={tabValue}
-              />
+              {userType == "LAB_ADMIN" ? (
+                <GlobalTabsForSinglePage
+                  setTabValue={setTabValue}
+                  tabValue={tabValue}
+                />
+              ) : (
+                ""
+              )}
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}
                 dateFilterDefaultValue={dateFilterDefaultValue}

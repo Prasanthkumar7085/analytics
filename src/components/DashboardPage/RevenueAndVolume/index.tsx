@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import RevenueDataGraph from "./RevenueDataGraph";
 import { getVolumeAPI } from "@/services/volumeAPI";
 import VolumeDataGraph from "./VolumeDataGraph";
+import { useSelector } from "react-redux";
 
 const RevenueBlock = () => {
   const [labelsData, setLablesData] = useState<any>([]);
@@ -14,9 +15,12 @@ const RevenueBlock = () => {
   const [totalRevenueData, setTotalRevenueData] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
-  const [selectedDates, setSelectedDates] = useState<any>([])
-  const [totalCasesData, setTotalCasesData] = useState<any>([])
-  const [completedCases, setCompletedCases] = useState<any>([])
+  const [selectedDates, setSelectedDates] = useState<any>([]);
+  const [totalCasesData, setTotalCasesData] = useState<any>([]);
+  const [completedCases, setCompletedCases] = useState<any>([]);
+  const userType = useSelector(
+    (state: any) => state.auth.user?.user_details?.user_type
+  );
   const updateTheResponseForGraph = (data: any) => {
     if (!data) {
       return;
@@ -39,8 +43,6 @@ const RevenueBlock = () => {
     setTotalCasesData(TotalCases);
     setCompletedCases(CompletedCases);
   };
-
-
 
   //prepare query params
   const queryPreparations = async (
@@ -74,7 +76,6 @@ const RevenueBlock = () => {
     queryPreparations(selectedDates[0], selectedDates[1], newValue);
   };
 
-
   //get revenue data graph
   const getRevenue = async (queryParams: any) => {
     setLoading(true);
@@ -107,56 +108,70 @@ const RevenueBlock = () => {
     }
   };
 
-
   useEffect(() => {
-    queryPreparations("", "", tabValue)
+    queryPreparations("", "", tabValue);
   }, []);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     queryPreparations(fromDate, toDate, tabValue);
-    setSelectedDates([fromDate, toDate])
+    setSelectedDates([fromDate, toDate]);
   };
 
   return (
     <>
-      <div className="eachDataCard" id="RevenueTableData" style={{ position: "relative" }}>
+      <div
+        className="eachDataCard"
+        id="RevenueTableData"
+        style={{ position: "relative" }}
+      >
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             {tabValue}
           </h3>
 
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "1.9rem" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "1.9rem",
+            }}
+          >
             <GlobalDateRangeFilter onChangeData={onChangeData} />
-
-            <Tabs
-              className="overViewTabs"
-              value={tabValue}
-              onChange={handleChange}
-              textColor="secondary"
-              indicatorColor="secondary"
-              aria-label="secondary tabs example"
-            >
-              <Tab value="Volume" label="Volume" />
-              <Tab value="Revenue" label="Revenue" />
-            </Tabs>
+            {userType == "LAB_ADMIN" ? (
+              <Tabs
+                className="overViewTabs"
+                value={tabValue}
+                onChange={handleChange}
+                textColor="secondary"
+                indicatorColor="secondary"
+                aria-label="secondary tabs example"
+              >
+                <Tab value="Volume" label="Volume" />
+                <Tab value="Revenue" label="Revenue" />
+              </Tabs>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div className="cardBody">
-          {tabValue == "Volume" ?
+          {tabValue == "Volume" ? (
             <VolumeDataGraph
               labelsData={labelsData}
               totalCasesData={totalCasesData}
               completedCases={completedCases}
               loading={loading}
             />
-            :
+          ) : (
             <RevenueDataGraph
               labelsData={labelsData}
               billedData={billedData}
               totalRevenueData={totalRevenueData}
               loading={loading}
-            />}
+            />
+          )}
 
           {loading ? (
             <Backdrop

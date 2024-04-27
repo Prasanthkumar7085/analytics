@@ -14,6 +14,7 @@ import { Tab, Tabs } from "@mui/material";
 import { graphColors } from "@/lib/constants";
 import { exportToExcelCaseTypesVolumes, exportToExcelCaseTypesVolumesForFacilites } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
+import { useSelector } from "react-redux";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -26,6 +27,9 @@ const CaseTypes = ({
   const params = useSearchParams();
   const pathName = usePathname();
   const [selectedDates, setSelectedDates] = useState<any>([]);
+  const userType = useSelector(
+    (state: any) => state.auth.user?.user_details?.user_type
+  );
 
   useEffect(() => {
     setSelectedDates([params.get("from_date"), params.get("to_date")]);
@@ -49,8 +53,8 @@ const CaseTypes = ({
                 ? +item["generated_amount"]
                 : 0
               : item["total_cases"]
-                ? +item["total_cases"]
-                : 0,
+              ? +item["total_cases"]
+              : 0,
         });
       });
       return tempArray;
@@ -234,15 +238,17 @@ const CaseTypes = ({
     const totalNumber = totalRevenueSum[2]?.value
       ? totalRevenueSum[2]?.value
       : 0;
-    return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"
-      }</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${
+      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+    }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
-            ${tabValue == "Revenue"
-        ? formatMoney(totalNumber)
-        : totalNumber?.toLocaleString()
-      }</b>
+            ${
+              tabValue == "Revenue"
+                ? formatMoney(totalNumber)
+                : totalNumber?.toLocaleString()
+            }</b>
         </span>`;
   }
 
@@ -324,24 +330,28 @@ const CaseTypes = ({
           ) : (
             ""
           )}
-          <div
-            style={{
-              display: pathName?.includes("dashboard") ? "flex" : "none",
-              justifyContent: "center",
-            }}
-          >
-            <Tabs
-              className="overViewTabs"
-              value={tabValue}
-              onChange={handleChange}
-              textColor="secondary"
-              indicatorColor="secondary"
-              aria-label="secondary tabs example"
+          {userType == "LAB_ADMIN" ? (
+            <div
+              style={{
+                display: pathName?.includes("dashboard") ? "flex" : "none",
+                justifyContent: "center",
+              }}
             >
-              <Tab value="Volume" label="Volume" />
-              <Tab value="Revenue" label="Revenue" />
-            </Tabs>
-          </div>
+              <Tabs
+                className="overViewTabs"
+                value={tabValue}
+                onChange={handleChange}
+                textColor="secondary"
+                indicatorColor="secondary"
+                aria-label="secondary tabs example"
+              >
+                <Tab value="Volume" label="Volume" />
+                <Tab value="Revenue" label="Revenue" />
+              </Tabs>
+            </div>
+          ) : (
+            ""
+          )}
           <div
             style={{
               display: "flex",
@@ -349,15 +359,16 @@ const CaseTypes = ({
               justifyContent: "flex-end",
             }}
           >
-            {pathName?.includes("facilities") ?
-               <ExportButton
+            {pathName?.includes("facilities") ? (
+              <ExportButton
                 onClick={() => {
                   exportToExcelCaseTypesVolumesForFacilites(
                     caseTypesStatsData,
                     totalRevenueSum
                   );
                 }}
-              />:
+              />
+            ) : (
               <ExportButton
                 onClick={() => {
                   exportToExcelCaseTypesVolumes(
@@ -365,7 +376,8 @@ const CaseTypes = ({
                     totalRevenueSum
                   );
                 }}
-              />}
+              />
+            )}
           </div>
         </div>
         <div className="cardBody">
@@ -389,8 +401,8 @@ const CaseTypes = ({
                 tabValue == "Revenue"
                   ? Revenuecolumns
                   : pathName.includes("facilities")
-                    ? VolumecolumnsForFacilities
-                    : Volumecolumns
+                  ? VolumecolumnsForFacilities
+                  : Volumecolumns
               }
               totalSumValues={totalRevenueSum}
               loading={loading}

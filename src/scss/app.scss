@@ -435,7 +435,7 @@ table {
   }
 
   .tableContainer .tbody .table-row .cell:nth-child(2) {
-    border-left: 0.633951px solid #e0e0e0 !important;
+    border-right: 0.633951px solid #e0e0e0 !important;
     position: sticky !important;
     left: 50px !important;
     background: #fff !important;
@@ -480,17 +480,15 @@ table {
   }
 
   .tableContainer .tfootRow .radiusLastChild .cell:nth-child(2) {
-    border-left: 0.633951px solid #e0e0e0 !important;
+    border-right: 0.633951px solid #e0e0e0 !important;
     border-radius: 5px 0px 0px 5px !important;
     position: sticky !important;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12) !important;
     left: 50px !important;
     background: #eff1fa !important;
   }
 
   .tableContainer .tfootRow .radiusLastChild .cell:nth-child(2) {
-    border-left: 0.633951px solid #e0e0e0 !important;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.12) !important;
+    border-right: 0.633951px solid #e0e0e0 !important;
     border-radius: 5px 0px 0px 5px !important;
     position: sticky !important;
     left: 50px !important;
