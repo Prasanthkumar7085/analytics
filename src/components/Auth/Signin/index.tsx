@@ -62,6 +62,7 @@ const SignIn = () => {
       let response: any = await signInAPI(payload);
 
       if (response.success) {
+        toast.success(response?.message)
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
         dispatch(setCaseTypeOptions(caseTypesOptions));

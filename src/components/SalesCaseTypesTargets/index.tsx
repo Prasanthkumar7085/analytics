@@ -349,12 +349,20 @@ const SalesCaseTypeWiseTargets = () => {
                     height: 30,
                   },
                 }}
-                value={editbleValue[casetype.value]}
+                value={casetype.value == "covid_flu" ? editbleValue["covidFlu"] : editbleValue[casetype.value]}
                 onChange={(e) => {
-                  setEditbleValue((prev: any) => ({
-                    ...prev,
-                    [casetype.value]: +e.target.value,
-                  }));
+                  if (casetype.value == "covid_flu") {
+                    setEditbleValue((prev: any) => ({
+                      ...prev,
+                      ["covidFlu"]: +e.target.value,
+                    }));
+                  } else {
+                    setEditbleValue((prev: any) => ({
+                      ...prev,
+                      [casetype.value]: +e.target.value,
+                    }));
+                  }
+
                   setFocusedIndex(caseIndex);
                 }}
                 onInput={checkNumbersOrnot}
@@ -438,7 +446,7 @@ const SalesCaseTypeWiseTargets = () => {
               }}
             >
               {Object.keys(selectedValues)?.length &&
-              checkEditOrNot(item, info.row.original.sales_rep_id) ? (
+                checkEditOrNot(item, info.row.original.sales_rep_id) ? (
                 <div>
                   <IconButton
                     sx={{ padding: "2px" }}
