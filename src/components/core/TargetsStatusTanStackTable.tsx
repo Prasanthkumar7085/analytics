@@ -271,9 +271,11 @@ const TargetStatusTanStackTable: FC<pageProps> = ({
               return (
                 <td key={index} className="cell" style={{ cursor: "pointer" }}>
                   <div className="statusTags">
-                    {totalSumValues[item]?.[0]?.toLocaleString() +
-                      "/" +
-                      totalSumValues[item]?.[1]?.toLocaleString()}
+                    {Object.keys(totalSumValues)?.length
+                      ? totalSumValues[item]?.[0]?.toLocaleString() +
+                        "/" +
+                        totalSumValues[item]?.[1]?.toLocaleString()
+                      : ""}
                   </div>
                 </td>
               );
