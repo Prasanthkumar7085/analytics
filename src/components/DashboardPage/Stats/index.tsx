@@ -5,7 +5,8 @@ import Image from "next/image";
 import styles from "./index.module.css";
 import { usePathname } from "next/navigation";
 import CountUp from "react-countup";
-import { useState } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/en"; // Ensure English locale is loaded for formatting
 
 const Stats = ({
   revenueStatsDetails,
@@ -17,34 +18,8 @@ const Stats = ({
 }: any) => {
   const pathName = usePathname();
   const formatDate = (fromDatevalue: any, toDatevalue: any) => {
-    const fromDate = new Date(fromDatevalue);
-    const toDate = new Date(toDatevalue);
-
-    // Convert dates to UTC
-    const fromDateUTC = new Date(
-      Date.UTC(
-        fromDate.getUTCFullYear(),
-        fromDate.getUTCMonth(),
-        fromDate.getUTCDate()
-      )
-    );
-    const toDateUTC = new Date(
-      Date.UTC(
-        toDate.getUTCFullYear(),
-        toDate.getUTCMonth(),
-        toDate.getUTCDate()
-      )
-    );
-
-    const options: any = {
-      year: "2-digit",
-      month: "short",
-      day: "2-digit",
-      timeZone: "UTC",
-    };
-
-    const formattedFromDate = fromDateUTC.toLocaleDateString("en-US", options);
-    const formattedToDate = toDateUTC.toLocaleDateString("en-US", options);
+    const formattedFromDate = dayjs(fromDatevalue).format("MMM DD, YY");
+    const formattedToDate = dayjs(toDatevalue).format("MMM DD, YY");
 
     const formattedDateRange = `${formattedFromDate} - ${formattedToDate}`;
     return formattedDateRange;

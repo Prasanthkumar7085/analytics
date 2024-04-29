@@ -1,4 +1,5 @@
 import { Autocomplete, TextField } from "@mui/material";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 
 const GlobalYearFilter = ({
@@ -36,7 +37,9 @@ const GlobalYearFilter = ({
     <div>
       <Autocomplete
         value={
-          defaultYearValue ? defaultYearValue : { month: yearOptions[0]?.month }
+          defaultYearValue
+            ? defaultYearValue
+            : { month: dayjs().format("MM-YYYY") }
         }
         disablePortal
         options={yearOptions?.length ? yearOptions : []}

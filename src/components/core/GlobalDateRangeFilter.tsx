@@ -1,6 +1,7 @@
 import moment from "moment";
 import { DatePicker, DateRangePicker, Stack } from "rsuite";
 import "rsuite/dist/rsuite.css";
+import dayjs from "dayjs";
 
 import {
   addDays,
@@ -89,11 +90,11 @@ const GlobalDateRangeFilter = ({
     },
   ];
 
-  //update date values or format the date values 
+  //update date values or format the date values
   const updateDateValues = (newDate: any) => {
     if (newDate) {
-      const date1 = moment(new Date(newDate[0])).utc().format("YYYY-MM-DD");
-      const date2 = moment(new Date(newDate[1])).utc().format("YYYY-MM-DD");
+      const date1 = dayjs(newDate[0]).format("YYYY-MM-DD");
+      const date2 = dayjs(newDate[1]).format("YYYY-MM-DD");
 
       // let date1 = new Date(
       //   moment(new Date(newDate[0])).format("YYYY-MM-DD")

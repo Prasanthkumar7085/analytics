@@ -68,6 +68,15 @@ export const getAcendingOrder = (monthArray: any) => {
   });
   return monthArray;
 };
+
+export const getUniqueMonthsForAutoCompleted = (data: any) => {
+  let monthArray = data?.map((item: any) => item.month.replace(/\s/g, ""));
+
+  let descendingOrder: any = getAcendingOrder(monthArray);
+  // Get unique sorted months
+  let uniqueMonths = Array.from(new Set(descendingOrder));
+  return uniqueMonths;
+};
 export const getAcesdingOrderMonthsForGraphs = (monthArray: any) => {
   const monthArrayKeys = Object.keys(monthArray);
   monthArrayKeys.sort((a, b) => {

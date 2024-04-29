@@ -6,6 +6,7 @@ import {
   checkNumbersOrnot,
   formatDateToMonthName,
   getUniqueMonths,
+  getUniqueMonthsForAutoCompleted,
 } from "@/lib/helpers/apiHelpers";
 import {
   getSalesRepTargetsAPI,
@@ -23,6 +24,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { IconButton, TextField } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
+import dayjs from "dayjs";
 const SalesCaseTypeWiseTargets = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -33,6 +35,8 @@ const SalesCaseTypeWiseTargets = () => {
   const [completeData, setCompleteData] = useState([]);
   const [defaultYearValue, setDefaultYearValue] = useState<any>();
   const [headerMonths, setHeaderMonths] = useState<any>([]);
+  const [autocompleteLoading, setAutoCompleteLoading] =
+    useState<boolean>(false);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -52,7 +56,8 @@ const SalesCaseTypeWiseTargets = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
-    let queryParams: any = { month: "05-2024" };
+    const currentMonthYear = dayjs().format("MM-YYYY");
+    let queryParams: any = { month: currentMonthYear };
     if (month) {
       queryParams["month"] = month;
     }
@@ -139,6 +144,20 @@ const SalesCaseTypeWiseTargets = () => {
   useEffect(() => {
     getTotalSumOfAllCaseTypesTargets(editbleValue);
   }, [editbleValue]);
+
+  const getMonthsArrayForCaseTypesWiseTargets = async () => {
+    setAutoCompleteLoading(true);
+    try {
+      const response = await getSalesRepTargetsAPI({});
+      if (response.status == 200 || response.status == 201) {
+        let uniqueMonths = getUniqueMonthsForAutoCompleted(response?.data);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAutoCompleteLoading(false);
+    }
+  };
   //get all sales reps data event
   const getAllSalesRepCaseTypeWiseTargets = async (queryParams: any) => {
     setLoading(true);
@@ -208,7 +227,11 @@ const SalesCaseTypeWiseTargets = () => {
   const updateTargets = async (month: string, id: any) => {
     setLoading(true);
     try {
-      let body = { ...editbleValue, new_facilities: facilityUpdatedValue };
+      let body = {
+        ...editbleValue,
+        total: updatedRowTotal,
+        new_facilities: facilityUpdatedValue,
+      };
 
       const response = await updateTargetsAPI(body, id);
       if (response.status == 200 || response.status == 201) {
@@ -360,7 +383,9 @@ const SalesCaseTypeWiseTargets = () => {
       })),
       {
         header: () => (
-          <span style={{ whiteSpace: "nowrap" }}>NEW FACILITIES</span>
+          <span style={{ whiteSpace: "nowrap", textWrap: "wrap" }}>
+            NEW FACILITIES
+          </span>
         ),
         accessorFn: (row: any) => row.original.new_facilities,
         id: `new_facilities`,
@@ -562,6 +587,7 @@ const SalesCaseTypeWiseTargets = () => {
     if (searchParams?.month) {
       setDefaultYearValue({ month: searchParams.month });
     }
+    getMonthsArrayForCaseTypesWiseTargets();
   }, []);
 
   useEffect(() => {

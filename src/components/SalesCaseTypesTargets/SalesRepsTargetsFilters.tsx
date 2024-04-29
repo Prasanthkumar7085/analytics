@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import GlobalYearFilter from "../core/GlobalYearFilter";
+import dayjs from "dayjs";
 const SalesRepsTargetsFilters = ({
   onUpdateData,
   queryPreparations,
@@ -27,8 +28,9 @@ const SalesRepsTargetsFilters = ({
       queryPreparations({ month: year });
       setDateFilterDefaultValue({ month: year });
     } else {
-      setDateFilterDefaultValue({ month: "05-2024" });
-      queryPreparations({ month: "05-2024" });
+      const currentMonthYear = dayjs().format("MM-YYYY");
+      setDateFilterDefaultValue({ month: currentMonthYear });
+      queryPreparations({ month: currentMonthYear });
     }
   };
   return (
