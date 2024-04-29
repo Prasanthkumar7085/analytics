@@ -72,7 +72,7 @@ export const getAcendingOrder = (monthArray: any) => {
 export const getUniqueMonthsForAutoCompleted = (data: any) => {
   let monthArray = data?.map((item: any) => item.month.replace(/\s/g, ""));
 
-  let descendingOrder: any = getAcendingOrder(monthArray);
+  let descendingOrder: any = getDescendingOrder(monthArray);
   // Get unique sorted months
   let uniqueMonths = Array.from(new Set(descendingOrder));
   return uniqueMonths;

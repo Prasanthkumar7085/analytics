@@ -35,8 +35,7 @@ const SalesCaseTypeWiseTargets = () => {
   const [completeData, setCompleteData] = useState([]);
   const [defaultYearValue, setDefaultYearValue] = useState<any>();
   const [headerMonths, setHeaderMonths] = useState<any>([]);
-  const [autocompleteLoading, setAutoCompleteLoading] =
-    useState<boolean>(false);
+
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -145,19 +144,6 @@ const SalesCaseTypeWiseTargets = () => {
     getTotalSumOfAllCaseTypesTargets(editbleValue);
   }, [editbleValue]);
 
-  const getMonthsArrayForCaseTypesWiseTargets = async () => {
-    setAutoCompleteLoading(true);
-    try {
-      const response = await getSalesRepTargetsAPI({});
-      if (response.status == 200 || response.status == 201) {
-        let uniqueMonths = getUniqueMonthsForAutoCompleted(response?.data);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setAutoCompleteLoading(false);
-    }
-  };
   //get all sales reps data event
   const getAllSalesRepCaseTypeWiseTargets = async (queryParams: any) => {
     setLoading(true);
@@ -587,7 +573,6 @@ const SalesCaseTypeWiseTargets = () => {
     if (searchParams?.month) {
       setDefaultYearValue({ month: searchParams.month });
     }
-    getMonthsArrayForCaseTypesWiseTargets();
   }, []);
 
   useEffect(() => {

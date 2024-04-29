@@ -1,36 +1,38 @@
+import { getUniqueMonthsForAutoCompleted } from "@/lib/helpers/apiHelpers";
+import { getSalesRepTargetsAPI } from "@/services/salesTargetsAPIs";
 import { Autocomplete, TextField } from "@mui/material";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const GlobalYearFilter = ({
   onChangeData,
   defaultYearValue,
   setDefaultYearValue,
 }: any) => {
-  let yearOptions = [
-    { month: "05-2024" },
-    { month: "04-2024" },
-    { month: "03-2024" },
-    { month: "02-2024" },
-    { month: "01-2024" },
-    { month: "12-2023" },
-    { month: "11-2023" },
-    { month: "10-2023" },
-  ];
-  const updateYearOptionsWithCurrentMonth = (yearOptions: any) => {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
-    const currentMonthString = `${currentMonth
-      .toString()
-      .padStart(2, "0")}-${currentYear}`;
+  const [autocompleteLoading, setAutoCompleteLoading] =
+    useState<boolean>(false);
+  const [yearOptions, setYearOptions] = useState<any>([]);
 
-    yearOptions.unshift({ month: currentMonthString });
-
-    return yearOptions;
+  const getMonthsArrayForCaseTypesWiseTargets = async () => {
+    setAutoCompleteLoading(true);
+    try {
+      const response = await getSalesRepTargetsAPI({});
+      if (response.status == 200 || response.status == 201) {
+        let uniqueMonths = getUniqueMonthsForAutoCompleted(response?.data);
+        let monthyears = uniqueMonths.map((item) => {
+          return { month: item };
+        });
+        setYearOptions(monthyears);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAutoCompleteLoading(false);
+    }
   };
+
   useEffect(() => {
-    updateYearOptionsWithCurrentMonth(yearOptions);
+    getMonthsArrayForCaseTypesWiseTargets();
   }, []);
 
   return (
