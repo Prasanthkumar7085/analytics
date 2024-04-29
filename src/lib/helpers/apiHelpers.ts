@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const getUniqueMonths = (data: any) => {
   let monthArray = data?.map((item: any) => item.month.replace(/\s/g, ""));
 
@@ -251,9 +253,7 @@ export const rearrangeDataWithCasetypesInFilters = (data: any) => {
 };
 
 export const changeDateToUTC = (fromDate: any, toDate: any) => {
-  const fromDateUTC = new Date(fromDate);
-  fromDateUTC.setUTCHours(23, 59, 59, 999);
-  const toDateUTC = new Date(toDate);
-  toDateUTC.setUTCHours(23, 59, 59, 999);
+  const fromDateUTC = dayjs(fromDate).toDate();
+  const toDateUTC = dayjs(toDate).toDate();
   return [fromDateUTC, toDateUTC];
 };

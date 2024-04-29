@@ -15,7 +15,6 @@ import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import { startOfMonth } from "rsuite/esm/utils/dateUtils";
-import moment from "moment";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();

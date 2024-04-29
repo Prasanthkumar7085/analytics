@@ -8,6 +8,7 @@ import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import dayjs from "dayjs";
 const SalesRepsFilters = ({
   onUpdateData,
   queryPreparations,
@@ -46,7 +47,9 @@ const SalesRepsFilters = ({
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       queryPreparations({ fromDate, toDate });
-      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
+      const fromDateUTC = dayjs(fromDate).toDate();
+      const toDateUTC = dayjs(toDate).toDate();
+      setDateFilterDefaultValue([fromDateUTC, toDateUTC]);
     } else {
       setDateFilterDefaultValue("", "");
       queryPreparations({});

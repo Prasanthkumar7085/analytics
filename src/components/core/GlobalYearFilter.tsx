@@ -43,6 +43,7 @@ const GlobalYearFilter = ({
             ? defaultYearValue
             : { month: dayjs().format("MM-YYYY") }
         }
+        loading={autocompleteLoading}
         disablePortal
         options={yearOptions?.length ? yearOptions : []}
         getOptionLabel={(option: any) =>
