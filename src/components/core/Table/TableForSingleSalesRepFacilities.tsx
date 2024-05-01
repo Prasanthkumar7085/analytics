@@ -267,7 +267,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
               )}
             </td>
           </tr>
-          {newFacilities?.length ? (
+          {newFacilities && Object?.keys(newFacilities)?.length ? (
             <tr
               className="table-row"
               style={{
