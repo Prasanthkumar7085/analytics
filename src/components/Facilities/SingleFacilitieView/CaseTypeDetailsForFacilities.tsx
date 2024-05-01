@@ -300,6 +300,7 @@ const CaseTypeDetailsForFacilities = ({
         loading={loading}
         headerMonths={headerMonths}
         tabValue={tabValue}
+        newFacilities={{}}
       />
 
       {loading ? (

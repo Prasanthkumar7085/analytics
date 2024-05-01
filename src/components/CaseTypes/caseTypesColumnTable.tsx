@@ -1,11 +1,11 @@
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import {
-    SortingState,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getSortedRowModel,
-    useReactTable,
+  SortingState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -164,20 +164,20 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  header.id === "actions" ||
-                                  removeSortingForColumnIds.includes(header.id)
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    header.id === "actions" ||
+                                      removeSortingForColumnIds.includes(header.id)
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>
@@ -330,7 +330,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
               style={{ cursor: "pointer" }}
             >
               {headerMonths?.length && totalSumValues ? (
-                <AreaGraph data={totalSumValues} graphColor={"blue"} />
+                <AreaGraph data={getAcesdingOrderMonthsForGraphs(totalSumValues)} graphColor={"blue"} />
               ) : (
                 ""
               )}

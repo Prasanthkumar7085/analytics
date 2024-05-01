@@ -21,7 +21,7 @@ interface pageProps {
   loading: boolean;
   headerMonths: any;
   tabValue: string;
-  newFacilities: any;
+  newFacilities?: any;
 }
 const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
   columns,
@@ -241,45 +241,6 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
               background: "#EFF1FA",
             }}
           >
-            <td className="cell">Active Facility</td>
-            <td className="cell"></td>
-            {headerMonths?.map((item: any, index: number) => {
-              return (
-                <td key={index} className="cell">
-                  {tabValue == "Revenue"
-                    ? formatMoney(newFacilities[item])
-                    : newFacilities[item]?.toLocaleString()}
-                </td>
-              );
-            })}
-            <td
-              className="cell"
-              onClick={() => setNewGraphDialogOpen(true)}
-              style={{ cursor: "pointer" }}
-            >
-              {headerMonths?.length ? (
-                <AreaGraphForFacilities
-                  data={newFacilities}
-                  graphColor={"blue"}
-                />
-              ) : (
-                ""
-              )}
-            </td>
-          </tr>
-        </tfoot>
-        <tfoot className="tfoot">
-          <tr
-            className="table-row"
-            style={{
-              fontSize: "clamp(12px, 0.62vw, 14px)",
-              border: "1px solid #a5a5a5",
-              textTransform: "uppercase",
-              fontWeight: "600",
-              color: "#1B2459",
-              background: "#EFF1FA",
-            }}
-          >
             <td className="cell">Total</td>
             <td className="cell"></td>
             {headerMonths?.map((item: any, index: number) => {
@@ -306,6 +267,47 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
               )}
             </td>
           </tr>
+          {newFacilities?.length ? (
+            <tr
+              className="table-row"
+              style={{
+                fontSize: "clamp(12px, 0.62vw, 14px)",
+                border: "1px solid #a5a5a5",
+                textTransform: "uppercase",
+                fontWeight: "600",
+                color: "#1B2459",
+                background: "#EFF1FA",
+              }}
+            >
+              <td className="cell">Active Facility</td>
+              <td className="cell"></td>
+              {newFacilities && Object?.keys(newFacilities)?.length && headerMonths?.map((item: any, index: number) => {
+                return (
+                  <td key={index} className="cell">
+                    {tabValue == "Revenue"
+                      ? formatMoney(newFacilities[item])
+                      : newFacilities[item]?.toLocaleString()}
+                  </td>
+                );
+              })}
+              <td
+                className="cell"
+                onClick={() => setNewGraphDialogOpen(true)}
+                style={{ cursor: "pointer" }}
+              >
+                {headerMonths?.length ? (
+                  <AreaGraphForFacilities
+                    data={newFacilities}
+                    graphColor={"blue"}
+                  />
+                ) : (
+                  ""
+                )}
+              </td>
+            </tr>
+          ) : (
+            ""
+          )}
         </tfoot>
       </table>
       {headerMonths?.length ? (
