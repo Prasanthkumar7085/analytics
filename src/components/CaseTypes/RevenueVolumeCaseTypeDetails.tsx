@@ -26,6 +26,7 @@ const VolumeCaseTypesDetails = ({
   pageName,
   searchParams,
   selectedDate,
+  setCaseTypeValue,
 }: any) => {
   const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
@@ -349,8 +350,15 @@ const VolumeCaseTypesDetails = ({
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return <span
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            setCaseTypeValue(info?.row?.original?.case_type_name)
+          }}
+        >
+          {info.getValue()}
+        </span>;
       },
     },
   ];

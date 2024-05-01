@@ -29,6 +29,8 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
   const [loading, setLoading] = useState(true);
   const [headerMonths, setHeaderMonths] = useState<any>([]);
   const [graphValuesData, setGraphValuesData] = useState<any>({});
+  const [newFacilities, setNewFacilities] = useState<any>();
+  console.log(newFacilities, "asss")
   const [graphColor, setGraphColor] = useState("");
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
@@ -62,6 +64,43 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
     }
   };
 
+  const groupDataForVolume = (data: any) => {
+    const groupedData: any = {};
+    data?.forEach((item: any) => {
+      const { facility_id, facility_name, month, total_cases } = item;
+      if (!groupedData[facility_id]) {
+        groupedData[facility_id] = { facility_id, facility_name };
+      }
+      const formattedMonth = month.replace(/\s/g, "");
+      groupedData[facility_id][formattedMonth] = total_cases;
+    });
+    return groupedData;
+  }
+  // Grouping the data by month sum
+  const groupDatasumValue = (data: any) => {
+    const groupedDataSum: any = {};
+    data?.forEach((item: any) => {
+      const { month, total_cases } = item;
+      const formattedMonth = month.replace(/\s/g, "");
+      const amount = parseFloat(total_cases);
+      if (!groupedDataSum[formattedMonth]) {
+        groupedDataSum[formattedMonth] = 0;
+      }
+      groupedDataSum[formattedMonth] += amount;
+    });
+    return groupedDataSum;
+  }
+  const calculateNewFacilitiesMonthWise = (modifieData: any) => {
+    const counts: any = {};
+    modifieData.forEach((obj: any) => {
+      for (const key in obj) {
+        if (key !== "facility_id" && key !== "facility_name" && key !== "serial") {
+          counts[key] = (counts[key] || 0) + (obj[key] !== 0 ? 1 : 0);
+        }
+      }
+    });
+    setNewFacilities(counts);
+  }
   //get the volume stats for facilities
   const getVolumeDetailsSalesRepFacilities = async (queryParams: any) => {
     try {
@@ -73,36 +112,15 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
       if (response?.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
-
-        const groupedData: any = {};
-        response?.data?.forEach((item: any) => {
-          const { facility_id, facility_name, month, total_cases } = item;
-          if (!groupedData[facility_id]) {
-            groupedData[facility_id] = { facility_id, facility_name };
-          }
-          const formattedMonth = month.replace(/\s/g, "");
-          groupedData[facility_id][formattedMonth] = total_cases;
-        });
-
+        let groupedData = groupDataForVolume(response?.data)
         // Sorting alphabetically based on case_type_name
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.facility_name.localeCompare(b.facility_name);
         });
         // Converting object to array
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-
-        const groupedDataSum: any = {};
-        // Grouping the data by month sum
-        response?.data?.forEach((item: any) => {
-          const { month, total_cases } = item;
-          const formattedMonth = month.replace(/\s/g, "");
-          const amount = parseFloat(total_cases);
-          if (!groupedDataSum[formattedMonth]) {
-            groupedDataSum[formattedMonth] = 0;
-          }
-          // Add amount to the total_sum for the respective month
-          groupedDataSum[formattedMonth] += amount;
-        });
+        calculateNewFacilitiesMonthWise(modifieData)
+        const groupedDataSum = groupDatasumValue(response?.data);
         // Convert the object to an array
         setTotalSumFacilityValues(groupedDataSum);
         setFacilitiesData(modifieData);
@@ -319,6 +337,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
         loading={loading}
         headerMonths={headerMonths}
         tabValue={tabValue}
+        newFacilities={newFacilities}
       />
 
       {loading ? (

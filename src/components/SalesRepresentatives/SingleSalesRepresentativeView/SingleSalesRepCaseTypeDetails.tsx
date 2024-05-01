@@ -6,6 +6,7 @@ const SingleSalesRepCaseTypeDetails = ({
   pageName,
   searchParams,
   tabValue,
+  setCaseTypeValue
 }: any) => {
   const [value, setValue] = useState(tabValue);
   const [selectedDate, setSelectedDate] = useState<any>([]);
@@ -44,6 +45,7 @@ const SingleSalesRepCaseTypeDetails = ({
             pageName={pageName}
             searchParams={searchParams}
             selectedDate={selectedDate}
+            setCaseTypeValue={setCaseTypeValue}
           />
         )}
       </div>

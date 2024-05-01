@@ -21,6 +21,7 @@ interface pageProps {
   loading: boolean;
   headerMonths: any;
   tabValue: string;
+  newFacilities: any;
 }
 const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
   columns,
@@ -29,10 +30,11 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
   loading,
   headerMonths,
   tabValue,
+  newFacilities
 }) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
+  const [newgraphDialogOpen, setNewGraphDialogOpen] = useState<boolean>(false);
   const [sorting, setSorting] = useState<SortingState>([]);
-
   const table = useReactTable({
     columns,
     data,
@@ -67,6 +69,13 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
     const width = widthObj?.width;
     return width;
   };
+  const getNonZeroDigitLength = (value: number) => {
+    const formattedValue = tabValue === "Revenue" ? formatMoney(value) : value?.toLocaleString();
+    const digitsOnly = formattedValue?.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    console.log(formattedValue, "asas");
+    return digitsOnly?.replace(/^0+/, "")?.length; // Remove leading zeros and count digits
+  };
+
 
   return (
     <div
@@ -140,20 +149,20 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  header.id === "actions" ||
-                                  removeSortingForColumnIds.includes(header.id)
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    header.id === "actions" ||
+                                      removeSortingForColumnIds.includes(header.id)
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>
@@ -240,6 +249,45 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
               background: "#EFF1FA",
             }}
           >
+            <td className="cell">Active Facility</td>
+            <td className="cell"></td>
+            {headerMonths?.map((item: any, index: number) => {
+              return (
+                <td key={index} className="cell">
+                  {tabValue == "Revenue"
+                    ? formatMoney(newFacilities[item])
+                    : newFacilities[item]?.toLocaleString()}
+                </td>
+              );
+            })}
+            <td
+              className="cell"
+              onClick={() => setNewGraphDialogOpen(true)}
+              style={{ cursor: "pointer" }}
+            >
+              {headerMonths?.length ? (
+                <AreaGraphForFacilities
+                  data={newFacilities}
+                  graphColor={"blue"}
+                />
+              ) : (
+                ""
+              )}
+            </td>
+          </tr>
+        </tfoot>
+        <tfoot className="tfoot">
+          <tr
+            className="table-row"
+            style={{
+              fontSize: "clamp(12px, 0.62vw, 14px)",
+              border: "1px solid #a5a5a5",
+              textTransform: "uppercase",
+              fontWeight: "600",
+              color: "#1B2459",
+              background: "#EFF1FA",
+            }}
+          >
             <td className="cell">Total</td>
             <td className="cell"></td>
             {headerMonths?.map((item: any, index: number) => {
@@ -274,6 +322,18 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
           setGraphDialogOpen={setGraphDialogOpen}
           graphData={totalSumValues}
           graphValuesData={totalSumValues}
+          graphColor={"blue"}
+          tabValue={tabValue}
+        />
+      ) : (
+        ""
+      )}
+      {newFacilities ? (
+        <GraphDialogForFacilities
+          graphDialogOpen={newgraphDialogOpen}
+          setGraphDialogOpen={setNewGraphDialogOpen}
+          graphData={newFacilities}
+          graphValuesData={newFacilities}
           graphColor={"blue"}
           tabValue={tabValue}
         />

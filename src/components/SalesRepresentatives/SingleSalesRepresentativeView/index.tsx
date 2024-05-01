@@ -51,6 +51,7 @@ const SalesRepView = () => {
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [salesRepDetails, setSalesRepDetails] = useState<any>();
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
+  const [caseTypeValue, setCaseTypeValue] = useState<any>();
   const params = useSearchParams();
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
@@ -333,7 +334,7 @@ const SalesRepView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => {}}
+                onChange={() => { }}
                 statsSeletedDate={statsSeletedDate}
               />
             </Grid>
@@ -353,6 +354,7 @@ const SalesRepView = () => {
                 pageName={"sales-reps"}
                 searchParams={searchParams}
                 tabValue={tabValue}
+                setCaseTypeValue={setCaseTypeValue}
               />
             </Grid>
             <Grid item xs={7}>

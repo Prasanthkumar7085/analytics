@@ -18,7 +18,7 @@ const GraphDialogForFacilities = ({
       text:
         graphData?.facility_name || graphData?.case_type_name
           ? graphData?.facility_name ||
-            graphData?.case_type_name + " " + tabValue.toUpperCase()
+          graphData?.case_type_name + " " + tabValue.toUpperCase()
           : "TOTAL" + " " + tabValue.toUpperCase(),
       align: "left",
     },
@@ -29,8 +29,8 @@ const GraphDialogForFacilities = ({
       },
       categories: Object?.values(graphValuesData)?.length
         ? Object?.keys(graphValuesData).map((item: any) =>
-            formatMonthYear(item)
-          )
+          formatMonthYear(item)
+        )
         : [],
     },
 
