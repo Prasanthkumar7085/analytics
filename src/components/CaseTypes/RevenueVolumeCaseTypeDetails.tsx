@@ -351,10 +351,19 @@ const VolumeCaseTypesDetails = ({
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
+        const caseTypeVAlue = {
+          id: info?.row?.original?.case_type_id,
+          name: info?.row?.original?.case_type_name,
+          displayName: info?.row?.original?.case_type_name
+        }
         return <span
           style={{ cursor: "pointer" }}
           onClick={() => {
-            setCaseTypeValue(info?.row?.original?.case_type_name)
+            setCaseTypeValue(caseTypeVAlue)
+            window.scrollTo({
+              top: document.body.scrollHeight,
+              behavior: 'smooth'
+            });
           }}
         >
           {info.getValue()}

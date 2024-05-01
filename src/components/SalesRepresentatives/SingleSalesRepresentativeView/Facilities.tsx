@@ -30,7 +30,6 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
   const [headerMonths, setHeaderMonths] = useState<any>([]);
   const [graphValuesData, setGraphValuesData] = useState<any>({});
   const [newFacilities, setNewFacilities] = useState<any>();
-  console.log(newFacilities, "asss")
   const [graphColor, setGraphColor] = useState("");
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});

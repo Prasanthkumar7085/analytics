@@ -51,7 +51,6 @@ const SalesRepView = () => {
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [salesRepDetails, setSalesRepDetails] = useState<any>();
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
-  const [caseTypeValue, setCaseTypeValue] = useState<any>();
   const params = useSearchParams();
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
@@ -354,7 +353,7 @@ const SalesRepView = () => {
                 pageName={"sales-reps"}
                 searchParams={searchParams}
                 tabValue={tabValue}
-                setCaseTypeValue={setCaseTypeValue}
+                setCaseTypeValue={setSelectedCaseValueForFacilities}
               />
             </Grid>
             <Grid item xs={7}>

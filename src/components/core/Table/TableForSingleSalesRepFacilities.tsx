@@ -69,14 +69,6 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
     const width = widthObj?.width;
     return width;
   };
-  const getNonZeroDigitLength = (value: number) => {
-    const formattedValue = tabValue === "Revenue" ? formatMoney(value) : value?.toLocaleString();
-    const digitsOnly = formattedValue?.replace(/[^0-9]/g, ""); // Remove non-numeric characters
-    console.log(formattedValue, "asas");
-    return digitsOnly?.replace(/^0+/, "")?.length; // Remove leading zeros and count digits
-  };
-
-
   return (
     <div
       className="tableContainer"
