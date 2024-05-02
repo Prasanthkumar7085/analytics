@@ -1,13 +1,11 @@
-import CaseTypesColumnTable from "@/components/CaseTypes/caseTypesColumnTable";
-import AreaGraph from "@/components/core/AreaGraph";
+
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
-import MultipleColumnsTable from "@/components/core/Table/MultitpleColumn/MultipleColumnsTable";
 import SingleSalesRepFacilitiesTable from "@/components/core/Table/TableForSingleSalesRepFacilities";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import { colorCodes, graphColors } from "@/lib/constants";
+import { colorCodes } from "@/lib/constants";
 import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import { exportToExcelMonthWiseFacilitiesVolume } from "@/lib/helpers/exportsHelpers";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
@@ -15,10 +13,10 @@ import {
   getRevenueDetailsOfFacilitiesBySalesRepIdAPI,
   getVolumeDetailsOfFacilitiesBySalesRepIdAPI,
 } from "@/services/salesRepsAPIs";
-import { Backdrop, Button } from "@mui/material";
+import { Backdrop, FormControlLabel, FormGroup } from "@mui/material";
+import Checkbox from '@mui/material/Checkbox';
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
 const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
   const params = useSearchParams();
@@ -32,7 +30,9 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
   const [newFacilities, setNewFacilities] = useState<any>();
   const [graphColor, setGraphColor] = useState("");
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
+  const [checkboxChecked, setCheckboxChecked] = useState(true);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
+
   //query preparation method
   const queryPreparations = async (
     fromDate: any,
@@ -75,6 +75,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
     });
     return groupedData;
   }
+
   // Grouping the data by month sum
   const groupDatasumValue = (data: any) => {
     const groupedDataSum: any = {};
@@ -89,6 +90,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
     });
     return groupedDataSum;
   }
+
   const calculateNewFacilitiesMonthWise = (modifieData: any) => {
     const counts: any = {};
     modifieData.forEach((obj: any) => {
@@ -100,6 +102,23 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
     });
     setNewFacilities(counts);
   }
+
+  const filterDataByZeroValues = (data: any) => {
+    return data.filter((item: any) => {
+      for (const key in item) {
+        if (key !== "facility_id" && key !== "facility_name" && key !== "serial") {
+          if (parseFloat(item[key]) !== 0) {
+            return true;
+          }
+        }
+      }
+      return false;
+    });
+  };
+  const handleCheckboxChange = (event: any) => {
+    setCheckboxChecked(event.target.checked);
+  };
+
   //get the volume stats for facilities
   const getVolumeDetailsSalesRepFacilities = async (queryParams: any) => {
     try {
@@ -329,8 +348,28 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
           }}
         />
       </div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checkboxChecked}
+                onChange={handleCheckboxChange}
+              />
+            }
+            label="Show Active Facilities"
+          />
+        </FormGroup>
+      </div>
+
       <SingleSalesRepFacilitiesTable
-        data={facilitiesData}
+        data={checkboxChecked ? filterDataByZeroValues(facilitiesData) : facilitiesData}
         columns={addAddtionalColoumns}
         totalSumValues={totalSumFacilityValues}
         loading={loading}
@@ -338,7 +377,6 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
         tabValue={tabValue}
         newFacilities={newFacilities}
       />
-
       {loading ? (
         <Backdrop
           open={true}
