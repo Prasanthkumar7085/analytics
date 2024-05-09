@@ -30,8 +30,8 @@ const GraphDialog = ({
       },
       categories: Object?.values(graphValuesData)?.length
         ? Object?.keys(graphValuesData).map((item: any) =>
-            formatMonthYear(item)
-          )
+          formatMonthYear(item)
+        )
         : [],
     },
     plotOptions: {
@@ -84,7 +84,7 @@ const GraphDialog = ({
             "Total Cases: <b>" +
             totalCases +
             "</b><br>" +
-            "Total Targets: <b>" +
+            "Total Target: <b>" +
             totalTargets +
             "</b>"
           );
@@ -101,7 +101,7 @@ const GraphDialog = ({
     },
     series: [
       {
-        name: "Total Targets",
+        name: "Total Target",
         data: Object?.values(graphValuesData)?.length
           ? Object.values(graphValuesData).map((item: any) => item[1])
           : [],

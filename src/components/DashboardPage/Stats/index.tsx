@@ -149,9 +149,9 @@ const Stats = ({
                 style={{
                   background: volumeStatsDetails?.length
                     ? getBackgroundColor(
-                        volumeStatsDetails?.[0]?.total_cases,
-                        volumeStatsDetails?.[0]?.target_volume
-                      )
+                      volumeStatsDetails?.[0]?.total_cases,
+                      volumeStatsDetails?.[0]?.target_volume
+                    )
                     : "linear-gradient(110.31deg, #4386c5, #004e92)",
                 }}
               >
@@ -192,7 +192,7 @@ const Stats = ({
                   />
                   <div className={styles.billed}>
                     <div className={styles.header}>
-                      <label className={styles.lable}>TARGETS</label>
+                      <label className={styles.lable}>TARGET</label>
                     </div>
                     <h2 className={styles.totalvalue}>
                       {loading ? (

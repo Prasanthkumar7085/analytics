@@ -53,8 +53,8 @@ const CaseTypes = ({
                 ? +item["generated_amount"]
                 : 0
               : item["total_cases"]
-              ? +item["total_cases"]
-              : 0,
+                ? +item["total_cases"]
+                : 0,
         });
       });
       return tempArray;
@@ -92,7 +92,7 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
-      header: () => <span className={styles.tableHeading}>TARGETS</span>,
+      header: () => <span className={styles.tableHeading}>TARGET</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -238,17 +238,15 @@ const CaseTypes = ({
     const totalNumber = totalRevenueSum[2]?.value
       ? totalRevenueSum[2]?.value
       : 0;
-    return `<span style="font-size: 6px,margin-left:"45px">${
-      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
-    }</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+      }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
-            ${
-              tabValue == "Revenue"
-                ? formatMoney(totalNumber)
-                : totalNumber?.toLocaleString()
-            }</b>
+            ${tabValue == "Revenue"
+        ? formatMoney(totalNumber)
+        : totalNumber?.toLocaleString()
+      }</b>
         </span>`;
   }
 
@@ -401,8 +399,8 @@ const CaseTypes = ({
                 tabValue == "Revenue"
                   ? Revenuecolumns
                   : pathName.includes("facilities")
-                  ? VolumecolumnsForFacilities
-                  : Volumecolumns
+                    ? VolumecolumnsForFacilities
+                    : Volumecolumns
               }
               totalSumValues={totalRevenueSum}
               loading={loading}

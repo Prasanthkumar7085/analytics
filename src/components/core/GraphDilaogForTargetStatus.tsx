@@ -83,7 +83,7 @@ const GraphDialogForTargetStatus = ({
             "Total Cases: <b>" +
             totalCases +
             "</b><br>" +
-            "Total Targets: <b>" +
+            "Total Target: <b>" +
             totalTargets +
             "</b>"
           );
@@ -99,7 +99,7 @@ const GraphDialogForTargetStatus = ({
     },
     series: [
       {
-        name: "Total Targets",
+        name: "Total Target",
         data: Object?.values(graphValuesData)?.length
           ? Object.values(graphValuesData).map((item: any) => item[0])
           : [],

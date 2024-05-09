@@ -96,7 +96,7 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
             "Total Cases: <b>" +
             totalCases +
             "</b><br>" +
-            "Total Targets: <b>" +
+            "Total Target: <b>" +
             totalTargets +
             "</b>"
           );
@@ -105,15 +105,15 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
     },
     series: [
       {
-        name: graphType == "volume" ? "Total Targets" : "Total Revenue",
+        name: graphType == "volume" ? "Total Target" : "Total Revenue",
         data:
           graphType == "volume"
             ? trendsData?.length
               ? trendsData?.map((item: any) => +item.total_target)
               : []
             : trendsData?.length
-            ? trendsData?.map((item: any) => +item.paid_amount)
-            : [],
+              ? trendsData?.map((item: any) => +item.paid_amount)
+              : [],
         animation: {
           opacity: 1, // Set opacity animation for smoother entrance
         },
@@ -129,8 +129,8 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
               ? trendsData?.map((item: any) => +item.total_volume)
               : []
             : trendsData?.length
-            ? trendsData?.map((item: any) => +item.paid_amount)
-            : [],
+              ? trendsData?.map((item: any) => +item.paid_amount)
+              : [],
         animation: {
           opacity: 1, // Set opacity animation for smoother entrance
         },
