@@ -343,7 +343,8 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
             exportToExcelMonthWiseFacilitiesVolume(
               facilitiesData,
               headerMonths,
-              totalSumFacilityValues
+              totalSumFacilityValues,
+              newFacilities
             );
           }}
         />
@@ -354,11 +355,13 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
           flexDirection: "row",
           justifyContent: "center",
         }}
+        className="checkbox"
       >
         <FormGroup>
           <FormControlLabel
             control={
               <Checkbox
+                size="small"
                 checked={checkboxChecked}
                 onChange={handleCheckboxChange}
               />
