@@ -360,6 +360,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
           <FormControlLabel
             control={
               <Checkbox
+                size="small"
                 checked={checkboxChecked}
                 onChange={handleCheckboxChange}
               />
