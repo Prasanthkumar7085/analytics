@@ -37,6 +37,7 @@ const VolumeCaseTypesDetails = ({
   const [headerMonths, setHeaderMonths] = useState<any>([]);
   const [graphValuesData, setGraphValuesData] = useState<any>({});
   const [graphColor, setGraphColor] = useState("");
+  const [rowTotalSum, setRowTotalSum] = useState<any>([]);
 
   //query preparation method
   const queryPreparations = async (
@@ -93,7 +94,6 @@ const VolumeCaseTypesDetails = ({
     uniqueMonths.forEach((month: any) => {
       const formattedMonth = month.replace(/\s/g, '');
       if (rowData[formattedMonth]) {
-        console.log(rowData[formattedMonth], "dpspfpsapfaspfadsp")
         totalVolume += parseFloat(rowData[formattedMonth][0]);
         totalTarget += parseFloat(rowData[formattedMonth][1]);
       }
@@ -125,7 +125,8 @@ const VolumeCaseTypesDetails = ({
         total_cases,
         total_targets,
       ];
-      calculateRowTotal(groupedData[case_type_name], uniqueMonths)
+      calculateRowTotal(groupedData[case_type_name], uniqueMonths);
+
     });
     return groupedData;
   }
@@ -151,6 +152,14 @@ const VolumeCaseTypesDetails = ({
         let rearrangedData = rearrangeDataWithCasetypes(modifieData);
         setCaseData(rearrangedData);
         getTotalSumOfCasetypesVolumeWithMonths(response?.data);
+
+        let rowVolumeSum = 0;
+        let rowTargetSum = 0;
+        Object.values(groupedData).forEach((obj: any) => {
+          rowVolumeSum += obj.rowTotal[0];
+          rowTargetSum += obj.rowTotal[1];
+        });
+        setRowTotalSum([rowVolumeSum, rowTargetSum])
       }
     } catch (err) {
       console.error(err);
@@ -372,9 +381,50 @@ const VolumeCaseTypesDetails = ({
       },
       cell: (info: any) => {
         return (
-          <span style={{ cursor: 'pointer' }}>
-            {info.row.original.rowTotal[0]?.toLocaleString()}
-          </span>
+          <Tooltip
+            arrow
+            slotProps={{
+              popper: {
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -5],
+                    },
+                  },
+                ],
+              },
+            }}
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  width: "100px",
+                  bgcolor: getBackgroundColor(
+                    info.row.original.rowTotal[0],
+                    info.row.original.rowTotal[1]
+                  ),
+                  color: "black",
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  padding: 0,
+                  fontSize: "15px",
+                  textAlign: "center",
+                  "& .MuiTooltip-arrow": {
+                    color: "black",
+                    "&::before": {
+                      border: " 1px solid rgba(0, 0, 0, 0.1)!important",
+                    },
+                  },
+                },
+              },
+            }}
+            title={
+              "Target: " + info.row.original.rowTotal[1]?.toLocaleString()
+            }
+          >
+            <span style={{ cursor: 'pointer' }}>
+              {info.row.original.rowTotal[0]?.toLocaleString()}
+            </span>
+          </Tooltip>
         );
       },
     },
@@ -477,6 +527,7 @@ const VolumeCaseTypesDetails = ({
         loading={loading}
         headerMonths={headerMonths}
         tabValue={tabValue}
+        rowTotalSum={rowTotalSum}
       />
 
       {loading ? (
