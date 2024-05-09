@@ -63,7 +63,8 @@ export const exportToExcelMonthWiseCaseTypes = (
 export const exportToExcelMonthWiseFacilitiesVolume = (
   facilitiesData: any,
   headerMonths: any,
-  totalSumValues: any
+  totalSumValues: any,
+  newFacilities: any
 ) => {
   const formattedData = facilitiesData.map((obj: any, index: number) => {
     const sortedValues = Object.entries(obj)
@@ -93,9 +94,20 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
     })
     .map(([_, value]: any) => value.toLocaleString());
 
-  let totalSumSortedValues = ["Total", "", ...total];
-  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
 
+  const totalFacilites: any = Object.entries(newFacilities)
+    .sort((a, b) => {
+      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+      return dateA - dateB;
+    })
+    .map(([_, value]: any) => value.toLocaleString());
+
+
+  let totalSumSortedValues = ["Total", "", ...total];
+  let totalFacilitesValues = ["Active Facilties", "", totalFacilites]
+
+  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues], ...[totalFacilitesValues]];
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   // Setting background color for header cells
   for (let i = 0; i < headers.length; i++) {

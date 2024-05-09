@@ -343,7 +343,8 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
             exportToExcelMonthWiseFacilitiesVolume(
               facilitiesData,
               headerMonths,
-              totalSumFacilityValues
+              totalSumFacilityValues,
+              newFacilities
             );
           }}
         />
