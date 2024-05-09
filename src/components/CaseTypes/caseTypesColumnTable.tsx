@@ -23,6 +23,7 @@ interface pageProps {
   loading: boolean;
   headerMonths: any;
   tabValue: string;
+  rowTotalSum?: any;
 }
 const CaseTypesColumnTable: FC<pageProps> = ({
   columns,
@@ -31,6 +32,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
   loading,
   headerMonths,
   tabValue,
+  rowTotalSum
 }) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -91,6 +93,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
       return "#ffebe9"; // Red for incomplete
     }
   };
+
 
   return (
     <div
@@ -324,6 +327,57 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                 </td>
               );
             })}
+            <td
+              className="cell"
+              style={{ cursor: "pointer" }}
+            >
+              <Tooltip
+                arrow
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -5],
+                        },
+                      },
+                    ],
+                  },
+                }}
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      width: "100px",
+                      bgcolor: getBackgroundColor(
+                        rowTotalSum?.[0],
+                        rowTotalSum?.[1]
+                      ),
+                      color: "black",
+                      border: "1px solid rgba(0,0,0,0.1)",
+                      padding: 0,
+                      fontSize: "15px",
+                      textAlign: "center",
+                      "& .MuiTooltip-arrow": {
+                        color: "black",
+                        "&::before": {
+                          border:
+                            " 1px solid rgba(0, 0, 0, 0.1)!important",
+                        },
+                      },
+                    },
+                  },
+                }}
+                title={
+                  "Target total: " +
+                  rowTotalSum?.[1]?.toLocaleString()
+                }
+              >
+                <div className="statusTags">
+                  {rowTotalSum?.[0]?.toLocaleString()}
+                </div>
+              </Tooltip>
+            </td>
             <td
               className="cell"
               onClick={() => setGraphDialogOpen(true)}
