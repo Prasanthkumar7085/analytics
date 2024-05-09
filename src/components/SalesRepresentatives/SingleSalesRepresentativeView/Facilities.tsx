@@ -354,6 +354,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
           flexDirection: "row",
           justifyContent: "center",
         }}
+        className="checkbox"
       >
         <FormGroup>
           <FormControlLabel

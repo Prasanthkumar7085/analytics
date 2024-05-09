@@ -388,7 +388,6 @@ table {
     left: 0 !important;
     background: #fff !important;
     // z-index: 999;
-
   }
 
   .tableContainer .thead .table-row .cell:nth-child(2) {
@@ -397,7 +396,6 @@ table {
     left: 50px !important;
     background: #f0edff !important;
     // z-index: 9999;
-
   }
 
   .tableContainer .thead .table-row .cell:nth-child(19) {
@@ -422,7 +420,6 @@ table {
     right: 220px !important;
     background: #fff !important;
     // z-index: 999;
-
   }
 
   .tableContainer .tbody .table-row .cell:nth-child(20) {
@@ -431,7 +428,6 @@ table {
     right: 100px !important;
     background: #fff !important;
     // z-index: 999;
-
   }
 
   .tableContainer .tbody .table-row .cell:nth-child(2) {
@@ -440,7 +436,6 @@ table {
     left: 50px !important;
     background: #fff !important;
     // z-index: 999;
-
   }
 
   .tableContainer .thead .table-row .cell:last-child {
@@ -449,7 +444,6 @@ table {
     right: 0px !important;
     background: #f0edff !important;
     // z-index: 9999;
-
   }
 
   .tableContainer .tbody .table-row .cell:last-child {
@@ -458,7 +452,6 @@ table {
     right: 0px !important;
     background: #fff !important;
     // z-index: 999;
-
   }
 
   .tableContainer .tfootRow .radiusLastChild .cell:first-child {
@@ -623,10 +616,8 @@ table {
   }
 
   table {
-
     td,
     th {
-
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -651,7 +642,7 @@ table {
   }
 
   .searchInput {
-    margin-right: 150px;
+    margin-right: 120px;
   }
 
   .cardBody {
@@ -661,6 +652,11 @@ table {
       position: absolute;
       top: -50px;
       right: 5px;
+    }
+    .checkbox {
+      position: absolute;
+      top: -55px;
+      right: 30%;
     }
   }
 
@@ -673,7 +669,6 @@ table {
   tfoot {
     tr {
       td {
-
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -693,12 +688,14 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(circle at center center,
+    repeating-radial-gradient(
+      circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px);
+      transparent 10px
+    );
   background-blend-mode: multiply;
 }
 
@@ -758,7 +755,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -804,7 +801,7 @@ table {
     }
 
     td {
-      background: #fff ;
+      background: #fff;
     }
 
     thead {
@@ -848,7 +845,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -932,10 +929,8 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
-
         //   &:nth-child(2) {
         //   width: $marketerNameColumnWidth !important;
         //   min-width: $marketerNameColumnWidth !important;
@@ -963,7 +958,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -988,7 +982,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       th,
       td {
         &:nth-child(3) {
@@ -1025,7 +1018,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1271,11 +1263,8 @@ $actionButtonWidth: 95px;
   }
 }
 
-
-
 .s-no-column {
   table {
-
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
@@ -1338,10 +1327,8 @@ $actionButtonWidth: 95px;
 #insuranceCaseTypesData {
   table {
     tr {
-
       td,
       th {
-
         &:nth-child(3),
         &:nth-child(4),
         &:nth-child(5),
@@ -1371,13 +1358,13 @@ $actionButtonWidth: 95px;
 }
 
 .exportButton {
-  background: #1B2459;
+  background: #1b2459;
   color: #fff;
   border-radius: 7px;
   padding: 5px 20px;
 
   &:hover {
-    background: #1B2459;
+    background: #1b2459;
     color: #fff;
   }
 
@@ -1392,7 +1379,6 @@ $actionButtonWidth: 95px;
   z-index: 1 !important;
 }
 
-
 .tableContainer {
   td {
     input {
@@ -1403,7 +1389,7 @@ $actionButtonWidth: 95px;
 }
 
 .editButton {
-  background: #1B2459;
+  background: #1b2459;
   color: #fff;
   border-radius: 3px;
   padding: 1px 10px;
