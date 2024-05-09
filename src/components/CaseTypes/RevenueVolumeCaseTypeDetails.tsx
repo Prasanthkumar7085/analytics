@@ -78,12 +78,57 @@ const VolumeCaseTypesDetails = ({
       }
 
       // Add amount to the total_sum for the respective month
-      groupedDataSum[formattedMonth][0] += amount; // Adding total cases
-      groupedDataSum[formattedMonth][1] += targetsAmount; // Adding total targets
+      groupedDataSum[formattedMonth][0] += amount;
+      groupedDataSum[formattedMonth][1] += targetsAmount;
     });
     // Convert the object to an array
     setTotalSumValues(groupedDataSum);
   };
+
+
+  //get the total sum of the each row
+  const calculateRowTotal = (rowData: any, uniqueMonths: any) => {
+    let totalVolume = 0;
+    let totalTarget = 0;
+    uniqueMonths.forEach((month: any) => {
+      const formattedMonth = month.replace(/\s/g, '');
+      if (rowData[formattedMonth]) {
+        console.log(rowData[formattedMonth], "dpspfpsapfaspfadsp")
+        totalVolume += parseFloat(rowData[formattedMonth][0]);
+        totalTarget += parseFloat(rowData[formattedMonth][1]);
+      }
+    });
+    rowData["rowTotal"] = [totalVolume, totalTarget];
+    return rowData;
+  };
+
+  // Grouping the data by case_type_id and then by month
+  const groupDataWithMonthWise = (data: any, uniqueMonths?: any) => {
+    const groupedData: any = {};
+    data?.forEach((item: any) => {
+      const {
+        case_type_id,
+        case_type_name,
+        month,
+        total_cases,
+        total_targets,
+      } = item;
+      if (!groupedData[case_type_name]) {
+        groupedData[case_type_name] = {
+          case_type_id, case_type_name
+        };
+      }
+
+      const formattedMonth = month.replace(/\s/g, "");
+
+      groupedData[case_type_name][formattedMonth] = [
+        total_cases,
+        total_targets,
+      ];
+      calculateRowTotal(groupedData[case_type_name], uniqueMonths)
+    });
+    return groupedData;
+  }
 
   //get details Volume of caseTypes
   const getDetailsOfCaseTypesOfVolume = async (queryParams: any) => {
@@ -97,29 +142,8 @@ const VolumeCaseTypesDetails = ({
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
+        const groupedData: any = groupDataWithMonthWise(response?.data, uniqueMonths);
 
-        const groupedData: any = {};
-        // Grouping the data by case_type_id and then by month
-        response?.data?.forEach((item: any) => {
-          const {
-            case_type_id,
-            case_type_name,
-            month,
-            total_cases,
-            total_targets,
-          } = item;
-          if (!groupedData[case_type_name]) {
-            groupedData[case_type_name] = { case_type_id, case_type_name };
-          }
-
-          const formattedMonth = month.replace(/\s/g, "");
-
-          groupedData[case_type_name][formattedMonth] = [
-            total_cases,
-            total_targets,
-          ];
-        });
-        // Converting object to array
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
         });
@@ -325,6 +349,37 @@ const VolumeCaseTypesDetails = ({
     },
   ];
 
+
+
+  const totalColoumn = [
+    {
+      accessorFn: (row: any) => row.rowTotal,
+      id: "rowTotal",
+      enableSorting: false,
+      header: () => <span style={{ whiteSpace: 'nowrap' }}>Total</span>,
+      width: '100px',
+      sortDescFirst: false,
+      sortingFn: (rowA: any, rowB: any, columnId: any) => {
+        const rowDataA = rowA.original[columnId];
+        const rowDataB = rowB.original[columnId];
+
+        // Extract the case values from the row data
+        const valueA = rowDataA[0] || 0;
+        const valueB = rowDataB[0] || 0;
+
+        // Compare the case values for sorting
+        return valueA - valueB;
+      },
+      cell: (info: any) => {
+        return (
+          <span style={{ cursor: 'pointer' }}>
+            {info.row.original.rowTotal[0]?.toLocaleString()}
+          </span>
+        );
+      },
+    },
+  ];
+
   const columnDef = [
     {
       accessorFn: (row: any) => row.serial,
@@ -375,6 +430,7 @@ const VolumeCaseTypesDetails = ({
   const addAddtionalColoumns = [
     ...columnDef,
     ...addtionalcolumns,
+    ...totalColoumn,
     ...graphColoumn,
   ];
 
