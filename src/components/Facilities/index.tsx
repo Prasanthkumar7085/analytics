@@ -10,6 +10,7 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import FacilitiesFilters from "./FacilitiesFilters";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 
 const FacilitiesList = () => {
   const router = useRouter();
@@ -130,12 +131,31 @@ const FacilitiesList = () => {
   //go to single facility page navigation event
   const gotoSingleFacilityPage = (Id: string) => {
     let queryString = "";
-    const queryParams: any = {};
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let defaultfromDate = new Date(
+      Date.UTC(
+        thisMonth[0].getFullYear(),
+        thisMonth[0].getMonth(),
+        thisMonth[0].getDate()
+      )
+    )
+      .toISOString()
+      .substring(0, 10);
+    let defaulttoDate = new Date(
+      Date.UTC(
+        thisMonth[1].getFullYear(),
+        thisMonth[1].getMonth(),
+        thisMonth[1].getDate()
+      )
+    )
+      .toISOString()
+      .substring(0, 10);
+    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
     if (params.get("from_date")) {
-      queryParams["from_date"] = params.get("from_date");
+      queryParams["from_date"] = params.get("from_date") || defaultfromDate;
     }
     if (params.get("to_date")) {
-      queryParams["to_date"] = params.get("to_date");
+      queryParams["to_date"] = params.get("to_date") || defaulttoDate;
     }
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
