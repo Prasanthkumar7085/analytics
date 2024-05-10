@@ -20,7 +20,7 @@ interface pageProps {
   totalSumValues?: any;
   loading: boolean;
   headerMonths: any;
-  tabValue: string;
+  tabValue?: string;
   newFacilities?: any;
 }
 const CaseTypesFacilitiesTable: FC<pageProps> = ({

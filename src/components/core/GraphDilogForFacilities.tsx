@@ -19,7 +19,7 @@ const GraphDialogForFacilities = ({
         graphData?.facility_name || graphData?.case_type_name
           ? graphData?.facility_name ||
           graphData?.case_type_name + " " + tabValue.toUpperCase()
-          : "TOTAL" + " " + tabValue.toUpperCase(),
+          : "TOTAL" + " " + tabValue?.toUpperCase(),
       align: "left",
     },
 
