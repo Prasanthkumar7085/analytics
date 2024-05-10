@@ -352,6 +352,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
               newFacilities
             );
           }}
+          disabled={facilitiesData?.length === 0 ? true : false}
         />
       </div>
       <div

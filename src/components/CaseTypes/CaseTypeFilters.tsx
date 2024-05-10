@@ -73,6 +73,7 @@ const CaseTypeFilters = ({
                 onClick={() => {
                   exportToExcelCaseTypesTable(completeData, totalSumValues);
                 }}
+                disabled={completeData?.length === 0 ? true : false}
               />
             </li>
           </ul>

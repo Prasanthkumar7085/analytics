@@ -72,6 +72,7 @@ const FacilitiesFilters = ({
                 onClick={() => {
                   exportToExcelFacilitiesTable(facilitiesData, totalSumValue);
                 }}
+                disabled={facilitiesData?.length === 0 ? true : false}
               ></ExportButton>
             </li>
           </ul>

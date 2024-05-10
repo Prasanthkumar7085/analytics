@@ -292,6 +292,7 @@ const CaseTypeDetailsForFacilities = ({
             totalSumValues
           );
         }}
+        disabled={caseData?.length === 0 ? true : false}
       ></ExportButton>
       <CaseTypesFacilitiesTable
         data={caseData}

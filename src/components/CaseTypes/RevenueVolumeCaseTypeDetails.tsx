@@ -531,6 +531,7 @@ const VolumeCaseTypesDetails = ({
               totalSumValues
             );
           }}
+          disabled={caseData?.length === 0 ? true : false}
         />
       </div>
       <CaseTypesColumnTable

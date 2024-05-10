@@ -139,6 +139,7 @@ const SalesRepsFilters = ({
                 onClick={() => {
                   exportToExcelSalesRepTable(salesRepsData, totalSumValues);
                 }}
+                disabled={salesRepsData?.length === 0 ? true : false}
               />
             </li>
           </ul>

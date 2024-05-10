@@ -111,7 +111,7 @@ const InsuranceCaseTypes = ({
             style={{
               color:
                 info.row.original.paid_amount ==
-                info.row.original.expected_amount
+                  info.row.original.expected_amount
                   ? "green"
                   : "red",
             }}
@@ -190,6 +190,7 @@ const InsuranceCaseTypes = ({
                 totalInsurancePayors
               );
             }}
+            disabled={insuranceData?.length === 0 ? true : false}
           />
         </div>
         <div className="cardBody">
