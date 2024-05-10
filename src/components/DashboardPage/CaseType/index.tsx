@@ -245,7 +245,7 @@ const CaseTypes = ({
             <b>
             ${tabValue == "Revenue"
         ? formatMoney(totalNumber)
-        : totalNumber?.toLocaleString()
+        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalNumber?.toLocaleString()
       }</b>
         </span>`;
   }

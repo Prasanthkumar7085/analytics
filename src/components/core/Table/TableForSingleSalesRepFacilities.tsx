@@ -72,10 +72,18 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
   };
 
   const [expandedRowIndex, setExpandedRowIndex] = useState(null);
+  const [sortingEnabled, setSortingEnabled] = useState(false);
 
   const handleRowClick = (index: any) => {
     setExpandedRowIndex((prevIndex) => (prevIndex === index ? null : index));
+    setSortingEnabled(true);
   };
+
+  const handleExpandClose = () => {
+    setExpandedRowIndex(null)
+    setSortingEnabled(false);
+  }
+
   return (
     <div
       className="tableContainer"
@@ -113,10 +121,10 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                         <div
                           // onClick={() => sortAndGetData(header)}
                           {...{
-                            className: header.column.getCanSort()
+                            className: header.column.getCanSort() && sortingEnabled
                               ? "cursor-pointer select-none"
                               : "",
-                            onClick: header.column.getToggleSortingHandler(),
+                            onClick: sortingEnabled ? undefined : header.column.getToggleSortingHandler(),
                           }}
                           style={{
                             display: "flex",
@@ -148,20 +156,20 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  header.id === "actions" ||
-                                  removeSortingForColumnIds.includes(header.id)
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    header.id === "actions" ||
+                                      removeSortingForColumnIds.includes(header.id) || sortingEnabled
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>
@@ -179,7 +187,13 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                 <React.Fragment key={mainIndex}>
                   <tr
                     className="table-row"
-                    onClick={() => handleRowClick(mainIndex)}
+                    onClick={() => {
+                      if (isExpanded) {
+                        handleExpandClose()
+                      } else {
+                        handleRowClick(mainIndex)
+                      }
+                    }}
                     style={{
                       cursor: "pointer",
                       boxShadow:

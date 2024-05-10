@@ -327,7 +327,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                 </td>
               );
             })}
-            {headerMonths > 1 ? (
+            {headerMonths?.length > 1 && tabValue == "Volume" ? (
               <td
                 className="cell"
                 style={{ cursor: "pointer" }}

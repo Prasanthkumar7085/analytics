@@ -364,7 +364,6 @@ const VolumeCaseTypesDetails = ({
     {
       accessorFn: (row: any) => row.rowTotal,
       id: "rowTotal",
-      enableSorting: false,
       header: () => <span style={{ whiteSpace: 'nowrap' }}>Total</span>,
       width: '100px',
       sortDescFirst: false,
@@ -478,7 +477,7 @@ const VolumeCaseTypesDetails = ({
   ];
 
   const hedaerMonthsColoumns = () => {
-    if (headerMonths > 1) {
+    if (headerMonths?.length > 1) {
       return addMonthWiseColoumns;
     } else {
       return addAddtionalColoumns;
