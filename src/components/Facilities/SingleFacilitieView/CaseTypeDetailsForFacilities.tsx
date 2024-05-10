@@ -11,10 +11,10 @@ import {
 } from "@/services/caseTypesAPIs";
 import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
-import SingleSalesRepFacilitiesTable from "@/components/core/Table/TableForSingleSalesRepFacilities";
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import { exportToExcelMonthWiseCaseTypeFacilities } from "@/lib/helpers/exportsHelpers";
+import CaseTypesFacilitiesTable from "@/components/core/Table/TableForCaseTypesFacilities";
 
 const CaseTypeDetailsForFacilities = ({
   tabValue,
@@ -293,7 +293,7 @@ const CaseTypeDetailsForFacilities = ({
           );
         }}
       ></ExportButton>
-      <SingleSalesRepFacilitiesTable
+      <CaseTypesFacilitiesTable
         data={caseData}
         columns={addAddtionalColoumns}
         totalSumValues={totalSumValues}
