@@ -49,6 +49,22 @@ const Stats = ({
     }
   };
 
+  const averagePerDayTargets = () => {
+    const totalDaysInMonth = dayjs().daysInMonth();
+    const startOfMonth = dayjs().startOf('month');
+
+    const currentDate = dayjs();
+    const daysPassed = currentDate.diff(startOfMonth, 'day') + 1;
+    const targetVolume = volumeStatsDetails?.[0]?.target_volume;
+    if (targetVolume) {
+      const averagePerDay = targetVolume / totalDaysInMonth;
+      return averagePerDay * daysPassed;
+    }
+    else {
+      return 0;
+    }
+  }
+
   return (
     <>
       <div className="eachDataCard" id="StatsData">
@@ -150,7 +166,7 @@ const Stats = ({
                   background: volumeStatsDetails?.length
                     ? getBackgroundColor(
                       volumeStatsDetails?.[0]?.total_cases,
-                      volumeStatsDetails?.[0]?.target_volume
+                      averagePerDayTargets()
                     )
                     : "linear-gradient(110.31deg, #4386c5, #004e92)",
                 }}
@@ -166,6 +182,8 @@ const Stats = ({
                     ""
                   )}
                 </div>
+
+
                 <div className={styles.row}>
                   <div className={styles.billed}>
                     <div className={styles.header}>
@@ -201,12 +219,33 @@ const Stats = ({
                         <CountUp
                           start={0}
                           decimal="."
+                          end={averagePerDayTargets()}
+                        />
+                      )}
+                    </h2>
+                  </div>
+
+
+                  <div className={styles.billed}>
+                    <div className={styles.header}>
+                      <label className={styles.lable}>MONTH TARGET</label>
+                    </div>
+                    <h2 className={styles.totalvalue}>
+                      {loading ? (
+                        <Skeleton width={100} height={50} />
+                      ) : (
+                        <CountUp
+                          start={0}
+                          decimal="."
                           end={volumeStatsDetails?.[0]?.target_volume}
                         />
                       )}
                     </h2>
                   </div>
+
                 </div>
+
+
               </div>
             )}
 

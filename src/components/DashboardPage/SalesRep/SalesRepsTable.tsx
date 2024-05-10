@@ -59,17 +59,6 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
             return <span>{getValue()?.toLocaleString()}</span>;
           },
         },
-        //  {
-        //    accessorFn: (row: any) => row.target_facilities,
-        //    header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
-        //    id: "target_facilities",
-        //    width: "300px",
-        //    maxWidth: "300px",
-        //    minWidth: "300px",
-        //    cell: (info: any) => {
-        //      return <span>{info.getValue()?.toLocaleString()}</span>;
-        //    },
-        //  },
         {
           accessorFn: (row: any) => row.active_facilities,
           header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIVE</span>,
@@ -113,48 +102,6 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
         },
       ],
     },
-
-    //  {
-    //    accessorFn: (row: any) => row.revenue,
-    //    header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
-    //    id: "revenue",
-    //    width: "800px",
-    //    columns: [
-    //      {
-    //        accessorFn: (row: any) => row.generated_amount,
-    //        header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-    //        id: "generated_amount",
-    //        width: "200px",
-    //        maxWidth: "200px",
-    //        minWidth: "200px",
-    //        cell: ({ getValue }: any) => {
-    //          return <span>{formatMoney(getValue())}</span>;
-    //        },
-    //      },
-    //      {
-    //        accessorFn: (row: any) => row.paid_amount,
-    //        header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
-    //        id: "paid_amount",
-    //        width: "200px",
-    //        maxWidth: "200px",
-    //        minWidth: "200px",
-    //        cell: (info: any) => {
-    //          return <span>{formatMoney(info.getValue())}</span>;
-    //        },
-    //      },
-    //      {
-    //        accessorFn: (row: any) => row.pending_amount,
-    //        header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
-    //        id: "pending_amount",
-    //        width: "200px",
-    //        maxWidth: "200px",
-    //        minWidth: "200px",
-    //        cell: (info: any) => {
-    //          return <span>{formatMoney(info.getValue())}</span>;
-    //        },
-    //      },
-    //    ],
-    //  },
     {
       accessorFn: (row: any) => row.target_reached,
       id: "target_reached",
