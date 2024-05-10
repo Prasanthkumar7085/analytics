@@ -9,7 +9,7 @@ import {
   getMonthWiseRevenueCaseTypesForSinglePageAPI,
   getMonthWiseVolumeCaseTypesForSinglePageFacilitiesAPI,
 } from "@/services/caseTypesAPIs";
-import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import { formatMonthYear, getUniqueMonths, rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
@@ -90,7 +90,8 @@ const CaseTypeDetailsForFacilities = ({
         });
 
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        setCaseData(modifieData);
+        let rearrangedData = rearrangeDataWithCasetypes(modifieData);
+        setCaseData(rearrangedData);
 
         const groupedDataSum: any = {};
         // Grouping the data by month sum

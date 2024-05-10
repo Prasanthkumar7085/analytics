@@ -1,6 +1,6 @@
 import CaseTypesAccrodianTable from "@/components/core/Table/CaseTypesAccrodianTable";
 import { addSerial } from "@/lib/Pipes/addSerial";
-import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import { formatMonthYear, getUniqueMonths, rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import { getMonthWiseVolumeCaseTypesForSinglePageFacilitiesAPI } from "@/services/caseTypesAPIs";
 import { Backdrop } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -71,7 +71,9 @@ const CaseTypesAccordians = ({ id, searchParams }: any) => {
                 });
 
                 const modifieData = addSerial(sortedData, 1, sortedData?.length);
-                setCaseData(modifieData);
+                let rearrangedData = rearrangeDataWithCasetypes(modifieData);
+
+                setCaseData(rearrangedData);
 
                 const groupedDataSum: any = {};
                 // Grouping the data by month sum
