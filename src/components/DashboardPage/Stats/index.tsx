@@ -54,7 +54,7 @@ const Stats = ({
     const startOfMonth = dayjs().startOf('month');
 
     const currentDate = dayjs();
-    const daysPassed = currentDate.diff(startOfMonth, 'day') + 1;
+    const daysPassed = currentDate.diff(startOfMonth, 'day');
     const targetVolume = volumeStatsDetails?.[0]?.target_volume;
     if (targetVolume) {
       const averagePerDay = targetVolume / totalDaysInMonth;

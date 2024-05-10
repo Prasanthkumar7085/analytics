@@ -13,7 +13,7 @@ import CaseType from "./CaseType";
 import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
-import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import { getDatesForStatsCards, rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,28 +54,11 @@ const DashboardPage = () => {
   //get the stats counts
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     let thisMonth = [startOfMonth(new Date()), new Date()];
-    let defaultfromDate = new Date(
-      Date.UTC(
-        thisMonth[0].getFullYear(),
-        thisMonth[0].getMonth(),
-        thisMonth[0].getDate()
-      )
-    )
-      .toISOString()
-      .substring(0, 10);
-    let defaulttoDate = new Date(
-      Date.UTC(
-        thisMonth[1].getFullYear(),
-        thisMonth[1].getMonth(),
-        thisMonth[1].getDate()
-      )
-    )
-      .toISOString()
-      .substring(0, 10);
+    let defaultDates = getDatesForStatsCards(thisMonth);
 
     let queryParams: any = {
-      from_date: defaultfromDate,
-      to_date: defaulttoDate,
+      from_date: defaultDates?.[0],
+      to_date: defaultDates?.[1],
     };
 
     if (fromDate) {
@@ -197,7 +180,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => {}}
+            onChange={() => { }}
             getStatsCounts={getStatsCounts}
             statsSeletedDate={statsSeletedDate}
           />

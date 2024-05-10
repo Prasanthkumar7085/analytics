@@ -257,3 +257,29 @@ export const changeDateToUTC = (fromDate: any, toDate: any) => {
   const toDateUTC = dayjs(toDate).toDate();
   return [fromDateUTC, toDateUTC];
 };
+
+export const getDatesForStatsCards = (thisMonth: any) => {
+  let fromDate = new Date(
+    Date.UTC(
+      thisMonth[0].getFullYear(),
+      thisMonth[0].getMonth(),
+      thisMonth[0].getDate()
+    )
+  )
+    .toISOString()
+    .substring(0, 10);
+
+  let yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  let toDate = new Date(
+    Date.UTC(
+      yesterday.getFullYear(),
+      yesterday.getMonth(),
+      yesterday.getDate()
+    )
+  )
+    .toISOString()
+    .substring(0, 10);
+  return [fromDate, toDate]
+
+}

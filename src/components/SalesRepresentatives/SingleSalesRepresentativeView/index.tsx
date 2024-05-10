@@ -32,6 +32,7 @@ import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import {
   changeDateToUTC,
+  getDatesForStatsCards,
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
 import { startOfMonth } from "rsuite/esm/utils/dateUtils";
@@ -87,33 +88,16 @@ const SalesRepView = () => {
   const getStatsCounts = async () => {
     setLoading(true);
     let thisMonth = [startOfMonth(new Date()), new Date()];
-    let fromDate = new Date(
-      Date.UTC(
-        thisMonth[0].getFullYear(),
-        thisMonth[0].getMonth(),
-        thisMonth[0].getDate()
-      )
-    )
-      .toISOString()
-      .substring(0, 10);
-    let toDate = new Date(
-      Date.UTC(
-        thisMonth[1].getFullYear(),
-        thisMonth[1].getMonth(),
-        thisMonth[1].getDate()
-      )
-    )
-      .toISOString()
-      .substring(0, 10);
+    let defaultDates = getDatesForStatsCards(thisMonth);
 
     try {
       let queryParams: any = {};
 
-      if (fromDate) {
-        queryParams["from_date"] = fromDate;
+      if (defaultDates?.[0]) {
+        queryParams["from_date"] = defaultDates?.[0];
       }
-      if (toDate) {
-        queryParams["to_date"] = toDate;
+      if (defaultDates?.[1]) {
+        queryParams["to_date"] = defaultDates?.[1];
       }
       setSeletedStatsDate([queryParams.from_date, queryParams.to_date]);
 
