@@ -6,7 +6,7 @@ import {
   getCoreRowModel,
   getFilteredRowModel,
   getSortedRowModel,
-  useReactTable
+  useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -30,7 +30,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
   loading,
   headerMonths,
   tabValue,
-  newFacilities
+  newFacilities,
 }) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [newgraphDialogOpen, setNewGraphDialogOpen] = useState<boolean>(false);
@@ -47,9 +47,6 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
     getSortedRowModel: getSortedRowModel(),
     debugTable: true,
   });
-
-
-
 
   let removeSortingForColumnIds = [
     "id",
@@ -151,20 +148,20 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{
-                                  display:
-                                    header.id === "actions" ||
-                                      removeSortingForColumnIds.includes(header.id)
-                                      ? "none"
-                                      : "",
-                                }}
-                              />
-                            )}
+                            <Image
+                              src="/core/sort/un-sort.svg"
+                              height={8}
+                              width={8}
+                              alt="Unsorted"
+                              style={{
+                                display:
+                                  header.id === "actions" ||
+                                  removeSortingForColumnIds.includes(header.id)
+                                    ? "none"
+                                    : "",
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     </th>
@@ -180,8 +177,17 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
 
               return (
                 <React.Fragment key={mainIndex}>
-
-                  <tr className="table-row" onClick={() => handleRowClick(mainIndex)} style={{ cursor: "pointer", boxShadow: mainIndex === expandedRowIndex ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "" }}>
+                  <tr
+                    className="table-row"
+                    onClick={() => handleRowClick(mainIndex)}
+                    style={{
+                      cursor: "pointer",
+                      boxShadow:
+                        mainIndex === expandedRowIndex
+                          ? "0 2px 4px rgba(0, 0, 0, 0.1)"
+                          : "",
+                    }}
+                  >
                     {row.getVisibleCells().map((cell: any, index: number) => {
                       return (
                         <td
@@ -201,7 +207,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                   </tr>
                   {isExpanded && (
                     <tr>
-                      <td colSpan={10}>
+                      <td colSpan={10} style={{ padding: 0 }}>
                         <CaseTypesAccordians
                           id={row?.original?.facility_id}
                           searchParams={searchParams}
@@ -287,7 +293,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
           </tr>
           {newFacilities && Object?.keys(newFacilities)?.length ? (
             <tr
-              className="table-row"
+              className="table-row active-facilities-row"
               style={{
                 fontSize: "clamp(12px, 0.62vw, 14px)",
                 border: "1px solid #a5a5a5",
@@ -298,15 +304,17 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
             >
               <td className="cell">Active Facilities</td>
               <td className="cell"></td>
-              {newFacilities && Object?.keys(newFacilities)?.length && headerMonths?.map((item: any, index: number) => {
-                return (
-                  <td key={index} className="cell">
-                    {tabValue == "Revenue"
-                      ? formatMoney(newFacilities[item])
-                      : newFacilities[item]?.toLocaleString()}
-                  </td>
-                );
-              })}
+              {newFacilities &&
+                Object?.keys(newFacilities)?.length &&
+                headerMonths?.map((item: any, index: number) => {
+                  return (
+                    <td key={index} className="cell">
+                      {tabValue == "Revenue"
+                        ? formatMoney(newFacilities[item])
+                        : newFacilities[item]?.toLocaleString()}
+                    </td>
+                  );
+                })}
               <td
                 className="cell"
                 onClick={() => setNewGraphDialogOpen(true)}
