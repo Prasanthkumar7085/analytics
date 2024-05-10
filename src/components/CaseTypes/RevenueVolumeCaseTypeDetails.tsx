@@ -477,10 +477,24 @@ const VolumeCaseTypesDetails = ({
     },
   ];
 
-  const addAddtionalColoumns = [
+  const hedaerMonthsColoumns = () => {
+    if (headerMonths > 1) {
+      return addMonthWiseColoumns;
+    } else {
+      return addAddtionalColoumns;
+    }
+
+  }
+
+  const addMonthWiseColoumns = [
     ...columnDef,
     ...addtionalcolumns,
     ...totalColoumn,
+    ...graphColoumn,
+  ];
+  const addAddtionalColoumns = [
+    ...columnDef,
+    ...addtionalcolumns,
     ...graphColoumn,
   ];
 
@@ -522,7 +536,7 @@ const VolumeCaseTypesDetails = ({
       </div>
       <CaseTypesColumnTable
         data={caseData}
-        columns={addAddtionalColoumns}
+        columns={hedaerMonthsColoumns()}
         totalSumValues={totalSumValues}
         loading={loading}
         headerMonths={headerMonths}
