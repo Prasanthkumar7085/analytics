@@ -167,13 +167,26 @@ const FacilitiesList = () => {
   //go to single sales rep page navigation event
   const gotoSingleSalesRepPage = (Id: string) => {
     let queryString = "";
-    const queryParams: any = {};
-    if (params.get("from_date")) {
-      queryParams["from_date"] = params.get("from_date");
-    }
-    if (params.get("to_date")) {
-      queryParams["to_date"] = params.get("to_date");
-    }
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let defaultfromDate = new Date(
+      Date.UTC(
+        thisMonth[0].getFullYear(),
+        thisMonth[0].getMonth(),
+        thisMonth[0].getDate()
+      )
+    )
+      .toISOString()
+      .substring(0, 10);
+    let defaulttoDate = new Date(
+      Date.UTC(
+        thisMonth[1].getFullYear(),
+        thisMonth[1].getMonth(),
+        thisMonth[1].getDate()
+      )
+    )
+      .toISOString()
+      .substring(0, 10);
+    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
     }

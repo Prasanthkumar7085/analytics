@@ -346,7 +346,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
         <ExportButton
           onClick={() => {
             exportToExcelMonthWiseFacilitiesVolume(
-              facilitiesData,
+              checkboxChecked ? filterDataByZeroValues(facilitiesData) : facilitiesData,
               headerMonths,
               totalSumFacilityValues,
               newFacilities

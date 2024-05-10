@@ -105,7 +105,7 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
 
 
   let totalSumSortedValues = ["Total", "", ...total];
-  let totalFacilitesValues = ["Active Facilties", "", totalFacilites]
+  let totalFacilitesValues = ["Active Facilties", "", ...totalFacilites]
 
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues], ...[totalFacilitesValues]];
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
