@@ -129,8 +129,9 @@ const SalesRep = () => {
           <GlobalDateRangeFilter onChangeData={onChangeData} />
           <ExportButton
             onClick={() => {
-              exportToExcelSalesRepTable(salesReps, totalRevenueSum);
+              exportToExcelSalesRepTable(salesReps, totalRevenueSum,);
             }}
+            disabled={salesReps?.length === 0 ? true : false}
           />
         </div>
       </div>

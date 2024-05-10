@@ -283,57 +283,58 @@ const InsurancePayorsForSalesRep = ({ searchParams, pageName, tabValue, selected
     }, [searchParams, tabValue, selectedCaseValue]);
 
     return (
-      <div style={{ position: "relative" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
-        >
-          <ExportButton
-            onClick={() => {
-              exportToExcelInsurancePayorsVolumeTable(
-                insuranceData,
-                totalInsurancePayors
-              );
-            }}
-          />
-        </div>
-        <SingleColumnTable
-          data={insuranceData}
-          columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
-          totalSumValues={totalInsurancePayors}
-          loading={loading}
-        />
-        {loading ? (
-          <Backdrop
-            open={true}
-            style={{
-              zIndex: 999,
-              color: "red",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              background: "rgba(256,256,256,0.8)",
-            }}
-          >
-            <object
-              type="image/svg+xml"
-              data={"/core/loading.svg"}
-              width={150}
-              height={150}
+        <div style={{ position: "relative" }}>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-end",
+                }}
+            >
+                <ExportButton
+                    onClick={() => {
+                        exportToExcelInsurancePayorsVolumeTable(
+                            insuranceData,
+                            totalInsurancePayors
+                        );
+                    }}
+                    disabled={insuranceData?.length === 0 ? true : false}
+                />
+            </div>
+            <SingleColumnTable
+                data={insuranceData}
+                columns={tabValue == "Revenue" ? Revenuecolumns : Volumecolumns}
+                totalSumValues={totalInsurancePayors}
+                loading={loading}
             />
-          </Backdrop>
-        ) : (
-          ""
-        )}
-      </div>
+            {loading ? (
+                <Backdrop
+                    open={true}
+                    style={{
+                        zIndex: 999,
+                        color: "red",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        background: "rgba(256,256,256,0.8)",
+                    }}
+                >
+                    <object
+                        type="image/svg+xml"
+                        data={"/core/loading.svg"}
+                        width={150}
+                        height={150}
+                    />
+                </Backdrop>
+            ) : (
+                ""
+            )}
+        </div>
     );
 };
 

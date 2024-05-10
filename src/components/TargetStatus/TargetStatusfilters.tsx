@@ -98,6 +98,7 @@ const TargetStausFilters = ({
                     totalSumValues
                   );
                 }}
+                disabled={targetData?.length === 0 ? true : false}
               />
             </li>
           </ul>
