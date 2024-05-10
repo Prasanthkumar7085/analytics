@@ -217,32 +217,7 @@ const CaseTypesAccrodianTable: FC<pageProps> = ({
                         </tr>
                     )}
                 </tbody>
-                <tfoot className="tfoot">
-                    <tr
-                        className="table-row"
-                        style={{
-                            fontSize: "clamp(12px, 0.62vw, 14px)",
-                            border: "1px solid #a5a5a5",
-                            textTransform: "uppercase",
-                            fontWeight: "600",
-                            color: "#1B2459",
-                            background: "#EFF1FA",
-                        }}
-                    >
-                        <td className="cell">Total</td>
-                        <td className="cell"></td>
-                        {headerMonths?.map((item: any, index: number) => {
-                            return (
-                                <td key={index} className="cell">
-                                    {tabValue == "Revenue"
-                                        ? formatMoney(totalSumValues[item])
-                                        : totalSumValues[item]?.toLocaleString()}
-                                </td>
-                            );
-                        })}
 
-                    </tr>
-                </tfoot>
             </table>
 
         </div>
