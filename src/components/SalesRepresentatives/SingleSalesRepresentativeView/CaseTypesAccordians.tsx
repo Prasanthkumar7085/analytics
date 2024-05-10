@@ -1,14 +1,11 @@
-import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
-import LoadingComponent from "@/components/core/LoadingComponent";
-import CaseTypesFacilitiesTable from "@/components/core/Table/TableForCaseTypesFacilities";
+import CaseTypesAccrodianTable from "@/components/core/Table/CaseTypesAccrodianTable";
 import { addSerial } from "@/lib/Pipes/addSerial";
-import { graphColors } from "@/lib/constants";
 import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import { getMonthWiseVolumeCaseTypesForSinglePageFacilitiesAPI } from "@/services/caseTypesAPIs";
 import { Backdrop } from "@mui/material";
 import { useEffect, useState } from "react";
 
-const CaseTypesAccordianTable = ({ id, searchParams }: any) => {
+const CaseTypesAccordians = ({ id, searchParams }: any) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [caseData, setCaseData] = useState<any>([]);
     const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -119,42 +116,6 @@ const CaseTypesAccordianTable = ({ id, searchParams }: any) => {
             </span>
         ),
     }));
-
-    const graphColoumn = [
-        {
-            accessorFn: (row: any) => row.actions,
-            id: "actions",
-            enableSorting: false,
-            header: () => <span style={{ whiteSpace: "nowrap" }}>Graph</span>,
-            footer: (props: any) => props.column.id,
-            width: "100px",
-
-            cell: (info: any) => {
-                let data = { ...info.row.original };
-                delete data?.case_type_id;
-                delete data?.case_type_name;
-                delete data?.serial;
-
-                return (
-                    <div
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                            setGraphDialogOpen(true);
-                            setSelectedGraphData(info.row.original);
-                            setGraphValuesData(data);
-                            setGraphColor(graphColors[info.row.original.case_type_name]);
-                        }}
-                    >
-                        <AreaGraphForFacilities
-                            data={data}
-                            graphColor={graphColors[info.row.original.case_type_name]}
-                        />
-                    </div>
-                );
-            },
-        },
-    ];
-
     const columnDef = [
         {
             accessorFn: (row: any) => row.serial,
@@ -189,7 +150,6 @@ const CaseTypesAccordianTable = ({ id, searchParams }: any) => {
     const addAddtionalColoumns = [
         ...columnDef,
         ...addtionalcolumns,
-        ...graphColoumn,
     ];
 
     //api call to get details of case types
@@ -201,8 +161,8 @@ const CaseTypesAccordianTable = ({ id, searchParams }: any) => {
     }, [searchParams]);
 
     return (
-        <div style={{ position: "relative" }}>
-            <CaseTypesFacilitiesTable
+        <div style={{ position: "relative" }} id="accrodian">
+            <CaseTypesAccrodianTable
                 data={caseData}
                 columns={addAddtionalColoumns}
                 totalSumValues={totalSumValues}
@@ -239,4 +199,4 @@ const CaseTypesAccordianTable = ({ id, searchParams }: any) => {
         </div>
     );
 };
-export default CaseTypesAccordianTable;
+export default CaseTypesAccordians;

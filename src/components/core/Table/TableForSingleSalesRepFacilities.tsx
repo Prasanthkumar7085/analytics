@@ -1,23 +1,18 @@
+import CaseTypesAccordians from "@/components/SalesRepresentatives/SingleSalesRepresentativeView/CaseTypesAccordians";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import {
   SortingState,
   flexRender,
   getCoreRowModel,
-  getExpandedRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 import AreaGraphForFacilities from "../AreaGraph/AreaGraphForFacilities";
-import GraphDialog from "../GraphDialog";
 import GraphDialogForFacilities from "../GraphDilogForFacilities";
-import SingleFacilitieCaseTypeDetails from "@/components/Facilities/SingleFacilitieView/SingleFacilitiesCaseTypeDetails";
-import CaseTypeDetailsForFacilities from "@/components/Facilities/SingleFacilitieView/CaseTypeDetailsForFacilities";
-import CaseTypesAccordianTable from "@/components/SalesRepresentatives/SingleSalesRepresentativeView/CaseTypesAccordianTable";
 
 interface pageProps {
   columns: any[];
@@ -186,7 +181,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
               return (
                 <React.Fragment key={mainIndex}>
 
-                  <tr className="table-row" onClick={() => handleRowClick(mainIndex)}>
+                  <tr className="table-row" onClick={() => handleRowClick(mainIndex)} style={{ cursor: "pointer", boxShadow: mainIndex === expandedRowIndex ? "0 2px 4px rgba(0, 0, 0, 0.1)" : "" }}>
                     {row.getVisibleCells().map((cell: any, index: number) => {
                       return (
                         <td
@@ -207,7 +202,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                   {isExpanded && (
                     <tr>
                       <td colSpan={10}>
-                        <CaseTypesAccordianTable
+                        <CaseTypesAccordians
                           id={row?.original?.facility_id}
                           searchParams={searchParams}
                         />
@@ -290,7 +285,6 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
               )}
             </td>
           </tr>
-          <br></br>
           {newFacilities && Object?.keys(newFacilities)?.length ? (
             <tr
               className="table-row"

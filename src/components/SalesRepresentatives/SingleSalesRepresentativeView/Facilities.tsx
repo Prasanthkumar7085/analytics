@@ -17,6 +17,7 @@ import { Backdrop, FormControlLabel, FormGroup } from "@mui/material";
 import Checkbox from '@mui/material/Checkbox';
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
   const params = useSearchParams();
@@ -285,11 +286,15 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
       width: "60px",
       minWidth: "60px",
       maxWidth: "60px",
-      cell: ({ row, table }: any) =>
-        (table
-          .getSortedRowModel()
-          ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
-        1,
+      cell: ({ row, table }: any) => (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          <ExpandMoreIcon />
+          {(table
+            .getSortedRowModel()
+            ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
+            1}
+        </span>
+      )
     },
 
     {
