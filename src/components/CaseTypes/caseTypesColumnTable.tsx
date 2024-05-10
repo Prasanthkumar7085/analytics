@@ -17,7 +17,7 @@ import { getAcesdingOrderMonthsForGraphs } from "@/lib/helpers/apiHelpers";
 import GraphDialogForFacilities from "../core/GraphDilogForFacilities";
 
 interface pageProps {
-  columns: any[];
+  columns: any;
   data: any[];
   totalSumValues?: any;
   loading: boolean;
@@ -327,57 +327,61 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                 </td>
               );
             })}
-            <td
-              className="cell"
-              style={{ cursor: "pointer" }}
-            >
-              <Tooltip
-                arrow
-                slotProps={{
-                  popper: {
-                    modifiers: [
-                      {
-                        name: "offset",
-                        options: {
-                          offset: [0, -5],
+            {headerMonths > 1 ? (
+              <td
+                className="cell"
+                style={{ cursor: "pointer" }}
+              >
+                <Tooltip
+                  arrow
+                  slotProps={{
+                    popper: {
+                      modifiers: [
+                        {
+                          name: "offset",
+                          options: {
+                            offset: [0, -5],
+                          },
                         },
-                      },
-                    ],
-                  },
-                }}
-                componentsProps={{
-                  tooltip: {
-                    sx: {
-                      width: "100px",
-                      bgcolor: getBackgroundColor(
-                        rowTotalSum?.[0],
-                        rowTotalSum?.[1]
-                      ),
-                      color: "black",
-                      border: "1px solid rgba(0,0,0,0.1)",
-                      padding: 0,
-                      fontSize: "15px",
-                      textAlign: "center",
-                      "& .MuiTooltip-arrow": {
+                      ],
+                    },
+                  }}
+                  componentsProps={{
+                    tooltip: {
+                      sx: {
+                        width: "100px",
+                        bgcolor: getBackgroundColor(
+                          rowTotalSum?.[0],
+                          rowTotalSum?.[1]
+                        ),
                         color: "black",
-                        "&::before": {
-                          border:
-                            " 1px solid rgba(0, 0, 0, 0.1)!important",
+                        border: "1px solid rgba(0,0,0,0.1)",
+                        padding: 0,
+                        fontSize: "15px",
+                        textAlign: "center",
+                        "& .MuiTooltip-arrow": {
+                          color: "black",
+                          "&::before": {
+                            border:
+                              " 1px solid rgba(0, 0, 0, 0.1)!important",
+                          },
                         },
                       },
                     },
-                  },
-                }}
-                title={
-                  "Target total: " +
-                  rowTotalSum?.[1]?.toLocaleString()
-                }
-              >
-                <div className="statusTags">
-                  {rowTotalSum?.[0]?.toLocaleString()}
-                </div>
-              </Tooltip>
-            </td>
+                  }}
+                  title={
+                    "Target total: " +
+                    rowTotalSum?.[1]?.toLocaleString()
+                  }
+                >
+                  <div className="statusTags">
+                    {rowTotalSum?.[0]?.toLocaleString()}
+                  </div>
+                </Tooltip>
+              </td>
+            ) : (
+              ""
+            )}
             <td
               className="cell"
               onClick={() => setGraphDialogOpen(true)}
