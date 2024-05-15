@@ -1,12 +1,8 @@
+import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, IconButton } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import CloseIcon from "@mui/icons-material/Close";
-import {
-  formatDateToMonthName,
-  formatMonthYear,
-} from "@/lib/helpers/apiHelpers";
-import { truncate } from "fs";
 
 const GraphDialog = ({
   graphDialogOpen,
@@ -16,6 +12,8 @@ const GraphDialog = ({
   graphColor,
   tabValue,
 }: any) => {
+  console.log(graphValuesData, "asdf");
+
   const options = {
     title: {
       text: graphData?.case_type_name
@@ -30,8 +28,8 @@ const GraphDialog = ({
       },
       categories: Object?.values(graphValuesData)?.length
         ? Object?.keys(graphValuesData).map((item: any) =>
-          formatMonthYear(item)
-        )
+            formatMonthYear(item)
+          )
         : [],
     },
     plotOptions: {
