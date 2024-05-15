@@ -1,30 +1,54 @@
 import * as XLSX from "xlsx-color";
 import { formatMonthYear } from "./apiHelpers";
+function sortChronological(data: any) {
+  const keys = Object.keys(data).filter(
+    (key) => Array.isArray(data[key]) && key !== "rowTotal"
+  );
+
+  keys.sort((a, b) => {
+    const dateA: any = new Date(a.substring(0, 3) + " 01," + a.substring(3));
+    const dateB: any = new Date(b.substring(0, 3) + " 01," + b.substring(3));
+    return dateA - dateB;
+  });
+
+  const sortedNumbers = keys.map((key) => data[key][0]);
+
+  sortedNumbers.push(data.rowTotal[0]); // Adding 'rowTotal' at the end
+
+  return sortedNumbers;
+}
 export const exportToExcelMonthWiseCaseTypes = (
   caseData: any,
   headerMonths: any,
-  totalSumValues: any
+  totalSumValues: any,
+  rowTotalSum: any
 ) => {
   const formattedData = caseData.map((obj: any, index: number) => {
-    const sortedValues = Object.entries(obj)
-      .filter(
-        ([key, value]) =>
-          key !== "case_type_name" && key !== "serial" && key !== "case_type_id"
-      )
-      .sort((a, b) => {
-        const monthA = new Date(
-          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        const monthB = new Date(
-          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        return monthA - monthB;
-      })
-      .map(([_, value]: any) => value[0]);
+    const sortedValues = sortChronological(obj);
+    //     Object.entries(obj)
+    //   .filter(
+    //     ([key, value]) =>
+    //       key !== "case_type_name" && key !== "serial" && key !== "case_type_id"
+    //   )
+    //   .sort((a, b) => {
+    //     const monthA = new Date(
+    //       a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+    //     ).getTime();
+    //     const monthB = new Date(
+    //       b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
+    //     ).getTime();
+    //     return monthA - monthB;
+    //   })
+    //   .map(([_, value]: any) => value[0]);
+
     return [index + 1, obj.case_type_name, ...sortedValues];
   });
-  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
-  let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth];
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
+
+  let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth, "Total"];
+
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
@@ -34,7 +58,12 @@ export const exportToExcelMonthWiseCaseTypes = (
     .map(([_, value]: any) => value[0]);
 
   let totalSumSortedValues = ["Total", "", ...total];
-  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+
+  let totalData = [
+    ...[headers],
+    ...formattedData,
+    ...[[...totalSumSortedValues, rowTotalSum[0]]],
+  ];
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   // Setting background color for header cells
@@ -59,6 +88,8 @@ export const exportToExcelMonthWiseCaseTypes = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "case-types-month-volume.xlsx");
 };
+
+
 
 export const exportToExcelMonthWiseFacilitiesVolume = (
   facilitiesData: any,

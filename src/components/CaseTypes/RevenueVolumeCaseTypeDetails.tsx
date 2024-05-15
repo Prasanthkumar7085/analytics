@@ -86,13 +86,12 @@ const VolumeCaseTypesDetails = ({
     setTotalSumValues(groupedDataSum);
   };
 
-
   //get the total sum of the each row
   const calculateRowTotal = (rowData: any, uniqueMonths: any) => {
     let totalVolume = 0;
     let totalTarget = 0;
     uniqueMonths.forEach((month: any) => {
-      const formattedMonth = month.replace(/\s/g, '');
+      const formattedMonth = month.replace(/\s/g, "");
       if (rowData[formattedMonth]) {
         totalVolume += parseFloat(rowData[formattedMonth][0]);
         totalTarget += parseFloat(rowData[formattedMonth][1]);
@@ -115,7 +114,8 @@ const VolumeCaseTypesDetails = ({
       } = item;
       if (!groupedData[case_type_name]) {
         groupedData[case_type_name] = {
-          case_type_id, case_type_name
+          case_type_id,
+          case_type_name,
         };
       }
 
@@ -126,10 +126,9 @@ const VolumeCaseTypesDetails = ({
         total_targets,
       ];
       calculateRowTotal(groupedData[case_type_name], uniqueMonths);
-
     });
     return groupedData;
-  }
+  };
 
   //get details Volume of caseTypes
   const getDetailsOfCaseTypesOfVolume = async (queryParams: any) => {
@@ -143,7 +142,10 @@ const VolumeCaseTypesDetails = ({
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
-        const groupedData: any = groupDataWithMonthWise(response?.data, uniqueMonths);
+        const groupedData: any = groupDataWithMonthWise(
+          response?.data,
+          uniqueMonths
+        );
 
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
@@ -159,7 +161,7 @@ const VolumeCaseTypesDetails = ({
           rowVolumeSum += obj.rowTotal[0];
           rowTargetSum += obj.rowTotal[1];
         });
-        setRowTotalSum([rowVolumeSum, rowTargetSum])
+        setRowTotalSum([rowVolumeSum, rowTargetSum]);
       }
     } catch (err) {
       console.error(err);
@@ -337,11 +339,14 @@ const VolumeCaseTypesDetails = ({
         delete data?.case_type_id;
         delete data?.case_type_name;
         delete data?.serial;
+        delete data?.rowTotal;
         let rearrangeData = getAcesdingOrderMonthsForGraphs(data);
+
         return (
           <div
             style={{ cursor: "pointer" }}
             onClick={() => {
+              console.log(info.row.original, "aasdf");
               setGraphDialogOpen(true);
               setSelectedGraphData(info.row.original);
               setGraphValuesData(rearrangeData);
@@ -358,14 +363,12 @@ const VolumeCaseTypesDetails = ({
     },
   ];
 
-
-
   const totalColoumn = [
     {
       accessorFn: (row: any) => row.rowTotal,
       id: "rowTotal",
-      header: () => <span style={{ whiteSpace: 'nowrap' }}>Total</span>,
-      width: '100px',
+      header: () => <span style={{ whiteSpace: "nowrap" }}>Total</span>,
+      width: "100px",
       sortDescFirst: false,
       sortingFn: (rowA: any, rowB: any, columnId: any) => {
         const rowDataA = rowA.original[columnId];
@@ -416,11 +419,9 @@ const VolumeCaseTypesDetails = ({
                 },
               },
             }}
-            title={
-              "Target: " + info.row.original.rowTotal[1]?.toLocaleString()
-            }
+            title={"Target: " + info.row.original.rowTotal[1]?.toLocaleString()}
           >
-            <span style={{ cursor: 'pointer' }}>
+            <span style={{ cursor: "pointer" }}>
               {info.row.original.rowTotal[0]?.toLocaleString()}
             </span>
           </Tooltip>
@@ -458,20 +459,22 @@ const VolumeCaseTypesDetails = ({
         const caseTypeVAlue = {
           id: info?.row?.original?.case_type_id,
           name: info?.row?.original?.case_type_name,
-          displayName: info?.row?.original?.case_type_name
-        }
-        return <span
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            setCaseTypeValue(caseTypeVAlue)
-            window.scrollTo({
-              top: document.body.scrollHeight,
-              behavior: 'smooth'
-            });
-          }}
-        >
-          {info.getValue()}
-        </span>;
+          displayName: info?.row?.original?.case_type_name,
+        };
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setCaseTypeValue(caseTypeVAlue);
+              window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth",
+              });
+            }}
+          >
+            {info.getValue()}
+          </span>
+        );
       },
     },
   ];
@@ -482,8 +485,7 @@ const VolumeCaseTypesDetails = ({
     } else {
       return addAddtionalColoumns;
     }
-
-  }
+  };
 
   const addMonthWiseColoumns = [
     ...columnDef,
@@ -527,8 +529,9 @@ const VolumeCaseTypesDetails = ({
           onClick={() => {
             exportToExcelMonthWiseCaseTypes(
               caseData,
-              headerMonths,
-              totalSumValues
+              [...headerMonths],
+              totalSumValues,
+              rowTotalSum
             );
           }}
           disabled={caseData?.length === 0 ? true : false}
