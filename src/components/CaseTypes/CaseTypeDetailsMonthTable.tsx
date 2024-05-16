@@ -331,7 +331,7 @@ const CaseTypesDetailsMonthTable = ({
         onClick={() => {
           exportToExcelCaseTypeTable(caseData, headerMonths, totalSumValues);
         }}
-        disabled={caseData?.length === 0 ? true : false}
+        disabled={caseData?.length === 0 || tabValue == "Revenue" ? true : false}
       ></ExportButton>
       <CaseTypesColumnTable
         data={caseData}

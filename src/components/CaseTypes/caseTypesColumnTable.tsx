@@ -15,6 +15,7 @@ import GraphDialog from "../core/GraphDialog";
 import { Tooltip } from "@mui/material";
 import { getAcesdingOrderMonthsForGraphs } from "@/lib/helpers/apiHelpers";
 import GraphDialogForFacilities from "../core/GraphDilogForFacilities";
+import AreaGraphForFacilities from "../core/AreaGraph/AreaGraphForFacilities";
 
 interface pageProps {
   columns: any;
@@ -327,7 +328,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                 </td>
               );
             })}
-            {headerMonths?.length > 1 && tabValue == "Volume" ? (
+            {headerMonths?.length > 1 && tabValue == "Volume" && rowTotalSum ? (
               <td
                 className="cell"
                 style={{ cursor: "pointer" }}
@@ -387,10 +388,11 @@ const CaseTypesColumnTable: FC<pageProps> = ({
               onClick={() => setGraphDialogOpen(true)}
               style={{ cursor: "pointer" }}
             >
-              {headerMonths?.length && totalSumValues ? (
+              {headerMonths?.length && totalSumValues[headerMonths[0]]?.length == 2 ? (
                 <AreaGraph data={getAcesdingOrderMonthsForGraphs(totalSumValues)} graphColor={"blue"} />
               ) : (
-                ""
+                <AreaGraphForFacilities data={getAcesdingOrderMonthsForGraphs(totalSumValues)} graphColor={"blue"} />
+
               )}
             </td>
           </tr>

@@ -73,7 +73,7 @@ const InsurancesFilters = ({
                 onClick={() => {
                   exportToExcelInsurancesTable(completeData, totalSumValues);
                 }}
-                disabled={completeData?.length === 0 ? true : false}
+                disabled={completeData?.length == 0 ? true : false}
               />
             </li>
           </ul>

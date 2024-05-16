@@ -314,7 +314,7 @@ export const exportToExcelSalesRepTable = (
       obj.active_facilities,
       obj.total_targets,
       obj.total_cases,
-      obj.target_reached,
+      obj.target_reached ? "Yes" : "No",
     ];
   });
   let mainHeaders = ["", "", "FACILITIES", "", "VOLUME", "", ""];
@@ -374,8 +374,10 @@ export const exportToExcelSalesRepTable = (
     } else {
       const targets = row[4];
       const total = row[5];
+      const yesOrNo = row[6];
       const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
       const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+      const cellAddressyesOrNo = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
       const percentCompleted = total / targets;
 
       worksheet[cellAddressTarget].s = {
@@ -394,6 +396,16 @@ export const exportToExcelSalesRepTable = (
                   : "ffebe9",
           },
         },
+      };
+      worksheet[cellAddressyesOrNo].s = {
+        font: {
+          color: {
+            rgb: yesOrNo == "Yes" ?
+              "4F7942"
+              : "FF0000",
+          },
+        },
+
       };
     }
   }

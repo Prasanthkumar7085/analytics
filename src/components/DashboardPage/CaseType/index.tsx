@@ -365,7 +365,8 @@ const CaseTypes = ({
                     totalRevenueSum
                   );
                 }}
-                disabled={caseTypesStatsData?.length === 0 ? true : false}
+
+                disabled={caseTypesStatsData?.length === 0 || tabValue == "Revenue" ? true : false}
               />
             ) : (
               <ExportButton
@@ -375,7 +376,7 @@ const CaseTypes = ({
                     totalRevenueSum
                   );
                 }}
-                disabled={caseTypesStatsData?.length === 0 ? true : false}
+                disabled={caseTypesStatsData?.length === 0 || tabValue == "Revenue" ? true : false}
               />
             )}
           </div>

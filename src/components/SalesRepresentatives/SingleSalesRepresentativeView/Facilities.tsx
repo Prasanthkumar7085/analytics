@@ -352,7 +352,7 @@ const Facilities = ({ searchParams, tabValue, selectedCaseValue }: any) => {
               newFacilities
             );
           }}
-          disabled={facilitiesData?.length === 0 ? true : false}
+          disabled={facilitiesData?.length === 0 || tabValue == "Revenue" ? true : false}
         />
       </div>
       <div

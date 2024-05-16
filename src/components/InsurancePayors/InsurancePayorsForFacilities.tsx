@@ -294,7 +294,7 @@ const InsurancePayorsForFacilities = ({ searchParams, pageName, tabValue, select
                         totalInsurancePayors
                     );
                 }}
-                disabled={insuranceData?.length === 0 ? true : false}
+                disabled={insuranceData?.length === 0 || tabValue == "Revenue" ? true : false}
             ></ExportButton>
             <SingleColumnTable
                 data={insuranceData}

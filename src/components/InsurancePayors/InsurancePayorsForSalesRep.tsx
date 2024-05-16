@@ -298,7 +298,7 @@ const InsurancePayorsForSalesRep = ({ searchParams, pageName, tabValue, selected
                             totalInsurancePayors
                         );
                     }}
-                    disabled={insuranceData?.length === 0 ? true : false}
+                    disabled={insuranceData?.length === 0 || tabValue == "Revenue" ? true : false}
                 />
             </div>
             <SingleColumnTable

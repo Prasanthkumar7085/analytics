@@ -12,6 +12,7 @@ import {
   getMonthWiseVolumeCaseTypesForSinglePageAPI,
 } from "@/services/caseTypesAPIs";
 import { formatMonthYear, getUniqueMonths } from "@/lib/helpers/apiHelpers";
+import ExportButton from "../core/ExportButton/ExportButton";
 
 const RevenuCaseTypesDetails = ({
   tabValue,
@@ -222,6 +223,17 @@ const RevenuCaseTypesDetails = ({
 
   return (
     <div style={{ position: "relative" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "flex-end",
+        }}
+      >
+        <ExportButton
+          disabled={true}
+        />
+      </div>
       <CaseTypesColumnTable
         data={caseData}
         columns={addAddtionalColoumns}

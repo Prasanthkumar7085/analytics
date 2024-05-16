@@ -293,7 +293,7 @@ const CaseTypeDetailsForFacilities = ({
             totalSumValues
           );
         }}
-        disabled={caseData?.length === 0 ? true : false}
+        disabled={caseData?.length === 0 || tabValue == "Revenue" ? true : false}
       ></ExportButton>
       <CaseTypesFacilitiesTable
         data={caseData}
@@ -305,33 +305,35 @@ const CaseTypeDetailsForFacilities = ({
         newFacilities={{}}
       />
 
-      {loading ? (
-        <Backdrop
-          open={true}
-          style={{
-            zIndex: 9999,
-            color: "red",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "rgba(256,256,256,0.8)",
-          }}
-        >
-          <object
-            type="image/svg+xml"
-            data={"/core/loading.svg"}
-            width={150}
-            height={150}
-          />
-        </Backdrop>
-      ) : (
-        ""
-      )}
+      {
+        loading ? (
+          <Backdrop
+            open={true}
+            style={{
+              zIndex: 9999,
+              color: "red",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(256,256,256,0.8)",
+            }}
+          >
+            <object
+              type="image/svg+xml"
+              data={"/core/loading.svg"}
+              width={150}
+              height={150}
+            />
+          </Backdrop>
+        ) : (
+          ""
+        )
+      }
       <GraphDialogForFacilities
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
@@ -340,7 +342,7 @@ const CaseTypeDetailsForFacilities = ({
         graphColor={graphColor}
         tabValue={tabValue}
       />
-    </div>
+    </div >
   );
 };
 export default CaseTypeDetailsForFacilities;

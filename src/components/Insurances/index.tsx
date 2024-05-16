@@ -388,7 +388,7 @@ const InsurancesComponent = () => {
     <section id="InsuranceTablePage" className="insurancesPage s-no-column">
       <InsurancesFilters
         totalSumValues={totalSumValues}
-        completeData={completeData}
+        completeData={insurancesData}
         onUpdateData={onUpdateData}
         queryPreparations={queryPreparations}
         dateFilterDefaultValue={dateFilterDefaultValue}
