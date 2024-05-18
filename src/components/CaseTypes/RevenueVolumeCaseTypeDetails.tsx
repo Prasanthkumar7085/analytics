@@ -346,7 +346,6 @@ const VolumeCaseTypesDetails = ({
           <div
             style={{ cursor: "pointer" }}
             onClick={() => {
-              console.log(info.row.original, "aasdf");
               setGraphDialogOpen(true);
               setSelectedGraphData(info.row.original);
               setGraphValuesData(rearrangeData);

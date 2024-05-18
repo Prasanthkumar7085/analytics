@@ -12,7 +12,6 @@ const GraphDialog = ({
   graphColor,
   tabValue,
 }: any) => {
-  console.log(graphValuesData, "asdf");
 
   const options = {
     title: {
@@ -28,8 +27,8 @@ const GraphDialog = ({
       },
       categories: Object?.values(graphValuesData)?.length
         ? Object?.keys(graphValuesData).map((item: any) =>
-            formatMonthYear(item)
-          )
+          formatMonthYear(item)
+        )
         : [],
     },
     plotOptions: {

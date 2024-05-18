@@ -167,7 +167,6 @@ export const exportToExcelCaseTypesVolumes = (
   caseTypesStatsData: any,
   totalVolumeSum: any
 ) => {
-  console.log(caseTypesStatsData, "fsadds")
   const formattedData = caseTypesStatsData.map((obj: any, index: number) => {
     return [
       index + 1,
