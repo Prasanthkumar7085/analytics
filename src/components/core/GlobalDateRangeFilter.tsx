@@ -95,18 +95,6 @@ const GlobalDateRangeFilter = ({
     if (newDate) {
       const date1 = dayjs(newDate[0]).format("YYYY-MM-DD");
       const date2 = dayjs(newDate[1]).format("YYYY-MM-DD");
-
-      // let date1 = new Date(
-      //   moment(new Date(newDate[0])).format("YYYY-MM-DD")
-      // )
-      //   .toISOString()
-      //   .substring(0, 10);
-      // let date2 = new Date(
-      //   moment(new Date(newDate[1])).format("YYYY-MM-DD")
-      // )
-      //   .toISOString()
-      //   .substring(0, 10);
-
       onChangeData(date1, date2);
     } else {
       onChangeData("", "");

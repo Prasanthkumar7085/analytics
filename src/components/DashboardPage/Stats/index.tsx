@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import CountUp from "react-countup";
 import dayjs from "dayjs";
 import "dayjs/locale/en"; // Ensure English locale is loaded for formatting
+import { averageUptoPreviousDateTargets } from "@/lib/helpers/apiHelpers";
 
 const Stats = ({
   revenueStatsDetails,
@@ -49,21 +50,7 @@ const Stats = ({
     }
   };
 
-  const averagePerDayTargets = () => {
-    const totalDaysInMonth = dayjs().daysInMonth();
-    const startOfMonth = dayjs().startOf('month');
 
-    const currentDate = dayjs();
-    const daysPassed = currentDate.diff(startOfMonth, 'day');
-    const targetVolume = volumeStatsDetails?.[0]?.target_volume;
-    if (targetVolume) {
-      const averagePerDay = targetVolume / totalDaysInMonth;
-      return averagePerDay * daysPassed;
-    }
-    else {
-      return 0;
-    }
-  }
 
   return (
     <>
@@ -166,7 +153,7 @@ const Stats = ({
                   background: volumeStatsDetails?.length
                     ? getBackgroundColor(
                       volumeStatsDetails?.[0]?.total_cases,
-                      averagePerDayTargets()
+                      averageUptoPreviousDateTargets(volumeStatsDetails?.[0]?.target_volume)
                     )
                     : "linear-gradient(110.31deg, #4386c5, #004e92)",
                 }}
@@ -219,7 +206,7 @@ const Stats = ({
                         <CountUp
                           start={0}
                           decimal="."
-                          end={averagePerDayTargets()}
+                          end={averageUptoPreviousDateTargets(volumeStatsDetails?.[0]?.target_volume)}
                         />
                       )}
                     </h2>

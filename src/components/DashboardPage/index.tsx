@@ -1,4 +1,5 @@
 "use client";
+import { averageUptoDateTargets, getDatesForStatsCards, getThisMonthDates, rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import {
   getDashboardCaseTypesRevenueStatsAPI,
   getDashboardCaseTypesVolumeStatsAPI,
@@ -9,12 +10,11 @@ import {
 } from "@/services/statsAPI";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
+import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 import CaseType from "./CaseType";
 import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
-import { getDatesForStatsCards, rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -24,6 +24,7 @@ const DashboardPage = () => {
   const [caseTypeLoading, setCaseTypeLoading] = useState(true);
   const [tabValue, setTabValue] = useState("Volume");
   const [statsSeletedDate, setSeletedStatsDate] = useState<any>([]);
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
 
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
@@ -82,7 +83,9 @@ const DashboardPage = () => {
     toDate: any,
     tabValue: string
   ) => {
+
     let queryParams: any = {};
+
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
@@ -108,22 +111,31 @@ const DashboardPage = () => {
     try {
       const response = await getDashboardCaseTypesVolumeStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
+        let data = response?.data?.map((entry: any) => {
+          return { ...entry, dayTargets: averageUptoDateTargets(entry?.total_targets) };
+        });
+
+        let rearrangedData = rearrangeDataWithCasetypes(data);
+        setCaseTypesStatsData(rearrangedData);
+
         let totalCases = 0;
         let totalTargets = 0;
+        let dayTargets = 0;
 
-        response?.data?.forEach((entry: any) => {
+        data?.forEach((entry: any) => {
           totalCases += entry.total_cases ? +entry.total_cases : 0;
+          dayTargets += entry.dayTargets ? +entry.dayTargets : 0;
           totalTargets += entry.total_targets ? +entry.total_targets : 0;
         });
 
         const result = [
           { value: "Total", dolorSymbol: false },
           { value: totalTargets, dolorSymbol: false },
+          { value: Math.ceil(dayTargets), dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
+
         ];
         setTotalSumValues(result);
-        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
-        setCaseTypesStatsData(rearrangedData);
       }
     } catch (err) {
       console.error(err);
@@ -169,7 +181,12 @@ const DashboardPage = () => {
   //api call to get stats count
   useEffect(() => {
     getStatsCounts("", "");
-    queryPreparations("", "", "Volume");
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let defaultDates = getThisMonthDates(thisMonth);
+    setDateFilterDefaultValue(thisMonth);
+    queryPreparations(defaultDates[0], defaultDates[1], "Volume");
+
+
   }, []);
 
   return (
@@ -193,6 +210,7 @@ const DashboardPage = () => {
             totalRevenueSum={totalRevenueSum}
             setTabValue={setTabValue}
             tabValue={tabValue}
+            dateFilterDefaultValue={dateFilterDefaultValue}
           />
         </Grid>
         <Grid item xs={12}>

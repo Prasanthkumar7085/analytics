@@ -3,8 +3,15 @@ import CaseTypes from "@/components/DashboardPage/CaseType";
 import Stats from "@/components/DashboardPage/Stats";
 import InsurancePayorsForSalesRep from "@/components/InsurancePayors/InsurancePayorsForSalesRep";
 import Trends from "@/components/Trends";
+import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
+import {
+  averageUptoDateTargets,
+  changeDateToUTC,
+  getDatesForStatsCards,
+  rearrangeDataWithCasetypes
+} from "@/lib/helpers/apiHelpers";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
   getSingleRepDeatilsAPI,
@@ -27,15 +34,9 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
-import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
-import {
-  changeDateToUTC,
-  getDatesForStatsCards,
-  rearrangeDataWithCasetypes,
-} from "@/lib/helpers/apiHelpers";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -187,22 +188,31 @@ const SalesRepView = () => {
         queryParams
       );
       if (response.status == 200 || response?.status == 201) {
+
+        let data = response?.data?.map((entry: any) => {
+          return { ...entry, dayTargets: averageUptoDateTargets(entry?.total_targets) };
+        });
+        let rearrangedData = rearrangeDataWithCasetypes(data);
+        setCaseTypesStatsData(rearrangedData);
+
         let totalCases = 0;
         let totalTargets = 0;
+        let dayTargets = 0;
 
-        response?.data?.forEach((entry: any) => {
+        data?.forEach((entry: any) => {
           totalCases += entry.total_cases ? +entry.total_cases : 0;
+          dayTargets += entry.dayTargets ? +entry.dayTargets : 0;
           totalTargets += entry.total_targets ? +entry.total_targets : 0;
         });
 
         const result = [
           { value: "Total", dolorSymbol: false },
           { value: totalTargets, dolorSymbol: false },
+          { value: Math.ceil(dayTargets), dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
         ];
         setTotalSumValues(result);
-        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
-        setCaseTypesStatsData(rearrangedData);
+
       }
     } catch (err) {
       console.error(err);

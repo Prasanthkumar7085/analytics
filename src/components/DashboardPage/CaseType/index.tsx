@@ -1,20 +1,17 @@
-import { useEffect, useState } from "react";
-import styles from "./index.module.css";
-import { Chart } from "react-google-charts";
-import formatMoney from "@/lib/Pipes/moneyFormat";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import { Backdrop, Badge, Button, CircularProgress } from "@mui/material";
-import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
-import Image from "next/image";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { usePathname, useSearchParams } from "next/navigation";
-import CountUp from "react-countup";
-import { Tab, Tabs } from "@mui/material";
+import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
 import { exportToExcelCaseTypesVolumes, exportToExcelCaseTypesVolumesForFacilites } from "@/lib/helpers/exportsHelpers";
-import ExportButton from "@/components/core/ExportButton/ExportButton";
+import { Backdrop, Tab, Tabs } from "@mui/material";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import Image from "next/image";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import styles from "./index.module.css";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -23,6 +20,8 @@ const CaseTypes = ({
   tabValue,
   setTabValue,
   queryPreparations,
+  dateFilterDefaultValue,
+  setDateFilterDefaultValue
 }: any) => {
   const params = useSearchParams();
   const pathName = usePathname();
@@ -30,6 +29,7 @@ const CaseTypes = ({
   const userType = useSelector(
     (state: any) => state.auth.user?.user_details?.user_type
   );
+
 
   useEffect(() => {
     setSelectedDates([params.get("from_date"), params.get("to_date")]);
@@ -92,6 +92,20 @@ const CaseTypes = ({
           {info.getValue()?.toLocaleString()}
         </span>
       ),
+      header: () => <span className={styles.tableHeading}>MONTH TARGET</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+
+    {
+      accessorFn: (row: any) => row.dayTargets,
+      id: "dayTargets",
+      sortDescFirst: false,
+      cell: (info: any) => (
+        <span className={styles.totalCasesRow}>
+          {info.getValue()?.toLocaleString()}
+        </span>
+      ),
       header: () => <span className={styles.tableHeading}>TARGET</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -110,6 +124,7 @@ const CaseTypes = ({
       width: "150px",
     },
   ];
+
   const VolumecolumnsForFacilities = [
     {
       accessorFn: (row: any) => row.case_type_name,
@@ -234,6 +249,7 @@ const CaseTypes = ({
       width: "150px",
     },
   ];
+
   function getSubtitle() {
     const totalNumber = totalRevenueSum[2]?.value
       ? totalRevenueSum[2]?.value
@@ -324,7 +340,7 @@ const CaseTypes = ({
             Case Types {tabValue}
           </h3>
           {pathName?.includes("dashboard") ? (
-            <GlobalDateRangeFilter onChangeData={onChangeData} />
+            <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
           ) : (
             ""
           )}

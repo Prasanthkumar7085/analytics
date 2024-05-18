@@ -283,3 +283,59 @@ export const getDatesForStatsCards = (thisMonth: any) => {
   return [fromDate, toDate]
 
 }
+
+export const getThisMonthDates = (thisMonth: any) => {
+  let fromDate = new Date(
+    Date.UTC(
+      thisMonth[0].getFullYear(),
+      thisMonth[0].getMonth(),
+      thisMonth[0].getDate()
+    )
+  )
+    .toISOString()
+    .substring(0, 10);
+
+  let thisday = new Date();
+  let toDate = new Date(
+    Date.UTC(
+      thisday.getFullYear(),
+      thisday.getMonth(),
+      thisday.getDate()
+    )
+  )
+    .toISOString()
+    .substring(0, 10);
+  return [fromDate, toDate]
+
+}
+
+export const averageUptoPreviousDateTargets = (target_volume: any) => {
+  const totalDaysInMonth = dayjs().daysInMonth();
+  const startOfMonth = dayjs().startOf('month');
+
+  const currentDate = dayjs();
+  const daysPassed = currentDate.diff(startOfMonth, 'day');
+  const targetVolume = target_volume;
+  if (targetVolume) {
+    const averagePerDay = targetVolume / totalDaysInMonth;
+    return Math.ceil(averagePerDay * daysPassed);
+  }
+  else {
+    return 0;
+  }
+}
+export const averageUptoDateTargets = (target_volume: any) => {
+  const totalDaysInMonth = dayjs().daysInMonth();
+  const startOfMonth = dayjs().startOf('month');
+
+  const currentDate = dayjs();
+  const daysPassed = currentDate.diff(startOfMonth, 'day') + 1;
+  const targetVolume = target_volume;
+  if (targetVolume) {
+    const averagePerDay = targetVolume / totalDaysInMonth;
+    return Math.ceil(averagePerDay * daysPassed);
+  }
+  else {
+    return 0;
+  }
+}
