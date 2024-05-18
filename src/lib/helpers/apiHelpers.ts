@@ -329,7 +329,7 @@ export const averageUptoDateTargets = (target_volume: any) => {
   const startOfMonth = dayjs().startOf('month');
 
   const currentDate = dayjs();
-  const daysPassed = currentDate.diff(startOfMonth, 'day') + 1;
+  const daysPassed = currentDate.diff(startOfMonth, 'day');
   const targetVolume = target_volume;
   if (targetVolume) {
     const averagePerDay = targetVolume / totalDaysInMonth;

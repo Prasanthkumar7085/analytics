@@ -186,7 +186,6 @@ const DashboardPage = () => {
     setDateFilterDefaultValue(thisMonth);
     queryPreparations(defaultDates[0], defaultDates[1], "Volume");
 
-
   }, []);
 
   return (
@@ -211,6 +210,7 @@ const DashboardPage = () => {
             setTabValue={setTabValue}
             tabValue={tabValue}
             dateFilterDefaultValue={dateFilterDefaultValue}
+            setDateFilterDefaultValue={setDateFilterDefaultValue}
           />
         </Grid>
         <Grid item xs={12}>

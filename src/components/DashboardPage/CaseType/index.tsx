@@ -12,6 +12,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./index.module.css";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -327,8 +328,17 @@ const CaseTypes = ({
   };
 
   const onChangeData = (fromDate: any, toDate: any) => {
-    setSelectedDates([fromDate, toDate]);
-    queryPreparations(fromDate, toDate, tabValue);
+    if (fromDate) {
+      setSelectedDates([fromDate, toDate]);
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate))
+      queryPreparations(fromDate, toDate, tabValue);
+    }
+    else {
+      setDateFilterDefaultValue("")
+      queryPreparations("", "", tabValue);
+
+    }
+
   };
 
   return (

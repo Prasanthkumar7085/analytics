@@ -167,17 +167,25 @@ export const exportToExcelCaseTypesVolumes = (
   caseTypesStatsData: any,
   totalVolumeSum: any
 ) => {
+  console.log(caseTypesStatsData, "fsadds")
   const formattedData = caseTypesStatsData.map((obj: any, index: number) => {
-    const sortedValues = Object.entries(obj).map(([_, value]: any) => value);
-    return [index + 1, ...sortedValues];
+    return [
+      index + 1,
+      obj.case_type_name,
+      obj.total_targets,
+      obj.dayTargets,
+      obj.total_cases
+    ];
   });
-  let headers = ["Sl.No", "Case Type", "Targets", "Total"];
+  let headers = ["Sl.No", "Case Type", "Month Targets", "Targets", "Total"];
 
   let totalSumSortedValues = [
     "Total",
     "",
     totalVolumeSum[1]?.value,
     totalVolumeSum[2]?.value,
+    totalVolumeSum[3]?.value,
+
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
@@ -197,10 +205,10 @@ export const exportToExcelCaseTypesVolumes = (
           r: rowIndex,
           c: columnIndex,
         });
-        if (columnIndex === 2 || (columnIndex === 3 && row[2] <= row[3])) {
+        if (columnIndex === 3 || (columnIndex === 4 && row[3] <= row[4])) {
           worksheet[cellAddress].s = {
             fill: {
-              fgColor: { rgb: columnIndex === 2 ? "f0edff" : "f0edff" },
+              fgColor: { rgb: columnIndex === 3 ? "f0edff" : "f0edff" },
             },
           };
         } else {
@@ -212,10 +220,10 @@ export const exportToExcelCaseTypesVolumes = (
         }
       }
     } else {
-      const targets = row[2];
-      const total = row[3];
-      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 2 });
-      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 3 });
+      const targets = row[3];
+      const total = row[4];
+      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 3 });
+      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
       const percentCompleted = total / targets;
 
       worksheet[cellAddressTarget].s = {
