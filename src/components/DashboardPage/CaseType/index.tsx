@@ -337,7 +337,6 @@ const CaseTypes = ({
       setDateFilterDefaultValue("")
       queryPreparations("", "", tabValue);
     }
-
   };
 
   return (

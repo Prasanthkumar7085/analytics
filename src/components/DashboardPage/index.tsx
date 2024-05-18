@@ -181,9 +181,11 @@ const DashboardPage = () => {
   //api call to get stats count
   useEffect(() => {
     getStatsCounts("", "");
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
     let thisMonth = [startOfMonth(new Date()), new Date()];
-    let defaultDates = getThisMonthDates(thisMonth);
-    setDateFilterDefaultValue(thisMonth);
+    let defaultDates = getDatesForStatsCards(thisMonth);
+    setDateFilterDefaultValue([thisMonth[0], yesterday]);
     queryPreparations(defaultDates[0], defaultDates[1], "Volume");
 
   }, []);
