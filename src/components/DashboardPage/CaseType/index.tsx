@@ -252,8 +252,8 @@ const CaseTypes = ({
   ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[2]?.value
-      ? totalRevenueSum[2]?.value
+    const totalNumber = totalRevenueSum[3]?.value
+      ? totalRevenueSum[3]?.value
       : 0;
     return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"
       }</span>
@@ -262,7 +262,7 @@ const CaseTypes = ({
             <b>
             ${tabValue == "Revenue"
         ? formatMoney(totalNumber)
-        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalNumber?.toLocaleString()
+        : pathName?.includes("facilities") ? totalRevenueSum[2]?.value?.toLocaleString() || 0 : totalRevenueSum[3]?.value?.toLocaleString()
       }</b>
         </span>`;
   }
