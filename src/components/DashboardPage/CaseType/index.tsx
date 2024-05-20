@@ -262,7 +262,7 @@ const CaseTypes = ({
             <b>
             ${tabValue == "Revenue"
         ? formatMoney(totalNumber)
-        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalRevenueSum[3]?.value?.toLocaleString()
+        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalRevenueSum[3]?.value?.toLocaleString() || 0
       }</b>
         </span>`;
   }
