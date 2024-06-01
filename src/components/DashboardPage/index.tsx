@@ -185,8 +185,7 @@ const DashboardPage = () => {
     let lastmonth = [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
     let defaultDates = getDatesForStatsCards(thisMonth);
     queryPreparations(defaultDates[0], defaultDates[1], "Volume");
-    if (dayjs(defaultDates[0]).format('YYYY-MM-DD') ==
-      dayjs().format('YYYY-MM-DD')) {
+    if (dayjs(thisMonth[0]).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD')) {
       setDateFilterDefaultValue(lastmonth);
     }
     else {

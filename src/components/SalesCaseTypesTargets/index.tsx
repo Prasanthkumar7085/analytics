@@ -472,6 +472,7 @@ const SalesCaseTypeWiseTargets = () => {
                 </div>
               ) : (
                 <button
+                  disabled={dayjs().format("MM-YYYY") == params.get("month") ? false : true}
                   onClick={() => {
                     handleEditClick(item, info.row.original.sales_rep_id, info);
                   }}
