@@ -25,7 +25,7 @@ import { IconButton, TextField } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
 const SalesCaseTypeWiseTargets = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -504,7 +504,9 @@ const SalesCaseTypeWiseTargets = () => {
   //go to single sales rep page
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
+      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
+      : [startOfMonth(new Date()), new Date()];
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),

@@ -10,7 +10,8 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import FacilitiesFilters from "./FacilitiesFilters";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import dayjs from "dayjs";
 
 const FacilitiesList = () => {
   const router = useRouter();
@@ -167,7 +168,9 @@ const FacilitiesList = () => {
   //go to single sales rep page navigation event
   const gotoSingleSalesRepPage = (Id: string) => {
     let queryString = "";
-    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
+      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
+      : [startOfMonth(new Date()), new Date()];;
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),

@@ -21,7 +21,8 @@ import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import GraphDialogForTargetStatus from "../core/GraphDilaogForTargetStatus";
 import AreaGraphForTargetStatus from "../core/AreaGraph/AreaGraphForTargetstaus";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import dayjs from "dayjs";
 
 const MonthWiseTargetStatus = () => {
   const params = useSearchParams();
@@ -265,7 +266,9 @@ const MonthWiseTargetStatus = () => {
 
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
+      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
+      : [startOfMonth(new Date()), new Date()];
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),
