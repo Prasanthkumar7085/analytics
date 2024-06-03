@@ -280,7 +280,20 @@ export const getDatesForStatsCards = (thisMonth: any) => {
   )
     .toISOString()
     .substring(0, 10);
-  return [fromDate, toDate]
+
+  if (
+    dayjs(fromDate).format('YYYY-MM-DD') ==
+    dayjs().format('YYYY-MM-DD')
+  ) {
+    const currentDate = dayjs();
+    const firstDayOfMonth = currentDate.startOf('month');
+    const lastMonthEndDate = firstDayOfMonth.subtract(1, 'day');
+    const lastMonthStartDate = lastMonthEndDate.startOf('month');
+    return [lastMonthStartDate.format('YYYY-MM-DD'), lastMonthEndDate.format('YYYY-MM-DD')]
+  }
+  else {
+    return [fromDate, toDate]
+  }
 
 }
 

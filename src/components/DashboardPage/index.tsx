@@ -10,11 +10,12 @@ import {
 } from "@/services/statsAPI";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
 import CaseType from "./CaseType";
 import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
+import dayjs from "dayjs";
 const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -56,7 +57,6 @@ const DashboardPage = () => {
   const getStatsCounts = async (fromDate: any, toDate: any) => {
     let thisMonth = [startOfMonth(new Date()), new Date()];
     let defaultDates = getDatesForStatsCards(thisMonth);
-
     let queryParams: any = {
       from_date: defaultDates?.[0],
       to_date: defaultDates?.[1],
@@ -70,7 +70,7 @@ const DashboardPage = () => {
     }
     setSeletedStatsDate([queryParams.from_date, queryParams.to_date]);
     try {
-      await getRevenueStatsCount(queryParams);
+      // await getRevenueStatsCount(queryParams);
       await getVolumeStatsCount(queryParams);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -178,16 +178,26 @@ const DashboardPage = () => {
     }
   };
 
-  //api call to get stats count
-  useEffect(() => {
-    getStatsCounts("", "");
+  const callCaseTypesStatsCounts = () => {
     let yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     let thisMonth = [startOfMonth(new Date()), new Date()];
+    let lastmonth = [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
     let defaultDates = getDatesForStatsCards(thisMonth);
-    setDateFilterDefaultValue([thisMonth[0], yesterday]);
     queryPreparations(defaultDates[0], defaultDates[1], "Volume");
+    if (dayjs(defaultDates[0]).format('YYYY-MM-DD') ==
+      dayjs().format('YYYY-MM-DD')) {
+      setDateFilterDefaultValue(lastmonth);
+    }
+    else {
+      setDateFilterDefaultValue([thisMonth[0], yesterday]);
+    }
+  }
 
+  //api call to get stats count
+  useEffect(() => {
+    getStatsCounts("", "");
+    callCaseTypesStatsCounts()
   }, []);
 
   return (

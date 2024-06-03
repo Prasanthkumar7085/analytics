@@ -6,7 +6,8 @@ import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import styles from "./sales-rep.module.css";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import dayjs from "dayjs";
 const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate }: any) => {
   const router = useRouter();
 
@@ -143,7 +144,10 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
 
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
+      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
+      : [startOfMonth(new Date()), new Date()];
+
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),

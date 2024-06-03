@@ -324,7 +324,7 @@ const SingleSalesRepFacilitiesTable: FC<pageProps> = ({
                   return (
                     <td key={index} className="cell">
                       {tabValue == "Revenue"
-                        ? formatMoney(newFacilities[item])
+                        ? formatMoney(0)
                         : newFacilities[item]?.toLocaleString()}
                     </td>
                   );
