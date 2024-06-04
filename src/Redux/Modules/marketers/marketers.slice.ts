@@ -8,6 +8,7 @@ export const initialState: IMarketers.IMarketersInitialState = {
   marketers: [],
   facilities: [],
   caseTypes: [],
+  queryString: ""
 };
 
 export const marketerSlice = createSlice({
@@ -29,6 +30,9 @@ export const marketerSlice = createSlice({
     setCaseTypeOptions: (state: any, action: any) => {
       state.caseTypes = [...action.payload];
     },
+    storeQueryString: (state: any, action: any) => {
+      state.queryString = action.payload;
+    }
   },
 });
 
@@ -38,5 +42,6 @@ export const {
   setAllFacilities,
   removeAllFacilities,
   setCaseTypeOptions,
-} = marketerSlice.actions;
+  storeQueryString
+}: any = marketerSlice.actions;
 export const marketerSliceReducer = { [reducerName]: marketerSlice.reducer };

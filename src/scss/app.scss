@@ -618,10 +618,8 @@ table {
   }
 
   table {
-
     td,
     th {
-
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -674,7 +672,6 @@ table {
   tfoot {
     tr {
       td {
-
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -694,17 +691,18 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(circle at center center,
+    repeating-radial-gradient(
+      circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px);
+      transparent 10px
+    );
   background-blend-mode: multiply;
 }
 
 #mothWiseCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -722,8 +720,6 @@ table {
         }
       }
     }
-
-
 
     .active-facilities-row {
       td {
@@ -777,7 +773,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -806,7 +802,6 @@ table {
     box-shadow: 0px -4px 17px 0px rgba(0, 0, 0, 0.0392156863);
     background: #f1f1f1;
 
-
     table {
       thead {
         th {
@@ -814,8 +809,6 @@ table {
           font-weight: 600 !important;
         }
       }
-
-
 
       tfoot {
         td {
@@ -893,7 +886,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -977,10 +970,8 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
-
         //   &:nth-child(2) {
         //   width: $marketerNameColumnWidth !important;
         //   min-width: $marketerNameColumnWidth !important;
@@ -1008,7 +999,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1033,7 +1023,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       th,
       td {
         &:nth-child(3) {
@@ -1070,7 +1059,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1318,7 +1306,6 @@ $actionButtonWidth: 95px;
 
 .s-no-column {
   table {
-
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
@@ -1381,10 +1368,8 @@ $actionButtonWidth: 95px;
 #insuranceCaseTypesData {
   table {
     tr {
-
       td,
       th {
-
         &:nth-child(3),
         &:nth-child(4),
         &:nth-child(5),

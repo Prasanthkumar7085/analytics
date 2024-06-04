@@ -3,6 +3,7 @@ declare namespace IMarketers {
     marketers: [];
     facilities: [];
     caseTypes;
+    queryString: any
   }
 }
 

@@ -14,11 +14,14 @@ import styles from "./salesreps.module.css";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import { storeQueryString } from "@/Redux/Modules/marketers";
 
 const SalesRepresentatives = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -71,11 +74,12 @@ const SalesRepresentatives = () => {
   const getAllSalesReps = async (queryParams: any) => {
     setLoading(true);
     try {
+      let { search, status, ...remaining } = queryParams
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
 
-      const response = await getSalesRepsAPI(queryParams);
+      const response = await getSalesRepsAPI(remaining);
       if (response.status == 200 || response.status == 201) {
         setCompleteData(response?.data);
         let data = response?.data;
@@ -88,7 +92,7 @@ const SalesRepresentatives = () => {
         }
         if (queryParams.status) {
           data = data.filter(
-            (item: any) => `${item.status}` == `${queryParams.status}`
+            (item: any) => `${item.target_reached}` == `${queryParams.status}`
           );
         }
         data = sortAndGetData(
@@ -145,7 +149,7 @@ const SalesRepresentatives = () => {
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
     }
-    console.log(queryString, "EWqew")
+    dispatch(storeQueryString(queryString))
     router.push(`/sales-representatives/${repId}${queryString}`);
   };
 
@@ -196,17 +200,6 @@ const SalesRepresentatives = () => {
             return <span>{getValue()?.toLocaleString()}</span>;
           },
         },
-        // {
-        //   accessorFn: (row: any) => row.target_facilities,
-        //   header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
-        //   id: "target_facilities",
-        //   width: "300px",
-        //   maxWidth: "300px",
-        //   minWidth: "300px",
-        //   cell: (info: any) => {
-        //     return <span>{info.getValue()?.toLocaleString()}</span>;
-        //   },
-        // },
         {
           accessorFn: (row: any) => row.active_facilities,
           header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIVE</span>,

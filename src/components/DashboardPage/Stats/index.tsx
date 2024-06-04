@@ -58,7 +58,7 @@ const Stats = ({
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Stats
+            {pathName?.includes("dashboard") ? "Stats" : "Current Month Stats"}
           </h3>
           {pathName?.includes("dashboard") ? (
             <GlobalDateRangeFilter

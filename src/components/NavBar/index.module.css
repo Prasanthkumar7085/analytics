@@ -481,3 +481,26 @@
   background: #1b2459;
   z-index: -1;
 }
+
+.profileBlock {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  cursor: pointer;
+}
+
+.profileBlock .adminCaption h6 {
+  color: var(--gray-1, #f3f1f1);
+  font-size: clamp(0.875rem, 0.833vw, 2rem);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+    text-transform: capitalize;
+}
+
+.profileBlock .adminCaption p {
+  color: var(--text-label, #c6cbf4);
+  font-size: clamp(0.55rem, 0.52vw, 1.25rem);
+  font-weight: 400;
+  text-transform: uppercase;
+}

@@ -128,7 +128,7 @@ const SalesRepView = () => {
     try {
       let queryString = prepareURLEncodedParams("", queryParams);
 
-      router.push(`${pathName}${queryString}`);
+      router.replace(`${pathName}${queryString}`);
       if (tabValue == "Revenue") {
         await getCaseTypesRevenueStats(queryParams);
       } else {
@@ -267,7 +267,7 @@ const SalesRepView = () => {
       queryPreparations(fromDate, toDate, tabValue);
     } else {
       setDateFilterDefaultValue("");
-      router.push(`/sales-representatives/${id}`);
+      router.replace(`/sales-representatives/${id}`);
       queryPreparations("", "", tabValue);
     }
   };
