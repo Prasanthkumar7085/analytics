@@ -100,7 +100,7 @@ const FacilitiesView = () => {
 
       let queryString = prepareURLEncodedParams("", queryParams);
 
-      router.push(`${pathName}${queryString}`);
+      router.replace(`${pathName}${queryString}`);
 
       await getRevenueStatsCount(queryParams);
       await getVolumeStatsCount(queryParams);
@@ -226,7 +226,7 @@ const FacilitiesView = () => {
     } else {
       setDateFilterDefaultValue("");
       getStatsCounts("", "");
-      router.push(`/facilities/${id}`);
+      router.replace(`/facilities/${id}`);
       queryPreparations(fromDate, toDate, tabValue);
     }
   };
@@ -317,7 +317,7 @@ const FacilitiesView = () => {
                 revenueStatsDetails={revenueStatsDetails}
                 volumeStatsDetails={volumeStatsDetails}
                 loading={loading}
-                onChange={() => {}}
+                onChange={() => { }}
               />
             </Grid>
             <Grid item xs={8}>

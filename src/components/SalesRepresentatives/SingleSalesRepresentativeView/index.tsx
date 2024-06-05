@@ -8,6 +8,7 @@ import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import GlobalTabsForSinglePage from "@/components/core/GlobalTabsForSinglePage";
 import {
   averageUptoDateTargets,
+  averageUptoDateTargetsForSalesReps,
   changeDateToUTC,
   getDatesForStatsCards,
   rearrangeDataWithCasetypes
@@ -37,6 +38,7 @@ import { useSelector } from "react-redux";
 import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
+import dayjs from "dayjs";
 const SalesRepView = () => {
   const { id } = useParams();
   const router = useRouter();
@@ -61,7 +63,7 @@ const SalesRepView = () => {
   const [tabValue, setTabValue] = useState("Volume");
   const [selectedCaseValueForInsurance, setSelectedCaseValueForInsurance] =
     useState<any>(null);
-
+  const [dayWiseTargetsEnable, setDayWiseTargetsEnable] = useState<boolean>()
   const [selectedCaseValueForFacilities, setSelectedCaseValueForFacilities] =
     useState<any>(null);
 
@@ -132,7 +134,11 @@ const SalesRepView = () => {
       if (tabValue == "Revenue") {
         await getCaseTypesRevenueStats(queryParams);
       } else {
-        await getCaseTypesVolumeStats(queryParams);
+        if (checkDateForCurrentMonth(queryParams) && Object?.keys(queryParams)?.length) {
+          await getCaseTypesVolumeStats(queryParams);
+        } else {
+          await getCaseTypesVolumeStatsWithoutDayWiseTargets(queryParams);
+        }
       }
     } catch (err: any) {
       console.error(err);
@@ -140,6 +146,23 @@ const SalesRepView = () => {
       setLoading(false);
     }
   };
+
+  const checkDateForCurrentMonth = (queryParams: any) => {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    const currentDate = dayjs();
+    const dateToCheck = dayjs(queryParams["from_date"]);
+    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year() && Object?.keys(queryParams)?.length) {
+      setDayWiseTargetsEnable(true);
+      return true;
+    }
+    else {
+      setDayWiseTargetsEnable(false);
+      return false;
+    }
+  }
+
 
   //get the caseTypesRevenue data
   const getCaseTypesRevenueStats = async (queryParams: any) => {
@@ -190,7 +213,7 @@ const SalesRepView = () => {
       if (response.status == 200 || response?.status == 201) {
 
         let data = response?.data?.map((entry: any) => {
-          return { ...entry, dayTargets: averageUptoDateTargets(entry?.total_targets) };
+          return { ...entry, dayTargets: averageUptoDateTargetsForSalesReps(entry?.total_targets, queryParams["to_date"]) };
         });
         let rearrangedData = rearrangeDataWithCasetypes(data);
         setCaseTypesStatsData(rearrangedData);
@@ -209,6 +232,42 @@ const SalesRepView = () => {
           { value: "Total", dolorSymbol: false },
           { value: totalTargets, dolorSymbol: false },
           { value: Math.ceil(dayTargets), dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
+        ];
+        setTotalSumValues(result);
+
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCaseTypeLoading(false);
+    }
+  };
+
+  const getCaseTypesVolumeStatsWithoutDayWiseTargets = async (queryParams: any) => {
+    setCaseTypeLoading(true);
+    try {
+      const response = await getSingleSalesRepCaseTypesVolumeAPI(
+        id as string,
+        queryParams
+      );
+      if (response.status == 200 || response?.status == 201) {
+
+        let data = [...response?.data]
+        let rearrangedData = rearrangeDataWithCasetypes(data);
+        setCaseTypesStatsData(rearrangedData);
+
+        let totalCases = 0;
+        let totalTargets = 0;
+
+        data?.forEach((entry: any) => {
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          totalTargets += entry.total_targets ? +entry.total_targets : 0;
+        });
+
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalTargets, dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
         ];
         setTotalSumValues(result);
@@ -339,6 +398,7 @@ const SalesRepView = () => {
                 totalRevenueSum={totalRevenueSum}
                 setTabValue={setTabValue}
                 tabValue={tabValue}
+                dayWiseTargetsEnable={dayWiseTargetsEnable}
               />
             </Grid>
 

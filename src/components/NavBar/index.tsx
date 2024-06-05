@@ -22,7 +22,6 @@ const NavBar: FC<pageProps> = ({ children }) => {
     (state: any) => state.auth.user?.user_details?.user_type
   );
   const userDetails = useSelector((state: any) => state.auth.user?.user_details)
-
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {

@@ -3,7 +3,8 @@ import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
-import { exportToExcelCaseTypesVolumes, exportToExcelCaseTypesVolumesForFacilites } from "@/lib/helpers/exportsHelpers";
+import { changeDateToUTC, getDatesForStatsCards } from "@/lib/helpers/apiHelpers";
+import { exportToExcelCaseTypesVolumes, exportToExcelCaseTypesVolumesForFacilites, exportToExcelCaseTypesVolumesWithoutDayWiseTargets } from "@/lib/helpers/exportsHelpers";
 import { Backdrop, Tab, Tabs } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -11,8 +12,8 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import styles from "./index.module.css";
-import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import { Revenuecolumns, VolumecolumnsForFacilities, VolumecolumnsTargets, VolumecolumnsWithDayWiseTargets } from "./CaseTypesTableColumns";
+import { startOfMonth } from "rsuite/esm/utils/dateUtils";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -22,7 +23,8 @@ const CaseTypes = ({
   setTabValue,
   queryPreparations,
   dateFilterDefaultValue,
-  setDateFilterDefaultValue
+  setDateFilterDefaultValue,
+  dayWiseTargetsEnable
 }: any) => {
   const params = useSearchParams();
   const pathName = usePathname();
@@ -30,7 +32,6 @@ const CaseTypes = ({
   const userType = useSelector(
     (state: any) => state.auth.user?.user_details?.user_type
   );
-
 
   useEffect(() => {
     setSelectedDates([params.get("from_date"), params.get("to_date")]);
@@ -62,207 +63,20 @@ const CaseTypes = ({
     } else return [];
   };
 
-  const Volumecolumns = [
-    {
-      accessorFn: (row: any) => row.case_type_name,
-      id: "case_type_name",
-      header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
-      cell: (info: any, index: number) => {
-        return (
-          <span className={styles.caseTypeRow}>
-            <div
-              className={styles.dot}
-              style={{ backgroundColor: graphColors[info.getValue()] }}
-            ></div>
-            {info.getValue()}
-          </span>
-        );
-      },
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      minWidth: "60px",
-      maxWidth: "60px",
-    },
 
-    {
-      accessorFn: (row: any) => row.total_targets,
-      id: "total_targets",
-      sortDescFirst: false,
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>MONTH TARGET</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-
-    {
-      accessorFn: (row: any) => row.dayTargets,
-      id: "dayTargets",
-      sortDescFirst: false,
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>TARGET</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-    {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow} style={{ color: "#5b5b5b" }}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      sortDescFirst: false,
-      header: () => <span className={styles.tableHeading}>TOTAL</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-  ];
-
-  const VolumecolumnsForFacilities = [
-    {
-      accessorFn: (row: any) => row.case_type_name,
-      id: "case_type_name",
-      header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
-      cell: (info: any, index: number) => {
-        return (
-          <span className={styles.caseTypeRow}>
-            <div
-              className={styles.dot}
-              style={{ backgroundColor: graphColors[info.getValue()] }}
-            ></div>
-            {info.getValue()}
-          </span>
-        );
-      },
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      minWidth: "60px",
-      maxWidth: "60px",
-    },
-    {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      sortDescFirst: false,
-      header: () => <span className={styles.tableHeading}>TOTAL</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-
-    {
-      accessorFn: (row: any) => row.completed_cases,
-      id: "completed_cases",
-      sortDescFirst: false,
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>FINALIZED</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-    {
-      accessorFn: (row: any) => row.pending_cases,
-      id: "pending_cases",
-      sortDescFirst: false,
-      cell: (info: any) => (
-        <span className={styles.revenueBlock}>
-          {info.getValue()?.toLocaleString()}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>PENDING</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-  ];
-
-  const Revenuecolumns = [
-    {
-      accessorFn: (row: any) => row.case_type_name,
-      id: "case_type_name",
-      header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
-      cell: (info: any, index: number) => {
-        return (
-          <span className={styles.caseTypeRow}>
-            <div
-              className={styles.dot}
-              style={{ backgroundColor: graphColors[info.getValue()] }}
-            ></div>
-            {info.getValue()}
-          </span>
-        );
-      },
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      minWidth: "60px",
-      maxWidth: "60px",
-    },
-    {
-      accessorFn: (row: any) => row.generated_amount,
-      id: "generated_amount",
-      sortDescFirst: false,
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {formatMoney(info.getValue())}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>BILLED</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-    {
-      accessorFn: (row: any) => row.paid_amount,
-      sortDescFirst: false,
-      id: "paid_amount",
-      cell: (info: any) => (
-        <span className={styles.totalCasesRow}>
-          {formatMoney(info.getValue())}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>RECEIVED</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-    {
-      accessorFn: (row: any) => row.pending_amount,
-      sortDescFirst: false,
-      id: "pending_amount",
-      cell: (info: any) => (
-        <span className={styles.revenueBlock}>
-          {formatMoney(info.getValue())}
-        </span>
-      ),
-      header: () => <span className={styles.tableHeading}>ARREARS</span>,
-      footer: (props: any) => props.column.id,
-      width: "150px",
-    },
-  ];
 
   function getSubtitle() {
-    const totalNumber = totalRevenueSum[3]?.value
+    const totalNumber = dayWiseTargetsEnable
       ? totalRevenueSum[3]?.value
-      : 0;
+      : totalRevenueSum[2]?.value;
     return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"
       }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
             ${tabValue == "Revenue"
-        ? formatMoney(totalNumber)
-        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalRevenueSum[3]?.value?.toLocaleString() || 0
+        ? formatMoney(totalNumber || 0)
+        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalNumber?.toLocaleString() || 0
       }</b>
         </span>`;
   }
@@ -327,6 +141,20 @@ const CaseTypes = ({
     ],
   };
 
+  const renderTableColoumnsByConditions = () => {
+    if (tabValue == "Revenue") {
+      return Revenuecolumns;
+    }
+    else {
+      if (pathName.includes("facilities")) {
+        return VolumecolumnsForFacilities;
+      }
+      else {
+        return dayWiseTargetsEnable ? VolumecolumnsWithDayWiseTargets : VolumecolumnsTargets;
+      }
+    }
+  }
+
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       setSelectedDates([fromDate, toDate]);
@@ -334,8 +162,15 @@ const CaseTypes = ({
       queryPreparations(fromDate, toDate, tabValue);
     }
     else {
-      setDateFilterDefaultValue("")
-      queryPreparations("", "", tabValue);
+      if (pathName?.includes("dashboard")) {
+        let thisMonth = [startOfMonth(new Date()), new Date()];
+        let defaultDates = getDatesForStatsCards(thisMonth);
+        setDateFilterDefaultValue(changeDateToUTC(defaultDates[0], defaultDates[1]))
+        queryPreparations("", "", tabValue);
+      } else {
+        setDateFilterDefaultValue("")
+        queryPreparations("", "", tabValue);
+      }
     }
   };
 
@@ -395,10 +230,16 @@ const CaseTypes = ({
             ) : (
               <ExportButton
                 onClick={() => {
-                  exportToExcelCaseTypesVolumes(
-                    caseTypesStatsData,
-                    totalRevenueSum
-                  );
+                  if (dayWiseTargetsEnable) {
+                    exportToExcelCaseTypesVolumes(
+                      caseTypesStatsData,
+                      totalRevenueSum
+                    );
+                  } else {
+                    exportToExcelCaseTypesVolumesWithoutDayWiseTargets(caseTypesStatsData,
+                      totalRevenueSum)
+                  }
+
                 }}
                 disabled={caseTypesStatsData?.length === 0 || tabValue == "Revenue" ? true : false}
               />
@@ -422,13 +263,7 @@ const CaseTypes = ({
             </div>
             <TanStackTableComponent
               data={caseTypesStatsData}
-              columns={
-                tabValue == "Revenue"
-                  ? Revenuecolumns
-                  : pathName.includes("facilities")
-                    ? VolumecolumnsForFacilities
-                    : Volumecolumns
-              }
+              columns={renderTableColoumnsByConditions()}
               totalSumValues={totalRevenueSum}
               loading={loading}
             />

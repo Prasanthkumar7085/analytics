@@ -337,16 +337,31 @@ export const averageUptoPreviousDateTargets = (target_volume: any) => {
     return 0;
   }
 }
-export const averageUptoDateTargets = (target_volume: any) => {
+export const averageUptoDateTargets = (target_volume: any, toDate: any) => {
   const totalDaysInMonth = dayjs().daysInMonth();
   const startOfMonth = dayjs().startOf('month');
 
-  const currentDate = dayjs();
-  const daysPassed = currentDate.diff(startOfMonth, 'day')
+  const currentDate = dayjs(toDate);
+  let daysPassed = currentDate.diff(startOfMonth, 'day') + 1
   const targetVolume = target_volume;
   if (targetVolume) {
     const averagePerDay = targetVolume / totalDaysInMonth;
     return Math.ceil(averagePerDay * daysPassed);
+  }
+  else {
+    return 0;
+  }
+}
+export const averageUptoDateTargetsForSalesReps = (target_volume: any, toDate: any) => {
+  const totalDaysInMonth = dayjs().daysInMonth();
+  const startOfMonth = dayjs().startOf('month');
+
+  const currentDate = dayjs(toDate);
+  let daysPassed = currentDate.diff(startOfMonth, 'day')
+  const targetVolume = target_volume;
+  if (targetVolume) {
+    const averagePerDay = targetVolume / totalDaysInMonth;
+    return Math.ceil(averagePerDay * (daysPassed == 0 ? 1 : daysPassed));
   }
   else {
     return 0;

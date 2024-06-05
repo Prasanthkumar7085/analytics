@@ -1,25 +1,19 @@
 "use client";
-import { Button } from "@mui/material";
-import { useMemo, useState } from "react";
-import MultipleColumnsTable from "../core/Table/MultitpleColumn/MultipleColumnsTable";
-import { getAllCaseTypesAPI } from "@/services/caseTypesAPIs";
-import { useEffect } from "react";
-import { mapCaseTypeTitleWithCaseType } from "@/lib/helpers/mapTitleWithIdFromLabsquire";
-import AreaGraph from "../core/AreaGraph";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { addSerial } from "@/lib/Pipes/addSerial";
-import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import CaseTypeFilters from "./CaseTypeFilters";
-import LoadingComponent from "../core/LoadingComponent";
-import SingleFacilitieCaseTypeDetails from "../Facilities/SingleFacilitieView/SingleFacilitiesCaseTypeDetails";
-import MonthWiseCaseTypeDetails from "./MonthWiseCaseTypeDetails";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import {
   changeDateToUTC,
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
+import { getAllCaseTypesAPI } from "@/services/caseTypesAPIs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingComponent from "../core/LoadingComponent";
+import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import CaseTypeFilters from "./CaseTypeFilters";
+import MonthWiseCaseTypeDetails from "./MonthWiseCaseTypeDetails";
 
 const CaseTypes = () => {
   const router = useRouter();

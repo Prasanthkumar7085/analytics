@@ -193,7 +193,7 @@ const SingleColumnTable: FC<pageProps> = ({
                               cell?.id.includes("total_cases")
                               ? getBackgroundColor(
                                 row.original.total_cases,
-                                row?.original?.dayTargets
+                                row?.original?.dayTargets ? row?.original?.dayTargets : row?.original?.total_targets
                               )
                               : "",
                         }}

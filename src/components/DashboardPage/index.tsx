@@ -26,7 +26,7 @@ const DashboardPage = () => {
   const [tabValue, setTabValue] = useState("Volume");
   const [statsSeletedDate, setSeletedStatsDate] = useState<any>([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
-
+  const [dayWiseTargetsEnable, setDayWiseTargetsEnable] = useState<boolean>()
   //get revenue stats count
   const getRevenueStatsCount = async (queryParams: any) => {
     setLoading(true);
@@ -83,8 +83,10 @@ const DashboardPage = () => {
     toDate: any,
     tabValue: string
   ) => {
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let defaultDates = getDatesForStatsCards(thisMonth);
 
-    let queryParams: any = {};
+    let queryParams: any = { "from_date": defaultDates[0], "to_date": defaultDates[1] };
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -96,7 +98,11 @@ const DashboardPage = () => {
       if (tabValue == "Revenue") {
         await getCaseTypesRevenueStats(queryParams);
       } else {
-        await getCaseTypesVolumeStats(queryParams);
+        if (checkDateForCurrentMonth(queryParams)) {
+          await getCaseTypesVolumeStats(queryParams);
+        } else {
+          await getCaseTypesVolumeStatsWithoutDayWiseTargets(queryParams);
+        }
       }
     } catch (err: any) {
       console.error(err);
@@ -104,15 +110,31 @@ const DashboardPage = () => {
       setLoading(false);
     }
   };
+  const checkDateForCurrentMonth = (queryParams: any) => {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    const currentDate = dayjs();
+    const dateToCheck = dayjs(queryParams["from_date"]);
+    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year()) {
+      setDayWiseTargetsEnable(true);
+      return true;
+    }
+    else {
+      setDayWiseTargetsEnable(false);
+      return false;
+    }
+  }
 
-  //get the caseTypesVolume data
+  //get the caseTypesVolume with dayWise targets
   const getCaseTypesVolumeStats = async (queryParams: any) => {
     setCaseTypeLoading(true);
     try {
       const response = await getDashboardCaseTypesVolumeStatsAPI(queryParams);
       if (response.status == 200 || response?.status == 201) {
+
         let data = response?.data?.map((entry: any) => {
-          return { ...entry, dayTargets: averageUptoDateTargets(entry?.total_targets) };
+          return { ...entry, dayTargets: averageUptoDateTargets(entry?.total_targets, queryParams["to_date"]) };
         });
 
         let rearrangedData = rearrangeDataWithCasetypes(data);
@@ -134,6 +156,39 @@ const DashboardPage = () => {
           { value: Math.ceil(dayTargets), dolorSymbol: false },
           { value: totalCases, dolorSymbol: false },
 
+        ];
+        setTotalSumValues(result);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setCaseTypeLoading(false);
+    }
+  };
+
+  //get the caseTypesVolume without  dayWise targets
+  const getCaseTypesVolumeStatsWithoutDayWiseTargets = async (queryParams: any) => {
+    setCaseTypeLoading(true);
+    try {
+      const response = await getDashboardCaseTypesVolumeStatsAPI(queryParams);
+      if (response.status == 200 || response?.status == 201) {
+        let data = [...response?.data]
+        let rearrangedData = rearrangeDataWithCasetypes(data);
+
+        setCaseTypesStatsData(rearrangedData);
+
+        let totalCases = 0;
+        let totalTargets = 0;
+
+        data?.forEach((entry: any) => {
+          totalCases += entry.total_cases ? +entry.total_cases : 0;
+          totalTargets += entry.total_targets ? +entry.total_targets : 0;
+        });
+
+        const result = [
+          { value: "Total", dolorSymbol: false },
+          { value: totalTargets, dolorSymbol: false },
+          { value: totalCases, dolorSymbol: false },
         ];
         setTotalSumValues(result);
       }
@@ -183,8 +238,6 @@ const DashboardPage = () => {
     yesterday.setDate(yesterday.getDate() - 1);
     let thisMonth = [startOfMonth(new Date()), new Date()];
     let lastmonth = [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-    let defaultDates = getDatesForStatsCards(thisMonth);
-    queryPreparations(defaultDates[0], defaultDates[1], "Volume");
     if (dayjs(thisMonth[0]).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD')) {
       setDateFilterDefaultValue(lastmonth);
     }
@@ -197,6 +250,7 @@ const DashboardPage = () => {
   useEffect(() => {
     getStatsCounts("", "");
     callCaseTypesStatsCounts()
+    queryPreparations("", "", "Volume")
   }, []);
 
   return (
@@ -222,6 +276,7 @@ const DashboardPage = () => {
             tabValue={tabValue}
             dateFilterDefaultValue={dateFilterDefaultValue}
             setDateFilterDefaultValue={setDateFilterDefaultValue}
+            dayWiseTargetsEnable={dayWiseTargetsEnable}
           />
         </Grid>
         <Grid item xs={12}>

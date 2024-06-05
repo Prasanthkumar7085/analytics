@@ -250,6 +250,90 @@ export const exportToExcelCaseTypesVolumes = (
   XLSX.writeFile(workbook, "casetypes-volume.xlsx");
 };
 
+export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
+  caseTypesStatsData: any,
+  totalVolumeSum: any
+) => {
+  const formattedData = caseTypesStatsData.map((obj: any, index: number) => {
+    return [
+      index + 1,
+      obj.case_type_name,
+      obj.total_targets,
+      obj.total_cases
+    ];
+  });
+  let headers = ["Sl.No", "Case Type", "Month Targets", "Total"];
+
+  let totalSumSortedValues = [
+    "Total",
+    "",
+    totalVolumeSum[1]?.value,
+    totalVolumeSum[2]?.value,
+  ];
+  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+  for (let rowIndex = 1; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        if (columnIndex === 2 || (columnIndex === 3 && row[2] <= row[3])) {
+          worksheet[cellAddress].s = {
+            fill: {
+              fgColor: { rgb: columnIndex === 2 ? "f0edff" : "f0edff" },
+            },
+          };
+        } else {
+          worksheet[cellAddress].s = {
+            fill: {
+              fgColor: { rgb: "f0edff" },
+            },
+          };
+        }
+      }
+    } else {
+      const targets = row[2];
+      const total = row[3];
+      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 2 });
+      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 3 });
+      const percentCompleted = total / targets;
+
+      worksheet[cellAddressTarget].s = {
+        fill: {
+          fgColor: { rgb: "f9feff" },
+        },
+      };
+      worksheet[cellAddressTotal].s = {
+        fill: {
+          fgColor: {
+            rgb:
+              total >= targets
+                ? "f5fff7"
+                : percentCompleted >= 0.5
+                  ? "feecd1"
+                  : "ffebe9",
+          },
+        },
+      };
+    }
+  }
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "casetypes-volume.xlsx");
+};
+
 export const exportToExcelCaseTypesVolumesForFacilites = (
   caseTypesStatsData: any,
   totalVolumeSum: any
