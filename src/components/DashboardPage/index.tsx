@@ -81,12 +81,8 @@ const DashboardPage = () => {
   const queryPreparations = async (
     fromDate: any,
     toDate: any,
-    tabValue: string
   ) => {
-    let thisMonth = [startOfMonth(new Date()), new Date()];
-    let defaultDates = getDatesForStatsCards(thisMonth);
-
-    let queryParams: any = { "from_date": defaultDates[0], "to_date": defaultDates[1] };
+    let queryParams: any = {};
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -95,15 +91,11 @@ const DashboardPage = () => {
       queryParams["to_date"] = toDate;
     }
     try {
-      if (tabValue == "Revenue") {
-        await getCaseTypesRevenueStats(queryParams);
-      } else {
-        if (checkDateForCurrentMonth(queryParams)) {
+        if (checkDateForCurrentMonth(queryParams) && Object?.keys(queryParams)?.length) {
           await getCaseTypesVolumeStats(queryParams);
         } else {
           await getCaseTypesVolumeStatsWithoutDayWiseTargets(queryParams);
         }
-      }
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -116,7 +108,7 @@ const DashboardPage = () => {
     let thisMonth = [startOfMonth(new Date()), new Date()];
     const currentDate = dayjs();
     const dateToCheck = dayjs(queryParams["from_date"]);
-    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year()) {
+    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year()&& Object?.keys(queryParams)?.length) {
       setDayWiseTargetsEnable(true);
       return true;
     }
@@ -199,45 +191,13 @@ const DashboardPage = () => {
     }
   };
 
-  const getCaseTypesRevenueStats = async (queryParams: any) => {
-    setCaseTypeLoading(true);
-    try {
-      const response = await getDashboardCaseTypesRevenueStatsAPI(queryParams);
-      if (response.status == 200 || response?.status == 201) {
-        let paidRevenueSum = 0;
-        let totalRevenueSum = 0;
-        let pendingRevenueSum = 0;
-
-        response?.data?.forEach((entry: any) => {
-          paidRevenueSum += entry.paid_amount ? +entry.paid_amount : 0;
-          totalRevenueSum += entry.generated_amount
-            ? +entry.generated_amount
-            : 0;
-          pendingRevenueSum += entry.pending_amount ? +entry.pending_amount : 0;
-        });
-
-        const result = [
-          { value: "Total", dolorSymbol: false },
-          { value: totalRevenueSum, dolorSymbol: true },
-          { value: paidRevenueSum, dolorSymbol: true },
-          { value: pendingRevenueSum, dolorSymbol: true },
-        ];
-        setTotalSumValues(result);
-        let rearrangedData = rearrangeDataWithCasetypes(response?.data);
-        setCaseTypesStatsData(rearrangedData);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setCaseTypeLoading(false);
-    }
-  };
-
   const callCaseTypesStatsCounts = () => {
     let yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
     let thisMonth = [startOfMonth(new Date()), new Date()];
     let lastmonth = [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
+    let defaultDates = getDatesForStatsCards(thisMonth);
+    queryPreparations(defaultDates[0], defaultDates[1])
     if (dayjs(thisMonth[0]).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD')) {
       setDateFilterDefaultValue(lastmonth);
     }
@@ -250,7 +210,6 @@ const DashboardPage = () => {
   useEffect(() => {
     getStatsCounts("", "");
     callCaseTypesStatsCounts()
-    queryPreparations("", "", "Volume")
   }, []);
 
   return (

@@ -139,21 +139,6 @@ const RevenueBlock = () => {
             }}
           >
             <GlobalDateRangeFilter onChangeData={onChangeData} />
-            {userType == "LAB_ADMIN" ? (
-              <Tabs
-                className="overViewTabs"
-                value={tabValue}
-                onChange={handleChange}
-                textColor="secondary"
-                indicatorColor="secondary"
-                aria-label="secondary tabs example"
-              >
-                <Tab value="Volume" label="Volume" />
-                <Tab value="Revenue" label="Revenue" />
-              </Tabs>
-            ) : (
-              ""
-            )}
           </div>
         </div>
         <div className="cardBody">

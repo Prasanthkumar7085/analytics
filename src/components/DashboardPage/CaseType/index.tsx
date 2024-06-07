@@ -162,16 +162,9 @@ const CaseTypes = ({
       queryPreparations(fromDate, toDate, tabValue);
     }
     else {
-      if (pathName?.includes("dashboard")) {
-        let thisMonth = [startOfMonth(new Date()), new Date()];
-        let defaultDates = getDatesForStatsCards(thisMonth);
-        setDateFilterDefaultValue(changeDateToUTC(defaultDates[0], defaultDates[1]))
-        queryPreparations("", "", tabValue);
-      } else {
         setDateFilterDefaultValue("")
         queryPreparations("", "", tabValue);
       }
-    }
   };
 
   return (
@@ -184,28 +177,6 @@ const CaseTypes = ({
           </h3>
           {pathName?.includes("dashboard") ? (
             <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
-          ) : (
-            ""
-          )}
-          {userType == "LAB_ADMIN" ? (
-            <div
-              style={{
-                display: pathName?.includes("dashboard") ? "flex" : "none",
-                justifyContent: "center",
-              }}
-            >
-              <Tabs
-                className="overViewTabs"
-                value={tabValue}
-                onChange={handleChange}
-                textColor="secondary"
-                indicatorColor="secondary"
-                aria-label="secondary tabs example"
-              >
-                <Tab value="Volume" label="Volume" />
-                <Tab value="Revenue" label="Revenue" />
-              </Tabs>
-            </div>
           ) : (
             ""
           )}

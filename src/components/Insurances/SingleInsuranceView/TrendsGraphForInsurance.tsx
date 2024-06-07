@@ -22,14 +22,6 @@ const TrendsGraphForInsurance = ({ searchParams, pageName }: any) => {
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Trends
           </h3>
-          {userType == "LAB_ADMIN" ? (
-            <Tabs onChange={handleChange} value={tabValue}>
-              <Tab value={"Volume"} label={"Volume"} />
-              <Tab value={"Revenue"} label={"Revenue"} />
-            </Tabs>
-          ) : (
-            ""
-          )}
         </div>
         <div className="cardBody">
           {tabValue == "Volume" ? (

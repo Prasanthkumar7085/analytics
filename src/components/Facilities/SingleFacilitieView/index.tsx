@@ -295,14 +295,6 @@ const FacilitiesView = () => {
               </div>
             </div>
             <div className="gridItem flex items-center justify-end">
-              {userType == "LAB_ADMIN" ? (
-                <GlobalTabsForSinglePage
-                  setTabValue={setTabValue}
-                  tabValue={tabValue}
-                />
-              ) : (
-                ""
-              )}
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}
                 dateFilterDefaultValue={dateFilterDefaultValue}
