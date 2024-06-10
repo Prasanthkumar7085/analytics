@@ -262,7 +262,7 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
       obj.total_cases
     ];
   });
-  let headers = ["Sl.No", "Case Type", "Month Targets", "Total"];
+  let headers = ["Sl.No", "Case Type", "Total Target", "Total"];
 
   let totalSumSortedValues = [
     "Total",
