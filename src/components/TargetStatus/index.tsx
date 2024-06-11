@@ -21,7 +21,7 @@ import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import GraphDialogForTargetStatus from "../core/GraphDilaogForTargetStatus";
 import AreaGraphForTargetStatus from "../core/AreaGraph/AreaGraphForTargetstaus";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
 
 const MonthWiseTargetStatus = () => {

@@ -10,7 +10,7 @@ import {
 } from "@/services/statsAPI";
 import Grid from "@mui/material/Grid";
 import { useEffect, useState } from "react";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 import CaseType from "./CaseType";
 import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
@@ -91,11 +91,11 @@ const DashboardPage = () => {
       queryParams["to_date"] = toDate;
     }
     try {
-        if (checkDateForCurrentMonth(queryParams) && Object?.keys(queryParams)?.length) {
-          await getCaseTypesVolumeStats(queryParams);
-        } else {
-          await getCaseTypesVolumeStatsWithoutDayWiseTargets(queryParams);
-        }
+      if (checkDateForCurrentMonth(queryParams) && Object?.keys(queryParams)?.length) {
+        await getCaseTypesVolumeStats(queryParams);
+      } else {
+        await getCaseTypesVolumeStatsWithoutDayWiseTargets(queryParams);
+      }
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -108,7 +108,7 @@ const DashboardPage = () => {
     let thisMonth = [startOfMonth(new Date()), new Date()];
     const currentDate = dayjs();
     const dateToCheck = dayjs(queryParams["from_date"]);
-    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year()&& Object?.keys(queryParams)?.length) {
+    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year() && Object?.keys(queryParams)?.length) {
       setDayWiseTargetsEnable(true);
       return true;
     }

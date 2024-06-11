@@ -12,7 +12,7 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { storeQueryString } from "@/Redux/Modules/marketers";

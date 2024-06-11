@@ -8,6 +8,7 @@ import CountUp from "react-countup";
 import dayjs from "dayjs";
 import "dayjs/locale/en"; // Ensure English locale is loaded for formatting
 import { averageUptoPreviousDateTargets } from "@/lib/helpers/apiHelpers";
+import { startOfMonth } from "rsuite/esm/internals/utils/date";
 
 const Stats = ({
   revenueStatsDetails,
@@ -50,6 +51,19 @@ const Stats = ({
     }
   };
 
+  const checkDateForCurrentMonth = () => {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    const currentDate = dayjs();
+    const dateToCheck = dayjs(statsSeletedDate?.[0]);
+    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year()) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
 
   return (
@@ -153,7 +167,7 @@ const Stats = ({
                   background: volumeStatsDetails?.length
                     ? getBackgroundColor(
                       volumeStatsDetails?.[0]?.total_cases,
-                      averageUptoPreviousDateTargets(volumeStatsDetails?.[0]?.target_volume)
+                      averageUptoPreviousDateTargets(volumeStatsDetails?.[0]?.target_volume, dayjs(statsSeletedDate?.[1]).format("YYYY-MM-DD"))
                     )
                     : "linear-gradient(110.31deg, #4386c5, #004e92)",
                 }}
@@ -195,27 +209,29 @@ const Stats = ({
                     height={20}
                     width={20}
                   />
-                  <div className={styles.billed}>
-                    <div className={styles.header}>
-                      <label className={styles.lable}>TARGET</label>
-                    </div>
-                    <h2 className={styles.totalvalue}>
-                      {loading ? (
-                        <Skeleton width={100} height={50} />
-                      ) : (
-                        <CountUp
-                          start={0}
-                          decimal="."
-                          end={averageUptoPreviousDateTargets(volumeStatsDetails?.[0]?.target_volume)}
-                        />
-                      )}
-                    </h2>
-                  </div>
+
+                  {checkDateForCurrentMonth() ?
+                    <div className={styles.billed}>
+                      <div className={styles.header}>
+                        <label className={styles.lable}>TARGET</label>
+                      </div>
+                      <h2 className={styles.totalvalue}>
+                        {loading ? (
+                          <Skeleton width={100} height={50} />
+                        ) : (
+                          <CountUp
+                            start={0}
+                            decimal="."
+                            end={averageUptoPreviousDateTargets(volumeStatsDetails?.[0]?.target_volume, dayjs(statsSeletedDate?.[1]).format("YYYY-MM-DD"))}
+                          />
+                        )}
+                      </h2>
+                    </div> : ""}
 
 
                   <div className={styles.billed}>
                     <div className={styles.header}>
-                      <label className={styles.lable}>MONTH TARGET</label>
+                      <label className={styles.lable}>{checkDateForCurrentMonth() ? "TOTAL TARGET" : "MONTH TARGET"}</label>
                     </div>
                     <h2 className={styles.totalvalue}>
                       {loading ? (

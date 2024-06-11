@@ -9,7 +9,7 @@ import {
   endOfMonth,
   startOfMonth,
   subDays,
-} from "rsuite/esm/utils/dateUtils";
+} from "rsuite/esm/internals/utils/date";
 const GlobalDateRangeFilter = ({
   onChangeData,
   DatePickerplacement,

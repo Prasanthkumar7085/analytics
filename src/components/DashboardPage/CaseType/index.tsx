@@ -13,7 +13,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Revenuecolumns, VolumecolumnsForFacilities, VolumecolumnsTargets, VolumecolumnsWithDayWiseTargets } from "./CaseTypesTableColumns";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { startOfMonth } from "rsuite/esm/internals/utils/date";
 
 const CaseTypes = ({
   caseTypesStatsData,
@@ -162,9 +162,9 @@ const CaseTypes = ({
       queryPreparations(fromDate, toDate, tabValue);
     }
     else {
-        setDateFilterDefaultValue("")
-        queryPreparations("", "", tabValue);
-      }
+      setDateFilterDefaultValue("")
+      queryPreparations("", "", tabValue);
+    }
   };
 
   return (

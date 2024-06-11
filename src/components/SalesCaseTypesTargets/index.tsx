@@ -25,7 +25,7 @@ import { IconButton, TextField, Tooltip } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
 import CloseIcon from "@mui/icons-material/Close";
 import dayjs from "dayjs";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 const SalesCaseTypeWiseTargets = () => {
   const dispatch = useDispatch();
   const router = useRouter();

@@ -6,8 +6,9 @@ import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import styles from "./sales-rep.module.css";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+// import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate }: any) => {
   const router = useRouter();
 

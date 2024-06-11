@@ -35,7 +35,7 @@ import {
 } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { startOfMonth } from "rsuite/esm/internals/utils/date";
 import Facilities from "./Facilities";
 import SingleSalesRepCaseTypeDetails from "./SingleSalesRepCaseTypeDetails";
 import dayjs from "dayjs";

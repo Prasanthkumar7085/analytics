@@ -322,12 +322,12 @@ export const getThisMonthDates = (thisMonth: any) => {
 
 }
 
-export const averageUptoPreviousDateTargets = (target_volume: any) => {
+export const averageUptoPreviousDateTargets = (target_volume: any, toDate: any) => {
   const totalDaysInMonth = dayjs().daysInMonth();
   const startOfMonth = dayjs().startOf('month');
 
-  const currentDate = dayjs();
-  const daysPassed = currentDate.diff(startOfMonth, 'day');
+  const currentDate = dayjs(toDate);
+  const daysPassed = currentDate.diff(startOfMonth, 'day') + 1;
   const targetVolume = target_volume;
   if (targetVolume) {
     const averagePerDay = targetVolume / totalDaysInMonth;

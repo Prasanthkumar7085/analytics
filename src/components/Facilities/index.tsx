@@ -10,7 +10,7 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import FacilitiesFilters from "./FacilitiesFilters";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/utils/dateUtils";
+import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
 
 const FacilitiesList = () => {
