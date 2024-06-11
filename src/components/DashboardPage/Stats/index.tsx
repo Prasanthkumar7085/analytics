@@ -231,7 +231,7 @@ const Stats = ({
 
                   <div className={styles.billed}>
                     <div className={styles.header}>
-                      <label className={styles.lable}>{checkDateForCurrentMonth() ? "TOTAL TARGET" : "MONTH TARGET"}</label>
+                      <label className={styles.lable}>{checkDateForCurrentMonth() ? "MONTH TARGET" : "TOTAL TARGET"}</label>
                     </div>
                     <h2 className={styles.totalvalue}>
                       {loading ? (
