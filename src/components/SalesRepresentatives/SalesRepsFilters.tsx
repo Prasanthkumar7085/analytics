@@ -1,5 +1,5 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { Autocomplete, Button, Paper, TextField } from "@mui/material";
+import { Autocomplete, Button, Checkbox, FormControlLabel, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -25,6 +25,14 @@ const SalesRepsFilters = ({
     { title: "Target Reached - Yes", value: "true" },
     { title: "Target Reached - No", value: "false" },
   ]);
+
+  const [checked, setChecked] = useState(true);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+    onUpdateData({ teamwise: event.target.checked })
+  };
+
 
   useEffect(() => {
     setSearch(params.get("search") ? (params.get("search") as string) : "");
@@ -63,6 +71,18 @@ const SalesRepsFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
+            <li className="eachFilterLists">
+              <FormControlLabel
+                label="Team-Wise"
+                control={
+                  <Checkbox
+                    checked={checked || params.get("teamwise") == "true" ? true : false}
+                    onChange={handleChange}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                  />
+                }
+              />
+            </li>
             <li className="eachFilterLists">
               <Autocomplete
                 PaperComponent={({ children }) => (

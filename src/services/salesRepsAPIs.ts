@@ -12,6 +12,17 @@ export const getSalesRepsAPI = async (params: any) => {
     throw err;
   }
 };
+export const getTeamWiseSalesRepsAPI = async (params: any) => {
+  try {
+    const { success, data } = await $fetch.get("/sales-reps/stats/team-wise", params);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
 
 export const getSingleSalesRepCaseTypesVolumeAPI = async (id: string, queryParams: any) => {
   try {
