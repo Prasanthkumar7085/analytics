@@ -3,32 +3,36 @@ import { Button, Card, TextField } from "@mui/material";
 import { useState } from "react";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 
-const PatientDetails = () => {
+const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails }: any) => {
 
     const [getDetails, setGetDetails] = useState([
         {
             patient_id: "615234887",
             first_name: "bala",
             last_name: "vaka",
-            date_of_birth: "12-2-1996"
+            date_of_birth: "12-2-1996",
+            gender: "male"
         },
         {
             patient_id: "615234887",
             first_name: "bala",
             last_name: "vaka",
-            date_of_birth: "12-2-1996"
+            date_of_birth: "12-2-1996",
+            gender: "male"
         },
         {
             patient_id: "615234887",
             first_name: "bala",
             last_name: "vaka",
-            date_of_birth: "12-2-1996"
+            date_of_birth: "12-2-1996",
+            gender: "male"
         },
         {
             patient_id: "615234887",
             first_name: "bala",
             last_name: "vaka",
-            date_of_birth: "12-2-1996"
+            date_of_birth: "12-2-1996",
+            gender: "male"
         }
     ])
 
@@ -94,6 +98,10 @@ const PatientDetails = () => {
                 <span>
                     <Button
                         variant='outlined'
+                        onClick={() => {
+                            setPatientOpen(true);
+                            setPatientDetails(info?.row?.original)
+                        }}
                     >
                         View
                     </Button>
