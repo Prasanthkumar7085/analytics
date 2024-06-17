@@ -2,39 +2,21 @@
 import { Button, Card, TextField } from "@mui/material";
 import { useState } from "react";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
+import { DatePicker } from "rsuite";
+import "rsuite/dist/rsuite.css";
+import datePipe from "@/lib/Pipes/datePipe";
 
-const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails }: any) => {
+const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails, getDetails, getPatientDetails }: any) => {
 
-    const [getDetails, setGetDetails] = useState([
-        {
-            patient_id: "615234887",
-            first_name: "bala",
-            last_name: "vaka",
-            date_of_birth: "12-2-1996",
-            gender: "male"
-        },
-        {
-            patient_id: "615234887",
-            first_name: "bala",
-            last_name: "vaka",
-            date_of_birth: "12-2-1996",
-            gender: "male"
-        },
-        {
-            patient_id: "615234887",
-            first_name: "bala",
-            last_name: "vaka",
-            date_of_birth: "12-2-1996",
-            gender: "male"
-        },
-        {
-            patient_id: "615234887",
-            first_name: "bala",
-            last_name: "vaka",
-            date_of_birth: "12-2-1996",
-            gender: "male"
-        }
-    ])
+    const [firstName, setFirstName] = useState<any>("");
+    const [lastName, setLastName] = useState<any>("");
+    const [dateOfBirth, setDateOfBirth] = useState<any>("");
+
+    const onChangeDateOfBirth = (date: any) => {
+        setDateOfBirth(date)
+    };
+
+    let dateFormat = datePipe(dateOfBirth, "YYYY-MM-DD")
 
     const Revenuecolumns = [
         {
@@ -83,7 +65,7 @@ const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails }: any)
             id: "date_of_birth",
             cell: (info: any) => (
                 <span>
-                    {info.getValue()}
+                    {datePipe(info.getValue(), "MM-DD-YYYY")}
                 </span>
             ),
             header: () => <span>DATE OF BIRTH</span>,
@@ -121,30 +103,51 @@ const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails }: any)
                     placeholder="First Name"
                     size="small"
                     sx={{ padding: "0px 5px 0px 0px" }}
+                    value={firstName}
+                    onChange={(e) => {
+                        setFirstName(e.target.value)
+                    }}
                 />
                 <TextField
                     id="outlined-size-small"
                     placeholder="Last Name"
                     size="small"
                     sx={{ padding: "0px 5px 0px 5px" }}
+                    value={lastName}
+                    onChange={(e) => {
+                        setLastName(e.target.value)
+                    }}
                 />
-                <TextField
-                    id="outlined-size-small"
-                    placeholder="Date of Birth"
-                    size="small"
-                    sx={{ padding: "0px 5px 0px 5px" }}
+                <DatePicker
+                    placeholder="Select Date of Birth"
+                    value={dateOfBirth ? new Date(dateOfBirth) : null}
+                    onChange={(newValue) => {
+                        onChangeDateOfBirth(newValue);
+                    }}
                 />
                 <Button
                     variant='outlined'
                     style={{ padding: "0px 0px 0px 5px" }}
+                    disabled={!(firstName || lastName || dateOfBirth)}
+                    onClick={() => {
+                        getPatientDetails({
+                            first_name: firstName,
+                            last_name: lastName,
+                            date_of_birth: dateFormat
+                        })
+                    }}
                 >
                     Get Details
                 </Button>
             </Card>
-            <SingleColumnTable
-                data={getDetails}
-                columns={Revenuecolumns}
-                loading={false} />
+            {getDetails ? (
+                <SingleColumnTable
+                    data={getDetails}
+                    columns={Revenuecolumns}
+                    loading={false} />
+            ) : (
+                ""
+            )}
         </div>
     );
 }

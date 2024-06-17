@@ -3,11 +3,38 @@
 import { useState } from "react";
 import PatientDetails from "./PatientDetails";
 import PatientResultTable from "./PatientResultTable";
+import { getAllPatientDetailsAPI } from "@/services/patientResults/getAllPatientDetailsAPI";
+import LoadingComponent from "../core/LoadingComponent";
 
 const PatientResults = () => {
 
     const [patientOpen, setPatientOpen] = useState(false);
     const [patientDetails, setPatientDetails] = useState<any>();
+    const [loading, setLoading] = useState(false);
+    const [getDetails, setGetDetails] = useState<any>();
+
+    const getPatientDetails = async ({
+        first_name,
+        last_name,
+        date_of_birth,
+    }: any) => {
+        setLoading(true);
+        try {
+            let queryParams: any = {
+                first_name: first_name,
+                last_name: last_name,
+                date_of_birth: date_of_birth,
+            };
+            const response = await getAllPatientDetailsAPI(queryParams);
+            if (response.status == 200 || response.status == 201) {
+                setGetDetails(response?.data)
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Function to group results by category
     function transformData(data: any[]) {
@@ -333,10 +360,11 @@ const PatientResults = () => {
     return (
         <div>
             {patientOpen == false ? (
-                <PatientDetails setPatientOpen={setPatientOpen} patientOpen={patientOpen} setPatientDetails={setPatientDetails} />
+                <PatientDetails setPatientOpen={setPatientOpen} patientOpen={patientOpen} setPatientDetails={setPatientDetails} getPatientDetails={getPatientDetails} getDetails={getDetails} />
             ) : (
                 <PatientResultTable setPatientOpen={setPatientOpen} patientOpen={patientOpen} patientDetails={patientDetails} patientResultsData={patientResultsData} />
             )}
+            <LoadingComponent loading={loading} />
         </div>
     )
 }

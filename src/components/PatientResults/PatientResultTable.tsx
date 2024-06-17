@@ -1,3 +1,4 @@
+import datePipe from "@/lib/Pipes/datePipe";
 import { Button, Card } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -90,7 +91,7 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                     />
                     <div>
                         <label>Date of Birth</label>
-                        <p>{patientDetails?.date_of_birth}</p>
+                        <p>{datePipe(patientDetails?.date_of_birth, "MM-DD-YYYY")}</p>
                     </div>
                 </div>
 
