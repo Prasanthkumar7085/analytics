@@ -182,7 +182,24 @@ const SalesRepresentatives = () => {
         );
       },
     },
-
+    {
+      accessorFn: (row: any) => row.role_id,
+      id: "role_id",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>USER TYPE</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+          >
+            {info.row.original.role_id == 1 ? "Territory Manager" : info.row.original.role_id == 2 ? "Regional Director" : "Sales Director"}
+          </span>
+        );
+      },
+    },
     {
       accessorFn: (row: any) => row.revenue,
       header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITIES</span>,
@@ -387,6 +404,7 @@ const SalesRepresentatives = () => {
 
     const result: any = [
       { value: "Total", dolorSymbol: false },
+      { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
       { value: totalFacilities, dolorSymbol: false },
       // { value: targetFacilities, dolorSymbol: false },

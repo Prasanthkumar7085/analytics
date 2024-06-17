@@ -186,7 +186,6 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
   ];
 
   const goToSingleRepPage = (repId: string) => {
-    console.log(repId, "fdsds")
     let queryString = "";
     let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
       [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
@@ -247,6 +246,26 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
   );
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "#f5fff7";
+      } else if (totalCases >= targetVolume) {
+        return "#f5fff7";
+      } else {
+        return "#ffebe9";
+      }
+    }
+
+    const percentage = totalCases / targetVolume;
+    if (totalCases >= targetVolume) {
+      return "#f5fff7";
+    } else if (percentage >= 0.5) {
+      return "#feecd1";
+    } else {
+      return "#ffebe9";
+    }
+  };
 
   useEffect(() => {
     setSearchParams(
@@ -275,6 +294,15 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
                         key={index}
                         style={{
                           width: "100%",
+                          backgroundColor:
+                            row?.original.hasOwnProperty("target_reached") &&
+                              cell?.id &&
+                              cell?.id.includes("total_cases")
+                              ? getBackgroundColor(
+                                row?.original?.total_cases,
+                                row?.original?.total_targets
+                              )
+                              : "",
                         }}
                       >
                         {flexRender(

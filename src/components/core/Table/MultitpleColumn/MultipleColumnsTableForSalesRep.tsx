@@ -35,6 +35,8 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
     "1_revenue_generated_amount",
     "1_facilities_total_facilities",
     "1_volume_total_cases",
+    "1_volume_total_targets",
+    "role_id"
   ];
 
   const table = useReactTable({
@@ -148,182 +150,182 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
     });
   };
 
-   const getBackgroundColor = (totalCases: any, targetVolume: any) => {
-     if (targetVolume === 0) {
-       if (totalCases === 0) {
-         return "#f5fff7";
-       } else if (totalCases >= targetVolume) {
-         return "#f5fff7";
-       } else {
-         return "#ffebe9";
-       }
-     }
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "#f5fff7";
+      } else if (totalCases >= targetVolume) {
+        return "#f5fff7";
+      } else {
+        return "#ffebe9";
+      }
+    }
 
-     const percentage = totalCases / targetVolume;
-     if (totalCases >= targetVolume) {
-       return "#f5fff7";
-     } else if (percentage >= 0.5) {
-       return "#feecd1";
-     } else {
-       return "#ffebe9";
-     }
-   };
+    const percentage = totalCases / targetVolume;
+    if (totalCases >= targetVolume) {
+      return "#f5fff7";
+    } else if (percentage >= 0.5) {
+      return "#feecd1";
+    } else {
+      return "#ffebe9";
+    }
+  };
 
-   return (
-     <div
-       className="tableContainer"
-       style={{ width: "100%", overflowX: "auto" }}
-     >
-       <table style={{ width: "100%" }}>
-         <thead
-           className="thead"
-           style={{
-             height: "32px",
-             position: "sticky",
-             top: "0px",
-             zIndex: "2",
-             color: "white",
-           }}
-         >
-           {table
-             .getHeaderGroups()
-             .map((headerGroup: any, mainIndex: number) => (
-               <tr className="table-row" key={headerGroup.id}>
-                 {headerGroup.headers.map((header: any, index: number) => {
-                   return (
-                     <th
-                       className="cell"
-                       key={index}
-                       colSpan={header.colSpan}
-                       style={{
-                         minWidth: getWidth(header.id),
-                         width: getWidth(header.id),
-                         color: "#000",
-                         background: "#F0EDFF",
-                       }}
-                     >
-                       {header.isPlaceholder ? null : (
-                         <div
-                           onClick={() => sortAndGetData(header)}
-                           style={{
-                             display: "flex",
-                             gap: "10px",
-                             cursor: "pointer",
-                             minWidth: getWidth(header.id),
-                             width: getWidth(header.id),
-                           }}
-                         >
-                           {flexRender(
-                             header.column.columnDef.header,
-                             header.getContext()
-                           )}
+  return (
+    <div
+      className="tableContainer"
+      style={{ width: "100%", overflowX: "auto" }}
+    >
+      <table style={{ width: "100%" }}>
+        <thead
+          className="thead"
+          style={{
+            height: "32px",
+            position: "sticky",
+            top: "0px",
+            zIndex: "2",
+            color: "white",
+          }}
+        >
+          {table
+            .getHeaderGroups()
+            .map((headerGroup: any, mainIndex: number) => (
+              <tr className="table-row" key={headerGroup.id}>
+                {headerGroup.headers.map((header: any, index: number) => {
+                  return (
+                    <th
+                      className="cell"
+                      key={index}
+                      colSpan={header.colSpan}
+                      style={{
+                        minWidth: getWidth(header.id),
+                        width: getWidth(header.id),
+                        color: "#000",
+                        background: "#F0EDFF",
+                      }}
+                    >
+                      {header.isPlaceholder ? null : (
+                        <div
+                          onClick={() => sortAndGetData(header)}
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            cursor: "pointer",
+                            minWidth: getWidth(header.id),
+                            width: getWidth(header.id),
+                          }}
+                        >
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
 
-                           <SortItems
-                             searchParams={searchParams}
-                             header={header}
-                           />
-                         </div>
-                       )}
-                     </th>
-                   );
-                 })}
-               </tr>
-             ))}
-         </thead>
-         <tbody className="tbody">
-           {data?.length ? (
-             table.getRowModel().rows.map((row: any, mainIndex: number) => {
-               return (
-                 <tr className="table-row" key={mainIndex}>
-                   {row.getVisibleCells().map((cell: any, index: number) => {
-                     return (
-                       <td
-                         className="cell"
-                         key={index}
-                         style={{
-                           width: "100%",
-                           backgroundColor:
-                             row?.original.hasOwnProperty("target_reached") &&
-                             cell?.id &&
-                             cell?.id.includes("total_cases")
-                               ? getBackgroundColor(
-                                   row?.original?.total_cases,
-                                   row?.original?.total_targets
-                                 )
-                               : "",
-                         }}
-                       >
-                         {flexRender(
-                           cell.column.columnDef.cell,
-                           cell.getContext()
-                         )}
-                       </td>
-                     );
-                   })}
-                 </tr>
-               );
-             })
-           ) : !loading ? (
-             <tr>
-               <td colSpan={10}>
-                 <div
-                   style={{
-                     display: "flex",
-                     justifyContent: "center",
-                     alignItems: "center",
-                     height: "40vh",
-                   }}
-                 >
-                   <Image
-                     src="/NoDataImageAnalytics.svg"
-                     alt=""
-                     height={150}
-                     width={250}
-                   />
-                 </div>
-               </td>
-             </tr>
-           ) : (
-             <tr>
-               <td colSpan={10}>
-                 <div
-                   style={{
-                     display: "flex",
-                     justifyContent: "center",
-                     alignItems: "center",
-                     height: "40vh",
-                   }}
-                 ></div>
-               </td>
-             </tr>
-           )}
-         </tbody>
-         <tfoot
-           className="tfootRow"
-           style={{
-             fontSize: "clamp(12px, 0.62vw, 14px)",
-             border: "1px solid #a5a5a5",
-             textTransform: "uppercase",
-             fontWeight: "600",
-             color: "#1B2459",
-           }}
-         >
-           <tr className="radiusLastChild">
-             {totalSumValues?.map((item: any, index: number) => {
-               return (
-                 <td key={index} className="cell">
-                   {index == 0 || index == 1
-                     ? item.value
-                     : item.dolorSymbol
-                     ? formatMoney(item.value)
-                     : item?.value?.toLocaleString()}
-                 </td>
-               );
-             })}
-           </tr>
-         </tfoot>
-       </table>
-     </div>
-   );
+                          <SortItems
+                            searchParams={searchParams}
+                            header={header}
+                          />
+                        </div>
+                      )}
+                    </th>
+                  );
+                })}
+              </tr>
+            ))}
+        </thead>
+        <tbody className="tbody">
+          {data?.length ? (
+            table.getRowModel().rows.map((row: any, mainIndex: number) => {
+              return (
+                <tr className="table-row" key={mainIndex}>
+                  {row.getVisibleCells().map((cell: any, index: number) => {
+                    return (
+                      <td
+                        className="cell"
+                        key={index}
+                        style={{
+                          width: "100%",
+                          backgroundColor:
+                            row?.original.hasOwnProperty("target_reached") &&
+                              cell?.id &&
+                              cell?.id.includes("total_cases")
+                              ? getBackgroundColor(
+                                row?.original?.total_cases,
+                                row?.original?.total_targets
+                              )
+                              : "",
+                        }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })
+          ) : !loading ? (
+            <tr>
+              <td colSpan={10}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "40vh",
+                  }}
+                >
+                  <Image
+                    src="/NoDataImageAnalytics.svg"
+                    alt=""
+                    height={150}
+                    width={250}
+                  />
+                </div>
+              </td>
+            </tr>
+          ) : (
+            <tr>
+              <td colSpan={10}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "40vh",
+                  }}
+                ></div>
+              </td>
+            </tr>
+          )}
+        </tbody>
+        <tfoot
+          className="tfootRow"
+          style={{
+            fontSize: "clamp(12px, 0.62vw, 14px)",
+            border: "1px solid #a5a5a5",
+            textTransform: "uppercase",
+            fontWeight: "600",
+            color: "#1B2459",
+          }}
+        >
+          <tr className="radiusLastChild">
+            {totalSumValues?.map((item: any, index: number) => {
+              return (
+                <td key={index} className="cell">
+                  {index == 0 || index == 1
+                    ? item.value
+                    : item.dolorSymbol
+                      ? formatMoney(item.value)
+                      : item?.value?.toLocaleString()}
+                </td>
+              );
+            })}
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  );
 };
 export default MultipleColumnsTableForSalesRep;

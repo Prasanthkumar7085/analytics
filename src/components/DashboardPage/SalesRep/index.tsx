@@ -54,24 +54,8 @@ const SalesRep = () => {
     }
   };
   const setFooterValuData = (data: any[]) => {
-    const billedAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.generated_amount,
-      0
-    );
-    const paidRevenueSum = data.reduce(
-      (sum: any, item: any) => sum + +item.paid_amount,
-      0
-    );
-    const pendingAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.pending_amount,
-      0
-    );
     const totalFacilities = data.reduce(
       (sum: any, item: any) => sum + +item.total_facilities,
-      0
-    );
-    const targetFacilities = data.reduce(
-      (sum: any, item: any) => sum + +item.target_facilities,
       0
     );
     const activeFacilities = data.reduce(
@@ -89,6 +73,7 @@ const SalesRep = () => {
 
     const result: any = [
       { value: "Total", dolorSymbol: false },
+      { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
       { value: totalFacilities, dolorSymbol: false },
       { value: activeFacilities, dolorSymbol: false },

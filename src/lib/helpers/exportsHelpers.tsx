@@ -464,12 +464,12 @@ export const exportToExcelSalesRepTable = (
         };
       }
     } else {
-      const targets = row[4];
-      const total = row[5];
-      const yesOrNo = row[6];
-      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
-      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
-      const cellAddressyesOrNo = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
+      const targets = row[5];
+      const total = row[6];
+      const yesOrNo = row[7];
+      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
+      const cellAddressyesOrNo = XLSX.utils.encode_cell({ r: rowIndex, c: 7 });
       const percentCompleted = total / targets;
 
       worksheet[cellAddressTarget].s = {

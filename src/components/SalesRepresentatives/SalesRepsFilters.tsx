@@ -1,14 +1,14 @@
+import { exportToExcelSalesRepTable, exportToExcelTeamSalesRepTable } from "@/lib/helpers/exportsHelpers";
 import SearchIcon from "@mui/icons-material/Search";
-import { Autocomplete, Button, Checkbox, FormControlLabel, Paper, TextField } from "@mui/material";
+import { Autocomplete, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
-import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-import { exportToExcelSalesRepTable, exportToExcelTeamSalesRepTable } from "@/lib/helpers/exportsHelpers";
-import ExportButton from "../core/ExportButton/ExportButton";
-import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import dayjs from "dayjs";
+import { useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
+import ExportButton from "../core/ExportButton/ExportButton";
+import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
+import { useSelector } from "react-redux";
 const SalesRepsFilters = ({
   onUpdateData,
   queryPreparations,
@@ -20,6 +20,9 @@ const SalesRepsFilters = ({
 }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState<any>(null);
+  const userType = useSelector(
+    (state: any) => state.auth.user?.user_details?.user_type
+  );
   const [search, setSearch] = useState("");
   const [statusOptions] = useState([
     { title: "Target Reached - Yes", value: "true" },
@@ -59,7 +62,9 @@ const SalesRepsFilters = ({
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
         <Grid item xs={3}>
-          <h4>Team Wise Sales Representatives</h4>
+          {userType == "LAB_ADMIN" ?
+            <h4>Team Wise Sales Representatives</h4> :
+            <h4> Sales Representatives</h4>}
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
@@ -137,7 +142,12 @@ const SalesRepsFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelTeamSalesRepTable(salesRepsData, totalSumValues);
+                  if (userType == "LAB_ADMIN") {
+                    exportToExcelTeamSalesRepTable(salesRepsData, totalSumValues);
+                  }
+                  else {
+                    exportToExcelSalesRepTable(salesRepsData, totalSumValues)
+                  }
                 }}
                 disabled={salesRepsData?.length === 0 ? true : false}
               />
