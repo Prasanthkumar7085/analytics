@@ -5,7 +5,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
+import { exportToExcelSalesRepTable, exportToExcelTeamSalesRepTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import dayjs from "dayjs";
@@ -25,14 +25,6 @@ const SalesRepsFilters = ({
     { title: "Target Reached - Yes", value: "true" },
     { title: "Target Reached - No", value: "false" },
   ]);
-
-  const [checked, setChecked] = useState(true);
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-    onUpdateData({ teamwise: event.target.checked })
-  };
-
 
   useEffect(() => {
     setSearch(params.get("search") ? (params.get("search") as string) : "");
@@ -67,22 +59,10 @@ const SalesRepsFilters = ({
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
         <Grid item xs={3}>
-          <h4>Sales Representatives</h4>
+          <h4>Team Wise Sales Representatives</h4>
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-            <li className="eachFilterLists">
-              <FormControlLabel
-                label="Team-Wise"
-                control={
-                  <Checkbox
-                    checked={checked || params.get("teamwise") == "true" ? true : false}
-                    onChange={handleChange}
-                    inputProps={{ 'aria-label': 'controlled' }}
-                  />
-                }
-              />
-            </li>
             <li className="eachFilterLists">
               <Autocomplete
                 PaperComponent={({ children }) => (
@@ -157,7 +137,7 @@ const SalesRepsFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelSalesRepTable(salesRepsData, totalSumValues);
+                  exportToExcelTeamSalesRepTable(salesRepsData, totalSumValues);
                 }}
                 disabled={salesRepsData?.length === 0 ? true : false}
               />

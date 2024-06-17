@@ -367,3 +367,29 @@ export const averageUptoDateTargetsForSalesReps = (target_volume: any, toDate: a
     return 0;
   }
 }
+
+// Function to sum all team totals
+function calculateTeamTotalSumOfFields(data: any, fieldName: any) {
+  let totalAmount = 0;
+  data.forEach((item: any) => {
+    totalAmount += item[fieldName];
+  });
+  return totalAmount;
+}
+
+
+export const formatTeamWiseSalesRepsData = (data: any,) => {
+  let formatData = data.map((item: any, index: any) => {
+    return {
+      ...item,
+      "sales_rep_name": item?.sales_rep_name + " " + "TEAM",
+      "total_facilities": calculateTeamTotalSumOfFields(item.team, "total_facilities"),
+      "active_facilities": calculateTeamTotalSumOfFields(item.team, "active_facilities"),
+      "total_targets": calculateTeamTotalSumOfFields(item.team, "total_targets"),
+      "total_cases": calculateTeamTotalSumOfFields(item.team, "total_cases"),
+      "target_reached": item.total_cases >= item.total_targets ? true : false
+    }
+  })
+  return formatData;
+
+}

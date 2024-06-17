@@ -1,6 +1,4 @@
 import formatMoney from "@/lib/Pipes/moneyFormat";
-import Image from "next/image";
-import React, { FC, useState } from "react";
 import {
   SortingState,
   flexRender,
@@ -9,6 +7,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import Image from "next/image";
+import React, { FC, useState } from "react";
 import SalesRepsAccrodianTable from "./SalesRepsAccrodianTable";
 
 interface pageProps {
@@ -37,6 +37,8 @@ const TeamWiseSalesRepsTanStackTable: FC<pageProps> = ({
     "1_revenue_generated_amount",
     "1_facilities_total_facilities",
     "1_volume_total_cases",
+    "1_volume_total_targets",
+    "role_id"
   ];
 
   const table = useReactTable({
@@ -274,7 +276,7 @@ const TeamWiseSalesRepsTanStackTable: FC<pageProps> = ({
                                   row?.original?.total_cases,
                                   row?.original?.total_targets
                                 )
-                                : "",
+                                : "#F0F6F6",
                           }}
                         >
                           {flexRender(
@@ -288,9 +290,9 @@ const TeamWiseSalesRepsTanStackTable: FC<pageProps> = ({
                   {row?.original?.team?.length ? (
                     <tr>
                       <SalesRepsAccrodianTable
-                        columns={columns}
                         data={row?.original?.team}
                         loading={false}
+                        params={searchParams}
                       />
 
                     </tr>

@@ -392,7 +392,6 @@ export const exportToExcelCaseTypesVolumesForFacilites = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "casetypes-volume.xlsx");
 };
-
 export const exportToExcelSalesRepTable = (
   salesRepData: any,
   totalSumValues: any
@@ -401,6 +400,7 @@ export const exportToExcelSalesRepTable = (
     return [
       index + 1,
       obj.sales_rep_name,
+      obj.role_id == 1 ? "Territory Manager" : obj.role_id == 2 ? "Regional Director" : "Sales Director",
       obj.total_facilities,
       obj.active_facilities,
       obj.total_targets,
@@ -408,10 +408,11 @@ export const exportToExcelSalesRepTable = (
       obj.target_reached ? "Yes" : "No",
     ];
   });
-  let mainHeaders = ["", "", "FACILITIES", "", "VOLUME", "", ""];
+  let mainHeaders = ["", "", "", "FACILITIES", "", "VOLUME", "", ""];
   let headers = [
     "Sl.no",
     "MARKETER NAME",
+    "USER TYPE",
     "TOTAL",
     "ACTIVE",
     "TARGET",
@@ -505,6 +506,172 @@ export const exportToExcelSalesRepTable = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "sales-rep-table.xlsx");
 };
+
+export const exportToExcelTeamSalesRepTable = (
+  salesRepData: any,
+  totalSumValues: any
+) => {
+  const formattedData = salesRepData.flatMap((obj: any, index: any) => {
+    let data: any = [
+      [
+        index + 1,
+        obj.sales_rep_name,
+        obj.role_id == 1 ? "Territory Manager" : obj.role_id == 2 ? "Regional Director" : "Sales Director",
+        obj.total_facilities,
+        obj.active_facilities,
+        obj.total_targets,
+        obj.total_cases,
+        obj.target_reached ? "Yes" : "No",
+      ],
+    ];
+
+    if (obj.team && obj.team.length > 0) {
+      // Map through the team members and add them to the data array
+      obj.team.forEach((teamMember: any) => {
+        data.push([
+          "", // Index placeholder for team members
+          teamMember.sales_rep_name,
+          obj.role_id == 1 ? "Territory Manager" : obj.role_id == 2 ? "Regional Director" : "Sales Director",
+          teamMember.total_facilities,
+          teamMember.active_facilities,
+          teamMember.total_targets,
+          teamMember.total_cases,
+          teamMember.target_reached ? "Yes" : "No",
+        ]);
+      });
+    }
+    return data;
+  });
+
+  let mainHeaders = ["", "", "", "FACILITIES", "", "VOLUME", "", ""];
+  let headers = [
+    "Sl.no",
+    "MARKETER NAME",
+    "USER TYPE",
+    "TOTAL",
+    "ACTIVE",
+    "TARGET",
+    "TOTAL",
+    "TARGET REACHED",
+  ];
+
+  const toatalSumValuesRow = totalSumValues.map((obj: any) =>
+    obj.value === null ? "" : obj.value
+  );
+  let totalData = [
+    ...[mainHeaders],
+    ...[headers],
+    ...formattedData,
+    ...[toatalSumValuesRow],
+  ];
+
+  const worksheet = XLSX.utils.aoa_to_sheet(totalData);
+
+  // Styling header row
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+
+  // Styling footer row
+  const footerRowIndex = totalData.length - 1;
+  for (let i = 0; i < headers.length; i++) {
+    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
+    worksheet[cellAddress].s = {
+      fill: {
+        fgColor: { rgb: "f0edff" },
+      },
+    };
+  }
+
+
+  // Applying style to team member rows
+  formattedData.forEach((rowData: any, rowIndex: any) => {
+    if (rowData.length > 0 && rowData[0] === "") {
+      for (let colIndex = 1; colIndex < rowData.length; colIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 2, c: colIndex });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "fef8f7" },
+          },
+        };
+      }
+    }
+    else {
+      for (let colIndex = 0; colIndex < rowData.length; colIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 2, c: colIndex });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "F0F6F6" },
+          },
+        };
+      }
+    }
+  });
+
+
+  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
+    const row = totalData[rowIndex];
+
+    if (rowIndex === totalData.length - 1) {
+      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: columnIndex,
+        });
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "f0edff" },
+          },
+        };
+      }
+    } else {
+      const targets = row[5];
+      const total = row[6];
+      const yesOrNo = row[7];
+      const cellAddressTarget = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
+      const cellAddressTotal = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
+      const cellAddressyesOrNo = XLSX.utils.encode_cell({ r: rowIndex, c: 7 });
+      const percentCompleted = total / targets;
+
+      worksheet[cellAddressTarget].s = {
+        fill: {
+          fgColor: { rgb: "f9feff" },
+        },
+      };
+      worksheet[cellAddressTotal].s = {
+        fill: {
+          fgColor: {
+            rgb:
+              total >= targets
+                ? "f5fff7"
+                : percentCompleted >= 0.5
+                  ? "feecd1"
+                  : "ffebe9",
+          },
+        },
+      };
+      worksheet[cellAddressyesOrNo].s = {
+        font: {
+          color: {
+            rgb: yesOrNo == "Yes" ?
+              "4F7942"
+              : "FF0000",
+          },
+        },
+
+      };
+    }
+  }
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+  XLSX.writeFile(workbook, "sales-rep-table.xlsx");
+};
+
 
 export const exportToExcelInsurancesTable = (
   completeData: any,

@@ -1,17 +1,15 @@
-import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import LoadingComponent from "@/components/core/LoadingComponent";
+import TeamWiseSalesRepsTanStackTable from "@/components/core/Table/TeamWiseSalesRepsTanStack";
+import { addSerial } from "@/lib/Pipes/addSerial";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { changeDateToUTC, formatTeamWiseSalesRepsData } from "@/lib/helpers/apiHelpers";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { getTeamWiseSalesRepsAPI } from "@/services/salesRepsAPIs";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import SalesRepsFilters from "../SalesRepsFilters";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
-import { addSerial } from "@/lib/Pipes/addSerial";
-import MultipleColumnsTableForSalesRep from "@/components/core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
-import { Button, Typography } from "@mui/material";
-import TeamWiseSalesRepsTanStackTable from "@/components/core/Table/TeamWiseSalesRepsTanStack";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import LoadingComponent from "@/components/core/LoadingComponent";
 
 const TeamWiseSalesReps = () => {
     const router = useRouter();
@@ -76,20 +74,14 @@ const TeamWiseSalesReps = () => {
             let queryString = prepareURLEncodedParams("", queryParams);
             router.push(`${pathname}${queryString}`);
 
-            const response = await getTeamWiseSalesRepsAPI(remaining);
+            const response: any = await getTeamWiseSalesRepsAPI(remaining);
             if (response.status == 200 || response.status == 201) {
-                setCompleteData(response?.data);
-                let data = response?.data
-                if (queryParams.teamwise) {
-                    data =
-                        response?.data.filter((item: any, index: any) => item.team?.length);
-                }
+                let teamData = response?.data.filter((item: any, index: any) => item.team?.length);
+                let data = formatTeamWiseSalesRepsData(teamData);
+                setCompleteData(data);
+
                 if (queryParams.search) {
-                    data = data.filter((item: any) =>
-                        item.sales_rep_name
-                            ?.toLowerCase()
-                            ?.includes(queryParams.search?.toLowerCase()?.trim())
-                    );
+                    data = filterByName(search, data)
                 }
                 if (queryParams.status) {
                     data = data.filter(
@@ -114,18 +106,39 @@ const TeamWiseSalesReps = () => {
         }
     }
 
+    // Function to filter based on salesrepname
+    const filterByName = (name: string, data: any) => {
+        const results: any = [];
+        data.forEach((item: any) => {
+            if (item.sales_rep_name.toLowerCase().includes(name.toLowerCase()?.trim()) && name.toLowerCase()?.trim()?.includes("team")) {
+                results.push(item);
+            }
+            else {
+                const teamMember = item.team?.find((member: any) => member.sales_rep_name.toLowerCase().includes(name.toLowerCase()?.trim()));
+                if (teamMember) {
+                    results.push({
+                        ...item,
+                        team: [teamMember]
+                    });
+                }
+            }
+        });
+
+        return results;
+    }
+
+
+
     const onUpdateData = ({
         search = searchParams?.search,
         orderBy = searchParams?.order_by,
         orderType = searchParams?.order_type as "asc" | "desc",
         status = searchParams?.status,
-        teamwise = searchParams?.status
     }: Partial<{
         search: string;
         orderBy: string;
         orderType: "asc" | "desc";
         status: string;
-        teamwise: any
     }>) => {
         let queryParams: any = {};
         if (search) {
@@ -146,26 +159,15 @@ const TeamWiseSalesReps = () => {
         if (params.get("to_date")) {
             queryParams["to_date"] = params.get("to_date");
         }
-        if (teamwise) {
-            queryParams["teamwise"] = teamwise;
-
-        }
 
         router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
         let data = [...completeData];
 
         if (orderBy && orderType) {
             data = sortAndGetData(data, orderBy, orderType);
-            if (teamwise) {
-                data =
-                    data.filter((item: any, index: any) => item.team?.length);
-            }
+
             if (search) {
-                data = data.filter((item: any) =>
-                    item.sales_rep_name
-                        ?.toLowerCase()
-                        ?.includes(search?.toLowerCase()?.trim())
-                );
+                data = filterByName(search, data)
             }
             if (status) {
                 data = data.filter(
@@ -174,16 +176,8 @@ const TeamWiseSalesReps = () => {
             }
         } else {
             data = [...completeData];
-            if (teamwise) {
-                data =
-                    data.filter((item: any, index: any) => item.team?.length);
-            }
             if (search) {
-                data = data.filter((item: any) =>
-                    item.sales_rep_name
-                        ?.toLowerCase()
-                        ?.includes(search?.toLowerCase()?.trim())
-                );
+                data = filterByName(search, data)
             }
             if (status) {
                 data = data.filter(
@@ -227,9 +221,8 @@ const TeamWiseSalesReps = () => {
                 return (
                     <span
                         style={{ cursor: "pointer" }}
-                    // onClick={() => goToSingleRepPage(info.row.original.sales_rep_id)}
                     >
-                        {info.row.original.sales_rep_name}
+                        {info.row.original.sales_rep_name.toUpperCase()}
                     </span>
                 );
             },
@@ -247,7 +240,7 @@ const TeamWiseSalesReps = () => {
                     <span
                         style={{ cursor: "pointer" }}
                     >
-                        {info.row.original.role_id == 1 ? "Marketer" : info.row.original.role_id == 2 ? "Manager" : "Director"}
+                        {info.row.original.role_id == 1 ? "Territory Manager" : info.row.original.role_id == 2 ? "Regional Director" : "Sales Director"}
                     </span>
                 );
             },
@@ -266,8 +259,8 @@ const TeamWiseSalesReps = () => {
                     width: "300px",
                     maxWidth: "300px",
                     minWidth: "300px",
-                    cell: ({ getValue }: any) => {
-                        return <span>{getValue()?.toLocaleString()}</span>;
+                    cell: (info: any) => {
+                        return <span>{info.row.original.total_facilities?.toLocaleString() || 0}</span>;
                     },
                 },
                 {
@@ -278,7 +271,7 @@ const TeamWiseSalesReps = () => {
                     maxWidth: "300px",
                     minWidth: "300px",
                     cell: (info: any) => {
-                        return <span>{info.getValue()?.toLocaleString()}</span>;
+                        return <span>{info.row.original.active_facilities?.toLocaleString() || 0}</span>;
                     },
                 },
             ],
@@ -297,7 +290,7 @@ const TeamWiseSalesReps = () => {
                     maxWidth: "200px",
                     minWidth: "200px",
                     cell: (info: any) => {
-                        return <span>{info.getValue()?.toLocaleString()}</span>;
+                        return <span>{info.row.original.total_targets?.toLocaleString() || 0}</span>;
                     },
                 },
                 {
@@ -307,8 +300,8 @@ const TeamWiseSalesReps = () => {
                     width: "200px",
                     maxWidth: "200px",
                     minWidth: "200px",
-                    cell: ({ getValue }: any) => {
-                        return <span>{getValue()?.toLocaleString()}</span>;
+                    cell: (info: any) => {
+                        return <span>{info.row.original.total_cases?.toLocaleString() || 0}</span>;
                     },
                 },
             ],
@@ -341,37 +334,30 @@ const TeamWiseSalesReps = () => {
             minWidth: "120px",
             cell: (info: any) => {
                 return (
-                    <Button
-                        className="actionButton"
-                    // onClick={() => {
-                    //     goToSingleRepPage(info.row.original.sales_rep_id)
-                    // }}
-                    >
-                        view
-                    </Button>
+                    <span style={{ marginLeft: "20px" }}>----</span>
                 );
             },
         },
-
     ];
 
+    // Function to sum all totals
+    function calculateTotalSumOfFields(data: any, fieldName: any) {
+        let totalAmount = 0;
+        data.forEach((item: any) => {
+            if (item.team) {
+                item.team.forEach((member: any) => {
+                    totalAmount += member[fieldName];
+                });
+            }
+        });
+        return totalAmount;
+    }
+
     const setFooterValuData = (data: any[]) => {
-        const totalFacilities = data.reduce(
-            (sum: any, item: any) => sum + +item.total_facilities,
-            0
-        );
-        const activeFacilities = data.reduce(
-            (sum: any, item: any) => sum + +item.active_facilities,
-            0
-        );
-        const targetVolume = data.reduce(
-            (sum: any, item: any) => sum + +item.total_targets,
-            0
-        );
-        const totalVolume = data.reduce(
-            (sum: any, item: any) => sum + +item.total_cases,
-            0
-        );
+        const totalFacilities = calculateTotalSumOfFields(data, "total_facilities");
+        const activeFacilities = calculateTotalSumOfFields(data, "active_facilities");
+        const targetVolume = calculateTotalSumOfFields(data, "total_targets");
+        const totalVolume = calculateTotalSumOfFields(data, "total_cases");
 
         const result: any = [
             { value: "Total", dolorSymbol: false },
