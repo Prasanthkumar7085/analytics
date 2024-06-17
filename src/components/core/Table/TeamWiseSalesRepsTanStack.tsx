@@ -268,6 +268,7 @@ const TeamWiseSalesRepsTanStackTable: FC<pageProps> = ({
                           key={index}
                           style={{
                             width: "100%",
+                            fontWeight: "600",
                             backgroundColor:
                               row?.original.hasOwnProperty("target_reached") &&
                                 cell?.id &&
