@@ -515,7 +515,7 @@ export const exportToExcelTeamSalesRepTable = (
     let data: any = [
       [
         index + 1,
-        obj.sales_rep_name + " " + `(${obj.team?.length})`,
+        obj.sales_rep_name,
         obj.role_id == 1 ? "Territory Manager" : obj.role_id == 2 ? "Regional Director" : "Sales Director",
         obj.total_facilities,
         obj.active_facilities,

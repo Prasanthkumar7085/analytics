@@ -222,7 +222,7 @@ const TeamWiseSalesReps = () => {
                     <span
                         style={{ cursor: "pointer" }}
                     >
-                        {info.row.original.sales_rep_name.toUpperCase() + " " + `(${info.row.original?.team?.length})`}
+                        {info.row.original.sales_rep_name.toUpperCase()}
                     </span>
                 );
             },

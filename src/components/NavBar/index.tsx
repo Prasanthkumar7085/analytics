@@ -169,7 +169,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     <Avatar sx={{ bgcolor: "orange" }} >{userDetails?.username?.slice(0, 1).toUpperCase()}</Avatar>
                     <div className={styles.adminCaption}>
                       <Typography >{userType}</Typography>
-                      <Typography variant='subtitle1'>{userDetails?.first_name + " " + userDetails?.last_name}<Image src="/navbar/drop-down-icon.svg" alt="drop-down" width={15} height={15} /></Typography>
+                      <Typography variant='subtitle1'>{userDetails?.first_name ? userDetails?.first_name : ""} {userDetails?.last_name ? userDetails?.last_name : ""}<Image src="/navbar/drop-down-icon.svg" alt="drop-down" width={15} height={15} /></Typography>
                     </div>
                   </div>
                 </Box>

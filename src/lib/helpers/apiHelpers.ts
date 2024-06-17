@@ -382,7 +382,7 @@ export const formatTeamWiseSalesRepsData = (data: any,) => {
   let formatData = data.map((item: any, index: any) => {
     return {
       ...item,
-      "sales_rep_name": item?.sales_rep_name + " " + "TEAM",
+      "sales_rep_name": item?.sales_rep_name + " " + "TEAM" + " " + `(${item?.team?.length})`,
       "total_facilities": calculateTeamTotalSumOfFields(item.team, "total_facilities"),
       "active_facilities": calculateTeamTotalSumOfFields(item.team, "active_facilities"),
       "total_targets": calculateTeamTotalSumOfFields(item.team, "total_targets"),
