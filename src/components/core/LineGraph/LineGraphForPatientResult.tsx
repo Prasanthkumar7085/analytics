@@ -1,8 +1,8 @@
-import { Dialog, IconButton } from "@mui/material";
+import datePipe from "@/lib/Pipes/datePipe";
 import CloseIcon from "@mui/icons-material/Close";
+import { Dialog, IconButton } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 
 const LineGraphForPatientResult = ({
     graphDialogOpen,
@@ -11,12 +11,15 @@ const LineGraphForPatientResult = ({
     data,
     graphColor,
     tabValue,
+    patientsData
 }: any) => {
-    console.log(graphDialogOpen);
+    const date = patientsData[0]?.final_results?.map((item: any) => item?.date);
+    const formattedDates = date?.map((item: any) => datePipe(item, 'MM/DD/YYYY'));
+
 
     const options = {
         title: {
-            text: "Patient Result",
+            text: data?.result_name,
             align: "left",
         },
 
@@ -24,11 +27,8 @@ const LineGraphForPatientResult = ({
             title: {
                 text: "Months",
             },
-            categories: graphValuesData?.length
-                ? graphValuesData.map((item: any) =>
-                    formatMonthYear(item?.date)
-                )
-                : [],
+            categories: formattedDates,
+            type: 'datetime',
         },
         plotOptions: {
             series: {
@@ -36,7 +36,6 @@ const LineGraphForPatientResult = ({
                 marker: {
                     enabled: true,
                 },
-
                 states: {
                     hover: {
                         enabled: false,
@@ -52,41 +51,6 @@ const LineGraphForPatientResult = ({
                 },
             },
         },
-        // tooltip: {
-        //     crosshairs: true,
-        //     shared: true,
-        //     formatter: function (
-        //         this: Highcharts.TooltipFormatterContextObject | any
-        //     ): string {
-        //         let month = this.point.category;
-        //         let totalCases =
-        //             this.series.chart.series[1].data[this.point.index].y.toLocaleString();
-        //         let totalTargets =
-        //             this.series.chart.series[0].data[this.point.index].y.toLocaleString();
-        //         let pointColor = this.point.color;
-
-        //         if (tabValue == "Revenue")
-        //             return (
-        //                 this.point.category +
-        //                 "<b>" +
-        //                 " : $" +
-        //                 Highcharts.numberFormat(this.point.y, 2, ".", ", ") +
-        //                 "</b>"
-        //             );
-        //         else
-        //             return (
-        //                 month +
-        //                 "<br>" +
-        //                 "Total Cases: <b>" +
-        //                 totalCases +
-        //                 "</b><br>" +
-        //                 "Total Target: <b>" +
-        //                 totalTargets +
-        //                 "</b>"
-        //             );
-        //     },
-        // },
-
         yAxis: {
             title: {
                 text: tabValue,
@@ -97,20 +61,12 @@ const LineGraphForPatientResult = ({
         },
         series: [
             {
-                name: "Total Target",
+                name: "Results",
                 data: graphValuesData?.length
-                    ? graphValuesData?.map((item: any) => item[1])
+                    ? graphValuesData?.map((item: any) => item)
                     : [],
                 type: "line",
                 zIndex: 9999,
-            },
-            {
-                name: "Total cases",
-                data: graphValuesData?.length
-                    ? graphValuesData.map((item: any) => item[0])
-                    : [],
-                type: "column",
-                color: graphColor,
             },
         ],
     };

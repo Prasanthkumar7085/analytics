@@ -1,14 +1,15 @@
 import datePipe from "@/lib/Pipes/datePipe";
-import { Button, Card } from "@mui/material";
+import { Button } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
+import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 
 const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patientResultsData, patientsData }: any) => {
-    console.log(patientResultsData, "patient");
     const [dateGroup, setDateGroup] = useState<any>()
     const [graphDialogOpen, setGraphDialogOpen] = useState(false);
-    console.log(patientsData, "dateGroup");
+    const [PatientSingleRowData, setPatientSingleRowData] = useState({})
+    const [rowResultsdata, setRowResultsData] = useState<number[]>([]);
 
 
     const groupByDate = (data: any) => {
@@ -31,6 +32,21 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
             setDateGroup(groupedData);
         }
     }, [patientResultsData]);
+
+    const handleGraphClick = (testIndex: number, title: string) => {
+        const resultsArray = patientResultsData[title].map((result: any) => {
+            return parseFloat(result.results[testIndex]?.result);
+        }).filter((value: any) => !isNaN(value));
+        setRowResultsData(resultsArray);
+        setGraphDialogOpen(true);
+    };
+
+    const getGraphValuesData = (patientResultsData: any, title: string, testIndex: number) => {
+        return patientResultsData[title].map((result: any) => {
+            const value = parseFloat(result.results[testIndex]?.result);
+            return !isNaN(value) ? value : null;
+        }).filter((value: any) => value !== null);
+    };
 
     return (
         <>
@@ -109,7 +125,7 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                                 <th>Result Code</th>
                                 <th>Ref Range & Units</th>{" "}
                                 {patientResultsData[title].map((result: any, resultIndex: any) => (
-                                    <th key={resultIndex}>{result?.date}</th>
+                                    <th key={resultIndex}>{datePipe(result?.date, "MM-DD-YYYY")}</th>
                                 ))}{" "}
                                 <th>Trend</th>
                             </tr>
@@ -128,12 +144,22 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                                                 </td>
                                             )
                                         )}{" "}
-                                        <td
-                                            onClick={() => {
-                                                setGraphDialogOpen(true)
-                                            }}
-                                        >
-
+                                        <td style={{ display: "flex", justifyContent: "center" }}>
+                                            {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
+                                                <p>-</p>
+                                            ) : (
+                                                <div
+                                                    onClick={() => {
+                                                        handleGraphClick(testIndex, title);
+                                                        setPatientSingleRowData(test);
+                                                    }}
+                                                >
+                                                    <LineGraphForResults
+                                                        patientsData={patientsData}
+                                                        graphValuesData={getGraphValuesData(patientResultsData, title, testIndex)}
+                                                    />
+                                                </div>
+                                            )}
                                         </td>
                                     </tr>
                                 )
@@ -146,10 +172,11 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
             <LineGraphForPatientResult
                 graphDialogOpen={graphDialogOpen}
                 setGraphDialogOpen={setGraphDialogOpen}
-                graphValuesData={patientResultsData}
-                data={patientResultsData}
+                graphValuesData={rowResultsdata}
+                data={PatientSingleRowData}
                 graphColor="bule"
                 tabValue="Patient Result"
+                patientsData={patientsData}
             />
         </>
 

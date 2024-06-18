@@ -15,9 +15,6 @@ const PatientResults = () => {
     const [getDetails, setGetDetails] = useState<any>();
     const [patientsData, setPatientsData] = useState<any>({});
     const [patientResultsData, setPatientResultsData] = useState<any[]>([]);
-    console.log(patientResultsData);
-
-
 
     const getPatientDetails = async ({
         first_name,
