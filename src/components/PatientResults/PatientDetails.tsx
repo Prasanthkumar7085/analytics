@@ -6,7 +6,15 @@ import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import datePipe from "@/lib/Pipes/datePipe";
 
-const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails, getDetails, getPatientDetails, getPatientResults }: any) => {
+const PatientDetails = ({
+    setPatientOpen,
+    patientOpen,
+    setPatientDetails,
+    getDetails,
+    getPatientDetails,
+    getPatientResults,
+    getPatientNames
+}: any) => {
 
     const [firstName, setFirstName] = useState<any>("");
     const [lastName, setLastName] = useState<any>("");
@@ -84,6 +92,9 @@ const PatientDetails = ({ setPatientOpen, patientOpen, setPatientDetails, getDet
                             setPatientOpen(true);
                             setPatientDetails(info?.row?.original)
                             getPatientResults({
+                                patient_id: "MJ3oXOui"
+                            });
+                            getPatientNames({
                                 patient_id: "MJ3oXOui"
                             });
                         }}

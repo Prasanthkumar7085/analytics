@@ -1,16 +1,25 @@
 import datePipe from "@/lib/Pipes/datePipe";
-import { Button } from "@mui/material";
+import { Autocomplete, Button, TextField } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 
-const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patientResultsData, patientsData }: any) => {
+const PatientResultTable = ({
+    setPatientOpen,
+    patientOpen,
+    patientDetails,
+    patientResultsData,
+    patientsData,
+    patientNames,
+    getPatientResults
+}: any) => {
     const [dateGroup, setDateGroup] = useState<any>()
     const [graphDialogOpen, setGraphDialogOpen] = useState(false);
-    const [PatientSingleRowData, setPatientSingleRowData] = useState({})
+    const [patientSingleRowData, setPatientSingleRowData] = useState({})
     const [rowResultsdata, setRowResultsData] = useState<number[]>([]);
-
+    const [selectedPatient, setSelectedPatient] = useState<string | null>(null);
+    const sortedPatientNames = [...patientNames].sort((a, b) => a.localeCompare(b));
 
     const groupByDate = (data: any) => {
         const groupedData: any = {};
@@ -111,8 +120,24 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                         <label>Date of Birth</label>
                         <p>{datePipe(patientDetails?.date_of_birth, "MM-DD-YYYY")}</p>
                     </div>
+
                 </div>
 
+            </div>
+            <div style={{ marginTop: "30px" }}>
+                <Autocomplete
+                    options={sortedPatientNames}
+                    value={selectedPatient}
+                    onChange={(event, newValue) => {
+                        setSelectedPatient(newValue)
+                        getPatientResults({
+                            result_name: newValue,
+                            patient_id: "MJ3oXOui"
+                        })
+                    }}
+                    renderInput={(params) => <TextField {...params} placeholder="Select Result Code" variant="outlined" />}
+                    style={{ width: 300 }}
+                />
             </div>
 
             {Object.keys(patientResultsData).map((title, index) => (
@@ -173,7 +198,7 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                 graphDialogOpen={graphDialogOpen}
                 setGraphDialogOpen={setGraphDialogOpen}
                 graphValuesData={rowResultsdata}
-                data={PatientSingleRowData}
+                data={patientSingleRowData}
                 graphColor="bule"
                 tabValue="Patient Result"
                 patientsData={patientsData}
