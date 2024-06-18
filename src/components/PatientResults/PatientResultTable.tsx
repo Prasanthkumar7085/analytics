@@ -2,11 +2,13 @@ import datePipe from "@/lib/Pipes/datePipe";
 import { Button, Card } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 
-const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patientResultsData }: any) => {
+const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patientResultsData, patientsData }: any) => {
     console.log(patientResultsData, "patient");
     const [dateGroup, setDateGroup] = useState<any>()
-    console.log(dateGroup, "dateGroup");
+    const [graphDialogOpen, setGraphDialogOpen] = useState(false);
+    console.log(patientsData, "dateGroup");
 
 
     const groupByDate = (data: any) => {
@@ -98,7 +100,7 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
             </div>
 
             {Object.keys(patientResultsData).map((title, index) => (
-                <div key={index}>
+                <div key={index} style={{ marginTop: "30px" }}>
                     <h2>{title}</h2>
                     <table>
                         <thead>
@@ -109,6 +111,7 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                                 {patientResultsData[title].map((result: any, resultIndex: any) => (
                                     <th key={resultIndex}>{result?.date}</th>
                                 ))}{" "}
+                                <th>Trend</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -125,13 +128,29 @@ const PatientResultTable = ({ setPatientOpen, patientOpen, patientDetails, patie
                                                 </td>
                                             )
                                         )}{" "}
+                                        <td
+                                            onClick={() => {
+                                                setGraphDialogOpen(true)
+                                            }}
+                                        >
+
+                                        </td>
                                     </tr>
                                 )
                             )}{" "}
                         </tbody>
                     </table>
                 </div>
+
             ))}
+            <LineGraphForPatientResult
+                graphDialogOpen={graphDialogOpen}
+                setGraphDialogOpen={setGraphDialogOpen}
+                graphValuesData={patientResultsData}
+                data={patientResultsData}
+                graphColor="bule"
+                tabValue="Patient Result"
+            />
         </>
 
     );
