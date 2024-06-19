@@ -92,10 +92,10 @@ const PatientDetails = ({
                             setPatientOpen(true);
                             setPatientDetails(info?.row?.original)
                             getPatientResults({
-                                patient_id: "MJ3oXOui"
+                                patient_id: info?.row?.original?.patient_id
                             });
                             getPatientNames({
-                                patient_id: "MJ3oXOui"
+                                patient_id: info?.row?.original?.patient_id
                             });
                         }}
                     >
@@ -142,7 +142,7 @@ const PatientDetails = ({
                 <Button
                     variant='outlined'
                     style={{ padding: "0px 0px 0px 5px" }}
-                    disabled={!(firstName && lastName && dateOfBirth)}
+                    disabled={!(firstName || lastName || dateOfBirth)}
                     onClick={() => {
                         getPatientDetails({
                             first_name: firstName,

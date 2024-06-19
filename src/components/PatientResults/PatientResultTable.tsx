@@ -132,7 +132,7 @@ const PatientResultTable = ({
                         setSelectedPatient(newValue)
                         getPatientResults({
                             result_name: newValue,
-                            patient_id: "MJ3oXOui"
+                            patient_id: patientDetails?.patient_id
                         })
                     }}
                     renderInput={(params) => <TextField {...params} placeholder="Select Result Code" variant="outlined" />}
@@ -173,22 +173,22 @@ const PatientResultTable = ({
                                         </td>
                                     ))}
                                     <td style={{ padding: "10px", border: "1px solid #ccc", display: "flex", justifyContent: "center" }}>
-                                        {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
+                                        {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
                                             <p>-</p>
-                                        ) : (
-                                            <div
-                                                onClick={() => {
-                                                    handleGraphClick(testIndex, title);
-                                                    setPatientSingleRowData(test);
-                                                }}
-                                                style={{ cursor: "pointer" }}
-                                            >
-                                                <LineGraphForResults
-                                                    patientsData={patientsData}
-                                                    graphValuesData={getGraphValuesData(patientResultsData, title, testIndex)}
-                                                />
-                                            </div>
-                                        )}
+                                        ) : ( */}
+                                        <div
+                                            onClick={() => {
+                                                handleGraphClick(testIndex, title);
+                                                setPatientSingleRowData(test);
+                                            }}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <LineGraphForResults
+                                                patientsData={patientsData}
+                                                graphValuesData={getGraphValuesData(patientResultsData, title, testIndex)}
+                                            />
+                                        </div>
+                                        {/* )} */}
                                     </td>
                                 </tr>
                             ))}
