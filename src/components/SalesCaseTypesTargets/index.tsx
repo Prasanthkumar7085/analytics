@@ -57,7 +57,9 @@ const SalesCaseTypeWiseTargets = () => {
     orderType = searchParams?.order_type,
   }: any) => {
     const currentMonthYear = dayjs().format("MM-YYYY");
-    let queryParams: any = { month: currentMonthYear };
+    let queryParams: any = {
+      month: currentMonthYear, general_sales_reps_exclude_count: "true"
+    };
     if (month) {
       queryParams["month"] = month;
     }
@@ -556,7 +558,7 @@ const SalesCaseTypeWiseTargets = () => {
     orderBy: string;
     orderType: "asc" | "desc";
   }>) => {
-    let queryParams: any = {};
+    let queryParams: any = { general_sales_reps_exclude_count: "true" };
     if (search) {
       queryParams["search"] = search;
     }

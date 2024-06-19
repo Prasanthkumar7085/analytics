@@ -50,7 +50,9 @@ const MonthWiseTargetStatus = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type
   ) => {
-    let queryParams: any = {};
+    let queryParams: any = {
+      general_sales_reps_exclude_count: "true"
+    };
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
@@ -312,7 +314,9 @@ const MonthWiseTargetStatus = () => {
     orderType: "asc" | "desc";
     status: string;
   }>) => {
-    let queryParams: any = {};
+    let queryParams: any = {
+      general_sales_reps_exclude_count: "true"
+    };
     if (search) {
       queryParams["search"] = search;
     }

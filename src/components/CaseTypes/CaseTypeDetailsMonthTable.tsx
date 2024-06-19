@@ -46,7 +46,9 @@ const CaseTypesDetailsMonthTable = ({
     searchValue = searchParams?.search,
     tabValue: string
   ) => {
-    let queryParams: any = {};
+    let queryParams: any = {
+      general_sales_reps_exclude_count: "true"
+    };
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }

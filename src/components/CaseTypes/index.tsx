@@ -37,7 +37,9 @@ const CaseTypes = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
-    let queryParams: any = {};
+    let queryParams: any = {
+      general_sales_reps_exclude_count: "true"
+    };
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
