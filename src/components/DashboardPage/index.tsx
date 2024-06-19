@@ -60,6 +60,7 @@ const DashboardPage = () => {
     let queryParams: any = {
       from_date: defaultDates?.[0],
       to_date: defaultDates?.[1],
+      general_sales_reps_exclude_count: "true"
     };
 
     if (fromDate) {
@@ -82,7 +83,7 @@ const DashboardPage = () => {
     fromDate: any,
     toDate: any,
   ) => {
-    let queryParams: any = {};
+    let queryParams: any = { general_sales_reps_exclude_count: "true" };
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;

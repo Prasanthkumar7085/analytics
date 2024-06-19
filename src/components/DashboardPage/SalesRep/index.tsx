@@ -18,7 +18,9 @@ const SalesRep = () => {
   const [toDate, setToDate] = useState("");
   //query preparation method
   const queryPreparations = async ({ fromDate = "", toDate = "" }: any) => {
-    let queryParams: any = {};
+    let queryParams: any = {
+      general_sales_reps_exclude_count: "true"
+    };
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
