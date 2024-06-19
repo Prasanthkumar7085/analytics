@@ -208,7 +208,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
           </Menu>
         </Container>
       </nav>
-      <div className={styles.primaryMainDashboard}>
+      <div className="patientResultstsDashboard">
         <Container maxWidth="xl">
           <main>{children}</main>
         </Container>

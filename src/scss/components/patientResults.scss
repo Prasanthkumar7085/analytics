@@ -1,0 +1,59 @@
+.patientResultstsDashboard {
+  background-color: #f1f1f1;
+  .subNavBar {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem 0;
+    .SubNavPointsBlock {
+      display: flex;
+      align-items: center;
+      column-gap: 0.5rem;
+      .eachBlocks {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 0.5rem;
+        padding: 10px 20px;
+        border-left: 1px solid #606266;
+        .namesData {
+          .label {
+            font-size: 13px;
+            color: #606266;
+            font-weight: 500;
+          }
+          .value {
+            font-size: 12px;
+            color: #000;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+  .navActionsBlock {
+    background-color: #fff;
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 10px;
+  }
+}
+.bacKBtn {
+  color: #fff;
+  background-color: #273480;
+  border: 1px solid #273480;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 4px;
+  margin-right: 1rem;
+  box-shadow: none;
+  &:hover {
+    background-color: #273480;
+    color: #fff;
+    border: 1px solid #273480;
+    box-shadow: none;
+  }
+}
