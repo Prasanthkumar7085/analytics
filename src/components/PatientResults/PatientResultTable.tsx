@@ -181,6 +181,7 @@ const PatientResultTable = ({
                                                     handleGraphClick(testIndex, title);
                                                     setPatientSingleRowData(test);
                                                 }}
+                                                style={{ cursor: "pointer" }}
                                             >
                                                 <LineGraphForResults
                                                     patientsData={patientsData}
