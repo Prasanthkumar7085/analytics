@@ -142,7 +142,7 @@ const PatientDetails = ({
                 <Button
                     variant='outlined'
                     style={{ padding: "0px 0px 0px 5px" }}
-                    disabled={!(firstName || lastName || dateOfBirth)}
+                    disabled={!(firstName && lastName && dateOfBirth)}
                     onClick={() => {
                         getPatientDetails({
                             first_name: firstName,
