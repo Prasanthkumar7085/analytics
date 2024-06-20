@@ -228,6 +228,11 @@ table {
     max-height: 300px;
     overflow-y: auto;
   }
+  &.patientDetailsTable {
+    width: 100%;
+    overflow: auto;
+    background-color: #fff;
+  }
 }
 
 .inputItemDate {
@@ -1444,5 +1449,7 @@ $actionButtonWidth: 95px;
     margin-right: 5px;
   }
 }
-
-
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
+  /* Change #fff to your desired background color */
+}

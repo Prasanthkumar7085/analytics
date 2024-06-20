@@ -209,9 +209,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
         </Container>
       </nav>
       <div className="patientResultstsDashboard">
-        <Container maxWidth="xl">
           <main>{children}</main>
-        </Container>
       </div>
     </section>
   );

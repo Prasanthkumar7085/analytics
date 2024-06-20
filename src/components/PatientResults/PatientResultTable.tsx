@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
+import Container from "@mui/material/Container";
 
 const PatientResultTable = ({
   setPatientOpen,
@@ -108,7 +109,7 @@ const PatientResultTable = ({
               <p className="value">{patientDetails?.gender}</p>
             </div>
           </div>
-          <div className="eachBlocks">
+          <div className="eachBlocks b-right">
             <Image alt="" src="/calendar.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Date of Birth</label>
@@ -121,6 +122,7 @@ const PatientResultTable = ({
       </div>
       <div className="navActionsBlock">
         <Autocomplete
+          className="defaultAutoComplete"
           options={sortedPatientNames}
           value={selectedPatient}
           onChange={(event, newValue) => {
@@ -145,93 +147,76 @@ const PatientResultTable = ({
       </div>
 
       {Object.keys(patientResultsData).map((title, index) => (
-        <div key={index} style={{ marginTop: "30px" }}>
-          <h2>{title}</h2>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              backgroundColor: "white",
-            }}
+        <Container maxWidth="xl">
+          <div
+            className="eachPatientResultTable"
+            key={index}
+            style={{ marginTop: "30px" }}
           >
-            <thead>
-              <tr style={{ backgroundColor: "#f0f0f0" }}>
-                <th style={{ padding: "10px", border: "1px solid #ccc" }}>
-                  Result Code
-                </th>
-                <th style={{ padding: "10px", border: "1px solid #ccc" }}>
-                  Ref Range & Units
-                </th>
-                {patientResultsData[title].map(
-                  (result: any, resultIndex: any) => (
-                    <th
-                      key={resultIndex}
-                      style={{ padding: "10px", border: "1px solid #ccc" }}
-                    >
-                      {datePipe(result?.date, "MM-DD-YYYY")}
-                    </th>
-                  )
-                )}
-                <th style={{ padding: "10px", border: "1px solid #ccc" }}>
-                  Trend
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {patientResultsData[title][0].results.map(
-                (test: any, testIndex: any) => (
-                  <tr key={testIndex}>
-                    <td style={{ padding: "10px", border: "1px solid #ccc" }}>
-                      {test.result_name}
-                    </td>
-                    <td style={{ padding: "10px", border: "1px solid #ccc" }}>
-                      {test.reference_range}
-                    </td>
-                    {patientResultsData[title].map(
-                      (result: any, resultIndex: any) => (
-                        <td
-                          key={resultIndex}
-                          style={{ padding: "10px", border: "1px solid #ccc" }}
-                        >
-                          {result.results[testIndex]?.result}
-                        </td>
-                      )
-                    )}
-                    <td
-                      style={{
-                        padding: "10px",
-                        border: "1px solid #ccc",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
+            <h2 className="tableHeading">{title}</h2>
+            <div className="allPatientResultTable">
+              <div className="tableContainer">
+              <table >
+                  <thead>
+                    <tr>
+                      <th style={{ minWidth: "150px" }}>Result Code</th>
+                      <th style={{ minWidth: "150px" }}>Ref Range & Units</th>
+                      {patientResultsData[title].map(
+                        (result: any, resultIndex: any) => (
+                          <th style={{ minWidth: "100px" }} key={resultIndex}>
+                            {datePipe(result?.date, "MM-DD-YYYY")}
+                          </th>
+                        )
+                      )}
+                      <th style={{ minWidth: "150px" }}>Trend</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {patientResultsData[title][0].results.map(
+                      (test: any, testIndex: any) => (
+                        <tr key={testIndex}>
+                          <td>{test.result_name}</td>
+                          <td>{test.reference_range}</td>
+                          {patientResultsData[title].map(
+                            (result: any, resultIndex: any) => (
+                              <td key={resultIndex}>
+                                {result.results[testIndex]?.result}
+                              </td>
+                            )
+                          )}
+                          <td>
+                            {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
                                             <p>-</p>
                                         ) : ( */}
-                      <div
-                        onClick={() => {
-                          handleGraphClick(testIndex, title);
-                          setPatientSingleRowData(test);
-                        }}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <LineGraphForResults
-                          patientsData={patientsData}
-                          graphValuesData={getGraphValuesData(
-                            patientResultsData,
-                            title,
-                            testIndex
-                          )}
-                        />
-                      </div>
-                      {/* )} */}
-                    </td>
-                  </tr>
-                )
-              )}
-            </tbody>
-          </table>
-        </div>
+                            <div
+                              onClick={() => {
+                                handleGraphClick(testIndex, title);
+                                setPatientSingleRowData(test);
+                              }}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <LineGraphForResults
+                                patientsData={patientsData}
+                                graphValuesData={getGraphValuesData(
+                                  patientResultsData,
+                                  title,
+                                  testIndex
+                                )}
+                              />
+                            </div>
+                            {/* )} */}
+                          </td>
+                        </tr>
+                      )
+                    )}
+                  </tbody>
+                </table>
+              </div>
+             
+       
+            </div>
+          </div>
+        </Container>
       ))}
       <LineGraphForPatientResult
         graphDialogOpen={graphDialogOpen}
