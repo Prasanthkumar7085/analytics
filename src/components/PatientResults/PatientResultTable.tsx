@@ -147,7 +147,7 @@ const PatientResultTable = ({
       </div>
 
       {Object.keys(patientResultsData).map((title, index) => (
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" key={index}>
           <div
             className="eachPatientResultTable"
             key={index}
@@ -156,7 +156,7 @@ const PatientResultTable = ({
             <h2 className="tableHeading">{title}</h2>
             <div className="allPatientResultTable">
               <div className="tableContainer">
-              <table >
+                <table >
                   <thead>
                     <tr>
                       <th style={{ minWidth: "150px" }}>Result Code</th>
@@ -212,8 +212,6 @@ const PatientResultTable = ({
                   </tbody>
                 </table>
               </div>
-             
-       
             </div>
           </div>
         </Container>
