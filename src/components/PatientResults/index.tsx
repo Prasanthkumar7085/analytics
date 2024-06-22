@@ -13,7 +13,7 @@ const PatientResults = () => {
     const [patientOpen, setPatientOpen] = useState(false);
     const [patientDetails, setPatientDetails] = useState<any>();
     const [loading, setLoading] = useState(false);
-    const [getDetails, setGetDetails] = useState<any>();
+    const [getDetails, setGetDetails] = useState<any[]>([]);
     const [patientsData, setPatientsData] = useState<any>({});
     const [patientResultsData, setPatientResultsData] = useState<any[]>([]);
     const [patientNames, setPatientNames] = useState<any[]>([]);
@@ -132,6 +132,7 @@ const PatientResults = () => {
                     patientsData={patientResultsData}
                     patientNames={patientNames}
                     getPatientResults={getPatientResults}
+                    setGetDetails={setGetDetails}
                 />
             )}
             <LoadingComponent loading={loading} />

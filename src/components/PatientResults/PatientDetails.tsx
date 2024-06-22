@@ -142,15 +142,15 @@ const PatientDetails = ({
         </Button>
       </div>
 
-      {getDetails ? (
-         <Container maxWidth="xl">
-               <SingleColumnTable
-          data={getDetails}
-          columns={Revenuecolumns}
-          loading={false}
-        />
-         </Container>
-     
+      {getDetails?.length ? (
+        <Container maxWidth="xl">
+          <SingleColumnTable
+            data={getDetails}
+            columns={Revenuecolumns}
+            loading={false}
+          />
+        </Container>
+
       ) : (
         ""
       )}

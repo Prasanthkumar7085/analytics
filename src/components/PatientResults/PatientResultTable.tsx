@@ -14,6 +14,7 @@ const PatientResultTable = ({
   patientsData,
   patientNames,
   getPatientResults,
+  setGetDetails,
 }: any) => {
   const [dateGroup, setDateGroup] = useState<any>();
   const [graphDialogOpen, setGraphDialogOpen] = useState(false);
@@ -76,6 +77,7 @@ const PatientResultTable = ({
           variant="outlined"
           onClick={() => {
             setPatientOpen(false);
+            setGetDetails([]);
           }}
         >
           Back
