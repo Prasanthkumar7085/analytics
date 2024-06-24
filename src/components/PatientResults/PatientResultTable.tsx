@@ -1,50 +1,95 @@
+"use client"
 import datePipe from "@/lib/Pipes/datePipe";
+import { getAllPatientNamesAPI } from "@/services/patientResults/getAllPatientNamesAPI";
+import { getAllPatientResultsAPI } from "@/services/patientResults/getAllPatientResultsAPI";
+import { getSinglePatientResultAPI } from "@/services/patientResults/getSinglePatientResultAPI";
 import { Autocomplete, Button, TextField } from "@mui/material";
+import Container from "@mui/material/Container";
 import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
-import Container from "@mui/material/Container";
+import LoadingComponent from "../core/LoadingComponent";
 
-const PatientResultTable = ({
-  setPatientOpen,
-  patientOpen,
-  patientDetails,
-  patientResultsData,
-  patientsData,
-  patientNames,
-  getPatientResults,
-  setGetDetails,
-}: any) => {
-  const [dateGroup, setDateGroup] = useState<any>();
+const PatientResultTable = () => {
+  const { id } = useParams();
+  const router = useRouter();
+
   const [graphDialogOpen, setGraphDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [patientDetails, setPatientDetails] = useState<any>();
   const [patientSingleRowData, setPatientSingleRowData] = useState({});
   const [rowResultsdata, setRowResultsData] = useState<number[]>([]);
+  const [patientsData, setPatientsData] = useState<any>({});
+  const [patientResultsData, setPatientResultsData] = useState<any>([]);
+  const [patientNames, setPatientNames] = useState<any[]>([]);
   const [selectedPatient, setSelectedPatient] = useState<string | null>(null);
   const sortedPatientNames = [...patientNames].sort((a, b) =>
     a.localeCompare(b)
   );
 
-  const groupByDate = (data: any) => {
-    const groupedData: any = {};
-    for (const key in data) {
-      data[key].forEach((result: any) => {
-        const date = result.date;
-        if (!groupedData[date]) {
-          groupedData[date] = [];
-        }
-        groupedData[date].push({ key, result });
-      });
+  const getPatientResults = async ({ patient_id, result_name }: any) => {
+    setLoading(true);
+    try {
+      let queryParams: any = {
+        patient_id: patient_id,
+        result_name: result_name
+      };
+      const response = await getAllPatientResultsAPI(queryParams);
+      if (response.status == 200 || response.status == 201) {
+        let groupedPatientResultsData =
+          transformData(response?.data[0]?.final_results)
+        setPatientsData(response?.data);
+        setPatientResultsData(groupedPatientResultsData);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
-    return groupedData;
+  };
+
+  const getSinglePatientResult = async () => {
+    setLoading(true);
+    try {
+      const response = await getSinglePatientResultAPI(id);
+      if (response.status == 200 || response.status == 201) {
+        setPatientDetails(response?.data);
+        getPatientResults({
+          patient_id: response?.data?.patient_id
+        })
+        getPatientNames({
+          patient_id: response?.data?.patient_id
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getPatientNames = async ({ patient_id }: any) => {
+    setLoading(true);
+    try {
+      let queryParams: any = {
+        patient_id: patient_id
+      };
+      const response = await getAllPatientNamesAPI(queryParams);
+      if (response.status == 200 || response.status == 201) {
+        setPatientNames(response?.data)
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (patientResultsData) {
-      const groupedData = groupByDate(patientResultsData);
-      setDateGroup(groupedData);
-    }
-  }, [patientResultsData]);
+    getSinglePatientResult();
+  }, [])
 
   const handleGraphClick = (testIndex: number, title: string) => {
     const resultsArray = patientResultsData[title]
@@ -69,6 +114,39 @@ const PatientResultTable = ({
       .filter((value: any) => value !== null);
   };
 
+  // Function to group results by category
+  function transformData(data: any[]) {
+    const result: any = {};
+
+    data?.forEach((entry: { date: any; results: any[]; }) => {
+      const date = entry.date;
+      entry.results.forEach((test: { category: any; }) => {
+        const category = test.category;
+
+        if (!result[category]) {
+          result[category] = [];
+        }
+
+        // Find the existing entry for this date in the category
+        let dateEntry = result[category].find((e: { date: any; }) => e.date === date);
+
+        // If no entry for this date, create a new one
+        if (!dateEntry) {
+          dateEntry = {
+            date: date,
+            results: []
+          };
+          result[category].push(dateEntry);
+        }
+
+        // Add the test result to the date entry
+        dateEntry.results.push(test);
+      });
+    });
+
+    return result;
+  }
+
   return (
     <div style={{ paddingTop: "10px" }}>
       <div className="subNavBar">
@@ -76,8 +154,7 @@ const PatientResultTable = ({
           className="bacKBtn"
           variant="outlined"
           onClick={() => {
-            setPatientOpen(false);
-            setGetDetails([]);
+            router.push("/patient-results");
           }}
         >
           Back
@@ -163,7 +240,7 @@ const PatientResultTable = ({
                     <tr>
                       <th style={{ minWidth: "150px" }}>Result Code</th>
                       <th style={{ minWidth: "150px" }}>Ref Range & Units</th>
-                      {patientResultsData[title].map(
+                      {patientResultsData[title]?.map(
                         (result: any, resultIndex: any) => (
                           <th style={{ minWidth: "100px" }} key={resultIndex}>
                             {datePipe(result?.date, "MM-DD-YYYY")}
@@ -227,6 +304,7 @@ const PatientResultTable = ({
         tabValue="Patient Result"
         patientsData={patientsData}
       />
+      <LoadingComponent loading={loading} />
     </div>
   );
 };

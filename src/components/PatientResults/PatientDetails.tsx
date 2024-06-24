@@ -1,22 +1,20 @@
 "use client";
-import { Button, Card, TextField } from "@mui/material";
+import datePipe from "@/lib/Pipes/datePipe";
+import { Button, TextField } from "@mui/material";
+import Container from "@mui/material/Container";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
-import datePipe from "@/lib/Pipes/datePipe";
-import Container from "@mui/material/Container";
+import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 
 
 const PatientDetails = ({
-  setPatientOpen,
-  patientOpen,
-  setPatientDetails,
   getDetails,
   getPatientDetails,
-  getPatientResults,
-  getPatientNames,
 }: any) => {
+  const router = useRouter();
+
   const [firstName, setFirstName] = useState<any>("");
   const [lastName, setLastName] = useState<any>("");
   const [dateOfBirth, setDateOfBirth] = useState<any>("");
@@ -76,14 +74,7 @@ const PatientDetails = ({
           <Button
             variant="outlined"
             onClick={() => {
-              setPatientOpen(true);
-              setPatientDetails(info?.row?.original);
-              getPatientResults({
-                patient_id: info?.row?.original?.patient_id,
-              });
-              getPatientNames({
-                patient_id: info?.row?.original?.patient_id,
-              });
+              router.push(`/patient-results/${info?.row?.original?._id}`);
             }}
           >
             View
