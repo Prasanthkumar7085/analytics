@@ -92,7 +92,7 @@ const DashboardPage = () => {
       queryParams["to_date"] = toDate;
     }
     try {
-      if (checkDateForCurrentMonth(queryParams) && Object?.keys(queryParams)?.length) {
+      if (checkDateForCurrentMonth(queryParams) && Object?.keys(queryParams)?.length > 1) {
         await getCaseTypesVolumeStats(queryParams);
       } else {
         await getCaseTypesVolumeStatsWithoutDayWiseTargets(queryParams);
@@ -109,7 +109,7 @@ const DashboardPage = () => {
     let thisMonth = [startOfMonth(new Date()), new Date()];
     const currentDate = dayjs();
     const dateToCheck = dayjs(queryParams["from_date"]);
-    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year() && Object?.keys(queryParams)?.length) {
+    if (dateToCheck.month() === currentDate.month() && dateToCheck.year() === currentDate.year() && Object?.keys(queryParams)?.length > 1) {
       setDayWiseTargetsEnable(true);
       return true;
     }
