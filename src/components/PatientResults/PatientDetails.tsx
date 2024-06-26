@@ -7,6 +7,7 @@ import { useState } from "react";
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
+import Image from "next/image";
 
 
 const PatientDetails = ({
@@ -89,7 +90,7 @@ const PatientDetails = ({
 
   return (
     <div>
-      <div className="navBarFiltersBlock">
+      <div className="navBarFiltersBlock" style={{ display: "flex", justifyContent: "center" }}>
         <TextField
           className="inputTextField"
           id="outlined-size-small"
@@ -120,7 +121,7 @@ const PatientDetails = ({
         <Button
           className="bacKBtn"
           variant="outlined"
-          disabled={!(firstName && lastName && dateOfBirth)}
+          disabled={!(firstName || lastName || dateOfBirth)}
           onClick={() => {
             getPatientDetails({
               first_name: firstName,
@@ -132,19 +133,26 @@ const PatientDetails = ({
           Get Details
         </Button>
       </div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        {getDetails?.length ? (
+          <Container maxWidth="xl">
+            <SingleColumnTable
+              data={getDetails}
+              columns={Revenuecolumns}
+              loading={false}
+            />
+          </Container>
 
-      {getDetails?.length ? (
-        <Container maxWidth="xl">
-          <SingleColumnTable
-            data={getDetails}
-            columns={Revenuecolumns}
-            loading={false}
+        ) : (
+          <Image
+            style={{ display: "flex" }}
+            src="/Search Image.svg"
+            alt=""
+            height={210}
+            width={510}
           />
-        </Container>
-
-      ) : (
-        ""
-      )}
+        )}
+      </div>
     </div>
   );
 };
