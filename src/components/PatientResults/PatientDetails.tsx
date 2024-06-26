@@ -121,7 +121,7 @@ const PatientDetails = ({
         <Button
           className="bacKBtn"
           variant="outlined"
-          disabled={!(firstName || lastName || dateOfBirth)}
+          disabled={!(firstName && lastName && dateOfBirth)}
           onClick={() => {
             getPatientDetails({
               first_name: firstName,
