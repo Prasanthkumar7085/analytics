@@ -21,6 +21,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
   const userType = useSelector(
     (state: any) => state.auth.user?.user_details?.user_type
   );
+
   const userDetails = useSelector((state: any) => state.auth.user?.user_details)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -57,112 +58,133 @@ const NavBar: FC<pageProps> = ({ children }) => {
             </Grid>
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-7">
-                {hasAccessOrNot("/dashboard", userType) && userType ? (
-                  <li
-                    onClick={() => router.push("/dashboard")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/dashboard" ? "activePagename" : "active"
-                    ]
-                      }`}
-                  >
-                    Overview
-                  </li>
-                ) : (
-                  ""
-                )}
-                {hasAccessOrNot("/sales-representatives", userType) &&
-                  userType ? (
-                  <li
-                    onClick={() => router.push("/sales-representatives")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/sales-representatives")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
-                  >
-                    Sales Representatives
-                  </li>
-                ) : (
-                  ""
-                )}
-                {hasAccessOrNot("/insurances", userType) && userType ? (
-                  <li
-                    onClick={() => router.push("/insurances")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/insurances")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
-                  >
-                    Insurances
-                  </li>
-                ) : (
-                  ""
-                )}
-                {hasAccessOrNot("/facilities", userType) && userType ? (
-                  <li
-                    onClick={() => router.push("/facilities")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/facilities")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
-                  >
-                    Facilities
-                  </li>
-                ) : (
-                  ""
-                )}
-                {hasAccessOrNot("/case-types", userType) && userType ? (
-                  <li
-                    onClick={() => router.push("/case-types")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/case-types")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
-                  >
-                    Case Types
-                  </li>
+                {pathname != "/patient-results" ? (
+                  <>
+                    {hasAccessOrNot("/dashboard", userType) && userType ? (
+                      <li
+                        onClick={() => router.push("/dashboard")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname == "/dashboard" ? "activePagename" : "active"
+                        ]
+                          }`}
+                      >
+                        Overview
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {hasAccessOrNot("/sales-representatives", userType) &&
+                      userType ? (
+                      <li
+                        onClick={() => router.push("/sales-representatives")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/sales-representatives")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
+                      >
+                        Sales Representatives
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {hasAccessOrNot("/insurances", userType) && userType ? (
+                      <li
+                        onClick={() => router.push("/insurances")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/insurances")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
+                      >
+                        Insurances
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {hasAccessOrNot("/facilities", userType) && userType ? (
+                      <li
+                        onClick={() => router.push("/facilities")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/facilities")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
+                      >
+                        Facilities
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {hasAccessOrNot("/case-types", userType) && userType ? (
+                      <li
+                        onClick={() => router.push("/case-types")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/case-types")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
+                      >
+                        Case Types
+                      </li>
+                    ) : (
+                      ""
+                    )}
+
+                    {hasAccessOrNot("/sales-targets", userType) && userType ? (
+                      <li
+                        onClick={() => router.push("/sales-targets")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname == "/sales-targets"
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
+                      >
+                        Sales Targets
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {hasAccessOrNot("/target-status", userType) && userType ? (
+                      <li
+                        onClick={() => router.push("/target-status")}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname == "/target-status"
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
+                      >
+                        Sales Achievements
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                  </>
                 ) : (
                   ""
                 )}
 
-                {hasAccessOrNot("/sales-targets", userType) && userType ? (
+                {hasAccessOrNot("/patient-results", userType) && (userType == "LAB_ADMIN" || userType == "LAB_SUPER_ADMIN") ? (
                   <li
-                    onClick={() => router.push("/sales-targets")}
+                    onClick={() => window.open("/patient-results", "_blank")}
                     className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/sales-targets"
+                      pathname == "/patient-results"
                         ? "activePagename"
                         : "active"
                     ]
                       }`}
                   >
-                    Sales Targets
+                    Patient Results
                   </li>
                 ) : (
                   ""
                 )}
-                {hasAccessOrNot("/target-status", userType) && userType ? (
-                  <li
-                    onClick={() => router.push("/target-status")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/target-status"
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
-                  >
-                    Sales Achievements
-                  </li>
-                ) : (
-                  ""
-                )}
-
 
                 <Box className={styles.navList} sx={{ display: { xs: 'none', sm: 'block' } }}>
                   <div className={styles.profileBlock} onClick={handleOpenUserMenu}>
@@ -209,7 +231,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
         </Container>
       </nav>
       <div className="patientResultstsDashboard">
-          <main>{children}</main>
+        <main>{children}</main>
       </div>
     </section>
   );
