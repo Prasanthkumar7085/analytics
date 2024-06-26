@@ -89,8 +89,6 @@ export const exportToExcelMonthWiseCaseTypes = (
   XLSX.writeFile(workbook, "case-types-month-volume.xlsx");
 };
 
-
-
 export const exportToExcelMonthWiseFacilitiesVolume = (
   facilitiesData: any,
   headerMonths: any,
@@ -115,7 +113,9 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
       .map(([_, value]: any) => value.toLocaleString());
     return [index + 1, obj.facility_name, ...sortedValues];
   });
-  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
   let headers = ["Sl.No", "Facility Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
@@ -125,7 +125,6 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
     })
     .map(([_, value]: any) => value.toLocaleString());
 
-
   const totalFacilites: any = Object.entries(newFacilities)
     .sort((a, b) => {
       const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
@@ -134,11 +133,15 @@ export const exportToExcelMonthWiseFacilitiesVolume = (
     })
     .map(([_, value]: any) => value.toLocaleString());
 
-
   let totalSumSortedValues = ["Total", "", ...total];
-  let totalFacilitesValues = ["Active Facilties", "", ...totalFacilites]
+  let totalFacilitesValues = ["Active Facilties", "", ...totalFacilites];
 
-  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues], ...[totalFacilitesValues]];
+  let totalData = [
+    ...[headers],
+    ...formattedData,
+    ...[totalSumSortedValues],
+    ...[totalFacilitesValues],
+  ];
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   // Setting background color for header cells
   for (let i = 0; i < headers.length; i++) {
@@ -173,7 +176,7 @@ export const exportToExcelCaseTypesVolumes = (
       obj.case_type_name,
       obj.total_targets,
       obj.dayTargets,
-      obj.total_cases
+      obj.total_cases,
     ];
   });
   let headers = ["Sl.No", "Case Type", "Month Targets", "Targets", "Total"];
@@ -184,7 +187,6 @@ export const exportToExcelCaseTypesVolumes = (
     totalVolumeSum[1]?.value,
     totalVolumeSum[2]?.value,
     totalVolumeSum[3]?.value,
-
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
@@ -237,8 +239,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -255,12 +257,7 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
   totalVolumeSum: any
 ) => {
   const formattedData = caseTypesStatsData.map((obj: any, index: number) => {
-    return [
-      index + 1,
-      obj.case_type_name,
-      obj.total_targets,
-      obj.total_cases
-    ];
+    return [index + 1, obj.case_type_name, obj.total_targets, obj.total_cases];
   });
   let headers = ["Sl.No", "Case Type", "Total Target", "Total"];
 
@@ -321,8 +318,8 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -400,7 +397,11 @@ export const exportToExcelSalesRepTable = (
     return [
       index + 1,
       obj.sales_rep_name,
-      obj.role_id == 1 ? "Territory Manager" : obj.role_id == 2 ? "Regional Director" : "Sales Director",
+      obj.role_id == 1
+        ? "Territory Manager"
+        : obj.role_id == 2
+        ? "Regional Director"
+        : "Sales Director",
       obj.total_facilities,
       obj.active_facilities,
       obj.total_targets,
@@ -484,20 +485,17 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
       worksheet[cellAddressyesOrNo].s = {
         font: {
           color: {
-            rgb: yesOrNo == "Yes" ?
-              "4F7942"
-              : "FF0000",
+            rgb: yesOrNo == "Yes" ? "4F7942" : "FF0000",
           },
         },
-
       };
     }
   }
@@ -516,7 +514,11 @@ export const exportToExcelTeamSalesRepTable = (
       [
         index + 1,
         obj.sales_rep_name,
-        obj.role_id == 1 ? "Territory Manager" : obj.role_id == 2 ? "Regional Director" : "Sales Director",
+        obj.role_id == 1
+          ? "Territory Manager"
+          : obj.role_id == 2
+          ? "Regional Director"
+          : "Sales Director",
         obj.total_facilities,
         obj.active_facilities,
         obj.total_targets,
@@ -531,7 +533,11 @@ export const exportToExcelTeamSalesRepTable = (
         data.push([
           "", // Index placeholder for team members
           teamMember.sales_rep_name,
-          teamMember.role_id == 1 ? "Territory Manager" : teamMember.role_id == 2 ? "Regional Director" : "Sales Director",
+          teamMember.role_id == 1
+            ? "Territory Manager"
+            : teamMember.role_id == 2
+            ? "Regional Director"
+            : "Sales Director",
           teamMember.total_facilities,
           teamMember.active_facilities,
           teamMember.total_targets,
@@ -588,31 +594,37 @@ export const exportToExcelTeamSalesRepTable = (
     };
   }
 
-
   // Applying style to team member rows
   formattedData.forEach((rowData: any, rowIndex: any) => {
     if (rowData.length > 0 && rowData[0] === "") {
       for (let colIndex = 1; colIndex < rowData.length; colIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 2, c: colIndex });
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex + 2,
+          c: colIndex,
+        });
         worksheet[cellAddress].s = {
           fill: {
             fgColor: { rgb: "fef8f7" },
           },
         };
       }
-    }
-    else {
+    } else {
       for (let colIndex = 0; colIndex < rowData.length; colIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 2, c: colIndex });
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex + 2,
+          c: colIndex,
+        });
         worksheet[cellAddress].s = {
           fill: {
             fgColor: { rgb: "F0F6F6" },
+          },
+          font: {
+            bold: true,
           },
         };
       }
     }
   });
-
 
   for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
     const row = totalData[rowIndex];
@@ -642,6 +654,9 @@ export const exportToExcelTeamSalesRepTable = (
         fill: {
           fgColor: { rgb: "f9feff" },
         },
+        font: {
+          bold: row[0] == "" ? false : true,
+        },
       };
       worksheet[cellAddressTotal].s = {
         fill: {
@@ -650,28 +665,28 @@ export const exportToExcelTeamSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
+        },
+        font: {
+          bold: row[0] == "" ? false : true,
         },
       };
       worksheet[cellAddressyesOrNo].s = {
         font: {
           color: {
-            rgb: yesOrNo == "Yes" ?
-              "4F7942"
-              : "FF0000",
+            rgb: yesOrNo == "Yes" ? "4F7942" : "FF0000",
           },
+          bold: row[0] == "" ? false : true,
         },
-
       };
     }
   }
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-  XLSX.writeFile(workbook, "sales-rep-table.xlsx");
+  XLSX.writeFile(workbook, "Team-wise-sales-rep-table.xlsx");
 };
-
 
 export const exportToExcelInsurancesTable = (
   completeData: any,
@@ -1028,7 +1043,9 @@ export const exportToExcelMonthWiseTargetsVolume = (
       .map(([_, value]: any) => value[0] + "/" + value[1]);
     return [index + 1, obj.sales_rep_name, ...sortedValues];
   });
-  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
   let headers = ["Sl.No", "Markerter Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
@@ -1253,7 +1270,9 @@ export const exportToExcelCaseTypeTable = (
       .map(([_, value]: any) => value);
     return [index + 1, obj.case_type_name, ...sortedValues];
   });
-  let formatHeaderMonth = headerMonths?.map((item: any) => formatMonthYear(item))
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
   let headers = ["Sl.No", "Case Type Name", ...formatHeaderMonth];
   const total: any = Object.entries(totalSumValues)
     .sort((a, b) => {
@@ -1435,7 +1454,6 @@ export const exportToExcelInsurancePayorsFacilities = (
     XLSX.writeFile(workbook, "insurance-payors.xlsx");
   }
 };
-
 
 export const exportToExcelInsuranceCaseTypeTable = (
   insuranceData: any,

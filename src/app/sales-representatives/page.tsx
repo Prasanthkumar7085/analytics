@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import SalesRepresentatives from "@/components/SalesRepresentatives";
 import TeamWiseSalesReps from "@/components/SalesRepresentatives/TeamWiseSalesReps";
 import { Suspense } from "react";
@@ -11,9 +11,11 @@ const SalesRepresentativesPage = () => {
   return (
     <Suspense>
       <section id="salesRepresentativesPage">
-        {userType == "LAB_ADMIN" ?
-          <TeamWiseSalesReps /> : <SalesRepresentatives />
-        }
+        {userType == "LAB_ADMIN" || userType == "LAB_SUPER_ADMIN" ? (
+          <TeamWiseSalesReps />
+        ) : (
+          <SalesRepresentatives />
+        )}
       </section>
     </Suspense>
   );

@@ -1,13 +1,9 @@
 "use client";
-import {
-  setCaseTypeOptions
-} from "@/Redux/Modules/marketers";
+import { setCaseTypeOptions } from "@/Redux/Modules/marketers";
 import { setUserDetails } from "@/Redux/Modules/userlogin";
 import ErrorMessages from "@/components/core/ErrorMessage/ErrorMessages";
 import { caseTypesOptions } from "@/lib/constants/caseTypes";
-import {
-  signInAPI
-} from "@/services/authAPIs";
+import { signInAPI } from "@/services/authAPIs";
 import { getSingleRepProfileDeatilsAPI } from "@/services/salesRepsAPIs";
 import Cookies from "js-cookie";
 import type { NextPage } from "next";
@@ -27,8 +23,6 @@ const SignIn = () => {
   const [invalidMessage, setInvalidMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-
-
   //get single sales rep ref id
   const getSalesRepDetails = async () => {
     setLoading(true);
@@ -38,9 +32,8 @@ const SignIn = () => {
         let refId = response?.data?.[0]?.id;
         Cookies.set("user_ref_id", refId);
         router.push(`/sales-representatives/${refId}`);
-      }
-      else {
-        toast.error("Error while login")
+      } else {
+        toast.error("Error while login");
       }
     } catch (err) {
       console.error(err);
@@ -62,7 +55,8 @@ const SignIn = () => {
       let response: any = await signInAPI(payload);
 
       if (response.success) {
-        toast.success(response?.message)
+        console.log(response, "puytrqasdfghjkn");
+        toast.success(response?.message);
         Cookies.set("user", response?.user_details?.user_type);
         dispatch(setUserDetails(response));
         dispatch(setCaseTypeOptions(caseTypesOptions));
@@ -120,7 +114,10 @@ const SignIn = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <ErrorMessages errorMessages={errorMessages} keyname="user_name" />
+              <ErrorMessages
+                errorMessages={errorMessages}
+                keyname="user_name"
+              />
             </div>
             <div className="form-group mb-5">
               <label htmlFor="password" className="block text-gray-700">
@@ -172,17 +169,35 @@ const SignIn = () => {
             )}
             <button
               type="submit"
-              className={"w-full bg-indigo-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"}
+              className={
+                "w-full bg-indigo-600 text-white py-2 px-4 rounded-md transition duration-300 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+              }
             >
-              {loading ?
-                <div style={{ margin: "auto", display: "flex", flexDirection: "row", justifyContent: "center" }}><Image src='/loading.svg' width={40} height={40} alt='loading' /></div>
-                : "Sign In"}
+              {loading ? (
+                <div
+                  style={{
+                    margin: "auto",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Image
+                    src="/loading.svg"
+                    width={40}
+                    height={40}
+                    alt="loading"
+                  />
+                </div>
+              ) : (
+                "Sign In"
+              )}
             </button>
           </form>
         </div>
       </div>
       <Toaster richColors closeButton position="top-right" />
-    </section >
+    </section>
   );
 };
 

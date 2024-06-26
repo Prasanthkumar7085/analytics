@@ -1,4 +1,7 @@
-import { exportToExcelSalesRepTable, exportToExcelTeamSalesRepTable } from "@/lib/helpers/exportsHelpers";
+import {
+  exportToExcelSalesRepTable,
+  exportToExcelTeamSalesRepTable,
+} from "@/lib/helpers/exportsHelpers";
 import SearchIcon from "@mui/icons-material/Search";
 import { Autocomplete, Paper, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -62,9 +65,11 @@ const SalesRepsFilters = ({
     <div className="tableFiltersContainer">
       <Grid container alignItems="center">
         <Grid item xs={3}>
-          {userType == "LAB_ADMIN" ?
-            <h4>Team Wise Sales Representatives</h4> :
-            <h4> Sales Representatives</h4>}
+          {userType == "LAB_ADMIN" || userType == "LAB_SUPER_ADMIN" ? (
+            <h4>Team Wise Sales Representatives</h4>
+          ) : (
+            <h4> Sales Representatives</h4>
+          )}
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
@@ -142,11 +147,16 @@ const SalesRepsFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  if (userType == "LAB_ADMIN") {
-                    exportToExcelTeamSalesRepTable(salesRepsData, totalSumValues);
-                  }
-                  else {
-                    exportToExcelSalesRepTable(salesRepsData, totalSumValues)
+                  if (
+                    userType == "LAB_ADMIN" ||
+                    userType == "LAB_SUPER_ADMIN"
+                  ) {
+                    exportToExcelTeamSalesRepTable(
+                      salesRepsData,
+                      totalSumValues
+                    );
+                  } else {
+                    exportToExcelSalesRepTable(salesRepsData, totalSumValues);
                   }
                 }}
                 disabled={salesRepsData?.length === 0 ? true : false}
