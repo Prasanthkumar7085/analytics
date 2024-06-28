@@ -137,10 +137,12 @@ const CaseTypes = () => {
     }
 
     router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
-    let data = [...completeData];
+    let data: any = [...completeData];
 
     if (orderBy && orderType) {
+      data = rearrangeDataWithCasetypes(data);
       data = sortAndGetData(data, orderBy, orderType);
+
       if (search) {
         data = data.filter((item: any) =>
           item.case_type_name
@@ -150,6 +152,7 @@ const CaseTypes = () => {
       }
     } else {
       data = [...completeData];
+      data = rearrangeDataWithCasetypes(data);
       if (search) {
         data = data.filter((item: any) =>
           item.case_type_name
@@ -158,8 +161,8 @@ const CaseTypes = () => {
         );
       }
     }
-    let rearrangedData = rearrangeDataWithCasetypes(data);
-    const modifieData = addSerial(rearrangedData, 1, rearrangedData?.length);
+
+    const modifieData = addSerial(data, 1, data?.length);
     setAllCaseTypes(modifieData);
     calculateTableSum(data);
     setLoading(false);
