@@ -38,7 +38,7 @@ const CaseTypes = () => {
     orderType = searchParams?.order_type,
   }: any) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
+      general_sales_reps_exclude_count: "true",
     };
 
     if (fromDate) {
@@ -100,37 +100,7 @@ const CaseTypes = () => {
           rearrangedData?.length
         );
         setAllCaseTypes(modifieData);
-        const totalCases = data.reduce(
-          (sum: any, item: any) => sum + +item.total_cases,
-          0
-        );
-        const billedAmoumnt = data.reduce(
-          (sum: any, item: any) => sum + +item.generated_amount,
-          0
-        );
-        const paidRevenueSum = data.reduce(
-          (sum: any, item: any) => sum + +item.paid_amount,
-          0
-        );
-        const pendingAmoumnt = data.reduce(
-          (sum: any, item: any) => sum + +item.pending_amount,
-          0
-        );
-        const totalFacilitesSum = data.reduce(
-          (sum: any, item: any) => sum + +item.no_of_facilities,
-          0
-        );
-
-        const result = [
-          { value: "Total", dolorSymbol: false },
-          { value: null, dolorSymbol: false },
-          { value: totalFacilitesSum, dolorSymbol: false },
-          { value: totalCases, dolorSymbol: false },
-          { value: billedAmoumnt, dolorSymbol: true },
-          { value: paidRevenueSum, dolorSymbol: true },
-          { value: pendingAmoumnt, dolorSymbol: true },
-        ];
-        setTotalCaseTypeSum(result);
+        calculateTableSum(data);
       }
     } catch (err) {
       console.error(err);
@@ -149,7 +119,7 @@ const CaseTypes = () => {
     orderType: "asc" | "desc";
   }>) => {
     setLoading(true);
-    let queryParams: any = {};
+    let queryParams: any = { general_sales_reps_exclude_count: "true" };
     if (search) {
       queryParams["search"] = search;
     }
@@ -188,10 +158,14 @@ const CaseTypes = () => {
         );
       }
     }
-
-    const modifieData = addSerial(data, 1, data?.length);
+    let rearrangedData = rearrangeDataWithCasetypes(data);
+    const modifieData = addSerial(rearrangedData, 1, rearrangedData?.length);
     setAllCaseTypes(modifieData);
+    calculateTableSum(data);
+    setLoading(false);
+  };
 
+  const calculateTableSum = (data: any) => {
     const totalCases = data.reduce(
       (sum: any, item: any) => sum + +item.total_cases,
       0
@@ -224,7 +198,6 @@ const CaseTypes = () => {
       { value: pendingAmoumnt, dolorSymbol: true },
     ];
     setTotalCaseTypeSum(result);
-    setLoading(false);
   };
 
   const columnDef = [
