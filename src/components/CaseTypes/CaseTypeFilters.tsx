@@ -8,6 +8,7 @@ import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { exportToExcelCaseTypesTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import CheckBoxForExcludeGenSales from "../core/CheckBoxForExcludeGenSales";
 const CaseTypeFilters = ({
   onUpdateData,
   queryPreparations,
@@ -42,6 +43,11 @@ const CaseTypeFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
+            <li className="eachFilterLists">
+              <CheckBoxForExcludeGenSales
+                queryPreparations={queryPreparations}
+              />
+            </li>
             <li className="eachFilterLists">
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}

@@ -1,4 +1,7 @@
-import { getMonthWiseRevenueCaseDetailsAPI, getMonthWiseVolumeCaseDetailsAPI } from "@/services/caseTypesAPIs";
+import {
+  getMonthWiseRevenueCaseDetailsAPI,
+  getMonthWiseVolumeCaseDetailsAPI,
+} from "@/services/caseTypesAPIs";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
@@ -44,11 +47,10 @@ const CaseTypesDetailsMonthTable = ({
     fromDate: any,
     toDate: any,
     searchValue = searchParams?.search,
-    tabValue: string
+    tabValue: string,
+    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count
   ) => {
-    let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
-    };
+    let queryParams: any = {};
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
@@ -57,6 +59,10 @@ const CaseTypesDetailsMonthTable = ({
     }
     if (searchValue) {
       queryParams["search"] = searchValue;
+    }
+    if (general_sales_reps_exclude_count) {
+      queryParams["general_sales_reps_exclude_count"] =
+        general_sales_reps_exclude_count;
     }
     try {
       if (tabValue == "Revenue") {
@@ -333,7 +339,9 @@ const CaseTypesDetailsMonthTable = ({
         onClick={() => {
           exportToExcelCaseTypeTable(caseData, headerMonths, totalSumValues);
         }}
-        disabled={caseData?.length === 0 || tabValue == "Revenue" ? true : false}
+        disabled={
+          caseData?.length === 0 || tabValue == "Revenue" ? true : false
+        }
       ></ExportButton>
       <CaseTypesColumnTable
         data={caseData}
