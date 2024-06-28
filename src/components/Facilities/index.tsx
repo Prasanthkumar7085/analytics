@@ -10,7 +10,11 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import FacilitiesFilters from "./FacilitiesFilters";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
 
 const FacilitiesList = () => {
@@ -33,10 +37,9 @@ const FacilitiesList = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
+    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: any) => {
-    let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
-    };
+    let queryParams: any = {};
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -52,6 +55,10 @@ const FacilitiesList = () => {
     }
     if (orderType) {
       queryParams["order_type"] = orderType;
+    }
+    if (general_sales_reps_exclude_count) {
+      queryParams["general_sales_reps_exclude_count"] =
+        general_sales_reps_exclude_count;
     }
     try {
       await getFacilitiesList(queryParams);
@@ -153,7 +160,10 @@ const FacilitiesList = () => {
     )
       .toISOString()
       .substring(0, 10);
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (params.get("from_date")) {
       queryParams["from_date"] = params.get("from_date") || defaultfromDate;
     }
@@ -170,9 +180,14 @@ const FacilitiesList = () => {
   //go to single sales rep page navigation event
   const gotoSingleSalesRepPage = (Id: string) => {
     let queryString = "";
-    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
-      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-      : [startOfMonth(new Date()), new Date()];;
+    let thisMonth =
+      dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+      dayjs().format("YYYY-MM-DD")
+        ? [
+            startOfMonth(addMonths(new Date(), -1)),
+            endOfMonth(addMonths(new Date(), -1)),
+          ]
+        : [startOfMonth(new Date()), new Date()];
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),
@@ -191,7 +206,10 @@ const FacilitiesList = () => {
     )
       .toISOString()
       .substring(0, 10);
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
     }
@@ -333,10 +351,12 @@ const FacilitiesList = () => {
     search = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type as "asc" | "desc",
+    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: Partial<{
     search: string;
     orderBy: string;
     orderType: "asc" | "desc";
+    general_sales_reps_exclude_count: any;
   }>) => {
     let queryParams: any = {};
     if (search) {
@@ -353,6 +373,10 @@ const FacilitiesList = () => {
     }
     if (params.get("to_date")) {
       queryParams["to_date"] = params.get("to_date");
+    }
+    if (general_sales_reps_exclude_count) {
+      queryParams["general_sales_reps_exclude_count"] =
+        general_sales_reps_exclude_count;
     }
 
     router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
@@ -424,6 +448,8 @@ const FacilitiesList = () => {
       fromDate: searchParams?.from_date,
       toDate: searchParams?.to_date,
       searchValue: searchParams?.search,
+      general_sales_reps_exclude_count:
+        searchParams?.general_sales_reps_exclude_count,
     });
     if (searchParams?.from_date) {
       setDateFilterDefaultValue(
