@@ -12,6 +12,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import ExportButton from "../core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import { useSelector } from "react-redux";
+import CheckBoxForExcludeGenSales from "../core/CheckBoxForExcludeGenSales";
 const SalesRepsFilters = ({
   onUpdateData,
   queryPreparations,
@@ -73,6 +74,11 @@ const SalesRepsFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
+            <li className="eachFilterLists">
+              <CheckBoxForExcludeGenSales
+                queryPreparations={queryPreparations}
+              />
+            </li>
             <li className="eachFilterLists">
               <Autocomplete
                 PaperComponent={({ children }) => (

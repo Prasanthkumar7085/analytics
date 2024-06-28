@@ -14,18 +14,18 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
 
 interface pageProps {
   data: any[];
   loading: boolean;
   params: any;
 }
-const SalesRepsAccrodianTable: FC<pageProps> = ({
-  data,
-  loading,
-  params
-}) => {
+const SalesRepsAccrodianTable: FC<pageProps> = ({ data, loading, params }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -40,7 +40,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
           <span style={{ display: "flex", alignItems: "center" }}>
             <p>{info.row.original.serial}</p>
           </span>
-        )
+        );
       },
       width: "60px",
       minWidth: "60px",
@@ -75,10 +75,12 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
       minWidth: "220px",
       cell: (info: any) => {
         return (
-          <span
-            style={{ cursor: "pointer" }}
-          >
-            {info.row.original.role_id == 1 ? "Territory Manager" : info.row.original.role_id == 2 ? "Regional Director" : "Sales Director"}
+          <span style={{ cursor: "pointer" }}>
+            {info.row.original.role_id == 1
+              ? "Territory Manager"
+              : info.row.original.role_id == 2
+              ? "Regional Director"
+              : "Sales Director"}
           </span>
         );
       },
@@ -98,7 +100,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
           maxWidth: "300px",
           minWidth: "300px",
           cell: ({ getValue }: any) => {
-            return <span>{getValue()?.toLocaleString()}</span>;
+            return <span>{getValue()?.toLocaleString() || 0}</span>;
           },
         },
         {
@@ -109,7 +111,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
           maxWidth: "300px",
           minWidth: "300px",
           cell: (info: any) => {
-            return <span>{info.getValue()?.toLocaleString()}</span>;
+            return <span>{info.getValue()?.toLocaleString() || 0}</span>;
           },
         },
       ],
@@ -128,7 +130,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
           maxWidth: "200px",
           minWidth: "200px",
           cell: (info: any) => {
-            return <span>{info.getValue()?.toLocaleString()}</span>;
+            return <span>{info.getValue()?.toLocaleString() || 0}</span>;
           },
         },
         {
@@ -139,7 +141,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
           maxWidth: "200px",
           minWidth: "200px",
           cell: ({ getValue }: any) => {
-            return <span>{getValue()?.toLocaleString()}</span>;
+            return <span>{getValue()?.toLocaleString() || 0}</span>;
           },
         },
       ],
@@ -175,7 +177,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
           <Button
             className="actionButton"
             onClick={() => {
-              goToSingleRepPage(info.row.original.sales_rep_id)
+              goToSingleRepPage(info.row.original.sales_rep_id);
             }}
           >
             view
@@ -187,9 +189,14 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
 
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
-      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-      : [startOfMonth(new Date()), new Date()];
+    let thisMonth =
+      dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+      dayjs().format("YYYY-MM-DD")
+        ? [
+            startOfMonth(addMonths(new Date(), -1)),
+            endOfMonth(addMonths(new Date(), -1)),
+          ]
+        : [startOfMonth(new Date()), new Date()];
 
     let defaultfromDate = new Date(
       Date.UTC(
@@ -210,7 +217,10 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
       .toISOString()
       .substring(0, 10);
 
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (params["from_date"]) {
       queryParams["from_date"] = params["from_date"] || defaultfromDate;
     }
@@ -220,7 +230,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
     }
-    dispatch(storeQueryString(queryString))
+    dispatch(storeQueryString(queryString));
     router.push(`/sales-representatives/${repId}${queryString}`);
   };
 
@@ -282,7 +292,7 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
   return (
     <td colSpan={9} className="salesRepAccrodianTable">
       <table style={{ width: "100%" }}>
-        <tbody >
+        <tbody>
           {data?.length ? (
             table.getRowModel().rows.map((row: any, mainIndex: number) => {
               return (
@@ -296,12 +306,12 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
                           width: "100%",
                           backgroundColor:
                             row?.original.hasOwnProperty("target_reached") &&
-                              cell?.id &&
-                              cell?.id.includes("total_cases")
+                            cell?.id &&
+                            cell?.id.includes("total_cases")
                               ? getBackgroundColor(
-                                row?.original?.total_cases,
-                                row?.original?.total_targets
-                              )
+                                  row?.original?.total_cases,
+                                  row?.original?.total_targets
+                                )
                               : "",
                         }}
                       >
@@ -350,7 +360,6 @@ const SalesRepsAccrodianTable: FC<pageProps> = ({
             </tr>
           )}
         </tbody>
-
       </table>
     </td>
   );

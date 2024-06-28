@@ -374,7 +374,7 @@ function calculateTeamTotalSumOfFields(data: any, fieldName: any) {
   data.forEach((item: any) => {
     totalAmount += item[fieldName];
   });
-  return totalAmount;
+  return totalAmount||0;
 }
 
 

@@ -519,10 +519,10 @@ export const exportToExcelTeamSalesRepTable = (
           : obj.role_id == 2
           ? "Regional Director"
           : "Sales Director",
-        obj.total_facilities,
-        obj.active_facilities,
-        obj.total_targets,
-        obj.total_cases,
+        obj.total_facilities || 0,
+        obj.active_facilities || 0,
+        obj.total_targets || 0,
+        obj.total_cases || 0,
         obj.target_reached ? "Yes" : "No",
       ],
     ];
@@ -538,10 +538,10 @@ export const exportToExcelTeamSalesRepTable = (
             : teamMember.role_id == 2
             ? "Regional Director"
             : "Sales Director",
-          teamMember.total_facilities,
-          teamMember.active_facilities,
-          teamMember.total_targets,
-          teamMember.total_cases,
+          teamMember.total_facilities || 0,
+          teamMember.active_facilities || 0,
+          teamMember.total_targets || 0,
+          teamMember.total_cases || 0,
           teamMember.target_reached ? "Yes" : "No",
         ]);
       });

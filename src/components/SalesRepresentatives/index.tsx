@@ -12,7 +12,11 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import SalesRepsFilters from "./SalesRepsFilters";
 import styles from "./salesreps.module.css";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import { storeQueryString } from "@/Redux/Modules/marketers";
@@ -40,10 +44,9 @@ const SalesRepresentatives = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
     status = searchParams?.status,
+    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: any) => {
-    let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
-    };
+    let queryParams: any = {};
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -63,6 +66,13 @@ const SalesRepresentatives = () => {
     if (status) {
       queryParams["status"] = status;
     }
+    if (
+      general_sales_reps_exclude_count == "true" ||
+      general_sales_reps_exclude_count == "false"
+    ) {
+      queryParams["general_sales_reps_exclude_count"] =
+        general_sales_reps_exclude_count;
+    }
     try {
       await getAllSalesReps(queryParams);
     } catch (err: any) {
@@ -76,7 +86,7 @@ const SalesRepresentatives = () => {
   const getAllSalesReps = async (queryParams: any) => {
     setLoading(true);
     try {
-      let { search, status, ...remaining } = queryParams
+      let { search, status, ...remaining } = queryParams;
       let queryString = prepareURLEncodedParams("", queryParams);
 
       router.push(`${pathname}${queryString}`);
@@ -118,9 +128,14 @@ const SalesRepresentatives = () => {
 
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
-      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-      : [startOfMonth(new Date()), new Date()];
+    let thisMonth =
+      dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+      dayjs().format("YYYY-MM-DD")
+        ? [
+            startOfMonth(addMonths(new Date(), -1)),
+            endOfMonth(addMonths(new Date(), -1)),
+          ]
+        : [startOfMonth(new Date()), new Date()];
 
     let defaultfromDate = new Date(
       Date.UTC(
@@ -141,7 +156,10 @@ const SalesRepresentatives = () => {
       .toISOString()
       .substring(0, 10);
 
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (params.get("from_date")) {
       queryParams["from_date"] = params.get("from_date") || defaultfromDate;
     }
@@ -151,7 +169,7 @@ const SalesRepresentatives = () => {
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
     }
-    dispatch(storeQueryString(queryString))
+    dispatch(storeQueryString(queryString));
     router.push(`/sales-representatives/${repId}${queryString}`);
   };
 
@@ -194,10 +212,12 @@ const SalesRepresentatives = () => {
       minWidth: "220px",
       cell: (info: any) => {
         return (
-          <span
-            style={{ cursor: "pointer" }}
-          >
-            {info.row.original.role_id == 1 ? "Territory Manager" : info.row.original.role_id == 2 ? "Regional Director" : "Sales Director"}
+          <span style={{ cursor: "pointer" }}>
+            {info.row.original.role_id == 1
+              ? "Territory Manager"
+              : info.row.original.role_id == 2
+              ? "Regional Director"
+              : "Sales Director"}
           </span>
         );
       },
@@ -293,7 +313,7 @@ const SalesRepresentatives = () => {
           <Button
             className="actionButton"
             onClick={() => {
-              goToSingleRepPage(info.row.original.sales_rep_id)
+              goToSingleRepPage(info.row.original.sales_rep_id);
             }}
           >
             view
