@@ -8,8 +8,10 @@ import RevenueDataGraph from "./RevenueDataGraph";
 import { getVolumeAPI } from "@/services/volumeAPI";
 import VolumeDataGraph from "./VolumeDataGraph";
 import { useSelector } from "react-redux";
+import { useSearchParams } from "next/navigation";
 
 const RevenueBlock = () => {
+  const params = useSearchParams();
   const [labelsData, setLablesData] = useState<any>([]);
   const [billedData, setBilledData] = useState<any>([]);
   const [totalRevenueData, setTotalRevenueData] = useState<any>([]);
@@ -38,7 +40,7 @@ const RevenueBlock = () => {
     }
     const months = data.map((item: any) => item.month);
     const TotalCases = data.map((item: any) => +item.total_cases);
-    const CompletedCases = data.map((item: any) => +item.total_targets);
+    const CompletedCases = data.map((item: any) => +item.total_targets || 0);
     setLablesData(months);
     setTotalCasesData(TotalCases);
     setCompletedCases(CompletedCases);
@@ -51,7 +53,9 @@ const RevenueBlock = () => {
     tabValue: string
   ) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
+      general_sales_reps_exclude_count: params.get(
+        "general_sales_reps_exclude_count"
+      ),
     };
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -112,7 +116,7 @@ const RevenueBlock = () => {
 
   useEffect(() => {
     queryPreparations("", "", tabValue);
-  }, []);
+  }, [params]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     queryPreparations(fromDate, toDate, tabValue);

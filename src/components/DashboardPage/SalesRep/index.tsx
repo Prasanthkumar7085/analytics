@@ -7,10 +7,11 @@ import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
 import { Backdrop, Button } from "@mui/material";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const SalesRep = () => {
+  const params = useSearchParams();
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -19,7 +20,9 @@ const SalesRep = () => {
   //query preparation method
   const queryPreparations = async ({ fromDate = "", toDate = "" }: any) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
+      general_sales_reps_exclude_count: params.get(
+        "general_sales_reps_exclude_count"
+      ),
     };
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -65,7 +68,7 @@ const SalesRep = () => {
       0
     );
     const targetVolume = data.reduce(
-      (sum: any, item: any) => sum + +item.total_targets,
+      (sum: any, item: any) => sum + +item.total_targets || 0,
       0
     );
     const totalVolume = data.reduce(
@@ -89,7 +92,7 @@ const SalesRep = () => {
 
   useEffect(() => {
     queryPreparations({});
-  }, []);
+  }, [params]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     queryPreparations({ fromDate, toDate });
@@ -111,7 +114,7 @@ const SalesRep = () => {
           <GlobalDateRangeFilter onChangeData={onChangeData} />
           <ExportButton
             onClick={() => {
-              exportToExcelSalesRepTable(salesReps, totalRevenueSum,);
+              exportToExcelSalesRepTable(salesReps, totalRevenueSum);
             }}
             disabled={salesReps?.length === 0 ? true : false}
           />

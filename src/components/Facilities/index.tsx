@@ -456,7 +456,7 @@ const FacilitiesList = () => {
         changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
       );
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     setSearchParams(

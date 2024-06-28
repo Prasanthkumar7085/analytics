@@ -9,6 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { FC, ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./index.module.css";
+import CheckBoxForExcludeGenSales from "../core/CheckBoxForExcludeGenSales";
 
 interface pageProps {
   children: ReactNode;
@@ -27,6 +28,14 @@ const NavBar: FC<pageProps> = ({ children }) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const [adminMenuanchorElUser, setAdminMenuAnchorElUser] =
+    React.useState<null | HTMLElement>(null);
+  const handleOpenAdminMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAdminMenuAnchorElUser(event.currentTarget);
+  };
+  const handleCloseAdminMenu = () => {
+    setAdminMenuAnchorElUser(null);
+  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -179,6 +188,28 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 >
                   <div
                     className={styles.profileBlock}
+                    onClick={handleOpenAdminMenu}
+                  >
+                    <div className={styles.adminCaption}>
+                      <Typography variant="subtitle1">
+                        Admin Settings
+                        <Image
+                          src="/navbar/drop-down-icon.svg"
+                          alt="drop-down"
+                          width={15}
+                          height={15}
+                        />
+                      </Typography>
+                    </div>
+                  </div>
+                </Box>
+
+                <Box
+                  className={styles.navList}
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                  <div
+                    className={styles.profileBlock}
                     onClick={handleOpenUserMenu}
                   >
                     <Avatar sx={{ bgcolor: "orange" }}>
@@ -202,6 +233,36 @@ const NavBar: FC<pageProps> = ({ children }) => {
               </ul>
             </Grid>
           </Grid>
+
+          <Menu
+            sx={{
+              mt: "45px",
+              "& .MuiPaper-root": {
+                boxShadow: "none",
+                border: "1px solid  #CECECE",
+                borderRadius: "8px",
+                paddingInline: "1rem",
+              },
+            }}
+            id="menu-appbar"
+            anchorEl={adminMenuanchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(adminMenuanchorElUser)}
+            onClose={handleCloseAdminMenu}
+          >
+            <MenuItem className={styles.dropDownMenu}>
+              <CheckBoxForExcludeGenSales />
+            </MenuItem>
+          </Menu>
+
           <Menu
             sx={{
               mt: "45px",
