@@ -21,7 +21,11 @@ import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import GraphDialogForTargetStatus from "../core/GraphDilaogForTargetStatus";
 import AreaGraphForTargetStatus from "../core/AreaGraph/AreaGraphForTargetstaus";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
 
 const MonthWiseTargetStatus = () => {
@@ -43,16 +47,15 @@ const MonthWiseTargetStatus = () => {
   );
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   //query preparation method
-  const queryPreparations = async (
-    fromDate: any,
-    toDate: any,
+  const queryPreparations = async ({
+    fromDate,
+    toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type
-  ) => {
-    let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
-    };
+    orderType = searchParams?.order_type,
+    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
+  }: any) => {
+    let queryParams: any = {};
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
@@ -67,6 +70,10 @@ const MonthWiseTargetStatus = () => {
     }
     if (orderType) {
       queryParams["order_type"] = orderType;
+    }
+    if (general_sales_reps_exclude_count) {
+      queryParams["general_sales_reps_exclude_count"] =
+        general_sales_reps_exclude_count;
     }
     try {
       await getTargetData(queryParams);
@@ -268,9 +275,14 @@ const MonthWiseTargetStatus = () => {
 
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
-      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-      : [startOfMonth(new Date()), new Date()];
+    let thisMonth =
+      dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+      dayjs().format("YYYY-MM-DD")
+        ? [
+            startOfMonth(addMonths(new Date(), -1)),
+            endOfMonth(addMonths(new Date(), -1)),
+          ]
+        : [startOfMonth(new Date()), new Date()];
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),
@@ -289,7 +301,10 @@ const MonthWiseTargetStatus = () => {
     )
       .toISOString()
       .substring(0, 10);
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (params.get("from_date")) {
       queryParams["from_date"] = params.get("from_date") || defaultfromDate;
     }
@@ -308,15 +323,15 @@ const MonthWiseTargetStatus = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type as "asc" | "desc",
     status = searchParams?.status,
+    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: Partial<{
     search: string;
     orderBy: string;
     orderType: "asc" | "desc";
     status: string;
+    general_sales_reps_exclude_count: any;
   }>) => {
-    let queryParams: any = {
-      general_sales_reps_exclude_count: "true"
-    };
+    let queryParams: any = {};
     if (search) {
       queryParams["search"] = search;
     }
@@ -335,7 +350,10 @@ const MonthWiseTargetStatus = () => {
     if (params.get("to_date")) {
       queryParams["to_date"] = params.get("to_date");
     }
-
+    if (general_sales_reps_exclude_count) {
+      queryParams["general_sales_reps_exclude_count"] =
+        general_sales_reps_exclude_count;
+    }
     router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
     let data = [...completeData];
 
@@ -379,11 +397,13 @@ const MonthWiseTargetStatus = () => {
   ];
 
   useEffect(() => {
-    queryPreparations(
-      searchParams?.from_date,
-      searchParams?.to_date,
-      searchParams?.search
-    );
+    queryPreparations({
+      fromDate: searchParams?.from_date,
+      toDate: searchParams?.to_date,
+      searchValue: searchParams?.search,
+      general_sales_reps_exclude_count:
+        searchParams?.general_sales_reps_exclude_count,
+    });
     if (searchParams?.from_date) {
       setDateFilterDefaultValue(
         changeDateToUTC(searchParams?.from_date, searchParams?.to_date)

@@ -31,8 +31,8 @@ const CaseTypes = () => {
 
   //query preparation method
   const queryPreparations = async ({
-    fromDate,
-    toDate,
+    fromDate = searchParams?.from_date,
+    toDate = searchParams?.to_date,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,

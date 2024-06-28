@@ -99,7 +99,7 @@ const SalesRepsFilters = ({
                 renderInput={(params: any) => (
                   <TextField
                     {...params}
-                    sx={{ width: "150px" }}
+                    sx={{ width: "100px" }}
                     placeholder="Select Status"
                   />
                 )}
@@ -107,7 +107,7 @@ const SalesRepsFilters = ({
                 onChange={onStatusFilterChange}
                 sx={{
                   "& .MuiFormControl-root": {
-                    width: "250px",
+                    width: "150px",
                     background: "#fff",
                     borderRadius: "5px",
                   },

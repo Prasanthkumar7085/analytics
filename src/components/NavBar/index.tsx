@@ -21,8 +21,12 @@ const NavBar: FC<pageProps> = ({ children }) => {
   const userType = useSelector(
     (state: any) => state.auth.user?.user_details?.user_type
   );
-  const userDetails = useSelector((state: any) => state.auth.user?.user_details)
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const userDetails = useSelector(
+    (state: any) => state.auth.user?.user_details
+  );
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -31,7 +35,6 @@ const NavBar: FC<pageProps> = ({ children }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
 
   const logout = () => {
     Cookies.remove("user");
@@ -60,10 +63,11 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 {hasAccessOrNot("/dashboard", userType) && userType ? (
                   <li
                     onClick={() => router.push("/dashboard")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/dashboard" ? "activePagename" : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/dashboard" ? "activePagename" : "active"
+                      ]
+                    }`}
                   >
                     Overview
                   </li>
@@ -71,15 +75,16 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   ""
                 )}
                 {hasAccessOrNot("/sales-representatives", userType) &&
-                  userType ? (
+                userType ? (
                   <li
                     onClick={() => router.push("/sales-representatives")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/sales-representatives")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname.includes("/sales-representatives")
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Sales Representatives
                   </li>
@@ -89,12 +94,13 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 {hasAccessOrNot("/insurances", userType) && userType ? (
                   <li
                     onClick={() => router.push("/insurances")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/insurances")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname.includes("/insurances")
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Insurances
                   </li>
@@ -104,12 +110,13 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 {hasAccessOrNot("/facilities", userType) && userType ? (
                   <li
                     onClick={() => router.push("/facilities")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/facilities")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname.includes("/facilities")
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Facilities
                   </li>
@@ -119,12 +126,13 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 {hasAccessOrNot("/case-types", userType) && userType ? (
                   <li
                     onClick={() => router.push("/case-types")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname.includes("/case-types")
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname.includes("/case-types")
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Case Types
                   </li>
@@ -135,12 +143,13 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 {hasAccessOrNot("/sales-targets", userType) && userType ? (
                   <li
                     onClick={() => router.push("/sales-targets")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/sales-targets"
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/sales-targets"
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Sales Targets
                   </li>
@@ -150,12 +159,13 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 {hasAccessOrNot("/target-status", userType) && userType ? (
                   <li
                     onClick={() => router.push("/target-status")}
-                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
-                      pathname == "/target-status"
-                        ? "activePagename"
-                        : "active"
-                    ]
-                      }`}
+                    className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
+                      styles[
+                        pathname == "/target-status"
+                          ? "activePagename"
+                          : "active"
+                      ]
+                    }`}
                   >
                     Sales Achievements
                   </li>
@@ -163,41 +173,55 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   ""
                 )}
 
-
-                <Box className={styles.navList} sx={{ display: { xs: 'none', sm: 'block' } }}>
-                  <div className={styles.profileBlock} onClick={handleOpenUserMenu}>
-                    <Avatar sx={{ bgcolor: "orange" }} >{userDetails?.username?.slice(0, 1).toUpperCase()}</Avatar>
+                <Box
+                  className={styles.navList}
+                  sx={{ display: { xs: "none", sm: "block" } }}
+                >
+                  <div
+                    className={styles.profileBlock}
+                    onClick={handleOpenUserMenu}
+                  >
+                    <Avatar sx={{ bgcolor: "orange" }}>
+                      {userDetails?.username?.slice(0, 1).toUpperCase()}
+                    </Avatar>
                     <div className={styles.adminCaption}>
-                      <Typography >{userType}</Typography>
-                      <Typography variant='subtitle1'>{userDetails?.first_name ? userDetails?.first_name : ""} {userDetails?.last_name ? userDetails?.last_name : ""}<Image src="/navbar/drop-down-icon.svg" alt="drop-down" width={15} height={15} /></Typography>
+                      <Typography>{userType}</Typography>
+                      <Typography variant="subtitle1">
+                        {userDetails?.first_name ? userDetails?.first_name : ""}{" "}
+                        {userDetails?.last_name ? userDetails?.last_name : ""}
+                        <Image
+                          src="/navbar/drop-down-icon.svg"
+                          alt="drop-down"
+                          width={15}
+                          height={15}
+                        />
+                      </Typography>
                     </div>
                   </div>
                 </Box>
-
               </ul>
             </Grid>
           </Grid>
           <Menu
             sx={{
-              mt: '45px',
-              '& .MuiPaper-root': {
+              mt: "45px",
+              "& .MuiPaper-root": {
                 boxShadow: "none",
                 border: "1px solid  #CECECE",
                 borderRadius: "8px",
                 paddingInline: "1rem",
-              }
-
+              },
             }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
+              vertical: "top",
+              horizontal: "right",
             }}
             keepMounted
             transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
+              vertical: "top",
+              horizontal: "right",
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}

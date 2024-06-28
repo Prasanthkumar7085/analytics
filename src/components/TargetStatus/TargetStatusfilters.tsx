@@ -11,6 +11,7 @@ import {
 } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import CheckBoxForExcludeGenSales from "../core/CheckBoxForExcludeGenSales";
 const TargetStausFilters = ({
   onUpdateData,
   queryPreparations,
@@ -64,6 +65,11 @@ const TargetStausFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
+            <li className="eachFilterLists">
+              <CheckBoxForExcludeGenSales
+                queryPreparations={queryPreparations}
+              />
+            </li>
             <li className="eachFilterLists">
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}

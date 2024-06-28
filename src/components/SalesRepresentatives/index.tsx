@@ -44,7 +44,6 @@ const SalesRepresentatives = () => {
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
     status = searchParams?.status,
-    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: any) => {
     let queryParams: any = {};
 
@@ -65,13 +64,6 @@ const SalesRepresentatives = () => {
     }
     if (status) {
       queryParams["status"] = status;
-    }
-    if (
-      general_sales_reps_exclude_count == "true" ||
-      general_sales_reps_exclude_count == "false"
-    ) {
-      queryParams["general_sales_reps_exclude_count"] =
-        general_sales_reps_exclude_count;
     }
     try {
       await getAllSalesReps(queryParams);
