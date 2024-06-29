@@ -32,8 +32,8 @@ const FacilitiesList = () => {
 
   //query preparation method
   const queryPreparations = async ({
-    fromDate = searchParams?.from_date,
-    toDate = searchParams?.to_date,
+    fromDate,
+    toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
