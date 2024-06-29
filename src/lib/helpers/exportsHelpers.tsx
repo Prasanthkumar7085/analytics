@@ -402,10 +402,10 @@ export const exportToExcelSalesRepTable = (
         : obj.role_id == 2
         ? "Regional Director"
         : "Sales Director",
-      obj.total_facilities,
-      obj.active_facilities,
-      obj.total_targets,
-      obj.total_cases,
+      obj.total_facilities || 0,
+      obj.active_facilities || 0,
+      obj.total_targets || 0,
+      obj.total_cases || 0,
       obj.target_reached ? "Yes" : "No",
     ];
   });

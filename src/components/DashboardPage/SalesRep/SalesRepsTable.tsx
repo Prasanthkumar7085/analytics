@@ -8,8 +8,18 @@ import { useRouter } from "next/navigation";
 import styles from "./sales-rep.module.css";
 // import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
-const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate }: any) => {
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
+const SalesRepsTable = ({
+  salesReps,
+  totalRevenueSum,
+  loading,
+  fromDate,
+  toDate,
+}: any) => {
   const router = useRouter();
 
   const columnDef = [
@@ -25,9 +35,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
     {
       accessorFn: (row: any) => row.sales_rep_name,
       id: "sales_rep_name",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>
-      ),
+      header: () => <span style={{ whiteSpace: "nowrap" }}>MARKETER NAME</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",
@@ -53,10 +61,12 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
       minWidth: "220px",
       cell: (info: any) => {
         return (
-          <span
-            style={{ cursor: "pointer" }}
-          >
-            {info.row.original.role_id == 1 ? "Territory Manager" : info.row.original.role_id == 2 ? "Regional Director" : "Sales Director"}
+          <span style={{ cursor: "pointer" }}>
+            {info.row.original.role_id == 1
+              ? "Territory Manager"
+              : info.row.original.role_id == 2
+              ? "Regional Director"
+              : "Sales Director"}
           </span>
         );
       },
@@ -75,7 +85,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
           maxWidth: "300px",
           minWidth: "300px",
           cell: ({ getValue }: any) => {
-            return <span>{getValue()?.toLocaleString()}</span>;
+            return <span>{getValue()?.toLocaleString() || 0}</span>;
           },
         },
         {
@@ -86,7 +96,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
           maxWidth: "300px",
           minWidth: "300px",
           cell: (info: any) => {
-            return <span>{info.getValue()?.toLocaleString()}</span>;
+            return <span>{info.getValue()?.toLocaleString() || 0}</span>;
           },
         },
       ],
@@ -105,7 +115,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
           maxWidth: "200px",
           minWidth: "200px",
           cell: (info: any) => {
-            return <span>{info.getValue()?.toLocaleString()}</span>;
+            return <span>{info.getValue()?.toLocaleString() || 0}</span>;
           },
         },
         {
@@ -116,7 +126,7 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
           maxWidth: "200px",
           minWidth: "200px",
           cell: ({ getValue }: any) => {
-            return <span>{getValue()?.toLocaleString()}</span>;
+            return <span>{getValue()?.toLocaleString() || 0}</span>;
           },
         },
       ],
@@ -162,9 +172,14 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
 
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
-      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-      : [startOfMonth(new Date()), new Date()];
+    let thisMonth =
+      dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+      dayjs().format("YYYY-MM-DD")
+        ? [
+            startOfMonth(addMonths(new Date(), -1)),
+            endOfMonth(addMonths(new Date(), -1)),
+          ]
+        : [startOfMonth(new Date()), new Date()];
 
     let defaultfromDate = new Date(
       Date.UTC(
@@ -184,7 +199,10 @@ const SalesRepsTable = ({ salesReps, totalRevenueSum, loading, fromDate, toDate 
     )
       .toISOString()
       .substring(0, 10);
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (fromDate) {
       queryParams["from_date"] = fromDate || defaultfromDate;
     }

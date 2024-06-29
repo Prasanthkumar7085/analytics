@@ -20,6 +20,8 @@ const RevenueBlock = () => {
   const [selectedDates, setSelectedDates] = useState<any>([]);
   const [totalCasesData, setTotalCasesData] = useState<any>([]);
   const [completedCases, setCompletedCases] = useState<any>([]);
+  const [storeQueryParams, setStoreQueryParams] = useState<any>({});
+
   const userType = useSelector(
     (state: any) => state.auth.user?.user_details?.user_type
   );
@@ -63,6 +65,7 @@ const RevenueBlock = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    setStoreQueryParams(queryParams);
     try {
       if (tabValue == "Revenue") {
         await getRevenue(queryParams);
@@ -115,7 +118,11 @@ const RevenueBlock = () => {
   };
 
   useEffect(() => {
-    queryPreparations("", "", tabValue);
+    queryPreparations(
+      storeQueryParams?.from_date,
+      storeQueryParams?.to_date,
+      tabValue
+    );
   }, [params]);
 
   const onChangeData = (fromDate: any, toDate: any) => {

@@ -38,19 +38,8 @@ const DashboardPage = () => {
   const [statsSeletedDate, setSeletedStatsDate] = useState<any>([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [dayWiseTargetsEnable, setDayWiseTargetsEnable] = useState<boolean>();
-  //get revenue stats count
-  const getRevenueStatsCount = async (queryParams: any) => {
-    setLoading(true);
-    try {
-      const response = await getRevenueStatsDetailsAPI(queryParams);
-      setRevenueStatsDetails(response?.data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const [statsQueryParams, setStatsQueryParams] = useState<any>({});
+  const [caseTypesQueryParams, setCaseTypesQueryParams] = useState<any>({});
   //get volume stats count
   const getVolumeStatsCount = async (queryParams: any) => {
     setLoading(true);
@@ -82,9 +71,9 @@ const DashboardPage = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    setStatsQueryParams(queryParams);
     setSeletedStatsDate([queryParams.from_date, queryParams.to_date]);
     try {
-      // await getRevenueStatsCount(queryParams);
       await getVolumeStatsCount(queryParams);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -105,6 +94,7 @@ const DashboardPage = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    setCaseTypesQueryParams(queryParams);
     try {
       if (
         checkDateForCurrentMonth(queryParams) &&
@@ -239,8 +229,21 @@ const DashboardPage = () => {
 
   //api call to get stats count
   useEffect(() => {
-    getStatsCounts("", "");
-    callCaseTypesStatsCounts();
+    if (Object.keys(caseTypesQueryParams)?.length !== 0) {
+      queryPreparations(
+        caseTypesQueryParams?.from_date,
+        caseTypesQueryParams?.to_date
+      );
+    } else {
+      callCaseTypesStatsCounts();
+    }
+  }, [params]);
+  useEffect(() => {
+    if (Object.keys(statsQueryParams)?.length !== 0) {
+      getStatsCounts(statsQueryParams?.from_date, statsQueryParams?.to_date);
+    } else {
+      getStatsCounts("", "");
+    }
   }, [params]);
 
   return (

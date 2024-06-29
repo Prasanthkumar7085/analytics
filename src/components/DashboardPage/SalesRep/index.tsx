@@ -17,8 +17,12 @@ const SalesRep = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [salesRepQueryParams, setSalesRepQueryParams] = useState<any>({});
   //query preparation method
-  const queryPreparations = async ({ fromDate = "", toDate = "" }: any) => {
+  const queryPreparations = async ({
+    fromDate = params.get("from_date"),
+    toDate = params.get("to_date"),
+  }: any) => {
     let queryParams: any = {
       general_sales_reps_exclude_count: params.get(
         "general_sales_reps_exclude_count"
@@ -30,6 +34,7 @@ const SalesRep = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    setSalesRepQueryParams(queryParams);
     try {
       await getAllSalesReps(queryParams);
     } catch (err: any) {
@@ -68,7 +73,8 @@ const SalesRep = () => {
       0
     );
     const targetVolume = data.reduce(
-      (sum: any, item: any) => sum + +item.total_targets || 0,
+      (sum: any, item: any) =>
+        sum + +(item.total_targets ? item.total_targets : 0),
       0
     );
     const totalVolume = data.reduce(
@@ -91,7 +97,10 @@ const SalesRep = () => {
   };
 
   useEffect(() => {
-    queryPreparations({});
+    queryPreparations({
+      fromDate: salesRepQueryParams?.from_date,
+      toDate: salesRepQueryParams?.to_date,
+    });
   }, [params]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
