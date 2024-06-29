@@ -1,21 +1,14 @@
 "use client";
 import SalesRepresentatives from "@/components/SalesRepresentatives";
 import TeamWiseSalesReps from "@/components/SalesRepresentatives/TeamWiseSalesReps";
+import { adminAccess } from "@/lib/helpers/hasAccessOrNot";
 import { Suspense } from "react";
-import { useSelector } from "react-redux";
 
 const SalesRepresentativesPage = () => {
-  const userType = useSelector(
-    (state: any) => state.auth.user?.user_details?.user_type
-  );
   return (
     <Suspense>
       <section id="salesRepresentativesPage">
-        {userType == "LAB_ADMIN" || userType == "LAB_SUPER_ADMIN" ? (
-          <TeamWiseSalesReps />
-        ) : (
-          <SalesRepresentatives />
-        )}
+        {adminAccess() ? <TeamWiseSalesReps /> : <SalesRepresentatives />}
       </section>
     </Suspense>
   );

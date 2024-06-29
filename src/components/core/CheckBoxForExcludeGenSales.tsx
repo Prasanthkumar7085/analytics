@@ -1,3 +1,4 @@
+import { adminAccess } from "@/lib/helpers/hasAccessOrNot";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -37,7 +38,7 @@ const CheckBoxForExcludeGenSales = ({ queryPreparations }: any) => {
 
   return (
     <div>
-      {userType == "LAB_ADMIN" || userType == "LAB_SUPER_ADMIN" ? (
+      {adminAccess() ? (
         <FormControlLabel
           label="Exclude General sales"
           control={

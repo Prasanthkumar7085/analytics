@@ -1,5 +1,5 @@
 import { removeUserDetails } from "@/Redux/Modules/userlogin";
-import { hasAccessOrNot } from "@/lib/helpers/hasAccessOrNot";
+import { adminAccess, hasAccessOrNot } from "@/lib/helpers/hasAccessOrNot";
 import { Avatar, Box, Button, Menu, MenuItem, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -182,28 +182,31 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   ""
                 )}
 
-                <Box
-                  className={styles.navList}
-                  sx={{ display: { xs: "none", sm: "block" } }}
-                >
-                  <div
-                    className={styles.profileBlock}
-                    onClick={handleOpenAdminMenu}
+                {adminAccess() ? (
+                  <Box
+                    className={styles.navList}
+                    sx={{ display: { xs: "none", sm: "block" } }}
                   >
-                    <div className={styles.adminCaption}>
-                      <Typography variant="subtitle1">
-                        Admin Settings
-                        <Image
-                          src="/navbar/drop-down-icon.svg"
-                          alt="drop-down"
-                          width={15}
-                          height={15}
-                        />
-                      </Typography>
+                    <div
+                      className={styles.profileBlock}
+                      onClick={handleOpenAdminMenu}
+                    >
+                      <div className={styles.adminCaption}>
+                        <Typography variant="subtitle1">
+                          Admin Settings
+                          <Image
+                            src="/navbar/drop-down-icon.svg"
+                            alt="drop-down"
+                            width={15}
+                            height={15}
+                          />
+                        </Typography>
+                      </div>
                     </div>
-                  </div>
-                </Box>
-
+                  </Box>
+                ) : (
+                  ""
+                )}
                 <Box
                   className={styles.navList}
                   sx={{ display: { xs: "none", sm: "block" } }}
