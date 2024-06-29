@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 
@@ -28,6 +28,12 @@ const CheckBoxForExcludeGenSales = ({ queryPreparations }: any) => {
     //   general_sales_reps_exclude_count: event.target.checked,
     // });
   };
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
 
   return (
     <div>

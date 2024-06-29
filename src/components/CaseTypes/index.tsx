@@ -83,7 +83,9 @@ const CaseTypes = () => {
       if (response?.status == 201 || response?.status == 200) {
         setCompleteData(response?.data);
 
-        let data = response?.data;
+        let data: any = response?.data;
+        data = rearrangeDataWithCasetypes(data);
+
         if (queryParams.search) {
           data = data.filter((item: any) =>
             item.case_type_name
@@ -96,12 +98,7 @@ const CaseTypes = () => {
           queryParams.order_by,
           queryParams.order_type
         );
-        let rearrangedData = rearrangeDataWithCasetypes(data);
-        const modifieData = addSerial(
-          rearrangedData,
-          1,
-          rearrangedData?.length
-        );
+        const modifieData = addSerial(data, 1, data?.length);
         setAllCaseTypes(modifieData);
         calculateTableSum(data);
       }
@@ -309,6 +306,8 @@ const CaseTypes = () => {
       fromDate: searchParams?.from_date,
       toDate: searchParams?.to_date,
       searchValue: searchParams?.search,
+      orderBy: searchParams?.order_by,
+      orderType: searchParams?.order_type,
       general_sales_reps_exclude_count:
         searchParams?.general_sales_reps_exclude_count,
     });

@@ -30,8 +30,8 @@ const TeamWiseSalesReps = () => {
 
   //query preparation method
   const queryPreparations = async ({
-    fromDate = searchParams?.from_date,
-    toDate = searchParams?.to_date,
+    fromDate,
+    toDate,
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
@@ -40,7 +40,6 @@ const TeamWiseSalesReps = () => {
     general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: any) => {
     let queryParams: any = {};
-
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
@@ -66,6 +65,8 @@ const TeamWiseSalesReps = () => {
       queryParams["general_sales_reps_exclude_count"] =
         general_sales_reps_exclude_count;
     }
+    console.log(queryParams, "pr0033");
+
     try {
       await getAllTeamWiseSalesReps(queryParams);
     } catch (err: any) {
