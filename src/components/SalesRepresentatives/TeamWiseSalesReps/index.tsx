@@ -65,7 +65,6 @@ const TeamWiseSalesReps = () => {
       queryParams["general_sales_reps_exclude_count"] =
         general_sales_reps_exclude_count;
     }
-    console.log(queryParams, "pr0033");
 
     try {
       await getAllTeamWiseSalesReps(queryParams);
