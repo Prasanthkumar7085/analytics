@@ -1,13 +1,13 @@
 "use client";
-import datePipe from "@/lib/Pipes/datePipe";
 import { Button, TextField } from "@mui/material";
 import Container from "@mui/material/Container";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Image from "next/image";
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
+import datePipe from "@/lib/Pipes/datePipe";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
-import Image from "next/image";
 
 
 const PatientDetails = ({
@@ -121,7 +121,7 @@ const PatientDetails = ({
         <Button
           className="bacKBtn"
           variant="outlined"
-          disabled={!(firstName && lastName && dateOfBirth)}
+          disabled={!(firstName || lastName || dateOfBirth)}
           onClick={() => {
             getPatientDetails({
               first_name: firstName,

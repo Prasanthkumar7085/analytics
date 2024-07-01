@@ -1,13 +1,11 @@
 "use client"
-import datePipe from "@/lib/Pipes/datePipe";
-import { getAllPatientNamesAPI } from "@/services/patientResults/getAllPatientNamesAPI";
-import { getAllPatientResultsAPI } from "@/services/patientResults/getAllPatientResultsAPI";
-import { getSinglePatientResultAPI } from "@/services/patientResults/getSinglePatientResultAPI";
 import { Autocomplete, Button, TextField } from "@mui/material";
 import Container from "@mui/material/Container";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import datePipe from "@/lib/Pipes/datePipe";
+import { getAllPatientNamesAPI, getAllPatientResultsAPI, getSinglePatientResultAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 import LoadingComponent from "../core/LoadingComponent";

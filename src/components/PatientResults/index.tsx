@@ -1,6 +1,6 @@
 "use client"
-import { getAllPatientDetailsAPI } from "@/services/patientResults/getAllPatientDetailsAPI";
 import { useState } from "react";
+import { getAllPatientDetailsAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientDetails from "./PatientDetails";
 
