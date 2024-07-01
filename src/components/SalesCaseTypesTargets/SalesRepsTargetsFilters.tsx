@@ -2,11 +2,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
+import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 import GlobalYearFilter from "../core/GlobalYearFilter";
-import dayjs from "dayjs";
 const SalesRepsTargetsFilters = ({
   onUpdateData,
   queryPreparations,

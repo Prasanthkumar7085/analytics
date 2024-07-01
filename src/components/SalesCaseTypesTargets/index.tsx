@@ -1,31 +1,32 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { customSortByMonth } from "@/lib/Pipes/sortAndGetData";
 import { caseTypesData } from "@/lib/constants";
-import React from "react";
 import {
   checkNumbersOrnot,
   formatDateToMonthName,
   getUniqueMonths,
-  getUniqueMonthsForAutoCompleted,
 } from "@/lib/helpers/apiHelpers";
 import {
   getSalesRepTargetsAPI,
   updateTargetsAPI,
 } from "@/services/salesTargetsAPIs";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
+import { IconButton, TextField, Tooltip } from "@mui/material";
+import dayjs from "dayjs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
 import { Toaster, toast } from "sonner";
 import LoadingComponent from "../core/LoadingComponent";
 import MultipleColumnsTableForTargets from "../core/Table/MultitpleColumn/MultipleColumnTableForTargets";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import SalesRepsTargetsFilters from "./SalesRepsTargetsFilters";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import { IconButton, TextField, Tooltip } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import CloseIcon from "@mui/icons-material/Close";
-import dayjs from "dayjs";
-import { addMonths, endOfMonth, startOfMonth } from "rsuite/esm/internals/utils/date";
 const SalesCaseTypeWiseTargets = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -58,7 +59,8 @@ const SalesCaseTypeWiseTargets = () => {
   }: any) => {
     const currentMonthYear = dayjs().format("MM-YYYY");
     let queryParams: any = {
-      month: currentMonthYear, general_sales_reps_exclude_count: "true"
+      month: currentMonthYear,
+      general_sales_reps_exclude_count: "true",
     };
     if (month) {
       queryParams["month"] = month;
@@ -352,7 +354,11 @@ const SalesCaseTypeWiseTargets = () => {
                     height: 30,
                   },
                 }}
-                value={casetype.value == "covid_flu" ? editbleValue["covidFlu"] : editbleValue[casetype.value]}
+                value={
+                  casetype.value == "covid_flu"
+                    ? editbleValue["covidFlu"]
+                    : editbleValue[casetype.value]
+                }
                 onChange={(e) => {
                   if (casetype.value == "covid_flu") {
                     setEditbleValue((prev: any) => ({
@@ -449,7 +455,7 @@ const SalesCaseTypeWiseTargets = () => {
               }}
             >
               {Object.keys(selectedValues)?.length &&
-                checkEditOrNot(item, info.row.original.sales_rep_id) ? (
+              checkEditOrNot(item, info.row.original.sales_rep_id) ? (
                 <div>
                   <Tooltip title={"Save"}>
                     <IconButton
@@ -478,11 +484,25 @@ const SalesCaseTypeWiseTargets = () => {
                   </Tooltip>
                 </div>
               ) : (
-                <Tooltip title={dayjs().format("MM-YYYY") == params.get("month") ? "" : "You can't edit past month targets"}>
+                <Tooltip
+                  title={
+                    dayjs().format("MM-YYYY") == params.get("month")
+                      ? ""
+                      : "You can't edit past month targets"
+                  }
+                >
                   <button
-                    disabled={dayjs().format("MM-YYYY") == params.get("month") ? false : true}
+                    disabled={
+                      dayjs().format("MM-YYYY") == params.get("month")
+                        ? false
+                        : true
+                    }
                     onClick={() => {
-                      handleEditClick(item, info.row.original.sales_rep_id, info);
+                      handleEditClick(
+                        item,
+                        info.row.original.sales_rep_id,
+                        info
+                      );
                     }}
                     className="editButton"
                   >
@@ -514,9 +534,14 @@ const SalesCaseTypeWiseTargets = () => {
   //go to single sales rep page
   const goToSingleRepPage = (repId: string) => {
     let queryString = "";
-    let thisMonth = dayjs(startOfMonth(new Date())).format('YYYY-MM-DD') == dayjs().format('YYYY-MM-DD') ?
-      [startOfMonth(addMonths(new Date(), -1)), endOfMonth(addMonths(new Date(), -1)),]
-      : [startOfMonth(new Date()), new Date()];
+    let thisMonth =
+      dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+      dayjs().format("YYYY-MM-DD")
+        ? [
+            startOfMonth(addMonths(new Date(), -1)),
+            endOfMonth(addMonths(new Date(), -1)),
+          ]
+        : [startOfMonth(new Date()), new Date()];
     let defaultfromDate = new Date(
       Date.UTC(
         thisMonth[0].getFullYear(),
@@ -535,7 +560,10 @@ const SalesCaseTypeWiseTargets = () => {
     )
       .toISOString()
       .substring(0, 10);
-    const queryParams: any = { "from_date": defaultfromDate, "to_date": defaulttoDate };
+    const queryParams: any = {
+      from_date: defaultfromDate,
+      to_date: defaulttoDate,
+    };
     if (params.get("from_date")) {
       queryParams["from_date"] = params.get("from_date") || defaultfromDate;
     }
