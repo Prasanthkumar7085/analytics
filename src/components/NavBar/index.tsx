@@ -165,7 +165,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 ) : (
                   ""
                 )}
-                {hasAccessOrNot("/target-status", userType) && userType ? (
+                {/* {hasAccessOrNot("/target-status", userType) && userType ? (
                   <li
                     onClick={() => router.push("/target-status")}
                     className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
@@ -180,7 +180,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                   </li>
                 ) : (
                   ""
-                )}
+                )} */}
 
                 {adminAccess() ? (
                   <Box
