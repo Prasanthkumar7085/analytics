@@ -17,17 +17,14 @@ const CheckBoxForExcludeGenSales = ({ queryPreparations }: any) => {
   );
   const [checked, setChecked] = useState(true);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: any) => {
     setChecked(event.target.checked);
-    let queryParams = {
+    let queryParams: any = {
       ...searchParams,
       general_sales_reps_exclude_count: event.target.checked,
     };
     let queryString = prepareURLEncodedParams("", queryParams);
     router.push(`${pathname}${queryString}`);
-    // queryPreparations({
-    //   general_sales_reps_exclude_count: event.target.checked,
-    // });
   };
 
   useEffect(() => {
