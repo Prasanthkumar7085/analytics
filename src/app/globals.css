@@ -1,37 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-.highcharts-credits{
-    display: none;
-}
-body{
-    margin: 0 !important;
+
+.highcharts-credits {
+  display: none;
 }
 
+body {
+  margin: 0 !important;
+}
 
 
 
-  .table::-webkit-scrollbar {
-    width: 5px !important; 
-    height: 5px !important;
-  }
 
-  .table::-webkit-scrollbar-track {
-    background: #f1f1f1 !important; 
-  }
-  
+.table::-webkit-scrollbar {
+  width: 5px !important;
+  height: 5px !important;
+}
 
-  .table::-webkit-scrollbar-thumb {
-    background: #888 !important; 
-    border-radius: 5px !important; 
-  }
+.table::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+}
 
 
-  .remove-tooltip .highcharts-tooltip{
-    display: none;
-  }
-  .rs-picker-daterange-header{
-    display:none!important;
-  }
-  .rs-picker-popup{
-    z-index: 9999!important;
-  }
+.table::-webkit-scrollbar-thumb {
+  background: #888 !important;
+  border-radius: 5px !important;
+}
 
+
+.remove-tooltip .highcharts-tooltip {
+  display: none;
+}
+
+.rs-picker-daterange-header {
+  display: none !important;
+}
+
+.rs-picker-popup {
+  z-index: 9999 !important;
+}
