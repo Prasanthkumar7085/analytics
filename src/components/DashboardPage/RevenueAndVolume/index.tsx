@@ -143,7 +143,7 @@ const RevenueBlock = () => {
             {tabValue}
           </h3>
 
-          <div
+          {/* <div
             style={{
               display: "flex",
               justifyContent: "center",
@@ -152,7 +152,7 @@ const RevenueBlock = () => {
             }}
           >
             <GlobalDateRangeFilter onChangeData={onChangeData} />
-          </div>
+          </div> */}
         </div>
         <div className="cardBody">
           {tabValue == "Volume" ? (

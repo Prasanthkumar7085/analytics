@@ -25,8 +25,11 @@ import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 const DashboardPage = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const params = useSearchParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
@@ -71,6 +74,7 @@ const DashboardPage = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+
     setStatsQueryParams(queryParams);
     setSeletedStatsDate([queryParams.from_date, queryParams.to_date]);
     try {
@@ -94,6 +98,9 @@ const DashboardPage = () => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    let queryString = prepareURLEncodedParams("", queryParams);
+
+    router.push(`${pathname}${queryString}`);
     setCaseTypesQueryParams(queryParams);
     try {
       if (
@@ -254,7 +261,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => {}}
+            onChange={() => { }}
             getStatsCounts={getStatsCounts}
             statsSeletedDate={statsSeletedDate}
           />

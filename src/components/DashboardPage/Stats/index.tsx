@@ -74,14 +74,14 @@ const Stats = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             {pathName?.includes("dashboard") ? "Stats" : "Current Month Stats"}
           </h3>
-          {pathName?.includes("dashboard") ? (
+          {/* {pathName?.includes("dashboard") ? (
             <GlobalDateRangeFilter
               onChangeData={onChangeData}
               DatePickerplacement={"bottomStart"}
             />
           ) : (
             ""
-          )}
+          )} */}
         </div>
         <div className="cardBody">
           <div className={styles.cardscontainer}>

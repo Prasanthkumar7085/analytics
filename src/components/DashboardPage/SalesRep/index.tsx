@@ -120,7 +120,7 @@ const SalesRep = () => {
           Sales Representatives
         </h3>
         <div style={{ display: "flex", flexDirection: "row", gap: "0.9rem" }}>
-          <GlobalDateRangeFilter onChangeData={onChangeData} />
+          {/* <GlobalDateRangeFilter onChangeData={onChangeData} /> */}
           <ExportButton
             onClick={() => {
               exportToExcelSalesRepTable(salesReps, totalRevenueSum);
