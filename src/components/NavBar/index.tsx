@@ -264,6 +264,14 @@ const NavBar: FC<pageProps> = ({ children }) => {
             <MenuItem className={styles.dropDownMenu}>
               <CheckBoxForExcludeGenSales />
             </MenuItem>
+            <MenuItem
+              className={styles.dropDownMenu}
+              onClick={() => {
+                window.open("/patient-results", "_blank");
+              }}
+            >
+              Patient Results
+            </MenuItem>
           </Menu>
 
           <Menu
@@ -296,10 +304,8 @@ const NavBar: FC<pageProps> = ({ children }) => {
           </Menu>
         </Container>
       </nav>
-      <div className={styles.primaryMainDashboard}>
-        <Container maxWidth="xl">
-          <main>{children}</main>
-        </Container>
+      <div className="patientResultstsDashboard">
+        <main>{children}</main>
       </div>
     </section>
   );

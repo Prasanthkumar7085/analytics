@@ -83,8 +83,8 @@ const SingleColumnTable: FC<pageProps> = ({
   };
   return (
     <div
-      className="tableContainer"
-      style={{ width: "100%", overflowX: "auto" }}
+      className="tableContainer patientDetailsTable"
+      
     >
       <table style={{ width: "100%" }}>
         <thead

@@ -1,0 +1,229 @@
+.patientResultstsDashboard {
+  background-color: #f1f1f1;
+
+  .subNavBar {
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem 0;
+
+    .SubNavPointsBlock {
+      display: flex;
+      align-items: center;
+      column-gap: 0.5rem;
+
+      .eachBlocks {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 0.5rem;
+        padding: 10px 20px;
+        border-left: 1px solid #606266;
+
+        &.b-right {
+          border-right: 1px solid #606266;
+        }
+
+        img {
+          padding-top: 5px;
+        }
+
+        .namesData {
+          .label {
+            font-size: 13px;
+            color: #606266;
+            font-weight: 500;
+          }
+
+          .value {
+            font-size: 12px;
+            color: #000;
+            font-weight: 400;
+          }
+        }
+      }
+    }
+  }
+
+  .navActionsBlock {
+    background-color: #fff;
+    margin: 10px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    column-gap: 1rem;
+    padding: 10px;
+
+    .defaultAutoComplete {
+      .MuiInputBase-root {
+        height: 35px;
+        font-size: 14px;
+        padding-right: 15px !important;
+        padding: 0 5px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 0, 0, 0.23);
+      }
+
+      .MuiAutocomplete-endAdornment {
+        height: 35px;
+        width: 30px;
+        right: 0 !important;
+
+        button {
+          display: flex;
+          align-items: center;
+          height: 100%;
+          width: 100%;
+          border-radius: 0;
+          background: #ffffff;
+        }
+
+        .MuiSvgIcon-root {
+          font-size: 1.5rem !important;
+        }
+      }
+
+      fieldset {
+        border-color: transparent !important;
+      }
+    }
+  }
+
+  .navBarFiltersBlock {
+    background-color: #fff;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+
+    .inputTextField {
+      padding-left: 5px;
+
+      .MuiInputBase-root {
+        height: 35px;
+        font-size: 14px;
+      }
+
+      .rs-picker-toggle-wrapper {
+        height: 35px;
+      }
+    }
+
+    .bacKBtn {
+      color: #fff !important;
+    }
+  }
+
+  .eachPatientResultTable {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    margin-top: 1.5rem;
+
+    .tableHeading {
+      color: #1b2459;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .allPatientResultTable {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+
+      .tableContainer {
+        max-height: 450px !important;
+        overflow: auto;
+
+        table {
+          display: table;
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+          min-width: 650px;
+
+          thead {
+            tr {
+              background-color: #1b2459;
+              position: sticky;
+              top: 0;
+              z-index: 99;
+
+              th {
+                color: #fff;
+                border: 1px solid #ccc;
+                padding: 5px;
+                text-align: left;
+                font-size: 13px;
+              }
+            }
+          }
+
+          tbody {
+            tr {
+              td {
+                border: 1px solid #ccc;
+                padding: 5px;
+                text-align: left;
+                font-size: 13px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    table {
+      tr {
+
+        td,
+        th {
+          &:nth-child(1) {
+            position: sticky;
+            left: 0;
+          }
+
+          &:nth-child(2) {
+            position: sticky;
+            left: 149px;
+          }
+
+          &:last-child {
+            position: sticky;
+            right: 0;
+          }
+        }
+
+        th {
+          background: #1b2459;
+        }
+
+        td {
+          background: #ffffff;
+        }
+      }
+    }
+  }
+}
+
+// buttons
+.bacKBtn {
+  color: #fff;
+  background-color: #273480;
+  border: 1px solid #273480;
+  min-height: 35px;
+  padding: 0 10px;
+  border-radius: 4px;
+  margin-right: 1rem;
+  box-shadow: none;
+
+  &:hover {
+    background-color: #273480;
+    color: #fff;
+    border: 1px solid #273480;
+    box-shadow: none;
+  }
+}
