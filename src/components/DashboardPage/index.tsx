@@ -27,10 +27,14 @@ import Stats from "./Stats";
 import dayjs from "dayjs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
+import { useSelector } from "react-redux";
 const DashboardPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const excludeSalesRepValueInStore = useSelector(
+    (state: any) => state?.users?.excludeSalesRepValue
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [revenueStatsDetails, setRevenueStatsDetails] = useState<any>();
   const [volumeStatsDetails, setVolumeStatsDetails] = useState<any>();
@@ -66,9 +70,7 @@ const DashboardPage = () => {
     let queryParams: any = {
       from_date: defaultDates?.[0],
       to_date: defaultDates?.[1],
-      general_sales_reps_exclude_count: params.get(
-        "general_sales_reps_exclude_count"
-      ),
+      general_sales_reps_exclude_count: excludeSalesRepValueInStore,
     };
 
     if (fromDate) {
@@ -90,9 +92,7 @@ const DashboardPage = () => {
   //prepare query params
   const queryPreparations = async (fromDate: any, toDate: any) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: params.get(
-        "general_sales_reps_exclude_count"
-      ),
+      general_sales_reps_exclude_count: excludeSalesRepValueInStore,
     };
 
     if (fromDate) {

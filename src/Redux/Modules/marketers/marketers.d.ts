@@ -4,7 +4,7 @@ declare namespace IMarketers {
     facilities: [];
     caseTypes;
     queryString: any
-    excludeSalesRepValue:boolean
+    excludeSalesRepValue:any
   }
 }
 

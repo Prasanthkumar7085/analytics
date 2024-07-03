@@ -10,6 +10,7 @@ import { Backdrop, Button } from "@mui/material";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   addMonths,
   endOfMonth,
@@ -17,8 +18,10 @@ import {
 } from "rsuite/esm/internals/utils/date";
 
 const SalesRep = ({ searchParams }: any) => {
-  const params = useSearchParams();
-  const router = useRouter();
+  const excludeSalesRepValueInStore = useSelector(
+    (state: any) => state?.users?.excludeSalesRepValue
+  );
+
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,9 +32,7 @@ const SalesRep = ({ searchParams }: any) => {
   //query preparation method
   const queryPreparations = async (fromDate: any, toDate: any) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: params.get(
-        "general_sales_reps_exclude_count"
-      ),
+      general_sales_reps_exclude_count: excludeSalesRepValueInStore,
     };
     if (fromDate) {
       queryParams["from_date"] = fromDate;

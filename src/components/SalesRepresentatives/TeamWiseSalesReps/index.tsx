@@ -11,7 +11,7 @@ import { getTeamWiseSalesRepsAPI } from "@/services/salesRepsAPIs";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import SalesRepsFilters from "../SalesRepsFilters";
 
 const TeamWiseSalesReps = () => {
@@ -27,7 +27,9 @@ const TeamWiseSalesReps = () => {
   const [completeData, setCompleteData] = useState([]);
   const [teamWiseSalesRepsData, setTeamWiseSalesRepsData] = useState<any>([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
-
+  const excludeSalesRepValueInStore = useSelector(
+    (state: any) => state?.users?.excludeSalesRepValue
+  );
   //query preparation method
   const queryPreparations = async ({
     fromDate,
@@ -37,7 +39,7 @@ const TeamWiseSalesReps = () => {
     orderType = searchParams?.order_type,
     status = searchParams?.status,
     teamwise = searchParams?.status || true,
-    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
+    general_sales_reps_exclude_count = excludeSalesRepValueInStore,
   }: any) => {
     let queryParams: any = {};
     if (fromDate) {

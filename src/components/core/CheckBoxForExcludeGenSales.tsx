@@ -11,12 +11,7 @@ const CheckBoxForExcludeGenSales = ({ queryPreparations }: any) => {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
-  const excludeSalesRepValueInStore = useSelector(
-    (state: any) => state.users.excludeSalesRepValue
-  );
-  const userType = useSelector(
-    (state: any) => state.auth.user?.user_details?.user_type
-  );
+
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -28,14 +23,12 @@ const CheckBoxForExcludeGenSales = ({ queryPreparations }: any) => {
       ...searchParams,
       general_sales_reps_exclude_count: event.target.checked,
     };
-    dispatch(setExcludeSalesRepValueInStore(event.target.checked));
     let queryString = prepareURLEncodedParams("", queryParams);
     router.push(`${pathname}${queryString}`);
+    dispatch(
+      setExcludeSalesRepValueInStore(event.target.checked ? true : false)
+    );
   };
-
-  useEffect(() => {
-    handleChange({ target: { excludeSalesRepValueInStore } });
-  }, [pathname]);
 
   useEffect(() => {
     setSearchParams(
