@@ -261,7 +261,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
             open={Boolean(adminMenuanchorElUser)}
             onClose={handleCloseAdminMenu}
           >
-            <MenuItem className={styles.dropDownMenu}>
+            <MenuItem className={styles.dropDownMenu} sx={{ fontSize: "12px" }}>
               <CheckBoxForExcludeGenSales />
             </MenuItem>
             <MenuItem
@@ -304,10 +304,16 @@ const NavBar: FC<pageProps> = ({ children }) => {
           </Menu>
         </Container>
       </nav>
-      <div className="patientResultstsDashboard">
-      <Container maxWidth="xl">
+      <div
+        className={
+          pathname?.includes("patient-results")
+            ? "patientResultstsDashboard"
+            : styles.primaryMainDashboard
+        }
+      >
+        <Container maxWidth="xl">
           <main>{children}</main>
-      </Container>
+        </Container>
       </div>
     </section>
   );

@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 
 interface pageProps {
@@ -23,6 +23,7 @@ const SingleColumnTable: FC<pageProps> = ({
   totalSumValues,
   loading,
 }) => {
+  const pathName = usePathname();
   const [sorting, setSorting] = useState<SortingState>([]);
   let removeSortingForColumnIds = [
     "id",
@@ -82,18 +83,23 @@ const SingleColumnTable: FC<pageProps> = ({
   };
   return (
     <div
-      className="tableContainer patientDetailsTable"
+      style={{ width: "100%", overflowX: "auto" }}
+      className={
+        pathName?.includes("patient-results")
+          ? "patientDetailsTable"
+          : "tableContainer"
+      }
     >
       <table style={{ width: "100%" }}>
         <thead
           className="thead"
-            style={{
-              height: "32px",
-              position: "sticky",
-              top: "0px",
-              zIndex: "2",
-              color: "white",
-            }}
+          style={{
+            height: "32px",
+            position: "sticky",
+            top: "0px",
+            zIndex: "2",
+            color: "white",
+          }}
         >
           {table
             .getHeaderGroups()
