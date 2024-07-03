@@ -3,8 +3,15 @@ import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
-import { changeDateToUTC, getDatesForStatsCards } from "@/lib/helpers/apiHelpers";
-import { exportToExcelCaseTypesVolumes, exportToExcelCaseTypesVolumesForFacilites, exportToExcelCaseTypesVolumesWithoutDayWiseTargets } from "@/lib/helpers/exportsHelpers";
+import {
+  changeDateToUTC,
+  getDatesForStatsCards,
+} from "@/lib/helpers/apiHelpers";
+import {
+  exportToExcelCaseTypesVolumes,
+  exportToExcelCaseTypesVolumesForFacilites,
+  exportToExcelCaseTypesVolumesWithoutDayWiseTargets,
+} from "@/lib/helpers/exportsHelpers";
 import { Backdrop, Tab, Tabs } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
@@ -12,7 +19,12 @@ import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Revenuecolumns, VolumecolumnsForFacilities, VolumecolumnsTargets, VolumecolumnsWithDayWiseTargets } from "./CaseTypesTableColumns";
+import {
+  Revenuecolumns,
+  VolumecolumnsForFacilities,
+  VolumecolumnsTargets,
+  VolumecolumnsWithDayWiseTargets,
+} from "./CaseTypesTableColumns";
 import { startOfMonth } from "rsuite/esm/internals/utils/date";
 
 const CaseTypes = ({
@@ -24,7 +36,7 @@ const CaseTypes = ({
   queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
-  dayWiseTargetsEnable
+  dayWiseTargetsEnable,
 }: any) => {
   const params = useSearchParams();
   const pathName = usePathname();
@@ -55,29 +67,31 @@ const CaseTypes = ({
                 ? +item["generated_amount"]
                 : 0
               : item["total_cases"]
-                ? +item["total_cases"]
-                : 0,
+              ? +item["total_cases"]
+              : 0,
         });
       });
       return tempArray;
     } else return [];
   };
 
-
-
   function getSubtitle() {
     const totalNumber = dayWiseTargetsEnable
       ? totalRevenueSum[3]?.value
       : totalRevenueSum[2]?.value;
-    return `<span style="font-size: 6px,margin-left:"45px">${tabValue == "Revenue" ? "Total Billed" : "Total Cases"
-      }</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${
+      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+    }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
-            ${tabValue == "Revenue"
-        ? formatMoney(totalNumber || 0)
-        : pathName?.includes("facilities") ? totalRevenueSum[1]?.value?.toLocaleString() || 0 : totalNumber?.toLocaleString() || 0
-      }</b>
+            ${
+              tabValue == "Revenue"
+                ? formatMoney(totalNumber || 0)
+                : pathName?.includes("facilities")
+                ? totalRevenueSum[1]?.value?.toLocaleString() || 0
+                : totalNumber?.toLocaleString() || 0
+            }</b>
         </span>`;
   }
 
@@ -144,25 +158,24 @@ const CaseTypes = ({
   const renderTableColoumnsByConditions = () => {
     if (tabValue == "Revenue") {
       return Revenuecolumns;
-    }
-    else {
+    } else {
       if (pathName.includes("facilities")) {
         return VolumecolumnsForFacilities;
-      }
-      else {
-        return dayWiseTargetsEnable ? VolumecolumnsWithDayWiseTargets : VolumecolumnsTargets;
+      } else {
+        return dayWiseTargetsEnable
+          ? VolumecolumnsWithDayWiseTargets
+          : VolumecolumnsTargets;
       }
     }
-  }
+  };
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       setSelectedDates([fromDate, toDate]);
-      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate))
+      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
       queryPreparations(fromDate, toDate, tabValue);
-    }
-    else {
-      setDateFilterDefaultValue("")
+    } else {
+      setDateFilterDefaultValue("");
       queryPreparations("", "", tabValue);
     }
   };
@@ -176,7 +189,10 @@ const CaseTypes = ({
             Case Types {tabValue}
           </h3>
           {pathName?.includes("dashboard") ? (
-            <GlobalDateRangeFilter onChangeData={onChangeData} dateFilterDefaultValue={dateFilterDefaultValue} />
+            <GlobalDateRangeFilter
+              onChangeData={onChangeData}
+              dateFilterDefaultValue={dateFilterDefaultValue}
+            />
           ) : (
             ""
           )}
@@ -195,8 +211,11 @@ const CaseTypes = ({
                     totalRevenueSum
                   );
                 }}
-
-                disabled={caseTypesStatsData?.length === 0 || tabValue == "Revenue" ? true : false}
+                disabled={
+                  caseTypesStatsData?.length === 0 || tabValue == "Revenue"
+                    ? true
+                    : false
+                }
               />
             ) : (
               <ExportButton
@@ -207,12 +226,17 @@ const CaseTypes = ({
                       totalRevenueSum
                     );
                   } else {
-                    exportToExcelCaseTypesVolumesWithoutDayWiseTargets(caseTypesStatsData,
-                      totalRevenueSum)
+                    exportToExcelCaseTypesVolumesWithoutDayWiseTargets(
+                      caseTypesStatsData,
+                      totalRevenueSum
+                    );
                   }
-
                 }}
-                disabled={caseTypesStatsData?.length === 0 || tabValue == "Revenue" ? true : false}
+                disabled={
+                  caseTypesStatsData?.length === 0 || tabValue == "Revenue"
+                    ? true
+                    : false
+                }
               />
             )}
           </div>

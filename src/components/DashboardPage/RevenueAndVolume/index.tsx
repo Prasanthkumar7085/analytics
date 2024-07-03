@@ -9,8 +9,14 @@ import { getVolumeAPI } from "@/services/volumeAPI";
 import VolumeDataGraph from "./VolumeDataGraph";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "next/navigation";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
+import { getDatesForStatsCards } from "@/lib/helpers/apiHelpers";
 
-const RevenueBlock = () => {
+const RevenueBlock = ({ searchParams }: any) => {
   const params = useSearchParams();
   const [labelsData, setLablesData] = useState<any>([]);
   const [billedData, setBilledData] = useState<any>([]);
@@ -117,13 +123,29 @@ const RevenueBlock = () => {
     }
   };
 
+  const callFunctionDefaultParams = () => {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let lastmonth = [
+      startOfMonth(addMonths(new Date(), -1)),
+      endOfMonth(addMonths(new Date(), -1)),
+    ];
+    let defaultDates = getDatesForStatsCards(thisMonth);
+    queryPreparations(defaultDates[0], defaultDates[1], tabValue);
+  };
+
   useEffect(() => {
-    queryPreparations(
-      storeQueryParams?.from_date,
-      storeQueryParams?.to_date,
-      tabValue
-    );
-  }, [params]);
+    if (Object.keys(storeQueryParams)?.length) {
+      queryPreparations(
+        searchParams?.from_date,
+        searchParams?.to_date,
+        tabValue
+      );
+    } else {
+      callFunctionDefaultParams();
+    }
+  }, [searchParams]);
 
   const onChangeData = (fromDate: any, toDate: any) => {
     queryPreparations(fromDate, toDate, tabValue);

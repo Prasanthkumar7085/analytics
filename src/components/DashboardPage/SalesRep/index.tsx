@@ -3,26 +3,31 @@ import SalesRepsTable from "@/components/DashboardPage/SalesRep/SalesRepsTable";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import { getDatesForStatsCards } from "@/lib/helpers/apiHelpers";
 import { exportToExcelSalesRepTable } from "@/lib/helpers/exportsHelpers";
 import { getSalesRepsAPI } from "@/services/salesRepsAPIs";
 import { Backdrop, Button } from "@mui/material";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import {
+  addMonths,
+  endOfMonth,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
 
-const SalesRep = () => {
+const SalesRep = ({ searchParams }: any) => {
   const params = useSearchParams();
+  const router = useRouter();
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [salesRepQueryParams, setSalesRepQueryParams] = useState<any>({});
+
   //query preparation method
-  const queryPreparations = async ({
-    fromDate = params.get("from_date"),
-    toDate = params.get("to_date"),
-  }: any) => {
+  const queryPreparations = async (fromDate: any, toDate: any) => {
     let queryParams: any = {
       general_sales_reps_exclude_count: params.get(
         "general_sales_reps_exclude_count"
@@ -96,18 +101,26 @@ const SalesRep = () => {
     setTotalSumValues(result);
   };
 
-  useEffect(() => {
-    queryPreparations({
-      fromDate: salesRepQueryParams?.from_date,
-      toDate: salesRepQueryParams?.to_date,
-    });
-  }, [params]);
-
-  const onChangeData = (fromDate: any, toDate: any) => {
-    queryPreparations({ fromDate, toDate });
-    setFromDate(fromDate);
-    setToDate(toDate);
+  const callFunctionDefaultParams = () => {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let lastmonth = [
+      startOfMonth(addMonths(new Date(), -1)),
+      endOfMonth(addMonths(new Date(), -1)),
+    ];
+    let defaultDates = getDatesForStatsCards(thisMonth);
+    queryPreparations(defaultDates[0], defaultDates[1]);
   };
+
+  useEffect(() => {
+    if (Object.keys(salesRepQueryParams)?.length) {
+      queryPreparations(searchParams?.from_date, searchParams?.to_date);
+    } else {
+      callFunctionDefaultParams();
+    }
+  }, [searchParams]);
+
   return (
     <div
       className="eachDataCard mb-10 s-no-column"

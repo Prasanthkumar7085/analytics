@@ -42,7 +42,10 @@ const DashboardPage = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [dayWiseTargetsEnable, setDayWiseTargetsEnable] = useState<boolean>();
   const [statsQueryParams, setStatsQueryParams] = useState<any>({});
-  const [caseTypesQueryParams, setCaseTypesQueryParams] = useState<any>({});
+  const [dashBoardQueryParams, setDashBoardQueryParams] = useState<any>({});
+  const [searchParams, setSearchParams] = useState(
+    Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+  );
   //get volume stats count
   const getVolumeStatsCount = async (queryParams: any) => {
     setLoading(true);
@@ -101,7 +104,7 @@ const DashboardPage = () => {
     let queryString = prepareURLEncodedParams("", queryParams);
 
     router.push(`${pathname}${queryString}`);
-    setCaseTypesQueryParams(queryParams);
+    setDashBoardQueryParams(queryParams);
     try {
       if (
         checkDateForCurrentMonth(queryParams) &&
@@ -236,21 +239,21 @@ const DashboardPage = () => {
 
   //api call to get stats count
   useEffect(() => {
-    if (Object.keys(caseTypesQueryParams)?.length !== 0) {
-      queryPreparations(
-        caseTypesQueryParams?.from_date,
-        caseTypesQueryParams?.to_date
-      );
+    if (Object.keys(dashBoardQueryParams)?.length !== 0) {
+      queryPreparations(params?.get("from_date"), params?.get("to_date"));
     } else {
       callCaseTypesStatsCounts();
     }
   }, [params]);
+
   useEffect(() => {
-    if (Object.keys(statsQueryParams)?.length !== 0) {
-      getStatsCounts(statsQueryParams?.from_date, statsQueryParams?.to_date);
-    } else {
-      getStatsCounts("", "");
-    }
+    getStatsCounts(params?.get("from_date"), params?.get("to_date"));
+  }, [params]);
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
   }, [params]);
 
   return (
@@ -261,7 +264,7 @@ const DashboardPage = () => {
             revenueStatsDetails={revenueStatsDetails}
             volumeStatsDetails={volumeStatsDetails}
             loading={loading}
-            onChange={() => { }}
+            onChange={() => {}}
             getStatsCounts={getStatsCounts}
             statsSeletedDate={statsSeletedDate}
           />
@@ -280,10 +283,10 @@ const DashboardPage = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <RevenueBlock />
+          <RevenueBlock searchParams={searchParams} />
         </Grid>
         <Grid item xs={12}>
-          <SalesRep />
+          <SalesRep searchParams={searchParams} />
         </Grid>
       </Grid>
     </>

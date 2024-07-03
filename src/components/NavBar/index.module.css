@@ -471,7 +471,7 @@
 .primaryMainDashboard {
   position: relative;
 }
-/* .primaryMainDashboard:after {
+.primaryMainDashboard:after {
   content: "";
   position: absolute;
   left: 0;
@@ -480,7 +480,7 @@
   height: 59px;
   background: #1b2459;
   z-index: -1;
-} */
+}
 
 .profileBlock {
   display: flex;

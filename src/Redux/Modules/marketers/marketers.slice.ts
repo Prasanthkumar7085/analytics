@@ -8,7 +8,8 @@ export const initialState: IMarketers.IMarketersInitialState = {
   marketers: [],
   facilities: [],
   caseTypes: [],
-  queryString: ""
+  queryString: "",
+  excludeSalesRepValue:false
 };
 
 export const marketerSlice = createSlice({
@@ -32,6 +33,9 @@ export const marketerSlice = createSlice({
     },
     storeQueryString: (state: any, action: any) => {
       state.queryString = action.payload;
+    },
+    setExcludeSalesRepValueInStore: (state: any, action: any) => {
+      state.excludeSalesRepValue = action.payload;
     }
   },
 });
@@ -42,6 +46,7 @@ export const {
   setAllFacilities,
   removeAllFacilities,
   setCaseTypeOptions,
-  storeQueryString
+  storeQueryString,
+  setExcludeSalesRepValueInStore
 }: any = marketerSlice.actions;
 export const marketerSliceReducer = { [reducerName]: marketerSlice.reducer };
