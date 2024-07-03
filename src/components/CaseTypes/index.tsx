@@ -14,9 +14,13 @@ import MultipleColumnsTableForSalesRep from "../core/Table/MultitpleColumn/Multi
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import CaseTypeFilters from "./CaseTypeFilters";
 import MonthWiseCaseTypeDetails from "./MonthWiseCaseTypeDetails";
+import { useSelector } from "react-redux";
 
 const CaseTypes = () => {
   const router = useRouter();
+  const excludeSalesRepValueInStore = useSelector(
+    (state: any) => state?.users?.excludeSalesRepValue
+  );
   const [allCaseTypes, setAllCaseTypes] = useState([]);
   const [totalCaseTypesSum, setTotalCaseTypeSum] = useState<any>([]);
   const pathname = usePathname();
@@ -36,7 +40,7 @@ const CaseTypes = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
+    general_sales_reps_exclude_count = excludeSalesRepValueInStore,
   }: any) => {
     let queryParams: any = {};
 

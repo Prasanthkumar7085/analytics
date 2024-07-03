@@ -16,9 +16,13 @@ import {
   startOfMonth,
 } from "rsuite/esm/internals/utils/date";
 import dayjs from "dayjs";
+import { useSelector } from "react-redux";
 
 const FacilitiesList = () => {
   const router = useRouter();
+  const excludeSalesRepValueInStore = useSelector(
+    (state: any) => state?.users?.excludeSalesRepValue
+  );
   const [facilitiesData, setFacilitiesData] = useState([]);
   const pathname = usePathname();
   const params = useSearchParams();
@@ -37,7 +41,7 @@ const FacilitiesList = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
+    general_sales_reps_exclude_count = excludeSalesRepValueInStore,
   }: any) => {
     let queryParams: any = {};
 

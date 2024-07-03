@@ -23,6 +23,7 @@ import GraphDialogForFacilities from "../core/GraphDilogForFacilities";
 import AreaGraphForFacilities from "../core/AreaGraph/AreaGraphForFacilities";
 import ExportButton from "../core/ExportButton/ExportButton";
 import { exportToExcelCaseTypeTable } from "@/lib/helpers/exportsHelpers";
+import { useSelector } from "react-redux";
 
 const CaseTypesDetailsMonthTable = ({
   tabValue,
@@ -31,6 +32,9 @@ const CaseTypesDetailsMonthTable = ({
   selectedDate,
 }: any) => {
   const { id } = useParams();
+  const excludeSalesRepValueInStore = useSelector(
+    (state: any) => state?.users?.excludeSalesRepValue
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -48,7 +52,7 @@ const CaseTypesDetailsMonthTable = ({
     toDate: any,
     searchValue = searchParams?.search,
     tabValue: string,
-    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count
+    general_sales_reps_exclude_count = excludeSalesRepValueInStore
   ) => {
     let queryParams: any = {};
     if (fromDate) {
