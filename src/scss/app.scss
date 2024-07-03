@@ -1,3 +1,5 @@
+@import "./components/patientResults.scss";
+
 ul {
   margin: 0 !important;
   padding: 0 !important;
@@ -227,6 +229,12 @@ table {
     max-height: 300px;
     overflow-y: auto;
   }
+  &.patientDetailsTable {
+    width: 100%;
+    overflow: auto;
+    background-color: #fff;
+  }
+
 }
 
 .inputItemDate {
@@ -1487,4 +1495,8 @@ $actionButtonWidth: 95px;
   max-width: 100% !important;
   padding: 0 !important;
   // background: #fbfbfb;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset;
+  /* Change #fff to your desired background color */
 }

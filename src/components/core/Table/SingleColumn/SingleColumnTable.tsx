@@ -82,20 +82,18 @@ const SingleColumnTable: FC<pageProps> = ({
   };
   return (
     <div
-      className="tableContainer"
-      style={{ width: "100%", overflowX: "auto" }}
+      className="tableContainer patientDetailsTable"
     >
       <table style={{ width: "100%" }}>
         <thead
           className="thead"
-          style={{
-            height: "32px",
-            position: "sticky",
-
-            top: "0px",
-            zIndex: "2",
-            color: "white",
-          }}
+            style={{
+              height: "32px",
+              position: "sticky",
+              top: "0px",
+              zIndex: "2",
+              color: "white",
+            }}
         >
           {table
             .getHeaderGroups()
