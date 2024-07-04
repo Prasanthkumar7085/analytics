@@ -18,9 +18,6 @@ import { getDatesForStatsCards } from "@/lib/helpers/apiHelpers";
 
 const RevenueBlock = ({ searchParams }: any) => {
   const params = useSearchParams();
-  const excludeSalesRepValueInStore = useSelector(
-    (state: any) => state?.users?.excludeSalesRepValue
-  );
   const [labelsData, setLablesData] = useState<any>([]);
   const [billedData, setBilledData] = useState<any>([]);
   const [totalRevenueData, setTotalRevenueData] = useState<any>([]);
@@ -64,7 +61,7 @@ const RevenueBlock = ({ searchParams }: any) => {
     tabValue: string
   ) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: excludeSalesRepValueInStore,
+      general_sales_reps_exclude_count: false,
     };
     if (fromDate) {
       queryParams["from_date"] = fromDate;

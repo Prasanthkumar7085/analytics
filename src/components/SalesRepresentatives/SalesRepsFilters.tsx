@@ -75,11 +75,6 @@ const SalesRepsFilters = ({
         <Grid item xs={9}>
           <ul className="filterLists">
             <li className="eachFilterLists">
-              <CheckBoxForExcludeGenSales
-                queryPreparations={queryPreparations}
-              />
-            </li>
-            <li className="eachFilterLists">
               <Autocomplete
                 PaperComponent={({ children }) => (
                   <Paper

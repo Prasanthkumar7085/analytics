@@ -35,7 +35,6 @@ export const marketerSlice = createSlice({
       state.queryString = action.payload;
     },
     setExcludeSalesRepValueInStore: (state: any, action: any) => {
-      console.log(action.payload,"Fasdi9e9")
       state.excludeSalesRepValue = action.payload;
     }
   },

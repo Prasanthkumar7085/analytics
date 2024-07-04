@@ -261,16 +261,16 @@ const NavBar: FC<pageProps> = ({ children }) => {
             open={Boolean(adminMenuanchorElUser)}
             onClose={handleCloseAdminMenu}
           >
-            <MenuItem className={styles.dropDownMenu} sx={{ fontSize: "12px" }}>
+            {/* <MenuItem className={styles.dropDownMenu} sx={{ fontSize: "12px" }}>
               <CheckBoxForExcludeGenSales />
-            </MenuItem>
+            </MenuItem> */}
             <MenuItem
               className={styles.dropDownMenu}
               onClick={() => {
                 window.open("/patient-results", "_blank");
               }}
             >
-              Patient Results
+              1. Patient Results
             </MenuItem>
           </Menu>
 

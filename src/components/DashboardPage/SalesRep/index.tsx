@@ -18,10 +18,6 @@ import {
 } from "rsuite/esm/internals/utils/date";
 
 const SalesRep = ({ searchParams }: any) => {
-  const excludeSalesRepValueInStore = useSelector(
-    (state: any) => state?.users?.excludeSalesRepValue
-  );
-
   const [salesReps, setSalesReps] = useState([]);
   const [totalRevenueSum, setTotalSumValues] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +28,7 @@ const SalesRep = ({ searchParams }: any) => {
   //query preparation method
   const queryPreparations = async (fromDate: any, toDate: any) => {
     let queryParams: any = {
-      general_sales_reps_exclude_count: excludeSalesRepValueInStore,
+      general_sales_reps_exclude_count: false,
     };
     if (fromDate) {
       queryParams["from_date"] = fromDate;

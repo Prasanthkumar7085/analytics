@@ -60,7 +60,7 @@ const SalesCaseTypeWiseTargets = () => {
     const currentMonthYear = dayjs().format("MM-YYYY");
     let queryParams: any = {
       month: currentMonthYear,
-      general_sales_reps_exclude_count: "true",
+      general_sales_reps_exclude_count: false,
     };
     if (month) {
       queryParams["month"] = month;

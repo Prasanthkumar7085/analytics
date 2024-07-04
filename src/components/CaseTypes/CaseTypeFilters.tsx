@@ -1,14 +1,13 @@
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import { exportToExcelCaseTypesTable } from "@/lib/helpers/exportsHelpers";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useState } from "react";
-import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
-import { exportToExcelCaseTypesTable } from "@/lib/helpers/exportsHelpers";
 import ExportButton from "../core/ExportButton/ExportButton";
-import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import CheckBoxForExcludeGenSales from "../core/CheckBoxForExcludeGenSales";
+import GlobalDateRangeFilter from "../core/GlobalDateRangeFilter";
 const CaseTypeFilters = ({
   onUpdateData,
   queryPreparations,
@@ -43,11 +42,6 @@ const CaseTypeFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
-            <li className="eachFilterLists">
-              <CheckBoxForExcludeGenSales
-                queryPreparations={queryPreparations}
-              />
-            </li>
             <li className="eachFilterLists">
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}

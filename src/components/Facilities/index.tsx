@@ -20,9 +20,6 @@ import { useSelector } from "react-redux";
 
 const FacilitiesList = () => {
   const router = useRouter();
-  const excludeSalesRepValueInStore = useSelector(
-    (state: any) => state?.users?.excludeSalesRepValue
-  );
   const [facilitiesData, setFacilitiesData] = useState([]);
   const pathname = usePathname();
   const params = useSearchParams();
@@ -41,7 +38,7 @@ const FacilitiesList = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    general_sales_reps_exclude_count = excludeSalesRepValueInStore,
+    general_sales_reps_exclude_count = false,
   }: any) => {
     let queryParams: any = {};
 

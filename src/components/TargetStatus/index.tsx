@@ -53,7 +53,7 @@ const MonthWiseTargetStatus = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
+    general_sales_reps_exclude_count = false,
   }: any) => {
     let queryParams: any = {};
     if (fromDate) {

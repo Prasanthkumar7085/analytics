@@ -32,9 +32,6 @@ const CaseTypesDetailsMonthTable = ({
   selectedDate,
 }: any) => {
   const { id } = useParams();
-  const excludeSalesRepValueInStore = useSelector(
-    (state: any) => state?.users?.excludeSalesRepValue
-  );
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -52,7 +49,7 @@ const CaseTypesDetailsMonthTable = ({
     toDate: any,
     searchValue = searchParams?.search,
     tabValue: string,
-    general_sales_reps_exclude_count = excludeSalesRepValueInStore
+    general_sales_reps_exclude_count = false
   ) => {
     let queryParams: any = {};
     if (fromDate) {

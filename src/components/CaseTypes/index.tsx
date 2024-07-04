@@ -18,9 +18,6 @@ import { useSelector } from "react-redux";
 
 const CaseTypes = () => {
   const router = useRouter();
-  const excludeSalesRepValueInStore = useSelector(
-    (state: any) => state?.users?.excludeSalesRepValue
-  );
   const [allCaseTypes, setAllCaseTypes] = useState([]);
   const [totalCaseTypesSum, setTotalCaseTypeSum] = useState<any>([]);
   const pathname = usePathname();
@@ -40,7 +37,7 @@ const CaseTypes = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    general_sales_reps_exclude_count = excludeSalesRepValueInStore,
+    general_sales_reps_exclude_count = false,
   }: any) => {
     let queryParams: any = {};
 
