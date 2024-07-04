@@ -162,28 +162,28 @@ const PatientResultTable = () => {
             <Image alt="" src="/card.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Patient ID</label>
-              <p className="value">{patientDetails?.patient_id}</p>
+              <p className="value">{patientDetails?.patient_id ? patientDetails?.patient_id : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks">
             <Image alt="" src="/vector-patient.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">First Name</label>
-              <p className="value"> {patientDetails?.first_name}</p>
+              <p className="value"> {patientDetails?.first_name ? patientDetails?.first_name : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks">
             <Image alt="" src="/vector-patient.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Last Name</label>
-              <p className="value">{patientDetails?.last_name}</p>
+              <p className="value">{patientDetails?.last_name ? patientDetails?.last_name : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks">
             <Image alt="" src="/Group.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Gender</label>
-              <p className="value">{patientDetails?.gender}</p>
+              <p className="value">{patientDetails?.gender ? patientDetails?.gender : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks b-right">
@@ -191,7 +191,7 @@ const PatientResultTable = () => {
             <div className="namesData">
               <label className="label">Date of Birth</label>
               <p className="value">
-                {datePipe(patientDetails?.date_of_birth, "MM-DD-YYYY")}
+                {datePipe(patientDetails?.date_of_birth ? patientDetails?.date_of_birth : "--", "MM-DD-YYYY")}
               </p>
             </div>
           </div>
@@ -222,77 +222,90 @@ const PatientResultTable = () => {
           Export
         </Button>
       </div>
-
-      {Object.keys(patientResultsData).map((title, index) => (
-        <Container maxWidth="xl" key={index}>
-          <div
-            className="eachPatientResultTable"
-            key={index}
-            style={{ marginTop: "30px" }}
-          >
-            <h2 className="tableHeading">{title}</h2>
-            <div className="allPatientResultTable">
-              <div className="tableContainer">
-                <table >
-                  <thead>
-                    <tr>
-                      <th style={{ minWidth: "150px" }}>Result Code</th>
-                      <th style={{ minWidth: "150px" }}>Ref Range & Units</th>
-                      {patientResultsData[title]?.map(
-                        (result: any, resultIndex: any) => (
-                          <th style={{ minWidth: "100px" }} key={resultIndex}>
-                            {datePipe(result?.date, "MM-DD-YYYY")}
-                          </th>
-                        )
-                      )}
-                      <th style={{ minWidth: "150px" }}>Trend</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {patientResultsData[title][0].results.map(
-                      (test: any, testIndex: any) => (
-                        <tr key={testIndex}>
-                          <td>{test.result_name}</td>
-                          <td>{test.reference_range}</td>
-                          {patientResultsData[title].map(
-                            (result: any, resultIndex: any) => (
-                              <td key={resultIndex}>
-                                {result.results[testIndex]?.result}
-                              </td>
-                            )
-                          )}
-                          <td>
-                            {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
+      {Object.keys(patientResultsData).length
+        ?
+        Object.keys(patientResultsData).map((title, index) => (
+          <Container maxWidth="xl" key={index}>
+            <div
+              className="eachPatientResultTable"
+              key={index}
+              style={{ marginTop: "30px" }}
+            >
+              <h2 className="tableHeading">{title}</h2>
+              <div className="allPatientResultTable">
+                <div className="tableContainer">
+                  <table >
+                    <thead>
+                      <tr>
+                        <th style={{ minWidth: "150px" }}>Result Code</th>
+                        <th style={{ minWidth: "150px" }}>Ref Range & Units</th>
+                        {patientResultsData[title]?.map(
+                          (result: any, resultIndex: any) => (
+                            <th style={{ minWidth: "100px" }} key={resultIndex}>
+                              {datePipe(result?.date, "MM-DD-YYYY")}
+                            </th>
+                          )
+                        )}
+                        <th style={{ minWidth: "150px" }}>Trend</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {patientResultsData[title][0].results.map(
+                        (test: any, testIndex: any) => (
+                          <tr key={testIndex}>
+                            <td>{test.result_name}</td>
+                            <td>{test.reference_range}</td>
+                            {patientResultsData[title].map(
+                              (result: any, resultIndex: any) => (
+                                <td key={resultIndex}>
+                                  {result.results[testIndex]?.result}
+                                </td>
+                              )
+                            )}
+                            <td>
+                              {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
                                             <p>-</p>
                                         ) : ( */}
-                            <div
-                              onClick={() => {
-                                handleGraphClick(testIndex, title);
-                                setPatientSingleRowData(test);
-                              }}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <LineGraphForResults
-                                patientsData={patientsData}
-                                graphValuesData={getGraphValuesData(
-                                  patientResultsData,
-                                  title,
-                                  testIndex
-                                )}
-                              />
-                            </div>
-                            {/* )} */}
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
+                              <div
+                                onClick={() => {
+                                  handleGraphClick(testIndex, title);
+                                  setPatientSingleRowData(test);
+                                }}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <LineGraphForResults
+                                  patientsData={patientsData}
+                                  graphValuesData={getGraphValuesData(
+                                    patientResultsData,
+                                    title,
+                                    testIndex
+                                  )}
+                                />
+                              </div>
+                              {/* )} */}
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        </Container>
-      ))}
+          </Container>
+        )
+        )
+        :
+        <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+          <Image
+            src="/Search Image.svg"
+            alt=""
+            height={200}
+            width={510}
+          />
+          <h3>No Data</h3>
+        </div>
+      }
       <LineGraphForPatientResult
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}

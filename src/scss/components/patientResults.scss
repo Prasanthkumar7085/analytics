@@ -29,6 +29,11 @@
         }
 
         .namesData {
+          &.patientLabel {
+            display: flex;
+            flex-direction: column;
+          }
+
           .label {
             font-size: 13px;
             color: #606266;
