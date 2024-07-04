@@ -154,7 +154,8 @@ const PatientDetails = ({
             </div>
           </div>
           <Button
-            className="bacKBtn"
+            className={!(firstName || lastName || dateOfBirth) ? "btnWithDisabled" : "bacKBtn"}
+            // sx={{ cursor: !(firstName || lastName || dateOfBirth) ? "not-allowed" : "pointer" }}
             variant="outlined"
             disabled={!(firstName || lastName || dateOfBirth)}
             onClick={() => {
