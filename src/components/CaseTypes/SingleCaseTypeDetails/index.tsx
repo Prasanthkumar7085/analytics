@@ -1,16 +1,23 @@
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { ArrowBack } from "@mui/icons-material";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { changeDateToUTC, getUniqueMonths } from "@/lib/helpers/apiHelpers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { getSingleCaseTypeMonthWiseFacilityDetailsAPI } from "@/services/caseTypesAPIs";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import SingleCaseTypeFacilitiesTable from "./SingleCaseTypeFacilityDetails";
 import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 
 const SingleCaseTypeDetails = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { id } = useParams();
   const params = useSearchParams();
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,7 +32,14 @@ const SingleCaseTypeDetails = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [monthWiseTotalSum, setMonthWiseTotalSum] = useState<any>([]);
   const [selectedCaseType, setSelectedCaseType] = useState<any>(null);
-  const queryPreparations = async (fromDate: any, toDate: any) => {
+  const [completeData, setCompleteData] = useState([]);
+
+  const queryPreparations = async ({
+    fromDate,
+    toDate,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type,
+  }: any) => {
     let queryParams: any = {};
 
     if (fromDate) {
@@ -33,6 +47,12 @@ const SingleCaseTypeDetails = () => {
     }
     if (toDate) {
       queryParams["to_date"] = toDate;
+    }
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
     }
     try {
       await getSingleCaseTypeDetails(queryParams);
@@ -51,6 +71,8 @@ const SingleCaseTypeDetails = () => {
         id,
         queryParams,
       });
+      let queryString = prepareURLEncodedParams("", queryParams);
+      router.push(`${pathname}${queryString}`);
       if (response.status == 200 || response?.status == 201) {
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
@@ -61,8 +83,8 @@ const SingleCaseTypeDetails = () => {
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         const groupedDataSum = groupDatasumValue(response?.data);
         setCaseTypeFacilityDetails(modifieData);
-        console.log(modifieData, "p8765432");
         setMonthWiseTotalSum(groupedDataSum);
+        setCompleteData(modifieData);
       }
     } catch (err) {
       console.error(err);
@@ -74,9 +96,21 @@ const SingleCaseTypeDetails = () => {
   const groupDataForVolume = (data: any) => {
     const groupedData: any = {};
     data?.forEach((item: any) => {
-      const { facility_id, facility_name, month, total_cases } = item;
+      const {
+        facility_id,
+        facility_name,
+        month,
+        total_cases,
+        sales_rep_name,
+        sales_rep_id,
+      } = item;
       if (!groupedData[facility_id]) {
-        groupedData[facility_id] = { facility_id, facility_name };
+        groupedData[facility_id] = {
+          facility_id,
+          facility_name,
+          sales_rep_name,
+          sales_rep_id,
+        };
       }
       const formattedMonth = month.replace(/\s/g, "");
       groupedData[facility_id][formattedMonth] = total_cases;
@@ -92,9 +126,9 @@ const SingleCaseTypeDetails = () => {
       const formattedMonth = month.replace(/\s/g, "");
       const amount = parseFloat(total_cases);
       if (!groupedDataSum[formattedMonth]) {
-        groupedDataSum[formattedMonth] = 0;
+        groupedDataSum[formattedMonth] = [0];
       }
-      groupedDataSum[formattedMonth] += amount;
+      groupedDataSum[formattedMonth][0] += amount;
     });
     return groupedDataSum;
   };
@@ -105,7 +139,9 @@ const SingleCaseTypeDetails = () => {
         if (
           key !== "facility_id" &&
           key !== "facility_name" &&
-          key !== "serial"
+          key !== "serial" &&
+          key !== "sales_rep_name" &&
+          key !== "sales_rep_id"
         ) {
           if (parseFloat(item[key]) !== 0) {
             return true;
@@ -119,12 +155,18 @@ const SingleCaseTypeDetails = () => {
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
-      queryPreparations(fromDate, toDate);
+      queryPreparations({ fromDate: fromDate, toDate: toDate });
     } else {
       setDateFilterDefaultValue([]);
-      queryPreparations("", "");
+      queryPreparations({ fromDate: "", toDate: "" });
     }
   };
+  useEffect(() => {
+    queryPreparations({
+      fromDate: searchParams?.from_date,
+      toDate: searchParams?.to_date,
+    });
+  }, []);
 
   return (
     <div>
@@ -157,29 +199,24 @@ const SingleCaseTypeDetails = () => {
             </div>
           </div>
         </div>
-        <div className="personData">
+        <div
+          className="eachDataCard s-no-column"
+          id="mothWiseSingleCaseTypeData"
+        >
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <SingleCaseTypeFacilitiesTable
                 searchParams={searchParams}
-                caseTypeFacilityDetails={caseTypeFacilityDetails}
+                caseTypeFacilityDetails={filterDataByZeroValues(
+                  caseTypeFacilityDetails
+                )}
                 monthWiseTotalSum={monthWiseTotalSum}
                 loading={loading}
                 headerMonths={headerMonths}
+                completeData={completeData}
+                groupDatasumValue={groupDatasumValue}
+                setCaseTypeFacilityDetails={setCaseTypeFacilityDetails}
               />
-              {/* <InsuranceCaseTypes
-                searchParams={searchParams}
-                insuranceData={insuranceData}
-                totalInsurancePayors={totalInsurancePayors}
-                loading={loading}
-              /> */}
-            </Grid>
-
-            <Grid item xs={12}>
-              {/* <TrendsGraphForInsurance
-                searchParams={searchParams}
-                pageName={"insurances"}
-              /> */}
             </Grid>
           </Grid>
         </div>

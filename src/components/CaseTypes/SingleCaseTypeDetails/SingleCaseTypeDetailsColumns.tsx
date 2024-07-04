@@ -38,7 +38,7 @@ export const singleCasetypeColumns = [
   },
   {
     accessorFn: (row: any) => row.sales_rep_name,
-    id: "facility_name",
+    id: "sales_rep_name",
     header: () => <span style={{ whiteSpace: "nowrap" }}>SALES REP</span>,
     footer: (props: any) => props.column.id,
     width: "220px",
@@ -52,7 +52,7 @@ export const singleCasetypeColumns = [
             // goToSingleFacilityPage(info.row.original.facility_id);
           }}
         >
-          {info.row.original.facility_name}
+          {info.row.original.sales_rep_name}
         </span>
       );
     },

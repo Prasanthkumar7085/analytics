@@ -6,6 +6,12 @@ import { singleCasetypeColumns } from "./SingleCaseTypeDetailsColumns";
 import { Backdrop } from "@mui/material";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
 import { graphColors } from "@/lib/constants";
+import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import SingleCaseTypeTable from "@/components/core/Table/SingleCaseTypeTable";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { addSerial } from "@/lib/Pipes/addSerial";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { usePathname, useRouter } from "next/navigation";
 
 const SingleCaseTypeFacilitiesTable = ({
   searchParams,
@@ -13,11 +19,31 @@ const SingleCaseTypeFacilitiesTable = ({
   monthWiseTotalSum,
   loading,
   headerMonths,
+  completeData,
+  groupDatasumValue,
+  setCaseTypeFacilityDetails,
 }: any) => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
   const [graphValuesData, setGraphValuesData] = useState<any>({});
   const [graphColor, setGraphColor] = useState("");
+
+  //prepare the table coloumns
+  let addtionalcolumns = headerMonths?.map((item: any) => ({
+    accessorFn: (row: any) => row[item],
+    id: item,
+    header: () => (
+      <span style={{ whiteSpace: "nowrap" }}>{formatMonthYear(item)}</span>
+    ),
+    footer: (props: any) => props.column.id,
+    width: "80px",
+    maxWidth: "220px",
+    minWidth: "220px",
+    sortDescFirst: false,
+    cell: (info: any) => <span>{info.getValue()?.toLocaleString()}</span>,
+  }));
 
   const graphColoumn = [
     {
@@ -52,23 +78,54 @@ const SingleCaseTypeFacilitiesTable = ({
       },
     },
   ];
+  const onUpdateData = ({
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type as "asc" | "desc",
+  }: Partial<{
+    orderBy: string;
+    orderType: "asc" | "desc";
+  }>) => {
+    let queryParams: any = {};
+    if (orderBy) {
+      queryParams["order_by"] = orderBy;
+    }
+    if (orderType) {
+      queryParams["order_type"] = orderType;
+    }
+    if (status) {
+      queryParams["status"] = status;
+    }
+    if (searchParams?.["from_date"]) {
+      queryParams["from_date"] = searchParams?.["from_date"];
+    }
+    if (searchParams?.["to_date"]) {
+      queryParams["to_date"] = searchParams?.["to_date"];
+    }
+    router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
+    let data = [...completeData];
 
-  let tableColoumns = [...singleCasetypeColumns, ...graphColoumn];
+    if (orderBy && orderType) {
+      data = sortAndGetData(data, orderBy, orderType);
+    }
+    const modifieData = addSerial(data, 1, data?.length);
+    setCaseTypeFacilityDetails(modifieData);
+    groupDatasumValue(completeData);
+  };
+
+  let tableColoumns = [
+    ...singleCasetypeColumns,
+    ...addtionalcolumns,
+    ...graphColoumn,
+  ];
   return (
     <div style={{ position: "relative" }}>
-      <ExportButton
-        // onClick={() => {
-        //   exportToExcelCaseTypeTable(caseData, headerMonths, totalSumValues);
-        // }}
-        disabled={caseTypeFacilityDetails?.length === 0 ? true : false}
-      ></ExportButton>
-      <CaseTypesColumnTable
+      <SingleCaseTypeTable
         data={caseTypeFacilityDetails}
         columns={tableColoumns}
         totalSumValues={monthWiseTotalSum}
         loading={loading}
         headerMonths={headerMonths}
-        tabValue={"volume"}
+        getData={onUpdateData}
       />
 
       {loading ? (
