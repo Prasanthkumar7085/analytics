@@ -152,7 +152,7 @@ const PatientResultTable = () => {
           className="bacKBtn"
           variant="outlined"
           onClick={() => {
-            router.push("/patient-results");
+            router.back();
           }}
         >
           Back

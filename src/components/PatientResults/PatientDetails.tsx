@@ -1,7 +1,7 @@
 "use client";
 import { Button, TextField } from "@mui/material";
 import Container from "@mui/material/Container";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
 import { DatePicker } from "rsuite";
@@ -13,12 +13,15 @@ import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
 const PatientDetails = ({
   getDetails,
   getPatientDetails,
+  setFirstName,
+  firstName,
+  setLastName,
+  lastName,
+  setDateOfBirth,
+  dateOfBirth
 }: any) => {
   const router = useRouter();
-
-  const [firstName, setFirstName] = useState<any>("");
-  const [lastName, setLastName] = useState<any>("");
-  const [dateOfBirth, setDateOfBirth] = useState<any>("");
+  const params = useSearchParams();
 
   const onChangeDateOfBirth = (date: any) => {
     setDateOfBirth(date);
@@ -26,13 +29,26 @@ const PatientDetails = ({
 
   let dateFormat = datePipe(dateOfBirth, "YYYY-MM-DD");
 
-  const Revenuecolumns = [
+  const patientcolumns = [
+    // {
+    //   accessorFn: (row: any) => row.serial,
+    //   id: "id",
+    //   enableSorting: false,
+    //   header: () => <span>S.No</span>,
+    //   footer: (props: any) => props.column.id,
+    //   width: "60px",
+    //   cell: ({ row, table }: any) =>
+    //     (table
+    //       .getSortedRowModel()
+    //       ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
+    //     1,
+    // },
     {
       accessorFn: (row: any) => row.patient_id,
       id: "patient_id",
       header: () => <span>PATIENT ID</span>,
       cell: (info: any) => {
-        return <span>{info.getValue()}</span>;
+        return <span>{info.getValue() ? info.getValue() : "--"}</span>;
       },
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -41,7 +57,7 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.first_name,
       id: "first_name",
       sortDescFirst: false,
-      cell: (info: any) => <span>{info.getValue()}</span>,
+      cell: (info: any) => <span>{info.getValue() ? info.getValue() : "--"}</span>,
       header: () => <span>FIRST NAME</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -50,7 +66,7 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.last_name,
       sortDescFirst: false,
       id: "last_name",
-      cell: (info: any) => <span>{info.getValue()}</span>,
+      cell: (info: any) => <span>{info.getValue() ? info.getValue() : "--"}</span>,
       header: () => <span>LAST NAME</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -60,7 +76,7 @@ const PatientDetails = ({
       sortDescFirst: false,
       id: "date_of_birth",
       cell: (info: any) => (
-        <span>{datePipe(info.getValue(), "MM-DD-YYYY")}</span>
+        <span>{datePipe(info.getValue() ? info.getValue() : "--", "MM-DD-YYYY")}</span>
       ),
       header: () => <span>DATE OF BIRTH</span>,
       footer: (props: any) => props.column.id,
@@ -133,12 +149,13 @@ const PatientDetails = ({
           Get Details
         </Button>
       </div>
+      <h4>Patient Details</h4>
       <div style={{ display: "flex", justifyContent: "center" }}>
         {getDetails?.length ? (
           <Container maxWidth="xl">
             <SingleColumnTable
               data={getDetails}
-              columns={Revenuecolumns}
+              columns={patientcolumns}
               loading={false}
             />
           </Container>
