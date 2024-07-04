@@ -1,32 +1,23 @@
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
+import { RevenueOverViewcolumns } from "@/components/core/TableColumns/OverViewCaseTypesTableColumns";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
-import {
-  changeDateToUTC,
-  getDatesForStatsCards,
-} from "@/lib/helpers/apiHelpers";
+import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import {
   exportToExcelCaseTypesVolumes,
-  exportToExcelCaseTypesVolumesForFacilites,
   exportToExcelCaseTypesVolumesWithoutDayWiseTargets,
 } from "@/lib/helpers/exportsHelpers";
-import { Backdrop, Tab, Tabs } from "@mui/material";
+import { Backdrop } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import {
-  VolumecolumnsForFacilities,
-  VolumecolumnsTargets,
-  VolumecolumnsWithDayWiseTargets,
-} from "../../core/TableColumns/OverViewCaseTypesTableColumns";
-import { startOfMonth } from "rsuite/esm/internals/utils/date";
 
-const CaseTypes = ({
+const BillingOverViewCaseTypes = ({
   caseTypesStatsData,
   loading,
   totalRevenueSum,
@@ -75,22 +66,14 @@ const CaseTypes = ({
   };
 
   function getSubtitle() {
-    const totalNumber = dayWiseTargetsEnable
-      ? totalRevenueSum[3]?.value
-      : totalRevenueSum[2]?.value;
+    const totalNumber = 3;
     return `<span style="font-size: 6px,margin-left:"45px">${
       tabValue == "Revenue" ? "Total Billed" : "Total Cases"
     }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
-            ${
-              tabValue == "Revenue"
-                ? formatMoney(totalNumber || 0)
-                : pathName?.includes("facilities")
-                ? totalRevenueSum[1]?.value?.toLocaleString() || 0
-                : totalNumber?.toLocaleString() || 0
-            }</b>
+            ${formatMoney(totalNumber || 0)}</b>
         </span>`;
   }
 
@@ -154,16 +137,6 @@ const CaseTypes = ({
     ],
   };
 
-  const renderTableColoumnsByConditions = () => {
-    if (pathName.includes("facilities")) {
-      return VolumecolumnsForFacilities;
-    } else {
-      return dayWiseTargetsEnable
-        ? VolumecolumnsWithDayWiseTargets
-        : VolumecolumnsTargets;
-    }
-  };
-
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
       setSelectedDates([fromDate, toDate]);
@@ -183,14 +156,11 @@ const CaseTypes = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Case Types {tabValue}
           </h3>
-          {pathName?.includes("dashboard") ? (
-            <GlobalDateRangeFilter
-              onChangeData={onChangeData}
-              dateFilterDefaultValue={dateFilterDefaultValue}
-            />
-          ) : (
-            ""
-          )}
+          <GlobalDateRangeFilter
+            onChangeData={onChangeData}
+            dateFilterDefaultValue={dateFilterDefaultValue}
+          />
+
           <div
             style={{
               display: "flex",
@@ -198,42 +168,26 @@ const CaseTypes = ({
               justifyContent: "flex-end",
             }}
           >
-            {pathName?.includes("facilities") ? (
-              <ExportButton
-                onClick={() => {
-                  exportToExcelCaseTypesVolumesForFacilites(
+            <ExportButton
+              onClick={() => {
+                if (dayWiseTargetsEnable) {
+                  exportToExcelCaseTypesVolumes(
                     caseTypesStatsData,
                     totalRevenueSum
                   );
-                }}
-                disabled={
-                  caseTypesStatsData?.length === 0 || tabValue == "Revenue"
-                    ? true
-                    : false
+                } else {
+                  exportToExcelCaseTypesVolumesWithoutDayWiseTargets(
+                    caseTypesStatsData,
+                    totalRevenueSum
+                  );
                 }
-              />
-            ) : (
-              <ExportButton
-                onClick={() => {
-                  if (dayWiseTargetsEnable) {
-                    exportToExcelCaseTypesVolumes(
-                      caseTypesStatsData,
-                      totalRevenueSum
-                    );
-                  } else {
-                    exportToExcelCaseTypesVolumesWithoutDayWiseTargets(
-                      caseTypesStatsData,
-                      totalRevenueSum
-                    );
-                  }
-                }}
-                disabled={
-                  caseTypesStatsData?.length === 0 || tabValue == "Revenue"
-                    ? true
-                    : false
-                }
-              />
-            )}
+              }}
+              disabled={
+                caseTypesStatsData?.length === 0 || tabValue == "Revenue"
+                  ? true
+                  : false
+              }
+            />
           </div>
         </div>
         <div className="cardBody">
@@ -253,7 +207,7 @@ const CaseTypes = ({
             </div>
             <TanStackTableComponent
               data={caseTypesStatsData}
-              columns={renderTableColoumnsByConditions()}
+              columns={RevenueOverViewcolumns}
               totalSumValues={totalRevenueSum}
               loading={loading}
             />
@@ -293,4 +247,4 @@ const CaseTypes = ({
   );
 };
 
-export default CaseTypes;
+export default BillingOverViewCaseTypes;
