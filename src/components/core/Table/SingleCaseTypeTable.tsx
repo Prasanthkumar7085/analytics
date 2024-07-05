@@ -237,7 +237,9 @@ const SingleCaseTypeTable: FC<pageProps> = ({
                   style={{
                     display: "flex",
                     justifyContent: "center",
+
                     alignItems: "center",
+                    height: "40vh",
                   }}
                 >
                   <Image

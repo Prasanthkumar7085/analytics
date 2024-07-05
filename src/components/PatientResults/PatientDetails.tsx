@@ -8,6 +8,7 @@ import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import datePipe from "@/lib/Pipes/datePipe";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
+import { useEffect } from 'react';
 
 const PatientDetails = ({
   getDetails,
@@ -102,9 +103,17 @@ const PatientDetails = ({
       width: "150px",
     },
   ];
+  useEffect(() => {
+    document.body.classList.add('navbar-type-two', 'gray-bg');
+
+    // Clean up by removing the class when the component is unmounted
+    return () => {
+      document.body.classList.remove('navbar-type-two', 'gray-bg');
+    };
+  }, []);
 
   return (
-    <div>
+    <section id="patientDetails">
       <div className="subNavBar">
         <div className="SubNavPointsBlock">
           <div className="eachBlocks">
@@ -170,30 +179,36 @@ const PatientDetails = ({
           </Button>
         </div>
       </div>
-      <h4>Patient Details</h4>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {getDetails?.length ? (
-          <Container maxWidth="xl">
+      <div className="eachDataCard">
+        <div className="cardHeader">
+          <h3>
+            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+            Patient Details
+          </h3>
+        </div>
+        <div className="cardBody">
+          {getDetails?.length ? (
+
             <SingleColumnTable
               data={getDetails}
               columns={patientcolumns}
               loading={false}
             />
-          </Container>
 
-        ) : (
-          <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
-            <Image
-              src="/Search Image.svg"
-              alt=""
-              height={210}
-              width={510}
-            />
-            <h3>No Data</h3>
-          </div>
-        )}
+          ) : (
+            <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+              <Image
+                src="/Search Image.svg"
+                alt=""
+                height={210}
+                width={410}
+              />
+              <h3 className="no-data-text">No Data</h3>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 export default PatientDetails;

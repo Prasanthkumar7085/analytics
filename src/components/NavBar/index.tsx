@@ -53,7 +53,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
   };
   return (
     <section>
-      <nav className={styles.primaryNavbar}>
+      <nav className={styles.primaryNavbar} id="navbar">
         <Container maxWidth="xl">
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
@@ -74,13 +74,12 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     {hasAccessOrNot("/dashboard", userType) && userType ? (
                       <li
                         onClick={() => router.push("/dashboard")}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                          styles[
-                            pathname == "/dashboard"
-                              ? "activePagename"
-                              : "active"
-                          ]
-                        }`}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname == "/dashboard"
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
                       >
                         Overview
                       </li>
@@ -88,16 +87,15 @@ const NavBar: FC<pageProps> = ({ children }) => {
                       ""
                     )}
                     {hasAccessOrNot("/sales-representatives", userType) &&
-                    userType ? (
+                      userType ? (
                       <li
                         onClick={() => router.push("/sales-representatives")}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                          styles[
-                            pathname.includes("/sales-representatives")
-                              ? "activePagename"
-                              : "active"
-                          ]
-                        }`}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/sales-representatives")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
                       >
                         Sales Representatives
                       </li>
@@ -107,13 +105,12 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     {hasAccessOrNot("/insurances", userType) && userType ? (
                       <li
                         onClick={() => router.push("/insurances")}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                          styles[
-                            pathname.includes("/insurances")
-                              ? "activePagename"
-                              : "active"
-                          ]
-                        }`}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/insurances")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
                       >
                         Insurances
                       </li>
@@ -123,13 +120,12 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     {hasAccessOrNot("/facilities", userType) && userType ? (
                       <li
                         onClick={() => router.push("/facilities")}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                          styles[
-                            pathname.includes("/facilities")
-                              ? "activePagename"
-                              : "active"
-                          ]
-                        }`}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/facilities")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
                       >
                         Facilities
                       </li>
@@ -139,13 +135,12 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     {hasAccessOrNot("/case-types", userType) && userType ? (
                       <li
                         onClick={() => router.push("/case-types")}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                          styles[
-                            pathname.includes("/case-type")
-                              ? "activePagename"
-                              : "active"
-                          ]
-                        }`}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname.includes("/case-type")
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
                       >
                         Case Types
                       </li>
@@ -156,13 +151,12 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     {hasAccessOrNot("/sales-targets", userType) && userType ? (
                       <li
                         onClick={() => router.push("/sales-targets")}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                          styles[
-                            pathname == "/sales-targets"
-                              ? "activePagename"
-                              : "active"
-                          ]
-                        }`}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname == "/sales-targets"
+                            ? "activePagename"
+                            : "active"
+                        ]
+                          }`}
                       >
                         Sales Targets
                       </li>

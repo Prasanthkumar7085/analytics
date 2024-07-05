@@ -1633,9 +1633,19 @@ input:-webkit-autofill {
     }
   }
 
-  .tableContainer {
-    table {
-      min-height: 500px;
-    }
+  // .tableContainer {
+  //   table {
+  //     min-height: 500px;
+  //   }
+  // }
+}
+
+.navbar-type-two {
+  #navbar {
+    padding: 10px 0;
   }
+}
+
+.gray-bg {
+  background: #f1f1f1;
 }
