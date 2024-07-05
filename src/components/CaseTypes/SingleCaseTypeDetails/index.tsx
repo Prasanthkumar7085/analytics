@@ -277,36 +277,34 @@ const SingleCaseTypeDetails = () => {
 
   return (
     <div>
-      <div className="salesPersonDataDetails">
-        <div className="personDetails">
-          <div className="grid grid-cols-2">
-            <div className="gridItem flex items-center">
-              <div
-                onClick={() => router.back()}
-                className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
-              >
-                <ArrowBack className="w-[20px] text-[#bf1b39]" />
-              </div>
-              <div className="person flex items-center mr-10">
-                <div className="pl-3">
-                  <p className="m-0">Case Type Facility Details</p>
-                </div>
+      <div className="salesPersonDataDetails" id="caseTypeFacilityDetails">
+        <div className="personDetails justify-between">
+          <div className="gridItem flex items-center">
+            <div
+              onClick={() => router.back()}
+              className="w-[30px] h-[30px] border border-[#BF1B39] flex items-center justify-center mr-5 rounded cursor-pointer hover:bg-#bf1b39"
+            >
+              <ArrowBack className="w-[20px] text-[#bf1b39]" />
+            </div>
+            <div className="person flex items-center mr-10">
+              <div className="pl-3">
+                <p className="m-0">Case Type Facility Details</p>
               </div>
             </div>
-            <SingleCaseTypeFilters
-              onUpdateData={onUpdateData}
-              queryPreparations={queryPreparations}
-              dateFilterDefaultValue={dateFilterDefaultValue}
-              setDateFilterDefaultValue={setDateFilterDefaultValue}
-              caseTypeFacilityDetails={caseTypeFacilityDetails}
-              totalSumValue={monthWiseTotalSum}
-              selectedCaseType={selectedCaseType}
-              setSelectedCaseType={setSelectedCaseType}
-              searchParams={searchParams}
-              caseTypeOptions={caseTypeOptions}
-              headerMonths={headerMonths}
-            />
           </div>
+          <SingleCaseTypeFilters
+            onUpdateData={onUpdateData}
+            queryPreparations={queryPreparations}
+            dateFilterDefaultValue={dateFilterDefaultValue}
+            setDateFilterDefaultValue={setDateFilterDefaultValue}
+            caseTypeFacilityDetails={caseTypeFacilityDetails}
+            totalSumValue={monthWiseTotalSum}
+            selectedCaseType={selectedCaseType}
+            setSelectedCaseType={setSelectedCaseType}
+            searchParams={searchParams}
+            caseTypeOptions={caseTypeOptions}
+            headerMonths={headerMonths}
+          />
         </div>
         <div
           className="eachDataCard s-no-column"
