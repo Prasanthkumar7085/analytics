@@ -253,3 +253,38 @@
     box-shadow: none;
   }
 }
+
+
+
+#patientDetails {
+
+  .subNavBar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .eachBlocks {
+      img {
+        width: 16px;
+        margin-top: -4px;
+      }
+    }
+
+  }
+
+  .patientDetailsTable {
+    max-height: 500px;
+
+    table {
+      border: 1px solid #eff1fa;
+
+      tfoot {
+        display: none;
+      }
+    }
+  }
+
+  .no-data-text {
+    font-size: 1.75em;
+    font-weight: 600;
+  }
+}
