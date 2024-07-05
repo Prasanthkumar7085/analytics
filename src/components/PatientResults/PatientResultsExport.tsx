@@ -37,7 +37,6 @@ const PatientResultsExport = ({
                                                         </th>
                                                     )
                                                 )}
-                                                <th style={{ minWidth: "150px" }}>Trend</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -53,28 +52,6 @@ const PatientResultsExport = ({
                                                                 </td>
                                                             )
                                                         )}
-                                                        <td>
-                                                            {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
-                                            <p>-</p>
-                                        ) : ( */}
-                                                            <div
-                                                                onClick={() => {
-                                                                    handleGraphClick(testIndex, title);
-                                                                    setPatientSingleRowData(test);
-                                                                }}
-                                                                style={{ cursor: "pointer" }}
-                                                            >
-                                                                <LineGraphForResults
-                                                                    patientsData={patientsData}
-                                                                    graphValuesData={getGraphValuesData(
-                                                                        patientResultsData,
-                                                                        title,
-                                                                        testIndex
-                                                                    )}
-                                                                />
-                                                            </div>
-                                                            {/* )} */}
-                                                        </td>
                                                     </tr>
                                                 )
                                             )}

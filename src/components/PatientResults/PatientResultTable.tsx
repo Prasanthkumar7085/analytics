@@ -1,5 +1,5 @@
 "use client";
-import { Autocomplete, Button, Menu, MenuItem, TextField } from "@mui/material";
+import { Autocomplete, Button, Container, Menu, MenuItem, TextField } from "@mui/material";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import { getAllPatientNamesAPI, getAllPatientResultsAPI, getSinglePatientResultA
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientResultsExport from "./PatientResultsExport";
+import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 
 const PatientResultTable = () => {
   const { id } = useParams();
@@ -296,15 +297,86 @@ const PatientResultTable = () => {
           }}>Export as Excel</MenuItem>
         </Menu>
       </div>
-      <>
-        <PatientResultsExport
-          patientResultsData={patientResultsData}
-          handleGraphClick={handleGraphClick}
-          setPatientSingleRowData={setPatientSingleRowData}
-          patientsData={patientsData}
-          getGraphValuesData={getGraphValuesData}
-        />
-      </>
+      {Object.keys(patientResultsData).length
+        ?
+        Object.keys(patientResultsData).map((title, index) => (
+          <Container maxWidth="xl" key={index}>
+            <div
+              className="eachPatientResultTable"
+              key={index}
+              style={{ marginTop: "30px" }}
+            >
+              <h2 className="tableHeading">{title}</h2>
+              <div className="allPatientResultTable">
+                <div className="tableContainer">
+                  <table >
+                    <thead>
+                      <tr>
+                        <th style={{ minWidth: "150px" }}>Result Code</th>
+                        <th style={{ minWidth: "150px" }}>Ref Range & Units</th>
+                        {patientResultsData[title]?.map(
+                          (result: any, resultIndex: any) => (
+                            <th style={{ minWidth: "100px" }} key={resultIndex}>
+                              {datePipe(result?.date, "MM-DD-YYYY")}
+                            </th>
+                          )
+                        )}
+                        <th style={{ minWidth: "150px" }}>Trend</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {patientResultsData[title][0].results.map(
+                        (test: any, testIndex: any) => (
+                          <tr key={testIndex}>
+                            <td>{test.result_name}</td>
+                            <td>{test.reference_range}</td>
+                            {patientResultsData[title].map(
+                              (result: any, resultIndex: any) => (
+                                <td key={resultIndex}>
+                                  {result.results[testIndex]?.result}
+                                </td>
+                              )
+                            )}
+                            <td>
+                              <div
+                                onClick={() => {
+                                  handleGraphClick(testIndex, title);
+                                  setPatientSingleRowData(test);
+                                }}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <LineGraphForResults
+                                  patientsData={patientsData}
+                                  graphValuesData={getGraphValuesData(
+                                    patientResultsData,
+                                    title,
+                                    testIndex
+                                  )}
+                                />
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </Container>
+        )
+        )
+        :
+        <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+          <Image
+            src="/Search Image.svg"
+            alt=""
+            height={200}
+            width={510}
+          />
+          <h3>No Data</h3>
+        </div>
+      }
       <LineGraphForPatientResult
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
