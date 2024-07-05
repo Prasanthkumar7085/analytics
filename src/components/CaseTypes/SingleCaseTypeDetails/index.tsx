@@ -44,6 +44,7 @@ const SingleCaseTypeDetails = () => {
   const [caseTypeOptions, setCaseTypeOptions] = useState<any>([]);
 
   console.log(caseTypeFacilityDetails, "fdiuwe");
+  console.log(monthWiseTotalSum, "-----32");
   const queryPreparations = async ({
     fromDate,
     toDate,
@@ -53,7 +54,6 @@ const SingleCaseTypeDetails = () => {
     orderType = searchParams?.order_type,
   }: any) => {
     let queryParams: any = {};
-    console.log(fromDate, "3rewiewi");
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
@@ -127,7 +127,7 @@ const SingleCaseTypeDetails = () => {
           queryParams?.search
         );
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        const groupedDataSum = groupDatasumValue(response?.data);
+        const groupedDataSum = totalSumOfEachColumn(modifieData);
         setCaseTypeFacilityDetails(modifieData);
         setMonthWiseTotalSum(groupedDataSum);
       }
@@ -160,7 +160,6 @@ const SingleCaseTypeDetails = () => {
       const formattedMonth = month.replace(/\s/g, "");
       groupedData[facility_id][formattedMonth] = total_cases;
     });
-    console.log(groupedData, "939332030");
     return groupedData;
   };
 
@@ -177,6 +176,42 @@ const SingleCaseTypeDetails = () => {
       groupedDataSum[formattedMonth][0] += amount;
     });
     return groupedDataSum;
+  };
+
+  const totalSumOfEachColumn = (data: any) => {
+    let sums: any = {};
+    const fieldsToRemove = [
+      "facility_id",
+      "facility_name",
+      "sales_rep_name",
+      "sales_rep_id",
+      "serial",
+    ];
+
+    data.forEach((facility: any) => {
+      let filteredFacility: any = Object.keys(facility)
+        .filter((key) => !fieldsToRemove.includes(key))
+        .reduce((obj: any, key: any) => {
+          obj[key] = facility[key];
+          return obj;
+        }, {});
+
+      Object.keys(filteredFacility).forEach((key) => {
+        if (
+          key.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\d{4}/)
+        ) {
+          if (!sums[key]) {
+            sums[key] = [];
+          }
+          sums[key].push(filteredFacility[key]);
+        }
+      });
+    });
+
+    Object.keys(sums).forEach((key) => {
+      sums[key] = [sums[key].reduce((acc: any, curr: any) => acc + curr, 0)];
+    });
+    return sums;
   };
 
   const filterDataByZeroValues = (data: any) => {
@@ -247,7 +282,7 @@ const SingleCaseTypeDetails = () => {
     });
     groupedData = dataFilters(sortedData, orderBy, orderType, search);
     const modifiedData = addSerial(groupedData, 1, groupedData?.length);
-    const groupedDataSum = groupDatasumValue(filteredData);
+    const groupedDataSum = totalSumOfEachColumn(modifiedData);
 
     setCaseTypeFacilityDetails(modifiedData);
     setMonthWiseTotalSum(groupedDataSum);

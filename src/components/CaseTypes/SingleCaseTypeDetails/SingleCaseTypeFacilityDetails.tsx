@@ -7,6 +7,7 @@ import { Backdrop } from "@mui/material";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { singleCasetypeColumns } from "./SingleCaseTypeDetailsColumns";
+import LoadingComponent from "@/components/core/LoadingComponent";
 
 const SingleCaseTypeFacilitiesTable = ({
   searchParams,
@@ -93,33 +94,7 @@ const SingleCaseTypeFacilitiesTable = ({
         getData={onUpdateData}
       />
 
-      {loading ? (
-        <Backdrop
-          open={true}
-          style={{
-            zIndex: 9999,
-            color: "red",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            background: "rgba(256,256,256,0.8)",
-          }}
-        >
-          <object
-            type="image/svg+xml"
-            data={"/core/loading.svg"}
-            width={150}
-            height={150}
-          />
-        </Backdrop>
-      ) : (
-        ""
-      )}
+      <LoadingComponent loading={loading} />
       <GraphDialogForFacilities
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}

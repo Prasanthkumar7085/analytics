@@ -64,7 +64,7 @@ const SingleCaseTypesAutoCompleteFilter = ({
             borderRadius: "5px",
           },
           "& .MuiInputBase-root": {
-            padding: "2.5px !Important",
+            padding: "5.0px !Important",
             fontSize: "clamp(12px, 0.72vw, 14px) !important",
             zIndex: "99999 !important",
             paddingBlock: "0",
