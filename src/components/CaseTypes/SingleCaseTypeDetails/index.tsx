@@ -114,19 +114,18 @@ const SingleCaseTypeDetails = () => {
       if (response.status == 200 || response?.status == 201) {
         await getAllCaseTypes(queryParams?.case_type_id);
         setCompleteData(response?.data);
-
-        // let filteredData = dataFilters(
-        //   response?.data,
-        //   queryParams?.order_by,
-        //   queryParams?.order_type,
-        //   queryParams?.search
-        // );
         let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
         let groupedData = groupDataForVolume(response?.data);
-        const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
+        let sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.facility_name.localeCompare(b.facility_name);
         });
+        sortedData = dataFilters(
+          sortedData,
+          queryParams?.order_by,
+          queryParams?.order_type,
+          queryParams?.search
+        );
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         const groupedDataSum = groupDatasumValue(response?.data);
         setCaseTypeFacilityDetails(modifieData);
@@ -228,7 +227,6 @@ const SingleCaseTypeDetails = () => {
     orderBy: string;
     orderType: "asc" | "desc";
   }>) => {
-    console.log("Fdsajds", orderBy);
     const queryParams: any = {
       ...(search && { search }),
       ...(orderBy && { order_by: orderBy }),
@@ -244,9 +242,10 @@ const SingleCaseTypeDetails = () => {
     let filteredData: any = [...completeData];
     // Group and process data
     let groupedData = groupDataForVolume(filteredData);
-    console.log(groupedData, "13245==");
-    groupedData = dataFilters(groupedData, orderBy, orderType, search);
-    console.log(groupedData, "77732773");
+    const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
+      return a.facility_name.localeCompare(b.facility_name);
+    });
+    groupedData = dataFilters(sortedData, orderBy, orderType, search);
     const modifiedData = addSerial(groupedData, 1, groupedData?.length);
     const groupedDataSum = groupDatasumValue(filteredData);
 
