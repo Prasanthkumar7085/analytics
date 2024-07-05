@@ -16,7 +16,7 @@ import { Backdrop, Tab, Tabs } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -36,8 +36,10 @@ const CaseTypes = ({
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
   dayWiseTargetsEnable,
+  searchParams,
 }: any) => {
   const params = useSearchParams();
+  const router = useRouter();
   const pathName = usePathname();
   const [selectedDates, setSelectedDates] = useState<any>([]);
   const userType = useSelector(
@@ -156,11 +158,11 @@ const CaseTypes = ({
 
   const renderTableColoumnsByConditions = () => {
     if (pathName.includes("facilities")) {
-      return VolumecolumnsForFacilities;
+      return VolumecolumnsForFacilities(searchParams, router);
     } else {
       return dayWiseTargetsEnable
-        ? VolumecolumnsWithDayWiseTargets
-        : VolumecolumnsTargets;
+        ? VolumecolumnsWithDayWiseTargets(searchParams, router)
+        : VolumecolumnsTargets(searchParams, router);
     }
   };
 

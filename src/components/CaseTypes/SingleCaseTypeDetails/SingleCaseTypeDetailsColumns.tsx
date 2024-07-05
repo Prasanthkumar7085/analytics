@@ -1,60 +1,69 @@
-export const singleCasetypeColumns = [
-  {
-    accessorFn: (row: any) => row.serial,
-    id: "id",
-    enableSorting: false,
-    header: () => <span>S.No</span>,
-    footer: (props: any) => props.column.id,
-    width: "60px",
-    minWidth: "60px",
-    maxWidth: "60px",
-    cell: (info: any) => (
-      <span style={{ display: "flex", alignItems: "center" }}>
-        {info.row.original.serial}
-      </span>
-    ),
-  },
+import { gotoSingleFacilityPage } from "@/lib/helpers/navigations";
 
-  {
-    accessorFn: (row: any) => row.facility_name,
-    id: "facility_name",
-    header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>,
-    footer: (props: any) => props.column.id,
-    width: "220px",
-    maxWidth: "220px",
-    minWidth: "220px",
-    cell: (info: any) => {
-      return (
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            // goToSingleFacilityPage(info.row.original.facility_id);
-          }}
-        >
-          {info.row.original.facility_name}
+export const singleCasetypeColumns = (params: any, router: any) => {
+  return [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      enableSorting: false,
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+      cell: (info: any) => (
+        <span style={{ display: "flex", alignItems: "center" }}>
+          {info.row.original.serial}
         </span>
-      );
+      ),
     },
-  },
-  {
-    accessorFn: (row: any) => row.sales_rep_name,
-    id: "sales_rep_name",
-    header: () => <span style={{ whiteSpace: "nowrap" }}>SALES REP</span>,
-    footer: (props: any) => props.column.id,
-    width: "220px",
-    maxWidth: "220px",
-    minWidth: "220px",
-    cell: (info: any) => {
-      return (
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            // goToSingleFacilityPage(info.row.original.facility_id);
-          }}
-        >
-          {info.row.original.sales_rep_name}
-        </span>
-      );
+
+    {
+      accessorFn: (row: any) => row.facility_name,
+      id: "facility_name",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>FACILITY NAME</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              gotoSingleFacilityPage(
+                info.row.original.facility_id,
+                params,
+                router
+              );
+              // goToSingleFacilityPage(info.row.original.facility_id);
+            }}
+          >
+            {info.row.original.facility_name}
+          </span>
+        );
+      },
     },
-  },
-];
+    {
+      accessorFn: (row: any) => row.sales_rep_name,
+      id: "sales_rep_name",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>SALES REP</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              // goToSingleFacilityPage(info.row.original.facility_id);
+            }}
+          >
+            {info.row.original.sales_rep_name}
+          </span>
+        );
+      },
+    },
+  ];
+};

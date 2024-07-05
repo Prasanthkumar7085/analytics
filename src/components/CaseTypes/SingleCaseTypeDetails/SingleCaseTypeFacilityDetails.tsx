@@ -1,17 +1,12 @@
-import ExportButton from "@/components/core/ExportButton/ExportButton";
-import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
-import { useState } from "react";
-import CaseTypesColumnTable from "../caseTypesColumnTable";
-import { singleCasetypeColumns } from "./SingleCaseTypeDetailsColumns";
-import { Backdrop } from "@mui/material";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
-import { colorCodes, graphColors } from "@/lib/constants";
-import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
 import SingleCaseTypeTable from "@/components/core/Table/SingleCaseTypeTable";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { addSerial } from "@/lib/Pipes/addSerial";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
-import { usePathname, useRouter } from "next/navigation";
+import { colorCodes } from "@/lib/constants";
+import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import { Backdrop } from "@mui/material";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { singleCasetypeColumns } from "./SingleCaseTypeDetailsColumns";
 
 const SingleCaseTypeFacilitiesTable = ({
   searchParams,
@@ -26,6 +21,7 @@ const SingleCaseTypeFacilitiesTable = ({
 }: any) => {
   const router = useRouter();
   const pathname = usePathname();
+  const params = useParams();
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
   const [graphValuesData, setGraphValuesData] = useState<any>({});
@@ -83,7 +79,7 @@ const SingleCaseTypeFacilitiesTable = ({
   ];
 
   let tableColoumns = [
-    ...singleCasetypeColumns,
+    ...singleCasetypeColumns(params, router),
     ...addtionalcolumns,
     ...graphColoumn,
   ];

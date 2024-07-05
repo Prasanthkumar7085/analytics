@@ -238,7 +238,7 @@ const SingleCaseTypeDetails = () => {
       }),
     };
 
-    router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
+    router.replace(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
     let filteredData: any = [...completeData];
     // Group and process data
     let groupedData = groupDataForVolume(filteredData);
