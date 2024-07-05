@@ -229,6 +229,7 @@ table {
     max-height: 300px;
     overflow-y: auto;
   }
+
   &.patientDetailsTable {
     width: 100%;
     overflow: auto;
@@ -842,15 +843,17 @@ table {
 }
 
 
-#mothWiseSingleCaseTypeData{
+#mothWiseSingleCaseTypeData {
+
   table thead th:first-child,
-    table tbody td:first-child,
-    table tfoot td:first-child {
-      width: 60px !important;
-      min-width: 60px !important;
-      max-width: 60px !important;
-    }
-      table {
+  table tbody td:first-child,
+  table tfoot td:first-child {
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+  }
+
+  table {
     tbody {
       tr {
         td {
@@ -896,17 +899,19 @@ table {
     tfoot td:nth-child(2) {
       position: sticky;
       left: 50px;
-      border-right:1px solid rgba(0, 0, 0, 0.05);
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
       z-index: 9;
     }
-        thead th:nth-child(3),
-        tbody td:nth-child(3),
-        tfoot td:nth-child(3) {
-          position: sticky;
-          left: 280px;
-          border-right: 1px solid rgba(0, 0, 0, 0.05);
-          z-index: 9;
-        }
+
+    thead th:nth-child(3),
+    tbody td:nth-child(3),
+    tfoot td:nth-child(3) {
+      position: sticky;
+      left: 280px;
+      border-right: 1px solid rgba(0, 0, 0, 0.05);
+      z-index: 9;
+    }
+
     thead th:last-child,
     tbody td:last-child,
     tfoot td:last-child {
@@ -1600,7 +1605,37 @@ $actionButtonWidth: 95px;
   padding: 0 !important;
   // background: #fbfbfb;
 }
+
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #fff inset;
   /* Change #fff to your desired background color */
+}
+
+#caseTypeFacilityDetails {
+  .tableFiltersContainer {
+    padding-right: 0;
+
+    >div {
+      justify-content: flex-end;
+    }
+
+    .inputItemDate {
+      width: 200px;
+    }
+
+    input {
+      min-width: 180px;
+    }
+
+    button {
+      color: #fff !important;
+      height: 35px;
+    }
+  }
+
+  .tableContainer {
+    table {
+      min-height: 500px;
+    }
+  }
 }
