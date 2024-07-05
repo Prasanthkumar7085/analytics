@@ -4,11 +4,13 @@ import Container from "@mui/material/Container";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import ReactDOMServer from "react-dom/server";
 import datePipe from "@/lib/Pipes/datePipe";
 import { getAllPatientNamesAPI, getAllPatientResultsAPI, getSinglePatientResultAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 import LoadingComponent from "../core/LoadingComponent";
+import PatientResultsExport from "./PatientResultsExport";
 
 const PatientResultTable = () => {
   const { id } = useParams();
@@ -145,6 +147,55 @@ const PatientResultTable = () => {
     return result;
   }
 
+  const downloadAsPdf = async () => {
+    const downloadRefElement = <PatientResultsExport
+      patientResultsData={patientResultsData}
+      handleGraphClick={handleGraphClick}
+      setPatientSingleRowData={setPatientSingleRowData}
+      patientsData={patientsData}
+      getGraphValuesData={getGraphValuesData}
+    />
+
+    const htmlString = ReactDOMServer.renderToString(downloadRefElement);
+
+    // const printWindow: any = window.open("", "blank");
+    // console.log(printWindow.document);
+
+    // printWindow.documet?.write(htmlString);
+    // printWindow.document.close(); // necessary for IE >= 10
+    // setTimeout(() => {
+    //   printWindow.focus(); // necessary for IE >= 10*/
+    //   printWindow.print();
+    //   printWindow.close();
+    // }, 100);
+    print(htmlString)
+  };
+
+  const print = (htmlString: string) => {
+    const printWindow: any = window.open("", "blank");
+
+    if (!printWindow) {
+      console.error("Failed to open the window.");
+      return;
+    }
+
+    if (!printWindow.document) {
+      console.error("The document property of the window is undefined.");
+      return;
+    }
+
+    try {
+      printWindow.document.write(htmlString);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.focus(); // necessary for IE >= 10*/
+        printWindow.print();
+        printWindow.close();
+      }, 100);
+    } catch (error) {
+      console.error("An error occurred while writing to the document:", error);
+    }
+  };
   return (
     <div style={{ paddingTop: "10px" }}>
       <div className="subNavBar">
@@ -152,7 +203,7 @@ const PatientResultTable = () => {
           className="bacKBtn"
           variant="outlined"
           onClick={() => {
-            router.push("/patient-results");
+            router.back();
           }}
         >
           Back
@@ -162,28 +213,28 @@ const PatientResultTable = () => {
             <Image alt="" src="/card.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Patient ID</label>
-              <p className="value">{patientDetails?.patient_id}</p>
+              <p className="value">{patientDetails?.patient_id ? patientDetails?.patient_id : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks">
             <Image alt="" src="/vector-patient.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">First Name</label>
-              <p className="value"> {patientDetails?.first_name}</p>
+              <p className="value"> {patientDetails?.first_name ? patientDetails?.first_name : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks">
             <Image alt="" src="/vector-patient.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Last Name</label>
-              <p className="value">{patientDetails?.last_name}</p>
+              <p className="value">{patientDetails?.last_name ? patientDetails?.last_name : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks">
             <Image alt="" src="/Group.svg" height={20} width={20} />
             <div className="namesData">
               <label className="label">Gender</label>
-              <p className="value">{patientDetails?.gender}</p>
+              <p className="value">{patientDetails?.gender ? patientDetails?.gender : "--"}</p>
             </div>
           </div>
           <div className="eachBlocks b-right">
@@ -191,7 +242,7 @@ const PatientResultTable = () => {
             <div className="namesData">
               <label className="label">Date of Birth</label>
               <p className="value">
-                {datePipe(patientDetails?.date_of_birth, "MM-DD-YYYY")}
+                {datePipe(patientDetails?.date_of_birth ? patientDetails?.date_of_birth : "--", "MM-DD-YYYY")}
               </p>
             </div>
           </div>
@@ -218,81 +269,19 @@ const PatientResultTable = () => {
           )}
           style={{ width: 300 }}
         />
-        <Button className="bacKBtn" variant="contained">
+        <Button className="bacKBtn" variant="contained" onClick={downloadAsPdf}>
           Export
         </Button>
       </div>
-
-      {Object.keys(patientResultsData).map((title, index) => (
-        <Container maxWidth="xl" key={index}>
-          <div
-            className="eachPatientResultTable"
-            key={index}
-            style={{ marginTop: "30px" }}
-          >
-            <h2 className="tableHeading">{title}</h2>
-            <div className="allPatientResultTable">
-              <div className="tableContainer">
-                <table >
-                  <thead>
-                    <tr>
-                      <th style={{ minWidth: "150px" }}>Result Code</th>
-                      <th style={{ minWidth: "150px" }}>Ref Range & Units</th>
-                      {patientResultsData[title]?.map(
-                        (result: any, resultIndex: any) => (
-                          <th style={{ minWidth: "100px" }} key={resultIndex}>
-                            {datePipe(result?.date, "MM-DD-YYYY")}
-                          </th>
-                        )
-                      )}
-                      <th style={{ minWidth: "150px" }}>Trend</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {patientResultsData[title][0].results.map(
-                      (test: any, testIndex: any) => (
-                        <tr key={testIndex}>
-                          <td>{test.result_name}</td>
-                          <td>{test.reference_range}</td>
-                          {patientResultsData[title].map(
-                            (result: any, resultIndex: any) => (
-                              <td key={resultIndex}>
-                                {result.results[testIndex]?.result}
-                              </td>
-                            )
-                          )}
-                          <td>
-                            {/* {patientResultsData[title].some((result: any) => result.results[testIndex]?.result === "-") ? (
-                                            <p>-</p>
-                                        ) : ( */}
-                            <div
-                              onClick={() => {
-                                handleGraphClick(testIndex, title);
-                                setPatientSingleRowData(test);
-                              }}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <LineGraphForResults
-                                patientsData={patientsData}
-                                graphValuesData={getGraphValuesData(
-                                  patientResultsData,
-                                  title,
-                                  testIndex
-                                )}
-                              />
-                            </div>
-                            {/* )} */}
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </Container>
-      ))}
+      <>
+        <PatientResultsExport
+          patientResultsData={patientResultsData}
+          handleGraphClick={handleGraphClick}
+          setPatientSingleRowData={setPatientSingleRowData}
+          patientsData={patientsData}
+          getGraphValuesData={getGraphValuesData}
+        />
+      </>
       <LineGraphForPatientResult
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
