@@ -1620,42 +1620,52 @@ export const exportToExcelInsuranceCaseTypeTable = (
   XLSX.writeFile(workbook, "insurance-case-type-table.xlsx");
 };
 
-export const exportPatientResultsTable = (
-  patientResultsData: any
-) => {
+export const exportPatientResultsTable = (patientResultsData: any) => {
   const formattedData: any = [];
   Object.keys(patientResultsData).forEach((title, index) => {
-    const headers = ["Result Code", "Ref Range & Units", ...patientResultsData[title].map((result: any) => datePipe(result.date, "MM-DD-YYYY"))];
+    formattedData.push([title]);
+    const headers = [
+      "Result Code",
+      "Ref Range & Units",
+      ...patientResultsData[title].map((result: any) =>
+        datePipe(result.date, "MM-DD-YYYY")
+      ),
+    ];
     formattedData.push(headers);
-
     const testResults = patientResultsData[title][0].results;
     testResults.forEach((test: any, testIndex: any) => {
-      const row = [test.result_name, test.reference_range, ...patientResultsData[title].map((result: any) => result.results[testIndex]?.result || '')];
+      const row = [
+        test.result_name,
+        test.reference_range,
+        ...patientResultsData[title].map(
+          (result: any) => result.results[testIndex]?.result || ""
+        ),
+      ];
       formattedData.push(row);
     });
-
-    formattedData.push([title]);
+    formattedData.push([]);
   });
-
   const worksheet = XLSX.utils.aoa_to_sheet(formattedData);
-
   formattedData.forEach((row: any, rowIndex: any) => {
-    if (rowIndex === 0 || rowIndex % (patientResultsData[Object.keys(patientResultsData)[0]][0].results.length + 2) === 0) {
+    const cellValue = row[0];
+    if (cellValue === "Result Code") {
       row.forEach((_: any, colIndex: any) => {
-        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
+        const cellAddress = XLSX.utils.encode_cell({
+          r: rowIndex,
+          c: colIndex,
+        });
         if (!worksheet[cellAddress]) {
-          worksheet[cellAddress] = { t: 's', v: '', s: {} };
+          worksheet[cellAddress] = { t: "s", v: "", s: {} };
         }
         worksheet[cellAddress].s = {
           fill: {
-            fgColor: { rgb: "f0edff" },
+            fgColor: { rgb: "f0edff" }, // Set foreground color here
           },
         };
       });
     }
   });
-
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Patient Results");
   XLSX.writeFile(workbook, "patient_results.xlsx");
-}
+};
