@@ -283,6 +283,19 @@
     }
   }
 
+  table {
+    tr {
+
+      td,
+      th {
+        &:first-child {
+          width: 60px !important;
+          max-width: 60px !important;
+        }
+      }
+    }
+  }
+
   .no-data-text {
     font-size: 1.75em;
     font-weight: 600;
