@@ -22,6 +22,7 @@ const SingleCaseTypeFacilitiesTable = ({
   completeData,
   groupDatasumValue,
   setCaseTypeFacilityDetails,
+  onUpdateData,
 }: any) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -80,39 +81,6 @@ const SingleCaseTypeFacilitiesTable = ({
       },
     },
   ];
-  const onUpdateData = ({
-    orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type as "asc" | "desc",
-  }: Partial<{
-    orderBy: string;
-    orderType: "asc" | "desc";
-  }>) => {
-    let queryParams: any = {};
-    if (orderBy) {
-      queryParams["order_by"] = orderBy;
-    }
-    if (orderType) {
-      queryParams["order_type"] = orderType;
-    }
-    if (status) {
-      queryParams["status"] = status;
-    }
-    if (searchParams?.["from_date"]) {
-      queryParams["from_date"] = searchParams?.["from_date"];
-    }
-    if (searchParams?.["to_date"]) {
-      queryParams["to_date"] = searchParams?.["to_date"];
-    }
-    router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
-    let data = [...completeData];
-
-    if (orderBy && orderType) {
-      data = sortAndGetData(data, orderBy, orderType);
-    }
-    const modifieData = addSerial(data, 1, data?.length);
-    setCaseTypeFacilityDetails(modifieData);
-    groupDatasumValue(completeData);
-  };
 
   let tableColoumns = [
     ...singleCasetypeColumns,

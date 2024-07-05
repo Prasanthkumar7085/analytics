@@ -22,7 +22,33 @@ export const sortAndGetData = <T extends DataItem>(
   });
 };
 
-export const customSortByMonth = (data: any, sortType?: any, sortValue?: any) => {
+export const sortData = (data: any, sortField: any, order = "asc") => {
+  // Validate sorting order
+  if (!["asc", "desc"].includes(order)) {
+    throw new Error("Invalid sorting order. Use 'asc' or 'desc'.");
+  }
+
+  // Sort data based on sortField
+  data.sort((a: any, b: any) => {
+    if (order === "asc") {
+      if (a[sortField] < b[sortField]) return -1;
+      if (a[sortField] > b[sortField]) return 1;
+      return 0;
+    } else {
+      if (a[sortField] > b[sortField]) return -1;
+      if (a[sortField] < b[sortField]) return 1;
+      return 0;
+    }
+  });
+
+  return data;
+};
+
+export const customSortByMonth = (
+  data: any,
+  sortType?: any,
+  sortValue?: any
+) => {
   let specialColoumns = [
     "sales_rep_name",
     "new_facilities",

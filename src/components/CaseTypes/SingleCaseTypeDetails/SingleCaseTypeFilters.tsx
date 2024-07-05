@@ -2,7 +2,10 @@ import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import SingleCaseTypesAutoCompleteFilter from "@/components/core/SingleCaseTypesAutoCompleteFilter";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { exportToExcelFacilitiesTable } from "@/lib/helpers/exportsHelpers";
+import {
+  exportToExcelFacilitiesTable,
+  exportToExcelSingleCaseTypeFacilitiesTable,
+} from "@/lib/helpers/exportsHelpers";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -21,6 +24,7 @@ const SingleCaseTypeFilters = ({
   setSelectedCaseType,
   searchParams,
   caseTypeOptions,
+  headerMonths,
 }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
@@ -89,8 +93,9 @@ const SingleCaseTypeFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelFacilitiesTable(
+                  exportToExcelSingleCaseTypeFacilitiesTable(
                     caseTypeFacilityDetails,
+                    headerMonths,
                     totalSumValue
                   );
                 }}

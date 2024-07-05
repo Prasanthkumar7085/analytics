@@ -1,5 +1,5 @@
 import { addSerial } from "@/lib/Pipes/addSerial";
-import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import { sortAndGetData, sortData } from "@/lib/Pipes/sortAndGetData";
 import {
   changeDateToUTC,
   getUniqueMonths,
@@ -43,6 +43,7 @@ const SingleCaseTypeDetails = () => {
   const [completeData, setCompleteData] = useState([]);
   const [caseTypeOptions, setCaseTypeOptions] = useState<any>([]);
 
+  console.log(caseTypeFacilityDetails, "fdiuwe");
   const queryPreparations = async ({
     fromDate,
     toDate,
@@ -112,21 +113,22 @@ const SingleCaseTypeDetails = () => {
       router.replace(`${pathname}${queryString}`);
       if (response.status == 200 || response?.status == 201) {
         await getAllCaseTypes(queryParams?.case_type_id);
-        let filteredData = dataFilters(
-          response?.data,
-          queryParams?.order_by,
-          queryParams?.order_type,
-          queryParams?.search
-        );
-        let uniqueMonths = getUniqueMonths(filteredData);
+        setCompleteData(response?.data);
+
+        // let filteredData = dataFilters(
+        //   response?.data,
+        //   queryParams?.order_by,
+        //   queryParams?.order_type,
+        //   queryParams?.search
+        // );
+        let uniqueMonths = getUniqueMonths(response?.data);
         setHeaderMonths(uniqueMonths);
-        setCompleteData(filteredData);
-        let groupedData = groupDataForVolume(filteredData);
+        let groupedData = groupDataForVolume(response?.data);
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.facility_name.localeCompare(b.facility_name);
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        const groupedDataSum = groupDatasumValue(filteredData);
+        const groupedDataSum = groupDatasumValue(response?.data);
         setCaseTypeFacilityDetails(modifieData);
         setMonthWiseTotalSum(groupedDataSum);
       }
@@ -159,6 +161,7 @@ const SingleCaseTypeDetails = () => {
       const formattedMonth = month.replace(/\s/g, "");
       groupedData[facility_id][formattedMonth] = total_cases;
     });
+    console.log(groupedData, "939332030");
     return groupedData;
   };
 
@@ -225,6 +228,7 @@ const SingleCaseTypeDetails = () => {
     orderBy: string;
     orderType: "asc" | "desc";
   }>) => {
+    console.log("Fdsajds", orderBy);
     const queryParams: any = {
       ...(search && { search }),
       ...(orderBy && { order_by: orderBy }),
@@ -238,20 +242,14 @@ const SingleCaseTypeDetails = () => {
 
     router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
     let filteredData: any = [...completeData];
-    filteredData = dataFilters(filteredData, orderBy, orderType, search);
     // Group and process data
-    const groupedData = groupDataForVolume(filteredData);
-    const sortedGroupedData = Object.values(groupedData).sort(
-      (a: any, b: any) => a.facility_name.localeCompare(b.facility_name)
-    );
-    const modifiedData = addSerial(
-      sortedGroupedData,
-      1,
-      sortedGroupedData?.length
-    );
+    let groupedData = groupDataForVolume(filteredData);
+    console.log(groupedData, "13245==");
+    groupedData = dataFilters(groupedData, orderBy, orderType, search);
+    console.log(groupedData, "77732773");
+    const modifiedData = addSerial(groupedData, 1, groupedData?.length);
     const groupedDataSum = groupDatasumValue(filteredData);
 
-    // Update states or perform further operations
     setCaseTypeFacilityDetails(modifiedData);
     setMonthWiseTotalSum(groupedDataSum);
   };
@@ -269,7 +267,7 @@ const SingleCaseTypeDetails = () => {
         );
       }
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     setSearchParams(
@@ -306,6 +304,7 @@ const SingleCaseTypeDetails = () => {
               setSelectedCaseType={setSelectedCaseType}
               searchParams={searchParams}
               caseTypeOptions={caseTypeOptions}
+              headerMonths={headerMonths}
             />
           </div>
         </div>
@@ -326,6 +325,7 @@ const SingleCaseTypeDetails = () => {
                 completeData={completeData}
                 groupDatasumValue={groupDatasumValue}
                 setCaseTypeFacilityDetails={setCaseTypeFacilityDetails}
+                onUpdateData={onUpdateData}
               />
             </Grid>
           </Grid>
