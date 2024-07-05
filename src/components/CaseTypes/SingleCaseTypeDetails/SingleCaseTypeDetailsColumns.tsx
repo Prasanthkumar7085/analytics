@@ -46,7 +46,7 @@ export const singleCasetypeColumns = (searchParams: any, router: any) => {
     {
       accessorFn: (row: any) => row.sales_rep_name,
       id: "sales_rep_name",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>SALES REP</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>MARKETER</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
       maxWidth: "220px",

@@ -43,8 +43,6 @@ const SingleCaseTypeDetails = () => {
   const [completeData, setCompleteData] = useState([]);
   const [caseTypeOptions, setCaseTypeOptions] = useState<any>([]);
 
-  console.log(caseTypeFacilityDetails, "fdiuwe");
-  console.log(monthWiseTotalSum, "-----32");
   const queryPreparations = async ({
     fromDate,
     toDate,

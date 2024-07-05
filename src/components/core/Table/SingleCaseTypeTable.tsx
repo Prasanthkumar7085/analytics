@@ -106,7 +106,6 @@ const SingleCaseTypeTable: FC<pageProps> = ({
     );
   };
   const sortAndGetData = (header: any) => {
-    console.log(header.id, "737773273277");
     if (removeSortingForColumnIds.includes(header.id)) {
       return;
     }
