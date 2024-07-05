@@ -357,10 +357,13 @@ const CaseTypes = () => {
     if (searchParams["to_date"]) {
       queryParams["to_date"] = searchParams["to_date"] || defaulttoDate;
     }
+    if (id) {
+      queryParams["case_type_id"] = id;
+    }
     if (Object.keys(queryParams)?.length) {
       queryString = prepareURLEncodedParams("", queryParams);
     }
-    router.push(`/case-types/${id}/${queryString}`);
+    router.push(`/case-type/${queryString}`);
   };
 
   useEffect(() => {

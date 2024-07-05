@@ -161,15 +161,13 @@ export const getMonthWiseVolumeCaseTypesForSinglePageFacilitiesAPI = async ({
 };
 
 export const getSingleCaseTypeMonthWiseFacilityDetailsAPI = async ({
-  id,
   queryParams,
 }: {
-  id: any;
   queryParams: any;
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/case-types/${id}/facilities/months/volume`,
+      `/case-types/facilities/months/volume`,
       queryParams
     );
     if (!success) {

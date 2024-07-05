@@ -1,19 +1,26 @@
+import { addSerial } from "@/lib/Pipes/addSerial";
+import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
+import {
+  changeDateToUTC,
+  getUniqueMonths,
+  rearrangeDataWithCasetypesInFilters,
+} from "@/lib/helpers/apiHelpers";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import {
+  getAllCaseTypesListAPI,
+  getSingleCaseTypeMonthWiseFacilityDetailsAPI,
+} from "@/services/caseTypesAPIs";
+import { ArrowBack } from "@mui/icons-material";
+import { Grid } from "@mui/material";
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation";
-import { ArrowBack } from "@mui/icons-material";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import { changeDateToUTC, getUniqueMonths } from "@/lib/helpers/apiHelpers";
 import { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
-import { getSingleCaseTypeMonthWiseFacilityDetailsAPI } from "@/services/caseTypesAPIs";
-import { addSerial } from "@/lib/Pipes/addSerial";
 import SingleCaseTypeFacilitiesTable from "./SingleCaseTypeFacilityDetails";
-import GlobalCaseTypesAutoComplete from "@/components/core/GlobalCaseTypesAutoComplete";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import SingleCaseTypeFilters from "./SingleCaseTypeFilters";
 
 const SingleCaseTypeDetails = () => {
   const router = useRouter();
@@ -24,6 +31,7 @@ const SingleCaseTypeDetails = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
+  const [search, setSearch] = useState("");
   const [caseTypeFacilityDetails, setCaseTypeFacilityDetails] = useState<any>(
     []
   );
@@ -33,26 +41,35 @@ const SingleCaseTypeDetails = () => {
   const [monthWiseTotalSum, setMonthWiseTotalSum] = useState<any>([]);
   const [selectedCaseType, setSelectedCaseType] = useState<any>(null);
   const [completeData, setCompleteData] = useState([]);
+  const [caseTypeOptions, setCaseTypeOptions] = useState<any>([]);
 
   const queryPreparations = async ({
     fromDate,
     toDate,
+    case_id = searchParams?.case_type_id,
+    searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
   }: any) => {
     let queryParams: any = {};
-
+    console.log(fromDate, "3rewiewi");
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    if (searchValue) {
+      queryParams["search"] = searchValue;
+    }
     if (orderBy) {
       queryParams["order_by"] = orderBy;
     }
     if (orderType) {
       queryParams["order_type"] = orderType;
+    }
+    if (case_id) {
+      queryParams["case_type_id"] = case_id;
     }
     try {
       await getSingleCaseTypeDetails(queryParams);
@@ -63,28 +80,55 @@ const SingleCaseTypeDetails = () => {
     }
   };
 
+  //get all case types list details for autocomplete
+  const getAllCaseTypes = async (case_id: any) => {
+    try {
+      let response = await getAllCaseTypesListAPI();
+      if (response.success) {
+        let rearrangedData = rearrangeDataWithCasetypesInFilters(
+          response?.data
+        );
+        setCaseTypeOptions(rearrangedData);
+        if (case_id) {
+          let caseOption: any = response?.data?.find(
+            (item: any) => item?.id == case_id
+          );
+          setSelectedCaseType(caseOption);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   //get single Case type details
   const getSingleCaseTypeDetails = async (queryParams: any) => {
     setLoading(true);
     try {
       const response = await getSingleCaseTypeMonthWiseFacilityDetailsAPI({
-        id,
         queryParams,
       });
       let queryString = prepareURLEncodedParams("", queryParams);
-      router.push(`${pathname}${queryString}`);
+      router.replace(`${pathname}${queryString}`);
       if (response.status == 200 || response?.status == 201) {
-        let uniqueMonths = getUniqueMonths(response?.data);
+        await getAllCaseTypes(queryParams?.case_type_id);
+        let filteredData = dataFilters(
+          response?.data,
+          queryParams?.order_by,
+          queryParams?.order_type,
+          queryParams?.search
+        );
+        let uniqueMonths = getUniqueMonths(filteredData);
         setHeaderMonths(uniqueMonths);
-        let groupedData = groupDataForVolume(response?.data);
+        setCompleteData(filteredData);
+        let groupedData = groupDataForVolume(filteredData);
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.facility_name.localeCompare(b.facility_name);
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        const groupedDataSum = groupDatasumValue(response?.data);
+        const groupedDataSum = groupDatasumValue(filteredData);
         setCaseTypeFacilityDetails(modifieData);
         setMonthWiseTotalSum(groupedDataSum);
-        setCompleteData(modifieData);
       }
     } catch (err) {
       console.error(err);
@@ -152,27 +196,92 @@ const SingleCaseTypeDetails = () => {
     });
   };
 
-  const onChangeData = (fromDate: any, toDate: any) => {
-    if (fromDate) {
-      setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
-      queryPreparations({ fromDate: fromDate, toDate: toDate });
-    } else {
-      setDateFilterDefaultValue([]);
-      queryPreparations({ fromDate: "", toDate: "" });
+  const dataFilters = (
+    data: any,
+    orderBy: string,
+    orderType: any,
+    search: any
+  ) => {
+    if (search) {
+      const searchTerm = search.toLowerCase().trim();
+      data = data.filter(
+        (item: any) =>
+          item.sales_rep_name?.toLowerCase().includes(searchTerm) ||
+          item.facility_name?.toLowerCase().includes(searchTerm)
+      );
     }
+    if (orderBy && orderType) {
+      data = sortAndGetData(data, orderBy, orderType);
+    }
+    return data;
   };
+
+  const onUpdateData = ({
+    search = searchParams?.search,
+    orderBy = searchParams?.order_by,
+    orderType = searchParams?.order_type as "asc" | "desc",
+  }: Partial<{
+    search: any;
+    orderBy: string;
+    orderType: "asc" | "desc";
+  }>) => {
+    const queryParams: any = {
+      ...(search && { search }),
+      ...(orderBy && { order_by: orderBy }),
+      ...(orderType && { order_type: orderType }),
+      ...(searchParams?.from_date && { from_date: searchParams?.from_date }),
+      ...(searchParams?.to_date && { to_date: searchParams?.to_date }),
+      ...(searchParams?.case_type_id && {
+        case_type_id: searchParams?.case_type_id,
+      }),
+    };
+
+    router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
+    let filteredData: any = [...completeData];
+    filteredData = dataFilters(filteredData, orderBy, orderType, search);
+    // Group and process data
+    const groupedData = groupDataForVolume(filteredData);
+    const sortedGroupedData = Object.values(groupedData).sort(
+      (a: any, b: any) => a.facility_name.localeCompare(b.facility_name)
+    );
+    const modifiedData = addSerial(
+      sortedGroupedData,
+      1,
+      sortedGroupedData?.length
+    );
+    const groupedDataSum = groupDatasumValue(filteredData);
+
+    // Update states or perform further operations
+    setCaseTypeFacilityDetails(modifiedData);
+    setMonthWiseTotalSum(groupedDataSum);
+  };
+
   useEffect(() => {
-    queryPreparations({
-      fromDate: searchParams?.from_date,
-      toDate: searchParams?.to_date,
-    });
-  }, []);
+    if (searchParams?.case_type_id) {
+      queryPreparations({
+        fromDate: searchParams?.from_date,
+        toDate: searchParams?.to_date,
+        case_id: searchParams?.case_type_id,
+      });
+      if (searchParams?.from_date) {
+        setDateFilterDefaultValue(
+          changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+        );
+      }
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
 
   return (
     <div>
       <div className="salesPersonDataDetails">
         <div className="personDetails">
-          <div className="grid grid-cols-2 w-full items-center">
+          <div className="grid grid-cols-2">
             <div className="gridItem flex items-center">
               <div
                 onClick={() => router.back()}
@@ -182,21 +291,22 @@ const SingleCaseTypeDetails = () => {
               </div>
               <div className="person flex items-center mr-10">
                 <div className="pl-3">
-                  <p className="m-0">ssss</p>
+                  <p className="m-0">Case Type Facility Details</p>
                 </div>
               </div>
             </div>
-
-            <div className="gridItem flex justify-end ">
-              <GlobalCaseTypesAutoComplete
-                selectedCaseValue={selectedCaseType}
-                setSelectedCaseValue={setSelectedCaseType}
-              />
-              <GlobalDateRangeFilter
-                onChangeData={onChangeData}
-                dateFilterDefaultValue={dateFilterDefaultValue}
-              />
-            </div>
+            <SingleCaseTypeFilters
+              onUpdateData={onUpdateData}
+              queryPreparations={queryPreparations}
+              dateFilterDefaultValue={dateFilterDefaultValue}
+              setDateFilterDefaultValue={setDateFilterDefaultValue}
+              caseTypeFacilityDetails={caseTypeFacilityDetails}
+              totalSumValue={monthWiseTotalSum}
+              selectedCaseType={selectedCaseType}
+              setSelectedCaseType={setSelectedCaseType}
+              searchParams={searchParams}
+              caseTypeOptions={caseTypeOptions}
+            />
           </div>
         </div>
         <div

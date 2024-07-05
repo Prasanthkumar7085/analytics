@@ -4,12 +4,12 @@ import type { NextRequest } from "next/server";
 const protectedRoutes = [
   "/dashboard",
   "/sales-representatives",
-  "/case-types",
+  "/case-types/",
   "/sales-representatives/",
   "/insurances",
   "/facilities",
   "/target-status",
-  "/sales-targets"
+  "/sales-targets",
 ];
 
 const unProtectedRoutes = ["/signin"];
@@ -28,7 +28,6 @@ const getUserIdIfSalesRep = (req: NextRequest) => {
   return userId;
 };
 
-
 const userAllowedRoutes = {
   MARKETER: ["/sales-representatives/", "/insurances/", "/facilities/"],
   HOSPITAL_MARKETING_MANAGER: [
@@ -36,6 +35,7 @@ const userAllowedRoutes = {
     "/dashboard",
     "/insurances/",
     "/facilities/",
+    "/case-types",
   ],
 };
 
@@ -65,7 +65,6 @@ export default function middleware(req: NextRequest) {
     return NextResponse.redirect(absoluteURL.toString());
   }
 
-
   if (
     isAuthenticated(req) &&
     unProtectedRoutes.includes(req.nextUrl.pathname)
@@ -82,7 +81,6 @@ export default function middleware(req: NextRequest) {
     }
   }
 
-
   if (req.nextUrl.pathname == "/") {
     const absoluteURL = new URL("/signin", req.nextUrl.origin);
     return NextResponse.redirect(absoluteURL.toString());
@@ -92,7 +90,6 @@ export default function middleware(req: NextRequest) {
     containsSubstring(req.nextUrl.pathname, protectedRoutes) &&
     getIsSalesRepAndAccessingOtherPageOrNot(req)
   ) {
-
     const absoluteURL = new URL(
       `/sales-representatives/${getUserIdIfSalesRep(req)}`,
       req.nextUrl.origin

@@ -5,7 +5,7 @@ import CaseTypesColumnTable from "../caseTypesColumnTable";
 import { singleCasetypeColumns } from "./SingleCaseTypeDetailsColumns";
 import { Backdrop } from "@mui/material";
 import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFacilities";
-import { graphColors } from "@/lib/constants";
+import { colorCodes, graphColors } from "@/lib/constants";
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 import SingleCaseTypeTable from "@/components/core/Table/SingleCaseTypeTable";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
@@ -56,9 +56,11 @@ const SingleCaseTypeFacilitiesTable = ({
 
       cell: (info: any) => {
         let data = { ...info.row.original };
-        delete data?.case_type_id;
-        delete data?.case_type_name;
+        delete data?.facility_id;
+        delete data?.facility_name;
         delete data?.serial;
+        delete data?.sales_rep_name;
+        delete data?.sales_rep_id;
         return (
           <div
             style={{ cursor: "pointer" }}
@@ -66,12 +68,12 @@ const SingleCaseTypeFacilitiesTable = ({
               setGraphDialogOpen(true);
               setSelectedGraphData(info.row.original);
               setGraphValuesData(data);
-              setGraphColor(graphColors[info.row.original.case_type_name]);
+              setGraphColor(colorCodes[info.row.original.serial]);
             }}
           >
             <AreaGraphForFacilities
               data={data}
-              graphColor={graphColors[info.row.original.case_type_name]}
+              graphColor={colorCodes[info.row.original.serial]}
             />
           </div>
         );
