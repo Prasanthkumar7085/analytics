@@ -1,5 +1,6 @@
 import * as XLSX from "xlsx-color";
 import { formatMonthYear } from "./apiHelpers";
+import datePipe from "../Pipes/datePipe";
 function sortChronological(data: any) {
   const keys = Object.keys(data).filter(
     (key) => Array.isArray(data[key]) && key !== "rowTotal"
@@ -239,8 +240,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -318,8 +319,8 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -400,8 +401,8 @@ export const exportToExcelSalesRepTable = (
       obj.role_id == 1
         ? "Territory Manager"
         : obj.role_id == 2
-        ? "Regional Director"
-        : "Sales Director",
+          ? "Regional Director"
+          : "Sales Director",
       obj.total_facilities || 0,
       obj.active_facilities || 0,
       obj.total_targets || 0,
@@ -485,8 +486,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -517,8 +518,8 @@ export const exportToExcelTeamSalesRepTable = (
         obj.role_id == 1
           ? "Territory Manager"
           : obj.role_id == 2
-          ? "Regional Director"
-          : "Sales Director",
+            ? "Regional Director"
+            : "Sales Director",
         obj.total_facilities || 0,
         obj.active_facilities || 0,
         obj.total_targets || 0,
@@ -536,8 +537,8 @@ export const exportToExcelTeamSalesRepTable = (
           teamMember.role_id == 1
             ? "Territory Manager"
             : teamMember.role_id == 2
-            ? "Regional Director"
-            : "Sales Director",
+              ? "Regional Director"
+              : "Sales Director",
           teamMember.total_facilities || 0,
           teamMember.active_facilities || 0,
           teamMember.total_targets || 0,
@@ -665,8 +666,8 @@ export const exportToExcelTeamSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
         font: {
@@ -1618,3 +1619,43 @@ export const exportToExcelInsuranceCaseTypeTable = (
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   XLSX.writeFile(workbook, "insurance-case-type-table.xlsx");
 };
+
+export const exportPatientResultsTable = (
+  patientResultsData: any
+) => {
+  const formattedData: any = [];
+  Object.keys(patientResultsData).forEach((title, index) => {
+    const headers = ["Result Code", "Ref Range & Units", ...patientResultsData[title].map((result: any) => datePipe(result.date, "MM-DD-YYYY"))];
+    formattedData.push(headers);
+
+    const testResults = patientResultsData[title][0].results;
+    testResults.forEach((test: any, testIndex: any) => {
+      const row = [test.result_name, test.reference_range, ...patientResultsData[title].map((result: any) => result.results[testIndex]?.result || '')];
+      formattedData.push(row);
+    });
+
+    formattedData.push([title]);
+  });
+
+  const worksheet = XLSX.utils.aoa_to_sheet(formattedData);
+
+  formattedData.forEach((row: any, rowIndex: any) => {
+    if (rowIndex === 0 || rowIndex % (patientResultsData[Object.keys(patientResultsData)[0]][0].results.length + 2) === 0) {
+      row.forEach((_: any, colIndex: any) => {
+        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex, c: colIndex });
+        if (!worksheet[cellAddress]) {
+          worksheet[cellAddress] = { t: 's', v: '', s: {} };
+        }
+        worksheet[cellAddress].s = {
+          fill: {
+            fgColor: { rgb: "f0edff" },
+          },
+        };
+      });
+    }
+  });
+
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Patient Results");
+  XLSX.writeFile(workbook, "patient_results.xlsx");
+}

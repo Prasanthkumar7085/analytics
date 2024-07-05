@@ -1,14 +1,13 @@
-"use client"
-import { Autocomplete, Button, TextField } from "@mui/material";
-import Container from "@mui/material/Container";
+"use client";
+import { Autocomplete, Button, Menu, MenuItem, TextField } from "@mui/material";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ReactDOMServer from "react-dom/server";
+import { exportPatientResultsTable } from "@/lib/helpers/exportsHelpers";
 import datePipe from "@/lib/Pipes/datePipe";
 import { getAllPatientNamesAPI, getAllPatientResultsAPI, getSinglePatientResultAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
-import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientResultsExport from "./PatientResultsExport";
 
@@ -28,6 +27,16 @@ const PatientResultTable = () => {
   const sortedPatientNames = [...patientNames].sort((a, b) =>
     a.localeCompare(b)
   );
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const getPatientResults = async ({ patient_id, result_name }: any) => {
     setLoading(true);
@@ -158,17 +167,7 @@ const PatientResultTable = () => {
 
     const htmlString = ReactDOMServer.renderToString(downloadRefElement);
 
-    // const printWindow: any = window.open("", "blank");
-    // console.log(printWindow.document);
-
-    // printWindow.documet?.write(htmlString);
-    // printWindow.document.close(); // necessary for IE >= 10
-    // setTimeout(() => {
-    //   printWindow.focus(); // necessary for IE >= 10*/
-    //   printWindow.print();
-    //   printWindow.close();
-    // }, 100);
-    print(htmlString)
+    print(htmlString);
   };
 
   const print = (htmlString: string) => {
@@ -196,6 +195,8 @@ const PatientResultTable = () => {
       console.error("An error occurred while writing to the document:", error);
     }
   };
+
+
   return (
     <div style={{ paddingTop: "10px" }}>
       <div className="subNavBar">
@@ -269,9 +270,31 @@ const PatientResultTable = () => {
           )}
           style={{ width: 300 }}
         />
-        <Button className="bacKBtn" variant="contained" onClick={downloadAsPdf}>
-          Export
-        </Button>
+        {patientsData?.length ? (
+          <Button
+            className="bacKBtn"
+            variant="contained"
+            onClick={handleMenuClick}
+          >
+            Export
+          </Button>
+        ) : (
+          ""
+        )}
+        <Menu
+          id="export-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={() => { handleMenuClose(); downloadAsPdf(); }}>Export as PDF</MenuItem>
+          <MenuItem onClick={() => {
+            handleMenuClose();
+            exportPatientResultsTable(
+              patientResultsData
+            );
+          }}>Export as Excel</MenuItem>
+        </Menu>
       </div>
       <>
         <PatientResultsExport

@@ -1,10 +1,10 @@
 "use client"
 import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { getAllPatientDetailsAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientDetails from "./PatientDetails";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { addSerial } from "@/lib/Pipes/addSerial";
 
 const PatientResults = () => {
