@@ -1,6 +1,6 @@
 import { gotoSingleFacilityPage } from "@/lib/helpers/navigations";
 
-export const singleCasetypeColumns = (params: any, router: any) => {
+export const singleCasetypeColumns = (searchParams: any, router: any) => {
   return [
     {
       accessorFn: (row: any) => row.serial,
@@ -33,10 +33,9 @@ export const singleCasetypeColumns = (params: any, router: any) => {
             onClick={() => {
               gotoSingleFacilityPage(
                 info.row.original.facility_id,
-                params,
+                searchParams,
                 router
               );
-              // goToSingleFacilityPage(info.row.original.facility_id);
             }}
           >
             {info.row.original.facility_name}
@@ -57,7 +56,11 @@ export const singleCasetypeColumns = (params: any, router: any) => {
           <span
             style={{ cursor: "pointer" }}
             onClick={() => {
-              // goToSingleFacilityPage(info.row.original.facility_id);
+              gotoSingleFacilityPage(
+                info.row.original.facility_id,
+                searchParams,
+                router
+              );
             }}
           >
             {info.row.original.sales_rep_name}

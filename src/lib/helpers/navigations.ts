@@ -44,10 +44,10 @@ export const gotoSingleCaseTypeDetails = (
     from_date: defaultfromDate,
     to_date: defaulttoDate,
   };
-  if (searchParams["from_date"]) {
+  if (searchParams?.["from_date"]) {
     queryParams["from_date"] = searchParams["from_date"] || defaultfromDate;
   }
-  if (searchParams["to_date"]) {
+  if (searchParams?.["to_date"]) {
     queryParams["to_date"] = searchParams["to_date"] || defaulttoDate;
   }
   if (id) {
@@ -61,7 +61,7 @@ export const gotoSingleCaseTypeDetails = (
 
 export const gotoSingleFacilityPage = (
   Id: string,
-  params: any,
+  searchParams: any,
   router: any
 ) => {
   let queryString = "";
@@ -88,15 +88,61 @@ export const gotoSingleFacilityPage = (
     from_date: defaultfromDate,
     to_date: defaulttoDate,
   };
-  if (params.get("from_date")) {
-    queryParams["from_date"] = params.get("from_date") || defaultfromDate;
+  if (searchParams?.["from_date"]) {
+    queryParams["from_date"] = searchParams?.["from_date"] || defaultfromDate;
   }
-  if (params.get("to_date")) {
-    queryParams["to_date"] = params.get("to_date") || defaulttoDate;
+  if (searchParams?.["to_date"]) {
+    queryParams["to_date"] = searchParams?.["to_date"] || defaulttoDate;
   }
   if (Object.keys(queryParams)?.length) {
     queryString = prepareURLEncodedParams("", queryParams);
   }
 
   router.push(`/facilities/${Id}${queryString}`);
+};
+
+//go to single sales rep page navigation event
+const gotoSingleSalesRepPage = (Id: string, searchParams: any, router: any) => {
+  let queryString = "";
+  let thisMonth =
+    dayjs(startOfMonth(new Date())).format("YYYY-MM-DD") ==
+    dayjs().format("YYYY-MM-DD")
+      ? [
+          startOfMonth(addMonths(new Date(), -1)),
+          endOfMonth(addMonths(new Date(), -1)),
+        ]
+      : [startOfMonth(new Date()), new Date()];
+  let defaultfromDate = new Date(
+    Date.UTC(
+      thisMonth[0].getFullYear(),
+      thisMonth[0].getMonth(),
+      thisMonth[0].getDate()
+    )
+  )
+    .toISOString()
+    .substring(0, 10);
+  let defaulttoDate = new Date(
+    Date.UTC(
+      thisMonth[1].getFullYear(),
+      thisMonth[1].getMonth(),
+      thisMonth[1].getDate()
+    )
+  )
+    .toISOString()
+    .substring(0, 10);
+  const queryParams: any = {
+    from_date: defaultfromDate,
+    to_date: defaulttoDate,
+  };
+  if (searchParams?.["from_date"]) {
+    queryParams["from_date"] = searchParams?.["from_date"] || defaultfromDate;
+  }
+  if (searchParams?.["to_date"]) {
+    queryParams["to_date"] = searchParams?.["to_date"] || defaulttoDate;
+  }
+  if (Object.keys(queryParams)?.length) {
+    queryString = prepareURLEncodedParams("", queryParams);
+  }
+
+  router.push(`/sales-representatives/${Id}${queryString}`);
 };

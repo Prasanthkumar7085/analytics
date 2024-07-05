@@ -21,7 +21,6 @@ const SingleCaseTypeFacilitiesTable = ({
 }: any) => {
   const router = useRouter();
   const pathname = usePathname();
-  const params = useParams();
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [selectedGrpahData, setSelectedGraphData] = useState<any>({});
   const [graphValuesData, setGraphValuesData] = useState<any>({});
@@ -79,7 +78,7 @@ const SingleCaseTypeFacilitiesTable = ({
   ];
 
   let tableColoumns = [
-    ...singleCasetypeColumns(params, router),
+    ...singleCasetypeColumns(searchParams, router),
     ...addtionalcolumns,
     ...graphColoumn,
   ];
