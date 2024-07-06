@@ -1,7 +1,7 @@
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
-import { RevenueOverViewcolumns } from "@/components/core/TableColumns/OverViewCaseTypesTableColumns";
+import { BilledOverViewcolumns } from "@/components/core/TableColumns/OverViewCaseTypesTableColumns";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const BillingOverViewCaseTypes = ({
-  caseTypesStatsData,
+  caseTypesWiseStatsData,
   loading,
   totalRevenueSum,
   tabValue,
@@ -26,7 +26,6 @@ const BillingOverViewCaseTypes = ({
   queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
-  dayWiseTargetsEnable,
 }: any) => {
   const params = useSearchParams();
   const pathName = usePathname();
@@ -53,11 +52,11 @@ const BillingOverViewCaseTypes = ({
           name: item["case_type_name"],
           y:
             tabValue == "Revenue"
-              ? item["generated_amount"]
-                ? +item["generated_amount"]
+              ? item["received_amount"]
+                ? +item["received_amount"]
                 : 0
-              : item["total_cases"]
-              ? +item["total_cases"]
+              : item["billed_amount"]
+              ? +item["billed_amount"]
               : 0,
         });
       });
@@ -66,9 +65,9 @@ const BillingOverViewCaseTypes = ({
   };
 
   function getSubtitle() {
-    const totalNumber = 3;
+    const totalNumber = totalRevenueSum?.[2]?.value;
     return `<span style="font-size: 6px,margin-left:"45px">${
-      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+      tabValue == "Revenue" ? "Total Received" : "Total Billed"
     }</span>
         <br>
         <span style="font-size: 13px;">
@@ -82,7 +81,7 @@ const BillingOverViewCaseTypes = ({
     chart: {
       type: "pie",
     },
-    colors: caseTypesStatsData?.map(
+    colors: caseTypesWiseStatsData?.map(
       (item: any) => graphColors[item?.case_type_name]
     ),
     subtitle: {
@@ -99,22 +98,13 @@ const BillingOverViewCaseTypes = ({
       formatter: function (
         this: Highcharts.TooltipFormatterContextObject | any
       ): string {
-        if (tabValue == "Revenue")
-          return (
-            this.point.name +
-            "<b>" +
-            ": $" +
-            Highcharts.numberFormat(this.point.y, 2, ".", ",") +
-            "<b>"
-          );
-        else
-          return (
-            this.point.name +
-            ":" +
-            "<b>" +
-            Highcharts.numberFormat(this.point.y, 0, ".", ",") +
-            "</b>"
-          );
+        return (
+          this.point.name +
+          "<b>" +
+          ": $" +
+          Highcharts.numberFormat(this.point.y, 2, ".", ",") +
+          "<b>"
+        );
       },
     },
     plotOptions: {
@@ -130,9 +120,9 @@ const BillingOverViewCaseTypes = ({
     },
     series: [
       {
-        name: "Total cases",
+        name: "Total Billed",
         colorByPoint: true,
-        data: modifyData(caseTypesStatsData),
+        data: modifyData(caseTypesWiseStatsData),
       },
     ],
   };
@@ -170,20 +160,13 @@ const BillingOverViewCaseTypes = ({
           >
             <ExportButton
               onClick={() => {
-                if (dayWiseTargetsEnable) {
-                  exportToExcelCaseTypesVolumes(
-                    caseTypesStatsData,
-                    totalRevenueSum
-                  );
-                } else {
-                  exportToExcelCaseTypesVolumesWithoutDayWiseTargets(
-                    caseTypesStatsData,
-                    totalRevenueSum
-                  );
-                }
+                exportToExcelCaseTypesVolumesWithoutDayWiseTargets(
+                  caseTypesWiseStatsData,
+                  totalRevenueSum
+                );
               }}
               disabled={
-                caseTypesStatsData?.length === 0 || tabValue == "Revenue"
+                caseTypesWiseStatsData?.length === 0 || tabValue == "Revenue"
                   ? true
                   : false
               }
@@ -206,8 +189,8 @@ const BillingOverViewCaseTypes = ({
               />
             </div>
             <TanStackTableComponent
-              data={caseTypesStatsData}
-              columns={RevenueOverViewcolumns}
+              data={caseTypesWiseStatsData}
+              columns={BilledOverViewcolumns}
               totalSumValues={totalRevenueSum}
               loading={loading}
             />

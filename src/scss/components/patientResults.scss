@@ -29,6 +29,11 @@
         }
 
         .namesData {
+          &.patientLabel {
+            display: flex;
+            flex-direction: column;
+          }
+
           .label {
             font-size: 13px;
             color: #606266;
@@ -220,10 +225,79 @@
   margin-right: 1rem;
   box-shadow: none;
 
+
   &:hover {
     background-color: #273480;
     color: #fff;
     border: 1px solid #273480;
     box-shadow: none;
+  }
+}
+
+.btnWithDisabled {
+  color: #fff !important;
+  background-color: #273480;
+  border: 1px solid #273480;
+  min-height: 35px;
+  padding: 0 10px;
+  border-radius: 4px;
+  margin-right: 1rem;
+  box-shadow: none;
+  cursor: not-allowed !important;
+  pointer-events: inherit !important;
+
+  &:hover {
+    background-color: #273480;
+    color: #fff;
+    border: 1px solid #273480;
+    box-shadow: none;
+  }
+}
+
+
+
+#patientDetails {
+
+  .subNavBar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .eachBlocks {
+      img {
+        width: 16px;
+        margin-top: -4px;
+      }
+    }
+
+  }
+
+  .patientDetailsTable {
+    max-height: 500px;
+
+    table {
+      border: 1px solid #eff1fa;
+
+      tfoot {
+        display: none;
+      }
+    }
+  }
+
+  table {
+    tr {
+
+      td,
+      th {
+        &:first-child {
+          width: 60px !important;
+          max-width: 60px !important;
+        }
+      }
+    }
+  }
+
+  .no-data-text {
+    font-size: 1.75em;
+    font-weight: 600;
   }
 }

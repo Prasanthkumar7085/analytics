@@ -1,24 +1,26 @@
 "use client";
 import { Button, TextField } from "@mui/material";
 import Container from "@mui/material/Container";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import datePipe from "@/lib/Pipes/datePipe";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
-
+import { useEffect } from 'react';
 
 const PatientDetails = ({
   getDetails,
   getPatientDetails,
+  setFirstName,
+  firstName,
+  setLastName,
+  lastName,
+  setDateOfBirth,
+  dateOfBirth
 }: any) => {
   const router = useRouter();
-
-  const [firstName, setFirstName] = useState<any>("");
-  const [lastName, setLastName] = useState<any>("");
-  const [dateOfBirth, setDateOfBirth] = useState<any>("");
+  const params = useSearchParams();
 
   const onChangeDateOfBirth = (date: any) => {
     setDateOfBirth(date);
@@ -26,13 +28,26 @@ const PatientDetails = ({
 
   let dateFormat = datePipe(dateOfBirth, "YYYY-MM-DD");
 
-  const Revenuecolumns = [
+  const patientcolumns = [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      enableSorting: false,
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      cell: ({ row, table }: any) =>
+        (table
+          .getSortedRowModel()
+          ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
+        1,
+    },
     {
       accessorFn: (row: any) => row.patient_id,
       id: "patient_id",
       header: () => <span>PATIENT ID</span>,
       cell: (info: any) => {
-        return <span>{info.getValue()}</span>;
+        return <span>{info.getValue() ? info.getValue() : "--"}</span>;
       },
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -41,7 +56,7 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.first_name,
       id: "first_name",
       sortDescFirst: false,
-      cell: (info: any) => <span>{info.getValue()}</span>,
+      cell: (info: any) => <span>{info.getValue() ? info.getValue() : "--"}</span>,
       header: () => <span>FIRST NAME</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -50,7 +65,7 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.last_name,
       sortDescFirst: false,
       id: "last_name",
-      cell: (info: any) => <span>{info.getValue()}</span>,
+      cell: (info: any) => <span>{info.getValue() ? info.getValue() : "--"}</span>,
       header: () => <span>LAST NAME</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -60,7 +75,7 @@ const PatientDetails = ({
       sortDescFirst: false,
       id: "date_of_birth",
       cell: (info: any) => (
-        <span>{datePipe(info.getValue(), "MM-DD-YYYY")}</span>
+        <span>{datePipe(info.getValue() ? info.getValue() : "--", "MM-DD-YYYY")}</span>
       ),
       header: () => <span>DATE OF BIRTH</span>,
       footer: (props: any) => props.column.id,
@@ -69,7 +84,7 @@ const PatientDetails = ({
     {
       accessorFn: (row: any) => row,
       sortDescFirst: false,
-      id: "action",
+      id: "actions",
       cell: (info: any) => (
         <span>
           <Button
@@ -87,73 +102,112 @@ const PatientDetails = ({
       width: "150px",
     },
   ];
+  useEffect(() => {
+    document.body.classList.add('navbar-type-two', 'gray-bg');
+
+    // Clean up by removing the class when the component is unmounted
+    return () => {
+      document.body.classList.remove('navbar-type-two', 'gray-bg');
+    };
+  }, []);
 
   return (
-    <div>
-      <div className="navBarFiltersBlock" style={{ display: "flex", justifyContent: "center" }}>
-        <TextField
-          className="inputTextField"
-          id="outlined-size-small"
-          placeholder="First Name"
-          size="small"
-          value={firstName}
-          onChange={(e) => {
-            setFirstName(e.target.value);
-          }}
-        />
-        <TextField
-          className="inputTextField"
-          id="outlined-size-small"
-          placeholder="Last Name"
-          size="small"
-          value={lastName}
-          onChange={(e) => {
-            setLastName(e.target.value);
-          }}
-        />
-        <DatePicker
-          placeholder="Select Date of Birth"
-          value={dateOfBirth ? new Date(dateOfBirth) : null}
-          onChange={(newValue) => {
-            onChangeDateOfBirth(newValue);
-          }}
-        />
-        <Button
-          className="bacKBtn"
-          variant="outlined"
-          disabled={!(firstName || lastName || dateOfBirth)}
-          onClick={() => {
-            getPatientDetails({
-              first_name: firstName,
-              last_name: lastName,
-              date_of_birth: dateFormat,
-            });
-          }}
-        >
-          Get Details
-        </Button>
+    <section id="patientDetails">
+      <div className="subNavBar">
+        <div className="SubNavPointsBlock">
+          <div className="eachBlocks">
+            <Image alt="" src="/vector-patient.svg" height={20} width={20} />
+            <div className="namesData patientLabel">
+              <label className="label">First Name</label>
+              <TextField
+                className="inputTextField"
+                id="outlined-size-small"
+                placeholder="First Name"
+                size="small"
+                value={firstName}
+                onChange={(e) => {
+                  setFirstName(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <div className="eachBlocks">
+            <Image alt="" src="/vector-patient.svg" height={20} width={20} />
+            <div className="namesData patientLabel">
+              <label className="label">Last Name</label>
+              <TextField
+                className="inputTextField"
+                id="outlined-size-small"
+                placeholder="Last Name"
+                size="small"
+                value={lastName}
+                onChange={(e) => {
+                  setLastName(e.target.value);
+                }}
+              />
+            </div>
+          </div>
+          <div className="eachBlocks b-right">
+            <Image alt="" src="/calendar.svg" height={20} width={20} />
+            <div className="namesData patientLabel">
+              <label className="label">Date of Birth</label>
+              <DatePicker
+                placeholder="Select Date of Birth"
+                format="MM/dd/yyyy"
+                value={dateOfBirth ? new Date(dateOfBirth) : null}
+                onChange={(newValue) => {
+                  onChangeDateOfBirth(newValue);
+                }}
+              />
+            </div>
+          </div>
+          <Button
+            className={!(firstName || lastName || dateOfBirth) ? "btnWithDisabled" : "bacKBtn"}
+            // sx={{ cursor: !(firstName || lastName || dateOfBirth) ? "not-allowed" : "pointer" }}
+            variant="outlined"
+            disabled={!(firstName || lastName || dateOfBirth)}
+            onClick={() => {
+              getPatientDetails({
+                first_name: firstName,
+                last_name: lastName,
+                date_of_birth: dateFormat,
+              });
+            }}
+          >
+            Get Details
+          </Button>
+        </div>
       </div>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        {getDetails?.length ? (
-          <Container maxWidth="xl">
+      <div className="eachDataCard">
+        <div className="cardHeader">
+          <h3>
+            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+            Patient Details
+          </h3>
+        </div>
+        <div className="cardBody">
+          {getDetails?.length ? (
+
             <SingleColumnTable
               data={getDetails}
-              columns={Revenuecolumns}
+              columns={patientcolumns}
               loading={false}
             />
-          </Container>
 
-        ) : (
-          <Image
-            style={{ display: "flex" }}
-            src="/Search Image.svg"
-            alt=""
-            height={210}
-            width={510}
-          />
-        )}
+          ) : (
+            <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+              <Image
+                src="/Search Image.svg"
+                alt=""
+                height={210}
+                width={410}
+              />
+              <h3 className="no-data-text">No Data</h3>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 export default PatientDetails;

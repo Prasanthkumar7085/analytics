@@ -108,14 +108,14 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
               </div>
             </div>
 
-            <div className={styles.card11}>
+            {/* <div className={styles.card11}>
               <Image
                 alt=""
                 src="/sales-rep-stats.svg"
                 height={660}
                 width={660}
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

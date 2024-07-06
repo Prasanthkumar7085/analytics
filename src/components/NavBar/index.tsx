@@ -57,7 +57,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
   };
   return (
     <section>
-      <nav className={styles.primaryNavbar}>
+      <nav className={styles.primaryNavbar} id="navbar">
         <Container maxWidth="xl">
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
@@ -167,7 +167,6 @@ const NavBar: FC<pageProps> = ({ children }) => {
               </ul>
             </Grid>
           </Grid>
-
           <Menu
             sx={{
               mt: "45px",

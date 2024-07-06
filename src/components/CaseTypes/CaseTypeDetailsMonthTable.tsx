@@ -2,7 +2,7 @@ import {
   getMonthWiseRevenueCaseDetailsAPI,
   getMonthWiseVolumeCaseDetailsAPI,
 } from "@/services/caseTypesAPIs";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import TanStackTableComponent from "../core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
@@ -24,6 +24,7 @@ import AreaGraphForFacilities from "../core/AreaGraph/AreaGraphForFacilities";
 import ExportButton from "../core/ExportButton/ExportButton";
 import { exportToExcelCaseTypeTable } from "@/lib/helpers/exportsHelpers";
 import { useSelector } from "react-redux";
+import { gotoSingleCaseTypeDetails } from "@/lib/helpers/navigations";
 
 const CaseTypesDetailsMonthTable = ({
   tabValue,
@@ -32,6 +33,7 @@ const CaseTypesDetailsMonthTable = ({
   selectedDate,
 }: any) => {
   const { id } = useParams();
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [caseData, setCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -299,8 +301,21 @@ const CaseTypesDetailsMonthTable = ({
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              gotoSingleCaseTypeDetails(
+                info.row.original.case_type_id,
+                searchParams,
+                router
+              )
+            }
+          >
+            {info.getValue()}
+          </span>
+        );
       },
     },
   ];

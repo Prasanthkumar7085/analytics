@@ -276,6 +276,7 @@ const DashboardPage = () => {
             dateFilterDefaultValue={dateFilterDefaultValue}
             setDateFilterDefaultValue={setDateFilterDefaultValue}
             dayWiseTargetsEnable={dayWiseTargetsEnable}
+            searchParams={searchParams}
           />
         </Grid>
         <Grid item xs={12}>

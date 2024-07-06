@@ -1,10 +1,12 @@
 import { $fetch } from "@/lib/fetch";
 import { handleAPIErrorResponse } from "@/lib/httpErrorHandler";
 
-
 export const getAllCaseTypesAPI = async (updatedQueyParams: any) => {
   try {
-    const { data, success } = await $fetch.get("/case-types/stats", updatedQueyParams);
+    const { data, success } = await $fetch.get(
+      "/case-types/stats",
+      updatedQueyParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -43,7 +45,10 @@ export const getDashboardCaseTypesVolumeStatsAPI = async (params: any) => {
 
 export const getDashboardCaseTypesRevenueStatsAPI = async (params: any) => {
   try {
-    const { data, success } = await $fetch.get("/overview/case-types-revenue", params);
+    const { data, success } = await $fetch.get(
+      "/overview/case-types-revenue",
+      params
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -52,9 +57,15 @@ export const getDashboardCaseTypesRevenueStatsAPI = async (params: any) => {
     throw err;
   }
 };
-export const getMonthWiseVolumeCaseDetailsAPI = async (pageName: string, queryParams: any) => {
+export const getMonthWiseVolumeCaseDetailsAPI = async (
+  pageName: string,
+  queryParams: any
+) => {
   try {
-    const { data, success } = await $fetch.get(`/${pageName}/months/volume`, queryParams);
+    const { data, success } = await $fetch.get(
+      `/${pageName}/months/volume`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -63,9 +74,15 @@ export const getMonthWiseVolumeCaseDetailsAPI = async (pageName: string, queryPa
     throw err;
   }
 };
-export const getMonthWiseRevenueCaseDetailsAPI = async (pageName: string, queryParams: any) => {
+export const getMonthWiseRevenueCaseDetailsAPI = async (
+  pageName: string,
+  queryParams: any
+) => {
   try {
-    const { data, success } = await $fetch.get(`/${pageName}/months/revenue`, queryParams);
+    const { data, success } = await $fetch.get(
+      `/${pageName}/months/revenue`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -101,14 +118,17 @@ export const getMonthWiseVolumeCaseTypesForSinglePageAPI = async ({
 export const getMonthWiseRevenueCaseTypesForSinglePageAPI = async ({
   pageName,
   id,
-  queryParams
+  queryParams,
 }: {
-  pageName: string,
+  pageName: string;
   id: any;
   queryParams: any;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/${pageName}/${id}/case-types/months/revenue`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/${pageName}/${id}/case-types/months/revenue`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -129,6 +149,25 @@ export const getMonthWiseVolumeCaseTypesForSinglePageFacilitiesAPI = async ({
   try {
     const { success, data } = await $fetch.get(
       `/${pageName}/${id}/case-types/months/volume`,
+      queryParams
+    );
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getSingleCaseTypeMonthWiseFacilityDetailsAPI = async ({
+  queryParams,
+}: {
+  queryParams: any;
+}) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/case-types/facilities/months/volume`,
       queryParams
     );
     if (!success) {

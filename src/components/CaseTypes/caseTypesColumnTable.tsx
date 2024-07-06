@@ -33,7 +33,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
   loading,
   headerMonths,
   tabValue,
-  rowTotalSum
+  rowTotalSum,
 }) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -94,7 +94,6 @@ const CaseTypesColumnTable: FC<pageProps> = ({
       return "#ffebe9"; // Red for incomplete
     }
   };
-
 
   return (
     <div
@@ -168,20 +167,20 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                              <Image
-                                src="/core/sort/un-sort.svg"
-                                height={8}
-                                width={8}
-                                alt="Unsorted"
-                                style={{
-                                  display:
-                                    header.id === "actions" ||
-                                      removeSortingForColumnIds.includes(header.id)
-                                      ? "none"
-                                      : "",
-                                }}
-                              />
-                            )}
+                            <Image
+                              src="/core/sort/un-sort.svg"
+                              height={8}
+                              width={8}
+                              alt="Unsorted"
+                              style={{
+                                display:
+                                  header.id === "actions" ||
+                                  removeSortingForColumnIds.includes(header.id)
+                                    ? "none"
+                                    : "",
+                              }}
+                            />
+                          )}
                         </div>
                       )}
                     </th>
@@ -270,6 +269,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
           >
             <td className="cell">Total</td>
             <td className="cell"></td>
+
             {headerMonths?.map((item: any, index: number) => {
               return (
                 <td key={index} className="cell" style={{ cursor: "pointer" }}>
@@ -329,10 +329,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
               );
             })}
             {headerMonths?.length > 1 && tabValue == "Volume" && rowTotalSum ? (
-              <td
-                className="cell"
-                style={{ cursor: "pointer" }}
-              >
+              <td className="cell" style={{ cursor: "pointer" }}>
                 <Tooltip
                   arrow
                   slotProps={{
@@ -363,17 +360,13 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                         "& .MuiTooltip-arrow": {
                           color: "black",
                           "&::before": {
-                            border:
-                              " 1px solid rgba(0, 0, 0, 0.1)!important",
+                            border: " 1px solid rgba(0, 0, 0, 0.1)!important",
                           },
                         },
                       },
                     },
                   }}
-                  title={
-                    "Target total: " +
-                    rowTotalSum?.[1]?.toLocaleString()
-                  }
+                  title={"Target total: " + rowTotalSum?.[1]?.toLocaleString()}
                 >
                   <div className="statusTags">
                     {rowTotalSum?.[0]?.toLocaleString()}
@@ -388,11 +381,17 @@ const CaseTypesColumnTable: FC<pageProps> = ({
               onClick={() => setGraphDialogOpen(true)}
               style={{ cursor: "pointer" }}
             >
-              {headerMonths?.length && totalSumValues[headerMonths[0]]?.length == 2 ? (
-                <AreaGraph data={getAcesdingOrderMonthsForGraphs(totalSumValues)} graphColor={"blue"} />
+              {headerMonths?.length &&
+              totalSumValues[headerMonths[0]]?.length == 2 ? (
+                <AreaGraph
+                  data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+                  graphColor={"blue"}
+                />
               ) : (
-                <AreaGraphForFacilities data={getAcesdingOrderMonthsForGraphs(totalSumValues)} graphColor={"blue"} />
-
+                <AreaGraphForFacilities
+                  data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+                  graphColor={"blue"}
+                />
               )}
             </td>
           </tr>

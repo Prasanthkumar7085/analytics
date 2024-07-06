@@ -2,6 +2,7 @@ import ExportButton from "@/components/core/ExportButton/ExportButton";
 import SingleColumnTable from "@/components/core/Table/SingleColumn/SingleColumnTable";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { exportToExcelInsuranceCaseTypeTable } from "@/lib/helpers/exportsHelpers";
+import { gotoSingleCaseTypeDetails } from "@/lib/helpers/navigations";
 import { Backdrop } from "@mui/material";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -11,6 +12,7 @@ const InsuranceCaseTypes = ({
   totalInsurancePayors,
   loading,
 }: any) => {
+  const router = useRouter();
   const columns = [
     {
       accessorFn: (row: any) => row.serial,
@@ -35,8 +37,21 @@ const InsuranceCaseTypes = ({
       width: "220px",
       maxWidth: "220px",
       minWidth: "220px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()}</span>;
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              gotoSingleCaseTypeDetails(
+                info.row.original?.case_type_id,
+                searchParams,
+                router
+              );
+            }}
+          >
+            {info.getValue()}
+          </span>
+        );
       },
     },
     {
@@ -111,7 +126,7 @@ const InsuranceCaseTypes = ({
             style={{
               color:
                 info.row.original.paid_amount ==
-                  info.row.original.expected_amount
+                info.row.original.expected_amount
                   ? "green"
                   : "red",
             }}
