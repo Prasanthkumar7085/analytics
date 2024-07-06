@@ -8,7 +8,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import AreaGraph from "../core/AreaGraph";
 import GraphDialog from "../core/GraphDialog";
@@ -37,7 +37,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
 }) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
   const [sorting, setSorting] = useState<SortingState>([]);
-
+  const pathName = usePathname();
   const table: any = useReactTable({
     columns,
     data,
@@ -272,60 +272,73 @@ const CaseTypesColumnTable: FC<pageProps> = ({
 
             {headerMonths?.map((item: any, index: number) => {
               return (
-                <td key={index} className="cell" style={{ cursor: "pointer" }}>
-                  {tabValue == "Revenue" ? (
-                    formatMoney(totalSumValues[item])
-                  ) : totalSumValues[item]?.length == 1 ? (
-                    totalSumValues[item]?.[0]?.toLocaleString()
-                  ) : (
-                    <Tooltip
-                      arrow
-                      slotProps={{
-                        popper: {
-                          modifiers: [
-                            {
-                              name: "offset",
-                              options: {
-                                offset: [0, -5],
+                <>
+                  <td
+                    key={index}
+                    className="cell"
+                    style={{ cursor: "pointer" }}
+                  >
+                    {tabValue == "Revenue" ? (
+                      formatMoney(totalSumValues[item])
+                    ) : totalSumValues[item]?.length == 1 ? (
+                      totalSumValues[item]?.[0]?.toLocaleString()
+                    ) : (
+                      <Tooltip
+                        arrow
+                        slotProps={{
+                          popper: {
+                            modifiers: [
+                              {
+                                name: "offset",
+                                options: {
+                                  offset: [0, -5],
+                                },
                               },
-                            },
-                          ],
-                        },
-                      }}
-                      componentsProps={{
-                        tooltip: {
-                          sx: {
-                            width: "100px",
-                            bgcolor: getBackgroundColor(
-                              totalSumValues[item]?.[0],
-                              totalSumValues[item]?.[1]
-                            ),
-                            color: "black",
-                            border: "1px solid rgba(0,0,0,0.1)",
-                            padding: 0,
-                            fontSize: "15px",
-                            textAlign: "center",
-                            "& .MuiTooltip-arrow": {
+                            ],
+                          },
+                        }}
+                        componentsProps={{
+                          tooltip: {
+                            sx: {
+                              width: "100px",
+                              bgcolor: getBackgroundColor(
+                                totalSumValues[item]?.[0],
+                                totalSumValues[item]?.[1]
+                              ),
                               color: "black",
-                              "&::before": {
-                                border:
-                                  " 1px solid rgba(0, 0, 0, 0.1)!important",
+                              border: "1px solid rgba(0,0,0,0.1)",
+                              padding: 0,
+                              fontSize: "15px",
+                              textAlign: "center",
+                              "& .MuiTooltip-arrow": {
+                                color: "black",
+                                "&::before": {
+                                  border:
+                                    " 1px solid rgba(0, 0, 0, 0.1)!important",
+                                },
                               },
                             },
                           },
-                        },
-                      }}
-                      title={
-                        "Target total: " +
-                        totalSumValues[item]?.[1]?.toLocaleString()
-                      }
-                    >
-                      <div className="statusTags">
-                        {totalSumValues[item]?.[0]?.toLocaleString()}
-                      </div>
-                    </Tooltip>
+                        }}
+                        title={
+                          "Target total: " +
+                          totalSumValues[item]?.[1]?.toLocaleString()
+                        }
+                      >
+                        <div className="statusTags">
+                          {totalSumValues[item]?.[0]?.toLocaleString()}
+                        </div>
+                      </Tooltip>
+                    )}
+                  </td>
+                  {pathName?.includes("billing") ? (
+                    <td className="cell">
+                      {formatMoney(totalSumValues[item][1])}
+                    </td>
+                  ) : (
+                    ""
                   )}
-                </td>
+                </>
               );
             })}
             {headerMonths?.length > 1 && tabValue == "Volume" && rowTotalSum ? (

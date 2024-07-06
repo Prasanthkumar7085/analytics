@@ -8,6 +8,16 @@ export const getUniqueMonths = (data: any) => {
   let uniqueMonths = Array.from(new Set(descendingOrder));
   return uniqueMonths;
 };
+
+export const getUniqueMonthsInBilling = (data: any) => {
+  let monthArray = data?.flatMap((item: any) =>
+    item.month_wise.map((monthItem: any) => monthItem.month.replace(/\s/g, ""))
+  );
+  let descendingOrder: any = getAcendingOrder(monthArray);
+  // Get unique sorted months
+  let uniqueMonths = Array.from(new Set(descendingOrder));
+  return uniqueMonths;
+};
 const getDescendingOrder = (monthArray: any) => {
   // Sort the month names in descending order
   monthArray.sort((a: string, b: string) => {
@@ -272,30 +282,24 @@ export const getDatesForStatsCards = (thisMonth: any) => {
   let yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
   let toDate = new Date(
-    Date.UTC(
-      yesterday.getFullYear(),
-      yesterday.getMonth(),
-      yesterday.getDate()
-    )
+    Date.UTC(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate())
   )
     .toISOString()
     .substring(0, 10);
 
-  if (
-    dayjs(fromDate).format('YYYY-MM-DD') ==
-    dayjs().format('YYYY-MM-DD')
-  ) {
+  if (dayjs(fromDate).format("YYYY-MM-DD") == dayjs().format("YYYY-MM-DD")) {
     const currentDate = dayjs();
-    const firstDayOfMonth = currentDate.startOf('month');
-    const lastMonthEndDate = firstDayOfMonth.subtract(1, 'day');
-    const lastMonthStartDate = lastMonthEndDate.startOf('month');
-    return [lastMonthStartDate.format('YYYY-MM-DD'), lastMonthEndDate.format('YYYY-MM-DD')]
+    const firstDayOfMonth = currentDate.startOf("month");
+    const lastMonthEndDate = firstDayOfMonth.subtract(1, "day");
+    const lastMonthStartDate = lastMonthEndDate.startOf("month");
+    return [
+      lastMonthStartDate.format("YYYY-MM-DD"),
+      lastMonthEndDate.format("YYYY-MM-DD"),
+    ];
+  } else {
+    return [fromDate, toDate];
   }
-  else {
-    return [fromDate, toDate]
-  }
-
-}
+};
 
 export const getThisMonthDates = (thisMonth: any) => {
   let fromDate = new Date(
@@ -310,63 +314,61 @@ export const getThisMonthDates = (thisMonth: any) => {
 
   let thisday = new Date();
   let toDate = new Date(
-    Date.UTC(
-      thisday.getFullYear(),
-      thisday.getMonth(),
-      thisday.getDate()
-    )
+    Date.UTC(thisday.getFullYear(), thisday.getMonth(), thisday.getDate())
   )
     .toISOString()
     .substring(0, 10);
-  return [fromDate, toDate]
+  return [fromDate, toDate];
+};
 
-}
-
-export const averageUptoPreviousDateTargets = (target_volume: any, toDate: any) => {
+export const averageUptoPreviousDateTargets = (
+  target_volume: any,
+  toDate: any
+) => {
   const totalDaysInMonth = dayjs().daysInMonth();
-  const startOfMonth = dayjs().startOf('month');
+  const startOfMonth = dayjs().startOf("month");
 
   const currentDate = dayjs(toDate);
-  const daysPassed = currentDate.diff(startOfMonth, 'day') + 1;
+  const daysPassed = currentDate.diff(startOfMonth, "day") + 1;
   const targetVolume = target_volume;
   if (targetVolume) {
     const averagePerDay = targetVolume / totalDaysInMonth;
     return Math.ceil(averagePerDay * daysPassed);
-  }
-  else {
+  } else {
     return 0;
   }
-}
+};
 export const averageUptoDateTargets = (target_volume: any, toDate: any) => {
   const totalDaysInMonth = dayjs().daysInMonth();
-  const startOfMonth = dayjs().startOf('month');
+  const startOfMonth = dayjs().startOf("month");
 
   const currentDate = dayjs(toDate);
-  let daysPassed = currentDate.diff(startOfMonth, 'day') + 1
+  let daysPassed = currentDate.diff(startOfMonth, "day") + 1;
   const targetVolume = target_volume;
   if (targetVolume) {
     const averagePerDay = targetVolume / totalDaysInMonth;
     return Math.ceil(averagePerDay * daysPassed);
-  }
-  else {
+  } else {
     return 0;
   }
-}
-export const averageUptoDateTargetsForSalesReps = (target_volume: any, toDate: any) => {
+};
+export const averageUptoDateTargetsForSalesReps = (
+  target_volume: any,
+  toDate: any
+) => {
   const totalDaysInMonth = dayjs().daysInMonth();
-  const startOfMonth = dayjs().startOf('month');
+  const startOfMonth = dayjs().startOf("month");
 
   const currentDate = dayjs(toDate);
-  let daysPassed = currentDate.diff(startOfMonth, 'day')
+  let daysPassed = currentDate.diff(startOfMonth, "day");
   const targetVolume = target_volume;
   if (targetVolume) {
     const averagePerDay = targetVolume / totalDaysInMonth;
     return Math.ceil(averagePerDay * (daysPassed == 0 ? 1 : daysPassed));
-  }
-  else {
+  } else {
     return 0;
   }
-}
+};
 
 // Function to sum all team totals
 function calculateTeamTotalSumOfFields(data: any, fieldName: any) {
@@ -374,22 +376,27 @@ function calculateTeamTotalSumOfFields(data: any, fieldName: any) {
   data.forEach((item: any) => {
     totalAmount += item[fieldName];
   });
-  return totalAmount||0;
+  return totalAmount || 0;
 }
 
-
-export const formatTeamWiseSalesRepsData = (data: any,) => {
+export const formatTeamWiseSalesRepsData = (data: any) => {
   let formatData = data.map((item: any, index: any) => {
     return {
       ...item,
-      "sales_rep_name": item?.sales_rep_name + " " + "TEAM" + " " + `(${item?.team?.length})`,
-      "total_facilities": calculateTeamTotalSumOfFields(item.team, "total_facilities"),
-      "active_facilities": calculateTeamTotalSumOfFields(item.team, "active_facilities"),
-      "total_targets": calculateTeamTotalSumOfFields(item.team, "total_targets"),
-      "total_cases": calculateTeamTotalSumOfFields(item.team, "total_cases"),
-      "target_reached": item.total_cases >= item.total_targets ? true : false
-    }
-  })
+      sales_rep_name:
+        item?.sales_rep_name + " " + "TEAM" + " " + `(${item?.team?.length})`,
+      total_facilities: calculateTeamTotalSumOfFields(
+        item.team,
+        "total_facilities"
+      ),
+      active_facilities: calculateTeamTotalSumOfFields(
+        item.team,
+        "active_facilities"
+      ),
+      total_targets: calculateTeamTotalSumOfFields(item.team, "total_targets"),
+      total_cases: calculateTeamTotalSumOfFields(item.team, "total_cases"),
+      target_reached: item.total_cases >= item.total_targets ? true : false,
+    };
+  });
   return formatData;
-
-}
+};

@@ -68,3 +68,20 @@ export const getcaseTyeWiseRevenueStatsAPI = async (params: any) => {
     console.error(err);
   }
 };
+
+export const getMonthWiseBilledCaseTypesDataAPI = async (params: any) => {
+  try {
+    const { success, data } = await $fetch.get(
+      "/billed-overview/monthly-case-type-wise",
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
