@@ -151,8 +151,8 @@ export const getUniqueMonthsInCaseTypeTragets = (data: any) => {
 };
 
 export const formatMonthYear = (monthYear: string) => {
-  let month = monthYear.substring(0, 3);
-  let year = monthYear.substring(monthYear.length - 2);
+  let month = monthYear?.substring(0, 3);
+  let year = monthYear?.substring(monthYear.length - 2);
   return month + " '" + year;
 };
 

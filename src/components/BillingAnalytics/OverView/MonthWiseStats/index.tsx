@@ -66,7 +66,6 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
         groupedDataSum[formattedMonth][1] += targetsAmount;
       });
     });
-    console.log(groupedDataSum, "9329kdkddks");
     setTotalSumValues(groupedDataSum);
   };
 

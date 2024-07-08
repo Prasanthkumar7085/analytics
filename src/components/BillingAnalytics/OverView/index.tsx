@@ -12,6 +12,7 @@ import {
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import MonthWiseCaseTypesStats from "./MonthWiseStats";
+import MonthWiseTrendsGraph from "./MonthWiseTrends";
 
 const BillingOverView = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -163,7 +164,9 @@ const BillingOverView = () => {
         <Grid item xs={12}>
           <MonthWiseCaseTypesStats searchParams={searchParams} />
         </Grid>
-        <Grid item xs={12}></Grid>
+        <Grid item xs={12}>
+          <MonthWiseTrendsGraph searchParams={searchParams} />
+        </Grid>
       </Grid>
     </>
   );
