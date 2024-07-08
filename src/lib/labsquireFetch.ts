@@ -30,7 +30,7 @@ class FetchService {
         const accessToken = state?.auth?.user?.access_token;
 
         // IMPLEMENT STORE/COOCIKES DATA HERE
-        config.headers["Authorization"] = process.env.NEXT_PUBLIC_LABSQUIRE_ACCESS_TOKEN
+        config.headers["Authorization"] = accessToken
     }
 
     setDefualtHeaders(config: any, includeHeaders: boolean) {
