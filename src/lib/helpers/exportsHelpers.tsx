@@ -1306,26 +1306,10 @@ export const exportToExcelInsuranceCaseTypeTable = (
       obj.case_type_name,
       obj.total_cases,
       obj.completed_cases,
-      obj.generated_amount,
-      obj.expected_amount,
-      obj.paid_amount,
       obj.pending_cases,
-      obj.pending_amount,
-      obj.paid_amount + "/" + obj.expected_amount,
     ];
   });
-  let headers = [
-    "S.No",
-    "CASE TYPE",
-    "VOLUME",
-    "CLEARED VOL",
-    "BILLED",
-    "EXPECTED",
-    "CLEARED BILL",
-    "PEN VOL",
-    "PENDING REV",
-    "PAID PRICE/TARGET PRICE",
-  ];
+  let headers = ["S.No", "CASE TYPE", "VOLUME", "CLEARED VOL", "PEN VOL"];
 
   const toatalSumValuesRow = totalInsurancePayors.map((obj: any) =>
     obj.value === null ? "" : obj.value
@@ -1349,40 +1333,6 @@ export const exportToExcelInsuranceCaseTypeTable = (
         fgColor: { rgb: "f0edff" },
       },
     };
-  }
-  for (let rowIndex = 1; rowIndex < totalData.length; rowIndex++) {
-    const row = totalData[rowIndex];
-
-    if (rowIndex === totalData.length - 1) {
-      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({
-          r: rowIndex,
-          c: columnIndex,
-        });
-        worksheet[cellAddress].s = {
-          fill: {
-            fgColor: { rgb: "f0edff" },
-          },
-        };
-      }
-    } else {
-      const expected = row[4];
-      const cleared = row[5];
-      const cellAddressExpected = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
-      const cellAddressCleared = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
-      const percentCompleted = cleared / expected;
-
-      worksheet[cellAddressExpected].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-      };
-      worksheet[cellAddressCleared].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-      };
-    }
   }
 
   const workbook = XLSX.utils.book_new();

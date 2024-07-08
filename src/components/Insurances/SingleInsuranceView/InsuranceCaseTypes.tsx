@@ -80,62 +80,6 @@ const InsuranceCaseTypes = ({
         return <span>{getValue().toLocaleString()}</span>;
       },
     },
-
-    {
-      accessorFn: (row: any) => row.generated_amount,
-      id: "generated_amount",
-      sortDescFirst: false,
-      header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-      footer: (props: any) => props.column.id,
-      width: "70px",
-      maxWidth: "100px",
-      minWidth: "70px",
-      cell: ({ getValue }: any) => {
-        return <span>{formatMoney(getValue())}</span>;
-      },
-    },
-
-    {
-      accessorFn: (row: any) => row.expected_amount,
-      id: "expected_amount",
-      sortDescFirst: false,
-      header: () => <span style={{ whiteSpace: "nowrap" }}>EXPECTED</span>,
-      footer: (props: any) => props.column.id,
-      width: "70px",
-      maxWidth: "100px",
-      minWidth: "70px",
-      cell: ({ getValue }: any) => {
-        return (
-          <span style={{ color: "green" }}>{formatMoney(getValue())}</span>
-        );
-      },
-    },
-
-    {
-      accessorFn: (row: any) => row.paid_amount,
-      id: "paid_amount",
-      sortDescFirst: false,
-      header: () => <span style={{ whiteSpace: "nowrap" }}>CLEARED BILL</span>,
-      footer: (props: any) => props.column.id,
-      width: "70px",
-      maxWidth: "100px",
-      minWidth: "70px",
-      cell: (info: any) => {
-        return (
-          <span
-            style={{
-              color:
-                info.row.original.paid_amount ==
-                info.row.original.expected_amount
-                  ? "green"
-                  : "red",
-            }}
-          >
-            {formatMoney(info.row.original.paid_amount)}
-          </span>
-        );
-      },
-    },
     {
       accessorFn: (row: any) => row.pending_cases,
       id: "pending_cases",
@@ -147,45 +91,6 @@ const InsuranceCaseTypes = ({
       minWidth: "70px",
       cell: ({ getValue }: any) => {
         return <span>{getValue().toLocaleString()}</span>;
-      },
-    },
-
-    {
-      accessorFn: (row: any) => row.pending_amount,
-      id: "pending_amount",
-      sortDescFirst: false,
-      header: () => <span style={{ whiteSpace: "nowrap" }}>PENDING REV</span>,
-      footer: (props: any) => props.column.id,
-      width: "70px",
-      maxWidth: "100px",
-      minWidth: "70px",
-      cell: ({ getValue }: any) => {
-        return (
-          <span style={{ color: getValue() == 0 ? "" : "red" }}>
-            {formatMoney(getValue())}
-          </span>
-        );
-      },
-    },
-    {
-      accessorFn: (row: any) => row.pending_amount,
-      id: "actions",
-      enableSorting: false,
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>PAID PRICE/TARGET PRICE</span>
-      ),
-      footer: (props: any) => props.column.id,
-      width: "70px",
-      maxWidth: "100px",
-      minWidth: "70px",
-      cell: (info: any) => {
-        return (
-          <span>
-            {formatMoney(info.row.original.paid_amount) +
-              " / " +
-              formatMoney(info.row.original.expected_amount)}
-          </span>
-        );
       },
     },
   ];

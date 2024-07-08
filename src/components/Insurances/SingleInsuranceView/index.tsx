@@ -112,15 +112,7 @@ const InsuranceView = () => {
           { value: null, dolorSymbol: false },
           { value: totalVolume, dolorSymbol: false },
           { value: completeVolume, dolorSymbol: false },
-          { value: totalAmount, dolorSymbol: true },
-          { value: expectedAmount, dolorSymbol: true },
-          { value: totalPaid, dolorSymbol: true },
           { value: pendingVolume, dolorSymbol: false },
-          { value: totalPending, dolorSymbol: true },
-          {
-            value: formatMoney(totalAmount) + "/" + formatMoney(expectedAmount),
-            dolorSymbol: false,
-          },
         ];
 
         setTortalInsurancePayors(result);
