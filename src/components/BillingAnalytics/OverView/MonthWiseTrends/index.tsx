@@ -9,13 +9,9 @@ import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
-  console.log(searchParams, "dfsjd");
-  console.log(searchParams, "dfsjd");
-
+const MonthWiseTrendsGraph = ({ searchParams }: any) => {
   const [monthWiseBilledTrendsData, setMonthWiseBilledTrendsData] =
     useState<any>([]);
-  console.log(monthWiseBilledTrendsData, "3293200");
   const [monthWiseRevenueTrendsData, setMonthWiseRevenueTrendsData] =
     useState<any>([]);
   const [loading, setLoading] = useState<any>(false);
@@ -33,8 +29,15 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     if (toDate) {
       queryParams["to_date"] = toDate;
     }
+    if (tabValue) {
+      queryParams["tab"] = tabValue;
+    }
     try {
-      await getBilledTrendsData(queryParams);
+      if (tabValue == "billed") {
+        await getBilledTrendsData(queryParams);
+      } else {
+        await getRevenueTrendsData(queryParams);
+      }
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -46,7 +49,6 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     try {
       const response = await getMonthWiseBilledTreadsDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
-        console.log(response?.data, "yes");
         setMonthWiseBilledTrendsData(response?.data);
       }
     } catch (err) {
@@ -60,7 +62,7 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     try {
       const response = await getMonthWiseRevenueTreadsDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
-        setMonthWiseBilledTrendsData(response?.data);
+        setMonthWiseRevenueTrendsData(response?.data);
       }
     } catch (err) {
       console.error(err);
@@ -78,7 +80,7 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
       },
     },
     title: {
-      text: graphType == "volume" ? "Total Volume" : "Total Revenue",
+      text: searchParams?.tab == "revenue" ? "Total Revenue" : "Total Billed",
     },
     xAxis: {
       categories: monthWiseBilledTrendsData?.map((item: any) =>
@@ -87,38 +89,32 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     },
     yAxis: {
       title: {
-        text: graphType == "revenue" ? "billed" : "Revenue",
+        text: searchParams?.tab == "revenue" ? "Revenue" : "Billed",
       },
     },
     tooltip: {
       formatter: function (
         this: Highcharts.TooltipFormatterContextObject | any
       ): string {
-        if (graphType == "revenue")
-          return (
-            this.point.category +
-            " <b>" +
-            ": $" +
-            Highcharts.numberFormat(this.point.y, 2, ".", ",") +
-            "</b>"
-          );
-        else
-          return (
-            this.point.category +
-            ":" +
-            "<b>" +
-            Highcharts.numberFormat(this.point.y, 0, ".", ",") +
-            "<b>"
-          );
+        return (
+          this.point.category +
+          " <b>" +
+          ": $" +
+          Highcharts.numberFormat(this.point.y, 2, ".", ",") +
+          "</b>"
+        );
       },
     },
     series: [
       {
-        name: graphType == "revenue" ? "Total Billed" : "Total Revenue",
+        name:
+          searchParams?.tab == "revenue" ? "Total Received" : "Total Revenue",
         data:
-          graphType == "revenue" && monthWiseBilledTrendsData?.length
+          searchParams?.tab == "billed" && monthWiseBilledTrendsData?.length
             ? monthWiseBilledTrendsData?.map((item: any) => +item.total_amount)
-            : [],
+            : monthWiseRevenueTrendsData?.map(
+                (item: any) => +item?.received_amount
+              ),
         animation: {
           opacity: 1,
         },
@@ -129,7 +125,7 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     queryPreparations(
       searchParams?.from_date,
       searchParams?.to_date,
-      "revenue"
+      searchParams?.tab
     );
   }, [searchParams]);
   return (

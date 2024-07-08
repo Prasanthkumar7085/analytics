@@ -12,7 +12,6 @@ const GraphDialog = ({
   graphColor,
   tabValue,
 }: any) => {
-
   const options = {
     title: {
       text: graphData?.case_type_name
@@ -27,8 +26,8 @@ const GraphDialog = ({
       },
       categories: Object?.values(graphValuesData)?.length
         ? Object?.keys(graphValuesData).map((item: any) =>
-          formatMonthYear(item)
-        )
+            formatMonthYear(item)
+          )
         : [],
     },
     plotOptions: {

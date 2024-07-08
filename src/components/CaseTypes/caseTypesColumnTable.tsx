@@ -333,7 +333,7 @@ const CaseTypesColumnTable: FC<pageProps> = ({
                   </td>
                   {pathName?.includes("billing") ? (
                     <td className="cell">
-                      {formatMoney(totalSumValues[item][1])}
+                      {formatMoney(totalSumValues?.[item]?.[1])}
                     </td>
                   ) : (
                     ""

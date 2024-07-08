@@ -138,15 +138,76 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
   return addtionalcolumns;
 };
 
+const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
+  headerMonths,
+}: any) => {
+  let addtionalcolumns = headerMonths?.map((item: any) => ({
+    accessorFn: (row: any) => row[item],
+    id: item,
+    header: () => (
+      <span style={{ whiteSpace: "nowrap" }}>{formatMonthYear(item)}</span>
+    ),
+    footer: (props: any) => props.column.id,
+    width: "80px",
+    maxWidth: "220px",
+    minWidth: "220px",
+    sortDescFirst: false,
+    sortingFn: (rowA: any, rowB: any, columnId: any) => {
+      const rowDataA = rowA.original[columnId];
+      const rowDataB = rowB.original[columnId];
+
+      // Extract the case values from the row data
+      const valueA = rowDataA[0] || 0;
+      const valueB = rowDataB[0] || 0;
+
+      // Compare the case values for sorting
+      return valueA - valueB;
+    },
+    columns: [
+      {
+        accessorFn: (row: any) => row?.[item][0],
+        header: () => <span style={{ whiteSpace: "nowrap" }}>Target</span>,
+        id: item,
+        width: "300px",
+        maxWidth: "300px",
+        minWidth: "300px",
+        cell: (info: any) => {
+          return (
+            <span>
+              {formatMoney(info.row.original?.[item]?.[0]?.toLocaleString())}
+            </span>
+          );
+        },
+      },
+      {
+        accessorFn: (row: any) => row?.[item][1],
+        header: () => <span style={{ whiteSpace: "nowrap" }}>Received</span>,
+        id: item,
+        width: "300px",
+        maxWidth: "300px",
+        minWidth: "300px",
+        cell: (info: any) => {
+          return <span>{formatMoney(info.row.original?.[item]?.[1])}</span>;
+        },
+      },
+    ],
+  }));
+  return addtionalcolumns;
+};
+
 export const groupAllBilledColumns = ({
   headerMonths,
   setGraphDialogOpen,
   setSelectedGraphData,
   setGraphValuesData,
   setGraphColor,
+  searchParams,
 }: any) => {
   let NormalColumns = MonthWiseCaseTypesBilledStatsColumns();
-  let GroupdColmns = MonthWiseCaseTypesBilledStatsAdditionalColumns({
+  let GroupdBilledColmns = MonthWiseCaseTypesBilledStatsAdditionalColumns({
+    headerMonths,
+  });
+  let GroupdRevenueColmns = MonthWiseCaseTypesRevenueStatsAdditionalColumns({
     headerMonths,
   });
   let GraphColumn = MonthWiseCaseTypesBilledStatsGraphColumn({
@@ -155,5 +216,7 @@ export const groupAllBilledColumns = ({
     setGraphValuesData,
     setGraphColor,
   });
+  let GroupdColmns =
+    searchParams?.tab == "billed" ? GroupdBilledColmns : GroupdRevenueColmns;
   return [...NormalColumns, ...GroupdColmns, ...GraphColumn];
 };
