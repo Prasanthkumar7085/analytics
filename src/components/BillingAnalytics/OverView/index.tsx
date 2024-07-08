@@ -13,6 +13,7 @@ import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
 import MonthWiseCaseTypesStats from "./MonthWiseStats";
 import MonthWiseTrendsGraph from "./MonthWiseTrends";
+import { set } from "rsuite/esm/internals/utils/date";
 
 const BillingOverView = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -25,19 +26,27 @@ const BillingOverView = () => {
   const [caseTypesWiseStatsData, setCaseTypeWiseStats] = useState<any>();
   const [totalSumValues, setTotalSumValues] = useState<any>();
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
+  const [selectedTabValue, setSelectedTabValue] = useState<any>("billed");
   const [tabValue, setTabValue] = useState<any>();
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
   //prepare query params
-  const queryPreparations = async (fromDate: any, toDate: any) => {
-    let queryParams: any = {};
+  const queryPreparations = async (
+    fromDate: any,
+    toDate: any,
+    tabValue: any
+  ) => {
+    let queryParams: any = { tab: "billed" };
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
     }
     if (toDate) {
       queryParams["to_date"] = toDate;
+    }
+    if (tabValue) {
+      queryParams["tab"] = tabValue;
     }
     let queryString = prepareURLEncodedParams("", queryParams);
 
@@ -46,8 +55,11 @@ const BillingOverView = () => {
     try {
       await getBillingStatsCount(queryParams);
       await getRevenueStatsCount(queryParams);
-      await getcaseTyeWiseBillingStats(queryParams);
-      // await getcaseTyeWiseRevenueStats(queryParams);
+      if (tabValue == "billed") {
+        await getcaseTyeWiseBillingStats(queryParams);
+      } else {
+        await getcaseTyeWiseRevenueStats(queryParams);
+      }
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -108,31 +120,35 @@ const BillingOverView = () => {
   };
 
   const getTotalSumOfColumns = (data: any, type: "billing" | "revenue") => {
-    let totalCases = 0;
-    let totalAmount = 0;
+    let firstColumn = 0;
+    let secondColumn = 0;
 
     data?.forEach((entry: any) => {
       if (type === "billing") {
-        totalCases += entry.billed_cases ? +entry.billed_cases : 0;
-        totalAmount += entry.billed_amount ? +entry.billed_amount : 0;
+        firstColumn += entry.billed_cases ? +entry.billed_cases : 0;
+        secondColumn += entry.billed_amount ? +entry.billed_amount : 0;
       } else if (type === "revenue") {
-        totalCases += entry.targeted_amount ? +entry.targeted_amount : 0;
-        totalAmount += entry.received_amount ? +entry.received_amount : 0;
+        firstColumn += entry.targeted_amount ? +entry.targeted_amount : 0;
+        secondColumn += entry.received_amount ? +entry.received_amount : 0;
       }
     });
 
     const result = [
       { value: "Total", dolorSymbol: false },
-      { value: totalCases, dolorSymbol: false },
-      { value: totalAmount, dolorSymbol: true }, // Assuming totalAmount needs a dollar symbol
+      { value: firstColumn, dolorSymbol: type === "billing" ? false : true },
+      { value: secondColumn, dolorSymbol: true },
     ];
     setTotalSumValues(result);
   };
 
   //api call to get stats count
   useEffect(() => {
-    queryPreparations(params?.get("from_date"), params?.get("to_date"));
-  }, [params]);
+    queryPreparations(
+      params?.get("from_date"),
+      params?.get("to_date"),
+      searchParams?.tab
+    );
+  }, [searchParams?.tab]);
 
   useEffect(() => {
     setSearchParams(
@@ -154,11 +170,11 @@ const BillingOverView = () => {
             caseTypesWiseStatsData={caseTypesWiseStatsData}
             loading={loading}
             totalRevenueSum={totalSumValues}
-            tabValue={tabValue}
-            setTabValue={setTabValue}
             queryPreparations={queryPreparations}
             dateFilterDefaultValue={dateFilterDefaultValue}
             setDateFilterDefaultValue={setDateFilterDefaultValue}
+            selectedTabValue={selectedTabValue}
+            setSelectedTabValue={setSelectedTabValue}
           />
         </Grid>
         <Grid item xs={12}>

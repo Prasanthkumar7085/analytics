@@ -265,3 +265,52 @@ export const BilledOverViewcolumns = [
     width: "150px",
   },
 ];
+
+export const RevenueOverViewcolumns = [
+  {
+    accessorFn: (row: any) => row.case_type_name,
+    id: "case_type_name",
+    header: () => <span className={styles.tableHeading}>CASE TYPE</span>,
+    cell: (info: any, index: number) => {
+      return (
+        <span className={styles.caseTypeRow}>
+          <div
+            className={styles.dot}
+            style={{ backgroundColor: graphColors[info.getValue()] }}
+          ></div>
+          {info.getValue()}
+        </span>
+      );
+    },
+    footer: (props: any) => props.column.id,
+    width: "200px",
+    minWidth: "60px",
+    maxWidth: "60px",
+  },
+  {
+    accessorFn: (row: any) => row.targeted_amount,
+    id: "targeted_amount",
+    sortDescFirst: false,
+    cell: (info: any) => (
+      <span className={styles.totalCasesRow}>
+        {formatMoney(info.getValue())}
+      </span>
+    ),
+    header: () => <span className={styles.tableHeading}>TARGET</span>,
+    footer: (props: any) => props.column.id,
+    width: "150px",
+  },
+  {
+    accessorFn: (row: any) => row.received_amount,
+    sortDescFirst: false,
+    id: "received_amount",
+    cell: (info: any) => (
+      <span className={styles.totalCasesRow}>
+        {formatMoney(info.getValue())}
+      </span>
+    ),
+    header: () => <span className={styles.tableHeading}>RECEIVED AMOUNT</span>,
+    footer: (props: any) => props.column.id,
+    width: "150px",
+  },
+];

@@ -1,17 +1,21 @@
-import { Backdrop } from "@mui/material";
-import HighchartsReact from "highcharts-react-official";
-import Image from "next/image";
-import Highcharts from "highcharts";
-import { useEffect, useState } from "react";
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 import {
-  getMonthWiseBilledCaseTypesDataAPI,
+  getMonthWiseBilledTreadsDataAPI,
   getMonthWiseRevenueTreadsDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
+import { Backdrop } from "@mui/material";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
+  console.log(searchParams, "dfsjd");
+  console.log(searchParams, "dfsjd");
+
   const [monthWiseBilledTrendsData, setMonthWiseBilledTrendsData] =
     useState<any>([]);
+  console.log(monthWiseBilledTrendsData, "3293200");
   const [monthWiseRevenueTrendsData, setMonthWiseRevenueTrendsData] =
     useState<any>([]);
   const [loading, setLoading] = useState<any>(false);
@@ -30,11 +34,7 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
       queryParams["to_date"] = toDate;
     }
     try {
-      if (tabValue == "revnue") {
-        await getRevenueTrendsData(queryParams);
-      } else {
-        await getBilledTrendsData(queryParams);
-      }
+      await getBilledTrendsData(queryParams);
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -44,10 +44,9 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
 
   const getBilledTrendsData = async (queryParams: any) => {
     try {
-      const response = await getMonthWiseBilledCaseTypesDataAPI({
-        queryParams,
-      });
+      const response = await getMonthWiseBilledTreadsDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
+        console.log(response?.data, "yes");
         setMonthWiseBilledTrendsData(response?.data);
       }
     } catch (err) {
@@ -59,9 +58,7 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
 
   const getRevenueTrendsData = async (queryParams: any) => {
     try {
-      const response = await getMonthWiseRevenueTreadsDataAPI({
-        queryParams,
-      });
+      const response = await getMonthWiseRevenueTreadsDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
         setMonthWiseBilledTrendsData(response?.data);
       }
@@ -76,8 +73,8 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     chart: {
       type: "spline",
       animation: {
-        duration: 1000, // Set the animation duration
-        easing: "easeOutBounce", // Set the easing function for a smoother animation
+        duration: 1000,
+        easing: "easeOutBounce",
       },
     },
     title: {
@@ -119,13 +116,7 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
       {
         name: graphType == "revenue" ? "Total Billed" : "Total Revenue",
         data:
-          graphType == "revenue"
-            ? monthWiseRevenueTrendsData?.length
-              ? monthWiseRevenueTrendsData?.map(
-                  (item: any) => +item.total_cases
-                )
-              : []
-            : monthWiseBilledTrendsData?.length
+          graphType == "revenue" && monthWiseBilledTrendsData?.length
             ? monthWiseBilledTrendsData?.map((item: any) => +item.total_amount)
             : [],
         animation: {
@@ -135,12 +126,16 @@ const MonthWiseTrendsGraph = ({ searchParams, graphType = "revenue" }: any) => {
     ],
   };
   useEffect(() => {
-    queryPreparations(searchParams?.from_date, searchParams?.to_dat, "revenue");
-  }, []);
+    queryPreparations(
+      searchParams?.from_date,
+      searchParams?.to_date,
+      "revenue"
+    );
+  }, [searchParams]);
   return (
     <div id="TrendsData">
       <div style={{ position: "relative" }}>
-        {monthWiseBilledTrendsData?.length ? (
+        {monthWiseBilledTrendsData?.length > 0 ? (
           <HighchartsReact highcharts={Highcharts} options={options} />
         ) : !loading ? (
           <div

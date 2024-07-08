@@ -109,9 +109,7 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
   const getMonthWiseBilledCaseTypesData = async (queryParams: any) => {
     setLoading(true);
     try {
-      const response = await getMonthWiseBilledCaseTypesDataAPI({
-        queryParams,
-      });
+      const response = await getMonthWiseBilledCaseTypesDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonthsInBilling(response?.data);
         setHeaderMonths(uniqueMonths);

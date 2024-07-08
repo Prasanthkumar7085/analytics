@@ -1,7 +1,11 @@
+import BilledAndRevenueTabs from "@/components/core/BilledAndRevenueTabs";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import TanStackTableComponent from "@/components/core/Table/SingleColumn/SingleColumnTable";
-import { BilledOverViewcolumns } from "@/components/core/TableColumns/OverViewCaseTypesTableColumns";
+import {
+  BilledOverViewcolumns,
+  RevenueOverViewcolumns,
+} from "@/components/core/TableColumns/OverViewCaseTypesTableColumns";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
@@ -21,11 +25,11 @@ const BillingOverViewCaseTypes = ({
   caseTypesWiseStatsData,
   loading,
   totalRevenueSum,
-  tabValue,
-  setTabValue,
   queryPreparations,
   dateFilterDefaultValue,
   setDateFilterDefaultValue,
+  selectedTabValue,
+  setSelectedTabValue,
 }: any) => {
   const params = useSearchParams();
   const pathName = usePathname();
@@ -38,11 +42,6 @@ const BillingOverViewCaseTypes = ({
     setSelectedDates([params.get("from_date"), params.get("to_date")]);
   }, [params]);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setTabValue(newValue);
-    queryPreparations(selectedDates[0], selectedDates[1], newValue);
-  };
-
   //chagedData for pie chart
   const modifyData = (array: Array<any>) => {
     if (array && array.length) {
@@ -51,7 +50,7 @@ const BillingOverViewCaseTypes = ({
         tempArray.push({
           name: item["case_type_name"],
           y:
-            tabValue == "Revenue"
+            selectedTabValue == "revenue"
               ? item["received_amount"]
                 ? +item["received_amount"]
                 : 0
@@ -67,7 +66,7 @@ const BillingOverViewCaseTypes = ({
   function getSubtitle() {
     const totalNumber = totalRevenueSum?.[2]?.value;
     return `<span style="font-size: 6px,margin-left:"45px">${
-      tabValue == "Revenue" ? "Total Received" : "Total Billed"
+      selectedTabValue == "revenue" ? "Total Received" : "Total Billed"
     }</span>
         <br>
         <span style="font-size: 13px;">
@@ -120,7 +119,7 @@ const BillingOverViewCaseTypes = ({
     },
     series: [
       {
-        name: "Total Billed",
+        name: selectedTabValue == "revenue" ? "Total Recevied" : "Total Billed",
         colorByPoint: true,
         data: modifyData(caseTypesWiseStatsData),
       },
@@ -131,10 +130,10 @@ const BillingOverViewCaseTypes = ({
     if (fromDate) {
       setSelectedDates([fromDate, toDate]);
       setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
-      queryPreparations(fromDate, toDate, tabValue);
+      queryPreparations(fromDate, toDate, selectedTabValue);
     } else {
       setDateFilterDefaultValue("");
-      queryPreparations("", "", tabValue);
+      queryPreparations("", "", selectedTabValue);
     }
   };
 
@@ -144,13 +143,16 @@ const BillingOverViewCaseTypes = ({
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Case Types {tabValue}
+            Case Types {selectedTabValue}
           </h3>
           <GlobalDateRangeFilter
             onChangeData={onChangeData}
             dateFilterDefaultValue={dateFilterDefaultValue}
           />
-
+          <BilledAndRevenueTabs
+            selectedTabValue={selectedTabValue}
+            setSelectedTabValue={setSelectedTabValue}
+          />
           <div
             style={{
               display: "flex",
@@ -166,7 +168,8 @@ const BillingOverViewCaseTypes = ({
                 );
               }}
               disabled={
-                caseTypesWiseStatsData?.length === 0 || tabValue == "Revenue"
+                caseTypesWiseStatsData?.length === 0 ||
+                selectedTabValue == "revenue"
                   ? true
                   : false
               }
@@ -190,7 +193,11 @@ const BillingOverViewCaseTypes = ({
             </div>
             <TanStackTableComponent
               data={caseTypesWiseStatsData}
-              columns={BilledOverViewcolumns}
+              columns={
+                selectedTabValue == "billed"
+                  ? BilledOverViewcolumns
+                  : RevenueOverViewcolumns
+              }
               totalSumValues={totalRevenueSum}
               loading={loading}
             />

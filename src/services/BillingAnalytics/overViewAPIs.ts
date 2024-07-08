@@ -89,6 +89,23 @@ export const getMonthWiseBilledCaseTypesDataAPI = async (params: any) => {
 export const getMonthWiseRevenueTreadsDataAPI = async (params: any) => {
   try {
     const { success, data } = await $fetch.get(
+      "/revenue-overview/trend",
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getMonthWiseBilledTreadsDataAPI = async (params: any) => {
+  try {
+    const { success, data } = await $fetch.get(
       "/billed-overview/trend",
       params
     );
