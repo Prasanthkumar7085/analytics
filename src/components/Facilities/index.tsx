@@ -257,7 +257,7 @@ const FacilitiesList = () => {
     {
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
       footer: (props: any) => props.column.id,
       width: "200px",
       maxWidth: "200px",

@@ -1,5 +1,5 @@
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
-import { } from "@/services/revenueAPIs";
+import {} from "@/services/revenueAPIs";
 import {
   getTrendsForRevenueBySalesRepIdAPI,
   getTrendsForVolumeBySalesRepIdAPI,
@@ -11,7 +11,15 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: string, searchParams: any, pageName: string }) => {
+const TrendsDataGraph = ({
+  graphType,
+  searchParams,
+  pageName,
+}: {
+  graphType: string;
+  searchParams: any;
+  pageName: string;
+}) => {
   const [trendsData, setTrendsData] = useState<any>([]);
 
   const { id } = useParams();
@@ -61,14 +69,14 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
       },
     },
     title: {
-      text: graphType == "volume" ? "Total Volume" : "Total Revenue",
+      text: graphType == "volume" ? "Received" : "Total Revenue",
     },
     xAxis: {
       categories: trendsData?.map((item: any) => formatMonthYear(item?.month)),
     },
     yAxis: {
       title: {
-        text: graphType == "volume" ? "Volume" : "Revenue",
+        text: graphType == "volume" ? "Received" : "Revenue",
       },
     },
     tooltip: {
@@ -93,7 +101,7 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
           return (
             month +
             "<br>" +
-            "Total Cases: <b>" +
+            "Received: <b>" +
             totalCases +
             "</b><br>" +
             "Total Target: <b>" +
@@ -112,8 +120,8 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
               ? trendsData?.map((item: any) => +item.total_target)
               : []
             : trendsData?.length
-              ? trendsData?.map((item: any) => +item.paid_amount)
-              : [],
+            ? trendsData?.map((item: any) => +item.paid_amount)
+            : [],
         animation: {
           opacity: 1, // Set opacity animation for smoother entrance
         },
@@ -129,8 +137,8 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
               ? trendsData?.map((item: any) => +item.total_volume)
               : []
             : trendsData?.length
-              ? trendsData?.map((item: any) => +item.paid_amount)
-              : [],
+            ? trendsData?.map((item: any) => +item.paid_amount)
+            : [],
         animation: {
           opacity: 1, // Set opacity animation for smoother entrance
         },
@@ -147,10 +155,10 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
 
   return (
     <div style={{ position: "relative" }}>
-      {trendsData?.length ?
+      {trendsData?.length ? (
         <HighchartsReact highcharts={Highcharts} options={options} />
-
-        : !loading ? <div
+      ) : !loading ? (
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -158,16 +166,23 @@ const TrendsDataGraph = ({ graphType, searchParams, pageName }: { graphType: str
             height: "40vh",
           }}
         >
-          <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
-        </div> : <div
+          <Image
+            src="/NoDataImageAnalytics.svg"
+            alt=""
+            height={150}
+            width={250}
+          />
+        </div>
+      ) : (
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "40vh",
           }}
-        >
-        </div>}
+        ></div>
+      )}
       {loading ? (
         <Backdrop
           open={true}

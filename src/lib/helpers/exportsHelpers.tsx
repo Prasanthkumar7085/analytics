@@ -701,7 +701,7 @@ export const exportToExcelInsurancesTable = (
       obj.total_cases,
     ];
   });
-  let headers = ["S.No", "INSURANCE", "NO.OF FACILITIES", "TOTAL CASES"];
+  let headers = ["S.No", "INSURANCE", "NO.OF FACILITIES", "RECEIVED"];
 
   const toatalSumValuesRow = totalSumValues.map((obj: any) =>
     obj.value === null ? "" : obj.value
@@ -744,7 +744,7 @@ export const exportToExcelCaseTypesTable = (
       obj.total_cases,
     ];
   });
-  let headers = ["S.No", "CASE TYPES", "NO.OF FACILITIES", "TOTAL CASES"];
+  let headers = ["S.No", "CASE TYPES", "NO.OF FACILITIES", "RECEIVED"];
 
   const toatalSumValuesRow = totalSumValues.map((obj: any) =>
     obj.value === null ? "" : obj.value
@@ -788,7 +788,7 @@ export const exportToExcelInsurancePayorsVolumeTable = (
       obj.pending_cases,
     ];
   });
-  let headers = ["S.No", "INSURANCE NAME", "TOTAL", "FINALIZED", "PENDING"];
+  let headers = ["S.No", "INSURANCE NAME", "RECEIVED", "FINALIZED", "PENDING"];
 
   const toatalSumValuesRow = totalInsurancePayors.map((obj: any) =>
     obj.value === null ? "" : obj.value
@@ -989,7 +989,7 @@ export const exportToExcelFacilitiesTable = (
   const formattedData = facilitiesData?.map((obj: any, index: number) => {
     return [index + 1, obj.facility_name, obj.sales_rep_name, obj.total_cases];
   });
-  let headers = ["Sl.no", "FACILITY NAME", "MARKETER NAME", "TOTAL CASES"];
+  let headers = ["Sl.no", "FACILITY NAME", "MARKETER NAME", "RECEIVED"];
   const totalSumValuesRow = totalSumValue?.map((obj: any) =>
     obj.value == null ? "" : obj.value
   );
