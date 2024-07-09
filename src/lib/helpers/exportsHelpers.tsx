@@ -1636,9 +1636,9 @@ export const exportPatientResultsTable = (patientResultsData: any) => {
     testResults.forEach((test: any, testIndex: any) => {
       const row = [
         test.result_name,
-        test.reference_range,
+        test.reference_range + " " + test.units,
         ...patientResultsData[title].map(
-          (result: any) => result.results[testIndex]?.result || ""
+          (result: any) => result.results[testIndex]?.result || 0
         ),
       ];
       formattedData.push(row);

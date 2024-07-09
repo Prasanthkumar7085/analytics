@@ -328,8 +328,8 @@ const PatientResultTable = () => {
                       {patientResultsData[title][0].results.map(
                         (test: any, testIndex: any) => (
                           <tr key={testIndex}>
-                            <td>{test.result_name}</td>
-                            <td>{test.reference_range}</td>
+                            <td>{test.result_name ? test.result_name : "--"}</td>
+                            <td>{test.reference_range + " " + test.units ? test.reference_range + " " + test.units : "--"}</td>
                             {patientResultsData[title].map(
                               (result: any, resultIndex: any) => (
                                 <td key={resultIndex}>
