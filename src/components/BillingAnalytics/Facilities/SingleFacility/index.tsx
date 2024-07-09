@@ -23,6 +23,8 @@ import BillingStatsCards from "../../OverView/BillingStatsCard";
 import MonthWiseCaseTypesStats from "../../OverView/MonthWiseStats";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import BilledAndRevenueTabs from "@/components/core/BilledAndRevenueTabs";
+import { getSingleFacilityDetailsAPI } from "@/services/facilitiesAPIs";
+import InsuranceWiseDetails from "./InsuranceWiseDetails";
 
 const SingleFacilityBillingAndRevenueDetails = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -38,6 +40,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [selectedTabValue, setSelectedTabValue] = useState<any>("billed");
   const [tabValue, setTabValue] = useState<any>();
+  const [singleFacilityDetails, setSingleFacilityDetails] = useState<any>();
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -71,6 +74,21 @@ const SingleFacilityBillingAndRevenueDetails = () => {
         await getcaseTyeWiseRevenueStats(queryParams);
       }
     } catch (err: any) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  //get single facility details
+  const getSingleFacilityDetails = async () => {
+    setLoading(true);
+    try {
+      const response = await getSingleFacilityDetailsAPI(id as string);
+      if (response.status == 200 || response?.status == 201) {
+        setSingleFacilityDetails(response?.data);
+      }
+    } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
@@ -181,12 +199,18 @@ const SingleFacilityBillingAndRevenueDetails = () => {
       params?.get("to_date"),
       searchParams?.tab
     );
+  }, [searchParams]);
+  //api call to get stats count
+  useEffect(() => {
+    if (id) {
+      getSingleFacilityDetails();
+    }
     if (searchParams?.from_date) {
       setDateFilterDefaultValue(
         changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
       );
     }
-  }, [searchParams]);
+  }, []);
 
   useEffect(() => {
     setSearchParams(
@@ -209,14 +233,20 @@ const SingleFacilityBillingAndRevenueDetails = () => {
                 <Avatar sx={{ height: "30px", width: "30px" }} />
                 <div className="pl-3">
                   <p className="m-0">Facility Name</p>
-                  <p className="m-0">testkj</p>
+                  <p className="m-0">
+                    {" "}
+                    {singleFacilityDetails?.[0]?.facility_name}
+                  </p>
                 </div>
               </div>
               <div className="person flex items-center">
                 <Avatar sx={{ height: "30px", width: "30px" }} />
                 <div className="pl-3">
                   <p className="m-0">Marketer Name</p>
-                  <p className="m-0">testnj</p>
+                  <p className="m-0">
+                    {" "}
+                    {singleFacilityDetails?.[0]?.sales_rep_name}
+                  </p>
                 </div>
               </div>
             </div>
@@ -256,7 +286,9 @@ const SingleFacilityBillingAndRevenueDetails = () => {
           <Grid item xs={12}>
             <MonthWiseCaseTypesStats searchParams={searchParams} />
           </Grid>
-          <Grid item xs={12}></Grid>
+          <Grid item xs={12}>
+            <InsuranceWiseDetails searchParams={searchParams} />
+          </Grid>
         </Grid>
       </div>
     </div>

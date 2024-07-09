@@ -39,6 +39,39 @@ const MonthWiseCaseTypesBilledStatsColumns = () => {
   ];
 };
 
+const MonthWiseInsuranceBilledStatsColumns = () => {
+  return [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      enableSorting: false,
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+      cell: ({ row, table }: any) =>
+        (table
+          .getSortedRowModel()
+          ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
+        1,
+    },
+
+    {
+      accessorFn: (row: any) => row.insurance_name,
+      id: "insurance_name",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>Insurance</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: (info: any) => {
+        return <span style={{ cursor: "pointer" }}>{info.getValue()}</span>;
+      },
+    },
+  ];
+};
+
 const MonthWiseCaseTypesBilledStatsGraphColumn = ({
   setGraphDialogOpen,
   setSelectedGraphData,
@@ -172,11 +205,7 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
         maxWidth: "300px",
         minWidth: "300px",
         cell: (info: any) => {
-          return (
-            <span>
-              {formatMoney(info.row.original?.[item]?.[0]?.toLocaleString())}
-            </span>
-          );
+          return <span>{formatMoney(info.row.original?.[item]?.[0])}</span>;
         },
       },
       {
@@ -202,8 +231,8 @@ export const groupAllBilledColumns = ({
   setGraphValuesData,
   setGraphColor,
   searchParams,
+  tableType,
 }: any) => {
-  let NormalColumns = MonthWiseCaseTypesBilledStatsColumns();
   let GroupdBilledColmns = MonthWiseCaseTypesBilledStatsAdditionalColumns({
     headerMonths,
   });
@@ -218,5 +247,9 @@ export const groupAllBilledColumns = ({
   });
   let GroupdColmns =
     searchParams?.tab == "billed" ? GroupdBilledColmns : GroupdRevenueColmns;
+  let NormalColumns =
+    tableType == "insurance"
+      ? MonthWiseInsuranceBilledStatsColumns()
+      : MonthWiseCaseTypesBilledStatsColumns();
   return [...NormalColumns, ...GroupdColmns, ...GraphColumn];
 };

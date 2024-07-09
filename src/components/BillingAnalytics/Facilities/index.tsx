@@ -34,9 +34,9 @@ const BillingAndRevenueFacilities = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    tabValue = "billed",
+    tabValue = searchParams?.tab,
   }: any) => {
-    let queryParams: any = {};
+    let queryParams: any = { tab: "billed" };
 
     if (fromDate) {
       queryParams["from_date"] = fromDate;
@@ -102,13 +102,7 @@ const BillingAndRevenueFacilities = () => {
         );
         const modifieData = addSerial(data, 1, data?.length);
         setFacilitiesData(modifieData);
-        const keysToAggregate = [
-          "total_cases",
-          "billed_cases",
-          "billed_amount",
-        ];
-
-        calculateTotalForEachColumn(data, keysToAggregate);
+        calculateTotalForEachColumn(data);
       }
     } catch (err) {
       console.error(err);
@@ -148,12 +142,7 @@ const BillingAndRevenueFacilities = () => {
         );
         const modifieData = addSerial(data, 1, data?.length);
         setFacilitiesData(modifieData);
-        const keysToAggregate = [
-          "total_cases",
-          "billed_cases",
-          "billed_amount",
-        ];
-        calculateTotalForEachColumn(data, keysToAggregate);
+        calculateTotalForEachColumn(data);
       }
     } catch (err) {
       console.error(err);
@@ -162,27 +151,44 @@ const BillingAndRevenueFacilities = () => {
     }
   };
 
-  const calculateTotalForEachColumn = (data: any[], keysToAggregate: any) => {
-    const aggregates = keysToAggregate.reduce(
-      (aggregates: any, key: string) => {
+  const calculateTotalForEachColumn = (data: any[]) => {
+    const keysForBilledTab = ["total_cases", "billed_cases", "billed_amount"];
+    const keysForRevenueTab = ["targeted_amount", "received_amount"];
+    const aggregateKeys = (keys: string[]) =>
+      keys.reduce((aggregates: any, key: string) => {
         aggregates[key] = data.reduce(
           (sum: number, item: any) => sum + +item[key],
           0
         );
         return aggregates;
-      },
-      {}
-    );
-    const result = [
+      }, {});
+
+    let aggregates: any;
+    if (selectedTabValue === "billed") {
+      aggregates = aggregateKeys(keysForBilledTab);
+    } else {
+      aggregates = aggregateKeys(keysForRevenueTab);
+    }
+    let result: { value: any; dolorSymbol: boolean }[] = [
       { value: "Total", dolorSymbol: false },
       { value: null, dolorSymbol: false },
       { value: null, dolorSymbol: false },
-      { value: aggregates["total_cases"], dolorSymbol: false },
-      { value: aggregates["billed_cases"], dolorSymbol: false },
-      { value: aggregates["billed_amount"], dolorSymbol: true },
-      { value: null, dolorSymbol: false },
     ];
 
+    if (selectedTabValue === "billed") {
+      result.push(
+        { value: aggregates["total_cases"], dolorSymbol: false },
+        { value: aggregates["billed_cases"], dolorSymbol: false },
+        { value: aggregates["billed_amount"], dolorSymbol: true },
+        { value: null, dolorSymbol: false }
+      );
+    } else {
+      result.push(
+        { value: aggregates["targeted_amount"] ?? 0, dolorSymbol: true },
+        { value: aggregates["received_amount"], dolorSymbol: true },
+        { value: null, dolorSymbol: false }
+      );
+    }
     setTotalSumValues(result);
   };
 
@@ -191,13 +197,10 @@ const BillingAndRevenueFacilities = () => {
     search: search = searchParams?.search,
     orderBy: orderBy = searchParams?.order_by,
     orderType: orderType = searchParams?.order_type as "asc" | "desc",
-    general_sales_reps_exclude_count:
-      general_sales_reps_exclude_count = searchParams?.general_sales_reps_exclude_count,
   }: Partial<{
     search: string;
     orderBy: string;
     orderType: "asc" | "desc";
-    general_sales_reps_exclude_count: any;
   }>) => {
     let queryParams: any = {
       ...(search && { search }),
@@ -205,9 +208,7 @@ const BillingAndRevenueFacilities = () => {
       ...(orderType && { order_type: orderType }),
       ...(params.get("from_date") && { from_date: params.get("from_date") }),
       ...(params.get("to_date") && { to_date: params.get("to_date") }),
-      ...(general_sales_reps_exclude_count && {
-        general_sales_reps_exclude_count,
-      }),
+      ...(params.get("tab") && { tab: params.get("tab") }),
     };
 
     router.push(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
@@ -232,8 +233,7 @@ const BillingAndRevenueFacilities = () => {
 
     const modifiedData = addSerial(filteredData, 1, filteredData?.length);
     setFacilitiesData(modifiedData);
-    let keysToAggregate: any = [];
-    calculateTotalForEachColumn(filteredData, keysToAggregate);
+    calculateTotalForEachColumn(filteredData);
   };
 
   useEffect(() => {
@@ -248,7 +248,13 @@ const BillingAndRevenueFacilities = () => {
         changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
       );
     }
-  }, [searchParams]);
+  }, [searchParams?.tab]);
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
 
   return (
     <div id="FacilitiesTablePage" className="facilitiesPage s-no-column">

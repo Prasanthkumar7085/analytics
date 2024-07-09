@@ -1,3 +1,4 @@
+import CaseTypesColumnTable from "@/components/CaseTypes/caseTypesColumnTable";
 import {
   getUniqueMonthsInBilling,
   rearrangeDataWithCasetypes,
@@ -8,7 +9,11 @@ import {
   getFacilityMonthWiseInsuranceWiseRevenueCaseTypesDataAPI,
 } from "@/services/BillingAnalytics/facilitiesAPIs";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { groupAllBilledColumns } from "../../OverView/MonthWiseStats/MonthWiseCaseTypesStatsColumns";
+import { Backdrop } from "@mui/material";
+import GraphDialog from "@/components/core/GraphDialog";
+import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
 
 const InsuranceWiseDetails = ({ searchParams }: any) => {
   const { id } = useParams();
@@ -21,6 +26,8 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
   const [graphValuesData, setGraphValuesData] = useState<any>({});
   const [graphColor, setGraphColor] = useState("");
   const [rowTotalSum, setRowTotalSum] = useState<any>([]);
+  let tableType = "insurance";
+  console.log(monthWiseInsuranceData, "ewu8ewrun");
   //query preparation method
   const queryPreparations = async (
     fromDate: any,
@@ -54,18 +61,18 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
     const groupedData: any = {};
 
     data?.forEach((item: any) => {
-      const { case_type_id, case_type_name, month_wise } = item;
+      const { insurance_id, insurance_name, month_wise } = item;
 
-      if (!groupedData[case_type_id]) {
-        groupedData[case_type_id] = {
-          case_type_id,
-          case_type_name,
+      if (!groupedData[insurance_id]) {
+        groupedData[insurance_id] = {
+          insurance_id,
+          insurance_name,
         };
       }
       month_wise.forEach((monthItem: any) => {
         const { month } = monthItem;
         const formattedMonth = month.replace(/\s/g, "");
-        groupedData[case_type_id][formattedMonth] = [
+        groupedData[insurance_id][formattedMonth] = [
           monthItem?.[key1],
           monthItem?.[key2],
         ];
@@ -88,20 +95,20 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
         setHeaderMonths(uniqueMonths);
         const groupedData: any = groupDataWithMonthWise(
           response?.data,
-          "cases",
-          "amount"
+          "received_amount",
+          "targeted_amount"
         );
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
-          return a.case_type_name.localeCompare(b.case_type_name);
+          return a.insurance_name.localeCompare(b.insurance_name);
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        let rearrangedData = rearrangeDataWithCasetypes(modifieData);
-        setMonthWiseInsuranceData(rearrangedData);
-        // getTotalSumOfCasetypesColmnsWithMonths(
-        //   response?.data,
-        //   "cases",
-        //   "amount"
-        // );
+        setMonthWiseInsuranceData(modifieData);
+        let total = getTotalSumOfColmnsWithMonths(
+          response?.data,
+          "received_amount",
+          "targeted_amount"
+        );
+        setTotalSumValues(total);
       }
     } catch (err) {
       console.error(err);
@@ -122,20 +129,20 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
         setHeaderMonths(uniqueMonths);
         const groupedData: any = groupDataWithMonthWise(
           response?.data,
-          "received_amount",
-          "targeted_amount"
+          "cases",
+          "amount"
         );
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
-          return a.case_type_name.localeCompare(b.case_type_name);
+          return a.insurance_name.localeCompare(b.insurance_name);
         });
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
-        let rearrangedData = rearrangeDataWithCasetypes(modifieData);
-        setMonthWiseInsuranceData(rearrangedData);
-        // getTotalSumOfCasetypesColmnsWithMonths(
-        //   response?.data,
-        //   "received_amount",
-        //   "targeted_amount"
-        // );
+        setMonthWiseInsuranceData(modifieData);
+        let total = getTotalSumOfColmnsWithMonths(
+          response?.data,
+          "cases",
+          "amount"
+        );
+        setTotalSumValues(total);
       }
     } catch (err) {
       console.error(err);
@@ -143,6 +150,82 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
       setLoading(false);
     }
   };
-  return <></>;
+
+  useEffect(() => {
+    queryPreparations(
+      searchParams?.from_date,
+      searchParams?.to_date,
+      searchParams?.tab
+    );
+  }, [searchParams]);
+  return (
+    <div id="mothWiseCaseTypeData">
+      <div style={{ position: "relative" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        ></div>
+        {headerMonths?.length ? (
+          <CaseTypesColumnTable
+            data={monthWiseInsuranceData}
+            columns={groupAllBilledColumns({
+              headerMonths,
+              setGraphDialogOpen,
+              setSelectedGraphData,
+              setGraphValuesData,
+              setGraphColor,
+              searchParams,
+              tableType,
+            })}
+            totalSumValues={totalSumValues}
+            loading={loading}
+            headerMonths={headerMonths}
+            tabValue={"revenue"}
+            rowTotalSum={rowTotalSum}
+          />
+        ) : (
+          ""
+        )}
+        {loading ? (
+          <Backdrop
+            open={true}
+            style={{
+              zIndex: 9999,
+              color: "red",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              background: "rgba(256,256,256,0.8)",
+            }}
+          >
+            <object
+              type="image/svg+xml"
+              data={"/core/loading.svg"}
+              width={150}
+              height={150}
+            />
+          </Backdrop>
+        ) : (
+          ""
+        )}
+        <GraphDialog
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={selectedGrpahData}
+          graphValuesData={graphValuesData}
+          graphColor={graphColor}
+          tabValue={"revenue"}
+        />
+      </div>
+    </div>
+  );
 };
 export default InsuranceWiseDetails;

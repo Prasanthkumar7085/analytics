@@ -60,7 +60,7 @@ const BillingFacilitiesColumns = ({ searchParams, router }: any) => {
       maxWidth: "200px",
       minWidth: "200px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue().toLocaleString()}</span>;
+        return <span>{getValue()?.toLocaleString()}</span>;
       },
     },
 
@@ -167,27 +167,27 @@ const RevenueFacilitiesColumns = ({ searchParams, router }: any) => {
       },
     },
     {
-      accessorFn: (row: any) => row.total_cases,
-      id: "total_cases",
+      accessorFn: (row: any) => row.targeted_amount,
+      id: "targeted_amount",
       header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
       footer: (props: any) => props.column.id,
       width: "200px",
       maxWidth: "200px",
       minWidth: "200px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue().toLocaleString()}</span>;
+        return <span>{formatMoney(getValue())}</span>;
       },
     },
 
     {
-      accessorFn: (row: any) => row.billed_cases,
-      id: "billed_cases",
+      accessorFn: (row: any) => row.received_amount,
+      id: "received_amount",
       header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
       width: "200px",
       maxWidth: "200px",
       minWidth: "200px",
       cell: ({ getValue }: any) => {
-        return <span>{getValue() || "--"}</span>;
+        return <span>{formatMoney(getValue())}</span>;
       },
     },
     {

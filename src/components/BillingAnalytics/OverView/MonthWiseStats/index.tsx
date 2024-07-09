@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { groupAllBilledColumns } from "./MonthWiseCaseTypesStatsColumns";
 import GraphDialog from "@/components/core/GraphDialog";
 import { Backdrop } from "@mui/material";
+import { groupDataWithMonthWise } from "@/lib/helpers/groupApiData";
+import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
 
 const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,7 +25,7 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
   const [graphValuesData, setGraphValuesData] = useState<any>({});
   const [graphColor, setGraphColor] = useState("");
   const [rowTotalSum, setRowTotalSum] = useState<any>([]);
-
+  let tableType = "casetype";
   //query preparation method
   const queryPreparations = async (
     fromDate: any,
@@ -53,31 +55,6 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
     }
   };
 
-  const getTotalSumOfCasetypesColmnsWithMonths = (
-    data: any,
-    key1: string,
-    key2: string
-  ) => {
-    const groupedDataSum: any = {};
-    data?.forEach((item: any) => {
-      const { case_type_id, case_type_name, month_wise } = item;
-      month_wise.forEach((monthItem: any) => {
-        const { month } = monthItem;
-        const firstColumn = parseFloat(monthItem?.[key1]);
-        const secondColumn = parseFloat(monthItem?.[key2]);
-
-        const formattedMonth = month.replace(/\s/g, "");
-        if (!groupedDataSum[formattedMonth]) {
-          groupedDataSum[formattedMonth] = [0, 0];
-        }
-
-        groupedDataSum[formattedMonth][0] += firstColumn;
-        groupedDataSum[formattedMonth][1] += secondColumn;
-      });
-    });
-    setTotalSumValues(groupedDataSum);
-  };
-
   //get the total sum of the each row
   const calculateRowTotal = (rowData: any, uniqueMonths: any) => {
     let totalVolume = 0;
@@ -91,31 +68,6 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
     });
     rowData["rowTotal"] = [totalVolume, totalTarget];
     return rowData;
-  };
-
-  const groupDataWithMonthWise = (data: any, key1: string, key2: string) => {
-    const groupedData: any = {};
-
-    data?.forEach((item: any) => {
-      const { case_type_id, case_type_name, month_wise } = item;
-
-      if (!groupedData[case_type_id]) {
-        groupedData[case_type_id] = {
-          case_type_id,
-          case_type_name,
-        };
-      }
-      month_wise.forEach((monthItem: any) => {
-        const { month } = monthItem;
-        const formattedMonth = month.replace(/\s/g, "");
-        groupedData[case_type_id][formattedMonth] = [
-          monthItem?.[key1],
-          monthItem?.[key2],
-        ];
-      });
-    });
-
-    return groupedData;
   };
 
   const getMonthWiseBilledCaseTypesData = async (queryParams: any) => {
@@ -136,11 +88,12 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         let rearrangedData = rearrangeDataWithCasetypes(modifieData);
         setMonthWiseCaseData(rearrangedData);
-        getTotalSumOfCasetypesColmnsWithMonths(
+        let totalSum = getTotalSumOfColmnsWithMonths(
           response?.data,
           "cases",
           "amount"
         );
+        setTotalSumValues(totalSum);
       }
     } catch (err) {
       console.error(err);
@@ -166,11 +119,12 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
         const modifieData = addSerial(sortedData, 1, sortedData?.length);
         let rearrangedData = rearrangeDataWithCasetypes(modifieData);
         setMonthWiseCaseData(rearrangedData);
-        getTotalSumOfCasetypesColmnsWithMonths(
+        let total = getTotalSumOfColmnsWithMonths(
           response?.data,
           "received_amount",
           "targeted_amount"
         );
+        setTotalSumValues(total);
       }
     } catch (err) {
       console.error(err);
@@ -206,6 +160,7 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
               setGraphValuesData,
               setGraphColor,
               searchParams,
+              tableType,
             })}
             totalSumValues={totalSumValues}
             loading={loading}
