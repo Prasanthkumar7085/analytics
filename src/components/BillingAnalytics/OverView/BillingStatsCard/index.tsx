@@ -4,6 +4,7 @@ import styles from "./index.module.css";
 import CountUp from "react-countup";
 import { BillingOverViewStatsCardTypes } from "@/interfaces/billingOverViewTypes";
 import { FC, useState } from "react";
+import formatMoney from "@/lib/Pipes/moneyFormat";
 
 const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
   loading,
@@ -43,7 +44,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                       <CountUp
                         start={0}
                         decimal="."
-                        end={billingCardsDetails?.["total_cases"]}
+                        end={billingCardsDetails?.[0]?.["total_cases"]}
                       />
                     )}
                   </h2>
@@ -67,7 +68,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                       <CountUp
                         start={0}
                         decimal="."
-                        end={billingCardsDetails?.["cases_billed"]}
+                        end={billingCardsDetails?.[0]?.["cases_billed"]}
                       />
                     )}
                   </h2>
@@ -84,7 +85,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                       <CountUp
                         start={0}
                         decimal="."
-                        end={billingCardsDetails?.["cases_unbilled"]}
+                        end={billingCardsDetails?.[0]?.["cases_unbilled"]}
                       />
                     )}
                   </h2>
@@ -101,7 +102,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                     <CountUp
                       start={0}
                       decimal="."
-                      end={billingCardsDetails?.["total_billed_amount"]}
+                      end={billingCardsDetails?.[0]?.["total_billed_amount"]}
                     />
                   )}
                 </h2>

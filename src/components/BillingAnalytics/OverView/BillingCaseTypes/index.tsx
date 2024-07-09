@@ -145,14 +145,20 @@ const BillingOverViewCaseTypes = ({
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
             Case Types {selectedTabValue}
           </h3>
-          <GlobalDateRangeFilter
-            onChangeData={onChangeData}
-            dateFilterDefaultValue={dateFilterDefaultValue}
-          />
-          <BilledAndRevenueTabs
-            selectedTabValue={selectedTabValue}
-            setSelectedTabValue={setSelectedTabValue}
-          />
+          {pathName?.includes("facilities") ? (
+            ""
+          ) : (
+            <>
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
+              <BilledAndRevenueTabs
+                selectedTabValue={selectedTabValue}
+                setSelectedTabValue={setSelectedTabValue}
+              />
+            </>
+          )}
           <div
             style={{
               display: "flex",

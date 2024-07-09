@@ -10,10 +10,19 @@ import {
   getRevenueStatsCardDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { rearrangeDataWithCasetypes } from "@/lib/helpers/apiHelpers";
+import {
+  getDatesForStatsCards,
+  rearrangeDataWithCasetypes,
+} from "@/lib/helpers/apiHelpers";
 import MonthWiseCaseTypesStats from "./MonthWiseStats";
 import MonthWiseTrendsGraph from "./MonthWiseTrends";
-import { set } from "rsuite/esm/internals/utils/date";
+import {
+  addMonths,
+  endOfMonth,
+  set,
+  startOfMonth,
+} from "rsuite/esm/internals/utils/date";
+import dayjs from "dayjs";
 
 const BillingOverView = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -22,7 +31,7 @@ const BillingOverView = () => {
   const params = useSearchParams();
   const [billingCardsDetails, setBillingStatsCardsDetails] = useState<any>();
   const [revenueCardsDetails, setRevenueStatsCardsDetails] = useState<any>();
-  const [dashBoardQueryParams, setDashBoardQueryParams] = useState<any>();
+  const [dashBoardQueryParams, setDashBoardQueryParams] = useState<any>({});
   const [caseTypesWiseStatsData, setCaseTypeWiseStats] = useState<any>();
   const [totalSumValues, setTotalSumValues] = useState<any>();
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
@@ -141,14 +150,37 @@ const BillingOverView = () => {
     setTotalSumValues(result);
   };
 
+  const callCaseTypesStatsCounts = () => {
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    let thisMonth = [startOfMonth(new Date()), new Date()];
+    let lastmonth = [
+      startOfMonth(addMonths(new Date(), -1)),
+      endOfMonth(addMonths(new Date(), -1)),
+    ];
+    let defaultDates = getDatesForStatsCards(thisMonth);
+    queryPreparations(defaultDates[0], defaultDates[1], params?.get("tab"));
+    if (
+      dayjs(thisMonth[0]).format("YYYY-MM-DD") == dayjs().format("YYYY-MM-DD")
+    ) {
+      setDateFilterDefaultValue(lastmonth);
+    } else {
+      setDateFilterDefaultValue([thisMonth[0], yesterday]);
+    }
+  };
+
   //api call to get stats count
   useEffect(() => {
-    queryPreparations(
-      params?.get("from_date"),
-      params?.get("to_date"),
-      searchParams?.tab
-    );
-  }, [searchParams?.tab]);
+    if (Object?.keys(dashBoardQueryParams)?.length !== 0) {
+      queryPreparations(
+        params?.get("from_date"),
+        params?.get("to_date"),
+        params?.get("tab")
+      );
+    } else {
+      callCaseTypesStatsCounts();
+    }
+  }, [params]);
 
   useEffect(() => {
     setSearchParams(

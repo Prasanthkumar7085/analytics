@@ -30,7 +30,7 @@ const BillingAndRevenueFacilities = () => {
     searchValue = searchParams?.search,
     orderBy = searchParams?.order_by,
     orderType = searchParams?.order_type,
-    tabValue = "billing",
+    tabValue = "billed",
   }: any) => {
     let queryParams: any = {};
 
@@ -203,7 +203,7 @@ const BillingAndRevenueFacilities = () => {
       />
       <MultipleColumnsTableForSalesRep
         data={facilitiesData}
-        columns={BillingFacilitiesColumns}
+        columns={BillingFacilitiesColumns({ searchParams, router })}
         loading={loading}
         totalSumValues={totalSumValues}
         searchParams={searchParams}
