@@ -260,6 +260,7 @@ const SingleCaseTypeDetails = () => {
     orderBy: string;
     orderType: "asc" | "desc";
   }>) => {
+    setLoading(true);
     const queryParams: any = {
       ...(search && { search }),
       ...(orderBy && { order_by: orderBy }),
@@ -284,6 +285,7 @@ const SingleCaseTypeDetails = () => {
 
     setCaseTypeFacilityDetails(modifiedData);
     setMonthWiseTotalSum(groupedDataSum);
+    setLoading(false);
   };
 
   useEffect(() => {

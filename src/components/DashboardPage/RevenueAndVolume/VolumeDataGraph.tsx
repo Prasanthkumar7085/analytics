@@ -1,9 +1,13 @@
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
-import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
-const VolumeDataGraph = ({ labelsData, totalCasesData, completedCases, loading }: any) => {
-
+const VolumeDataGraph = ({
+  labelsData,
+  totalCasesData,
+  completedCases,
+  loading,
+}: any) => {
   const options = {
     chart: {
       height: 375,
@@ -68,21 +72,20 @@ const VolumeDataGraph = ({ labelsData, totalCasesData, completedCases, loading }
         color: "#46c8ff",
       },
       {
-        name: "Total",
+        name: "Received",
         data: totalCasesData,
         color: "#544fc5",
       },
     ],
   };
 
-
-
-
   return (
     <div style={{ overflowY: "hidden" }}>
-      {Object.keys(totalCasesData)?.length || Object.keys(completedCases)?.length ?
-        <HighchartsReact highcharts={Highcharts} options={options} /> :
-        !loading ? <div
+      {Object.keys(totalCasesData)?.length ||
+      Object.keys(completedCases)?.length ? (
+        <HighchartsReact highcharts={Highcharts} options={options} />
+      ) : !loading ? (
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
@@ -90,15 +93,23 @@ const VolumeDataGraph = ({ labelsData, totalCasesData, completedCases, loading }
             height: "40vh",
           }}
         >
-          <Image src="/NoDataImageAnalytics.svg" alt="" height={150} width={250} />
-        </div> : <div
+          <Image
+            src="/NoDataImageAnalytics.svg"
+            alt=""
+            height={150}
+            width={250}
+          />
+        </div>
+      ) : (
+        <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             height: "40vh",
           }}
-        ></div>}
+        ></div>
+      )}
     </div>
   );
 };

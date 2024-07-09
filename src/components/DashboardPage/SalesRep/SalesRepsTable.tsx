@@ -120,7 +120,7 @@ const SalesRepsTable = ({
         },
         {
           accessorFn: (row: any) => row.total_cases,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL</span>,
+          header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
           id: "total_cases",
           width: "200px",
           maxWidth: "200px",
