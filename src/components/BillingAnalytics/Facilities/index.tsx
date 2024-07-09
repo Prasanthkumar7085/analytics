@@ -1,14 +1,17 @@
+import LoadingComponent from "@/components/core/LoadingComponent";
 import MultipleColumnsTableForSalesRep from "@/components/core/Table/MultitpleColumn/MultipleColumnsTableForSalesRep";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { sortAndGetData } from "@/lib/Pipes/sortAndGetData";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { getAllBilledFacilitiesListAPI } from "@/services/BillingAnalytics/facilitiesAPIs";
+import {
+  getAllBilledFacilitiesListAPI,
+  getAllRevenueFacilitiesListAPI,
+} from "@/services/BillingAnalytics/facilitiesAPIs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import BillingFacilitiesFilters from "./BillingFacilitiesFilters";
-import { BillingFacilitiesColumns } from "./BillingAndRevenueFacilitiesColumns";
-import LoadingComponent from "@/components/core/LoadingComponent";
+import { tabBasedFacilityColumns } from "./BillingAndRevenueFacilitiesColumns";
 
 const BillingAndRevenueFacilities = () => {
   const router = useRouter();
@@ -22,6 +25,7 @@ const BillingAndRevenueFacilities = () => {
   const [completeData, setCompleteData] = useState([]);
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedTabValue, setSelectedTabValue] = useState<any>("billed");
 
   //query preparation method
   const queryPreparations = async ({
@@ -53,7 +57,11 @@ const BillingAndRevenueFacilities = () => {
       queryParams["tab"] = tabValue;
     }
     try {
-      await getFacilitiesList(queryParams);
+      if (tabValue == "billed") {
+        await getBilledFacilitiesList(queryParams);
+      } else {
+        await getRevenueFacilitiesList(queryParams);
+      }
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -62,7 +70,7 @@ const BillingAndRevenueFacilities = () => {
   };
 
   //get the list of Facilities
-  const getFacilitiesList = async (queryParams: any) => {
+  const getBilledFacilitiesList = async (queryParams: any) => {
     setLoading(true);
     try {
       let queryString = prepareURLEncodedParams("", queryParams);
@@ -94,7 +102,58 @@ const BillingAndRevenueFacilities = () => {
         );
         const modifieData = addSerial(data, 1, data?.length);
         setFacilitiesData(modifieData);
-        calculateTotalForEachColumn(data);
+        const keysToAggregate = [
+          "total_cases",
+          "billed_cases",
+          "billed_amount",
+        ];
+
+        calculateTotalForEachColumn(data, keysToAggregate);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const getRevenueFacilitiesList = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      let queryString = prepareURLEncodedParams("", queryParams);
+
+      router.push(`${pathname}${queryString}`);
+
+      const { search, ...updatedQueyParams } = queryParams;
+
+      const response = await getAllRevenueFacilitiesListAPI(updatedQueyParams);
+      if (response?.status == 200 || response.status == 201) {
+        setCompleteData(response?.data);
+
+        let data = response?.data;
+        if (queryParams.search) {
+          data = data.filter(
+            (item: any) =>
+              item.sales_rep_name
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase()?.trim()) ||
+              item.facility_name
+                ?.toLowerCase()
+                ?.includes(search?.toLowerCase()?.trim())
+          );
+        }
+        data = sortAndGetData(
+          data,
+          queryParams.order_by,
+          queryParams.order_type
+        );
+        const modifieData = addSerial(data, 1, data?.length);
+        setFacilitiesData(modifieData);
+        const keysToAggregate = [
+          "total_cases",
+          "billed_cases",
+          "billed_amount",
+        ];
+        calculateTotalForEachColumn(data, keysToAggregate);
       }
     } catch (err) {
       console.error(err);
@@ -103,8 +162,7 @@ const BillingAndRevenueFacilities = () => {
     }
   };
 
-  const calculateTotalForEachColumn = (data: any[]) => {
-    const keysToAggregate = ["total_cases", "billed_cases", "billed_amount"];
+  const calculateTotalForEachColumn = (data: any[], keysToAggregate: any) => {
     const aggregates = keysToAggregate.reduce(
       (aggregates: any, key: string) => {
         aggregates[key] = data.reduce(
@@ -174,7 +232,8 @@ const BillingAndRevenueFacilities = () => {
 
     const modifiedData = addSerial(filteredData, 1, filteredData?.length);
     setFacilitiesData(modifiedData);
-    calculateTotalForEachColumn(filteredData);
+    let keysToAggregate: any = [];
+    calculateTotalForEachColumn(filteredData, keysToAggregate);
   };
 
   useEffect(() => {
@@ -200,10 +259,12 @@ const BillingAndRevenueFacilities = () => {
         setDateFilterDefaultValue={setDateFilterDefaultValue}
         facilitiesData={facilitiesData}
         totalSumValue={totalSumValues}
+        selectedTabValue={selectedTabValue}
+        setSelectedTabValue={setSelectedTabValue}
       />
       <MultipleColumnsTableForSalesRep
         data={facilitiesData}
-        columns={BillingFacilitiesColumns({ searchParams, router })}
+        columns={tabBasedFacilityColumns({ searchParams, router })}
         loading={loading}
         totalSumValues={totalSumValues}
         searchParams={searchParams}

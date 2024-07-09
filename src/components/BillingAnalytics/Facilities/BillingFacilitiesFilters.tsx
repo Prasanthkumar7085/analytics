@@ -1,3 +1,4 @@
+import BilledAndRevenueTabs from "@/components/core/BilledAndRevenueTabs";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
@@ -16,6 +17,8 @@ const BillingFacilitiesFilters = ({
   setDateFilterDefaultValue,
   facilitiesData,
   totalSumValue,
+  selectedTabValue,
+  setSelectedTabValue,
 }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
@@ -43,6 +46,12 @@ const BillingFacilitiesFilters = ({
         </Grid>
         <Grid item xs={9}>
           <ul className="filterLists">
+            <li className="eachFilterLists">
+              <BilledAndRevenueTabs
+                selectedTabValue={selectedTabValue}
+                setSelectedTabValue={setSelectedTabValue}
+              />
+            </li>
             <li className="eachFilterLists">
               <GlobalDateRangeFilter
                 onChangeData={onChangeData}
