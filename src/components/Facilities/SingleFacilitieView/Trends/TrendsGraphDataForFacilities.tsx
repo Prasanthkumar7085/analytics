@@ -72,14 +72,14 @@ const TrendsDataGraphForFacilities = ({
       },
     },
     title: {
-      text: graphType == "volume" ? "Total Volume" : "Total Revenue",
+      text: graphType == "volume" ? "Received" : "Total Revenue",
     },
     xAxis: {
       categories: trendsData?.map((item: any) => formatMonthYear(item?.month)),
     },
     yAxis: {
       title: {
-        text: graphType == "volume" ? "Volume" : "Revenue",
+        text: graphType == "volume" ? "Received" : "Revenue",
       },
     },
     tooltip: {
@@ -106,7 +106,7 @@ const TrendsDataGraphForFacilities = ({
     },
     series: [
       {
-        name: graphType == "volume" ? "Total Volume" : "Total Revenue",
+        name: graphType == "volume" ? "Received" : "Total Revenue",
         data:
           graphType == "volume"
             ? trendsData?.length

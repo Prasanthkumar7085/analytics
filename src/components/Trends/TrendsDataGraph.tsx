@@ -69,14 +69,14 @@ const TrendsDataGraph = ({
       },
     },
     title: {
-      text: graphType == "volume" ? "Received" : "Total Revenue",
+      text: graphType == "volume" ? "Volume" : "Revenue",
     },
     xAxis: {
       categories: trendsData?.map((item: any) => formatMonthYear(item?.month)),
     },
     yAxis: {
       title: {
-        text: graphType == "volume" ? "Received" : "Revenue",
+        text: graphType == "volume" ? "Volume" : "Revenue",
       },
     },
     tooltip: {
@@ -104,7 +104,7 @@ const TrendsDataGraph = ({
             "Received: <b>" +
             totalCases +
             "</b><br>" +
-            "Total Target: <b>" +
+            "Target: <b>" +
             totalTargets +
             "</b>"
           );
@@ -113,7 +113,7 @@ const TrendsDataGraph = ({
     },
     series: [
       {
-        name: graphType == "volume" ? "Total Target" : "Total Revenue",
+        name: graphType == "volume" ? "Target" : "Total Revenue",
         data:
           graphType == "volume"
             ? trendsData?.length
@@ -130,7 +130,7 @@ const TrendsDataGraph = ({
         zIndex: 9999,
       },
       {
-        name: graphType == "volume" ? "Total Volume" : "Total Revenue",
+        name: graphType == "volume" ? "Received" : "Total Revenue",
         data:
           graphType == "volume"
             ? trendsData?.length

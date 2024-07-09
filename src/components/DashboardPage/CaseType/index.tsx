@@ -81,7 +81,7 @@ const CaseTypes = ({
       ? totalRevenueSum[3]?.value
       : totalRevenueSum[2]?.value;
     return `<span style="font-size: 6px,margin-left:"45px">${
-      tabValue == "Revenue" ? "Total Billed" : "Total Cases"
+      tabValue == "Revenue" ? "Total Billed" : "Received"
     }</span>
         <br>
         <span style="font-size: 13px;">
@@ -149,7 +149,7 @@ const CaseTypes = ({
     },
     series: [
       {
-        name: "Total cases",
+        name: "Received",
         colorByPoint: true,
         data: modifyData(caseTypesStatsData),
       },
