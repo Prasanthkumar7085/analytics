@@ -109,26 +109,13 @@ export const getFacilitycaseTyeWiseRevenueStatsAPI = async (
   }
 };
 
-export const getMonthWiseBilledCaseTypesDataAPI = async (params: any) => {
+export const getMonthWiseFacilityBilledCaseTypesDataAPI = async (
+  params: any,
+  id: any
+) => {
   try {
     const { success, data } = await $fetch.get(
-      "/billed-overview/monthly-case-type-wise",
-      params
-    );
-
-    if (!success) {
-      return handleAPIErrorResponse(data);
-    }
-
-    return data;
-  } catch (err) {
-    console.error(err);
-  }
-};
-export const getMonthWiseRevenueCaseTypesDataAPI = async (params: any) => {
-  try {
-    const { success, data } = await $fetch.get(
-      "/revenue-overview/monthly-case-type-wise",
+      `/billed-facilities/${id}/monthly-case-type`,
       params
     );
 
@@ -142,10 +129,13 @@ export const getMonthWiseRevenueCaseTypesDataAPI = async (params: any) => {
   }
 };
 
-export const getMonthWiseRevenueTreadsDataAPI = async (params: any) => {
+export const getMonthWiseFacilityRevenueCaseTypesDataAPI = async (
+  params: any,
+  id: any
+) => {
   try {
     const { success, data } = await $fetch.get(
-      "/revenue-overview/trend",
+      `/revenue-facilities/${id}/monthly-case-type`,
       params
     );
 
@@ -159,10 +149,33 @@ export const getMonthWiseRevenueTreadsDataAPI = async (params: any) => {
   }
 };
 
-export const getMonthWiseBilledTreadsDataAPI = async (params: any) => {
+export const getFacilityMonthWiseInsuranceWiseRevenueCaseTypesDataAPI = async (
+  params: any,
+  id: any
+) => {
   try {
     const { success, data } = await $fetch.get(
-      "/billed-overview/trend",
+      `/revenue-facilities/${id}/insurance-wise`,
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getFacilityMonthWiseInsuranceWiseBilledCaseTypesDataAPI = async (
+  params: any,
+  id: any
+) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/billed-facilities/${id}/insurance-wise`,
       params
     );
 
