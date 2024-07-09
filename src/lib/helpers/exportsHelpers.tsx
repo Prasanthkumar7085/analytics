@@ -418,7 +418,7 @@ export const exportToExcelSalesRepTable = (
     "TOTAL",
     "ACTIVE",
     "TARGET",
-    "TOTAL",
+    "RECEIVED",
     "TARGET REACHED",
   ];
 
@@ -558,7 +558,7 @@ export const exportToExcelTeamSalesRepTable = (
     "TOTAL",
     "ACTIVE",
     "TARGET",
-    "TOTAL",
+    "RECEIVED",
     "TARGET REACHED",
   ];
 

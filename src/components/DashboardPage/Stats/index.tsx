@@ -99,7 +99,7 @@ const Stats = ({
                 <div className={styles.row}>
                   <div className={styles.billed}>
                     <div className={styles.header}>
-                      <label className={styles.lable}>Received</label>
+                      <label className={styles.lable}>RECEIVED</label>
                     </div>
                     <h2 className={styles.totalvalue}>
                       {loading ? (
