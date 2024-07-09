@@ -1,13 +1,12 @@
 "use client";
 import { Button, TextField } from "@mui/material";
-import Container from "@mui/material/Container";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from 'react';
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import datePipe from "@/lib/Pipes/datePipe";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
-import { useEffect } from 'react';
 
 const PatientDetails = ({
   getDetails,

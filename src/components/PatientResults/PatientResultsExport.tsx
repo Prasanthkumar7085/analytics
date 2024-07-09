@@ -1,7 +1,6 @@
-import datePipe from "@/lib/Pipes/datePipe";
 import { Container } from "@mui/material";
 import Image from "next/image";
-import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
+import datePipe from "@/lib/Pipes/datePipe";
 
 const PatientResultsExport = ({
     patientResultsData,

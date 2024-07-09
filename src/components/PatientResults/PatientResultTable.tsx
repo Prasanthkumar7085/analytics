@@ -8,9 +8,9 @@ import { exportPatientResultsTable } from "@/lib/helpers/exportsHelpers";
 import datePipe from "@/lib/Pipes/datePipe";
 import { getAllPatientNamesAPI, getAllPatientResultsAPI, getSinglePatientResultAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResult";
+import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientResultsExport from "./PatientResultsExport";
-import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 
 const PatientResultTable = () => {
   const { id } = useParams();
