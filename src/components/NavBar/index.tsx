@@ -101,7 +101,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                           onClick={() => router.push(`/${item?.link}`)}
                           className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
                             styles[
-                              pathname == `/${item?.link}`
+                              pathname?.includes(`/${item?.link}`)
                                 ? "activePagename"
                                 : "active"
                             ]

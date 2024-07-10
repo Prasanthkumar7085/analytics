@@ -67,3 +67,43 @@ export const getInsuranceRevenueMonthWiseCaseTypeDataAPI = async (
     console.error(err);
   }
 };
+
+export const getMonthWiseInsuranceBilledTreadsDataAPI = async (
+  params: any,
+  id: any
+) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/billed-insurances/${id}/trend`,
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getMonthWiseInsuranceRevenueTreadsDataAPI = async (
+  params: any,
+  id: any
+) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `revenue-insurances/${1}/trend`,
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};

@@ -1,6 +1,10 @@
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
 import { getTotalSumWithMonthWise } from "@/lib/helpers/sumsForTableColumns";
 import {
+  getMonthWiseInsuranceBilledTreadsDataAPI,
+  getMonthWiseInsuranceRevenueTreadsDataAPI,
+} from "@/services/BillingAnalytics/insurancesAPIs";
+import {
   getMonthWiseBilledTreadsDataAPI,
   getMonthWiseRevenueTreadsDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
@@ -8,9 +12,11 @@ import { Backdrop } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const MonthWiseTrendsGraph = ({ searchParams }: any) => {
+const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
+  const { id } = useParams();
   const [monthWiseBilledTrendsData, setMonthWiseBilledTrendsData] =
     useState<any>([]);
   const [monthWiseRevenueTrendsData, setMonthWiseRevenueTrendsData] =
@@ -47,9 +53,31 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
     }
   };
 
+  const pathNameBasedBilledApiCall = (queryParams: any) => {
+    let responseData: any;
+    if (pathName == "overview") {
+      responseData = getMonthWiseBilledTreadsDataAPI(queryParams);
+    }
+    if (pathName == "insurance") {
+      responseData = getMonthWiseInsuranceBilledTreadsDataAPI(queryParams, id);
+    }
+    return responseData;
+  };
+  const pathNameBasedRevenueApiCall = (queryParams: any) => {
+    let responseData: any;
+    if (pathName == "overview") {
+      responseData = getMonthWiseRevenueTreadsDataAPI(queryParams);
+    }
+    if (pathName == "insurance") {
+      responseData = getMonthWiseInsuranceRevenueTreadsDataAPI(queryParams, id);
+    }
+    return responseData;
+  };
+
   const getBilledTrendsData = async (queryParams: any) => {
+    setLoading(true);
     try {
-      const response = await getMonthWiseBilledTreadsDataAPI(queryParams);
+      const response = await pathNameBasedBilledApiCall(queryParams);
       if (response.status == 200 || response.status == 201) {
         let graphData = getTotalSumWithMonthWise(
           response?.data,
@@ -67,8 +95,9 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
   };
 
   const getRevenueTrendsData = async (queryParams: any) => {
+    setLoading(true);
     try {
-      const response = await getMonthWiseRevenueTreadsDataAPI(queryParams);
+      const response = await pathNameBasedRevenueApiCall(queryParams);
       if (response.status == 200 || response.status == 201) {
         let graphData = getTotalSumWithMonthWise(
           response?.data,
