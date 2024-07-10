@@ -284,7 +284,10 @@ const SingleFacilityBillingAndRevenueDetails = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <MonthWiseCaseTypesStats searchParams={searchParams} />
+            <MonthWiseCaseTypesStats
+              searchParams={searchParams}
+              pathName={"facilities"}
+            />
           </Grid>
           <Grid item xs={12}>
             <InsuranceWiseDetails searchParams={searchParams} />

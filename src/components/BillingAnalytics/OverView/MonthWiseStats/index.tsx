@@ -1,21 +1,31 @@
 import CaseTypesColumnTable from "@/components/CaseTypes/caseTypesColumnTable";
+import GraphDialog from "@/components/core/GraphDialog";
 import {
   getUniqueMonthsInBilling,
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
+import { groupDataWithMonthWise } from "@/lib/helpers/groupApiData";
+import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
 import { addSerial } from "@/lib/Pipes/addSerial";
+import {
+  getMonthWiseFacilityBilledCaseTypesDataAPI,
+  getMonthWiseFacilityRevenueCaseTypesDataAPI,
+} from "@/services/BillingAnalytics/facilitiesAPIs";
+import {
+  getInsuranceBilledMonthWiseCaseTypeDataAPI,
+  getInsuranceRevenueMonthWiseCaseTypeDataAPI,
+} from "@/services/BillingAnalytics/insurancesAPIs";
 import {
   getMonthWiseBilledCaseTypesDataAPI,
   getMonthWiseRevenueCaseTypesDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
+import { Backdrop } from "@mui/material";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { groupAllBilledColumns } from "./MonthWiseCaseTypesStatsColumns";
-import GraphDialog from "@/components/core/GraphDialog";
-import { Backdrop } from "@mui/material";
-import { groupDataWithMonthWise } from "@/lib/helpers/groupApiData";
-import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
 
-const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
+const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
+  const { id } = useParams();
   const [loading, setLoading] = useState<boolean>(true);
   const [monthWiseCaseData, setMonthWiseCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -55,25 +65,49 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
     }
   };
 
-  //get the total sum of the each row
-  const calculateRowTotal = (rowData: any, uniqueMonths: any) => {
-    let totalVolume = 0;
-    let totalTarget = 0;
-    uniqueMonths.forEach((month: any) => {
-      const formattedMonth = month.replace(/\s/g, "");
-      if (rowData[formattedMonth]) {
-        totalVolume += parseFloat(rowData[formattedMonth][0]);
-        totalTarget += parseFloat(rowData[formattedMonth][1]);
-      }
-    });
-    rowData["rowTotal"] = [totalVolume, totalTarget];
-    return rowData;
+  const pathNameBasedBilledApiCall = (queryParams: any) => {
+    let responseData: any;
+    if (pathName == "overview") {
+      responseData = getMonthWiseBilledCaseTypesDataAPI(queryParams);
+    }
+    if (pathName == "facilities") {
+      responseData = getMonthWiseFacilityBilledCaseTypesDataAPI(
+        queryParams,
+        id
+      );
+    }
+    if (pathName == "insurance") {
+      responseData = getInsuranceBilledMonthWiseCaseTypeDataAPI(
+        queryParams,
+        id
+      );
+    }
+    return responseData;
+  };
+  const pathNameBasedRevenueApiCall = (queryParams: any) => {
+    let responseData: any;
+    if (pathName == "overview") {
+      responseData = getMonthWiseRevenueCaseTypesDataAPI(queryParams);
+    }
+    if (pathName == "facilities") {
+      responseData = getMonthWiseFacilityRevenueCaseTypesDataAPI(
+        queryParams,
+        id
+      );
+    }
+    if (pathName == "insurance") {
+      responseData = getInsuranceRevenueMonthWiseCaseTypeDataAPI(
+        queryParams,
+        id
+      );
+    }
+    return responseData;
   };
 
   const getMonthWiseBilledCaseTypesData = async (queryParams: any) => {
     setLoading(true);
     try {
-      const response = await getMonthWiseBilledCaseTypesDataAPI(queryParams);
+      const response: any = await pathNameBasedBilledApiCall(queryParams);
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonthsInBilling(response?.data);
         setHeaderMonths(uniqueMonths);
@@ -104,7 +138,7 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
   const getMonthWiseRevenueCaseTypesData = async (queryParams: any) => {
     setLoading(true);
     try {
-      const response = await getMonthWiseRevenueCaseTypesDataAPI(queryParams);
+      const response: any = await pathNameBasedRevenueApiCall(queryParams);
       if (response.status == 200 || response.status == 201) {
         let uniqueMonths = getUniqueMonthsInBilling(response?.data);
         setHeaderMonths(uniqueMonths);

@@ -210,7 +210,10 @@ const BillingOverView = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <MonthWiseCaseTypesStats searchParams={searchParams} />
+          <MonthWiseCaseTypesStats
+            searchParams={searchParams}
+            pathName={"overview"}
+          />
         </Grid>
         <Grid item xs={12}>
           <MonthWiseTrendsGraph searchParams={searchParams} />

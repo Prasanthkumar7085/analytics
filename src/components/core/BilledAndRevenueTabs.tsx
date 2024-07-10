@@ -24,7 +24,6 @@ const BilledAndRevenueTabs = ({
   const handleChange = (event: any, newValue: number) => {
     setValue(newValue);
     setSelectedTabValue(event.target.textContent);
-    console.log();
     let queryParams: any = {
       ...searchParams,
       tab: newValue == 0 ? "billed" : "revenue",

@@ -141,7 +141,10 @@ const SingleInsuranceBillingAndRevenueDetails = () => {
 
         <Grid container spacing={2} className="mb-5">
           <Grid item xs={12}>
-            <MonthWiseCaseTypesStats searchParams={searchParams} />
+            <MonthWiseCaseTypesStats
+              searchParams={searchParams}
+              pathName={"insurance"}
+            />
           </Grid>
           <Grid item xs={12}>
             <MonthWiseTrendsGraph searchParams={searchParams} />

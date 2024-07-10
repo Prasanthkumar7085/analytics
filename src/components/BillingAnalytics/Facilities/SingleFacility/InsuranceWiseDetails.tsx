@@ -27,7 +27,6 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
   const [graphColor, setGraphColor] = useState("");
   const [rowTotalSum, setRowTotalSum] = useState<any>([]);
   let tableType = "insurance";
-  console.log(monthWiseInsuranceData, "ewu8ewrun");
   //query preparation method
   const queryPreparations = async (
     fromDate: any,
