@@ -145,11 +145,10 @@ const BillingAndRevenueInsurances = () => {
 
   const calculateTotalForEachColumn = (data: any[]) => {
     const keysForBilledTab = [
-      "no_of_facilities",
       "total_cases",
-      "targeted_cases",
+      "billed_cases",
       "unbilled_cases",
-      "revenue_amount",
+      "billed_amount",
     ];
     const keysForRevenueTab = [
       "no_of_facilities",
@@ -178,11 +177,10 @@ const BillingAndRevenueInsurances = () => {
 
     if (selectedTabValue === "billed") {
       result.push(
-        { value: aggregates["no_of_facilities"], dolorSymbol: false },
         { value: aggregates["total_cases"], dolorSymbol: false },
-        { value: aggregates["targeted_cases"], dolorSymbol: false },
+        { value: aggregates["billed_cases"], dolorSymbol: false },
         { value: aggregates["unbilled_cases"], dolorSymbol: false },
-        { value: aggregates["revenue_amount"], dolorSymbol: true },
+        { value: aggregates["billed_amount"], dolorSymbol: true },
         { value: null, dolorSymbol: false }
       );
     } else {

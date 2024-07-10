@@ -102,6 +102,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                     <CountUp
                       start={0}
                       decimal="."
+                      prefix="$"
                       end={billingCardsDetails?.[0]?.["total_billed_amount"]}
                     />
                   )}
@@ -144,6 +145,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                       <CountUp
                         start={0}
                         decimal="."
+                        prefix="$"
                         end={revenueCardsDetails?.["targeted_revenue"]}
                       />
                     )}
@@ -168,6 +170,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                       <CountUp
                         start={0}
                         decimal="."
+                        prefix="$"
                         end={revenueCardsDetails?.["total_revenue"]}
                       />
                     )}

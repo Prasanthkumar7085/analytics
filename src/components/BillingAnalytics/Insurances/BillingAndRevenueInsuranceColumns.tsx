@@ -14,8 +14,8 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
       maxWidth: "60px",
     },
     {
-      accessorFn: (row: any) => row.insurance_payor_name,
-      id: "insurance_payor_name",
+      accessorFn: (row: any) => row.insurance_payer_name,
+      id: "insurance_payer_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>INSURANCE</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
@@ -27,25 +27,12 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
             style={{ cursor: "pointer" }}
             //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
           >
-            {info.row.original.insurance_payor_name}
+            {info.row.original.insurance_payer_name}
           </span>
         );
       },
     },
-    {
-      accessorFn: (row: any) => row.no_of_facilities,
-      id: "no_of_facilities",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
-      ),
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      maxWidth: "200px",
-      minWidth: "200px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()?.toLocaleString()}</span>;
-      },
-    },
+
     {
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
@@ -59,11 +46,9 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
       },
     },
     {
-      accessorFn: (row: any) => row.targeted_cases,
-      id: "targeted_cases",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>TARGETED CASES</span>
-      ),
+      accessorFn: (row: any) => row.billed_cases,
+      id: "billed_cases",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED CASES</span>,
       width: "200px",
       maxWidth: "200px",
       minWidth: "200px",
@@ -85,11 +70,9 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
       },
     },
     {
-      accessorFn: (row: any) => row.revenue_amount,
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>REVENUE AMOUNT</span>
-      ),
-      id: "revenue_amount",
+      accessorFn: (row: any) => row.billed_amount,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED AMOUNT</span>,
+      id: "billed_amount",
       width: "200px",
       maxWidth: "200px",
       minWidth: "200px",
@@ -113,7 +96,7 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
               className="actionButton"
               onClick={() => {
                 gotoSingleBillingInsurancePage(
-                  info.row.original.insurance_payor_id,
+                  info.row.original.insurance_payer_id,
                   searchParams,
                   router
                 );
@@ -140,8 +123,8 @@ const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
       maxWidth: "60px",
     },
     {
-      accessorFn: (row: any) => row.insurance_payor_name,
-      id: "insurance_payor_name",
+      accessorFn: (row: any) => row.insurance_payer_name,
+      id: "insurance_payer_name",
       header: () => <span style={{ whiteSpace: "nowrap" }}>INSURANCE</span>,
       footer: (props: any) => props.column.id,
       width: "220px",
@@ -153,7 +136,7 @@ const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
             style={{ cursor: "pointer" }}
             //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
           >
-            {info.row.original.insurance_payor_name}
+            {info.row.original.insurance_payer_name}
           </span>
         );
       },
