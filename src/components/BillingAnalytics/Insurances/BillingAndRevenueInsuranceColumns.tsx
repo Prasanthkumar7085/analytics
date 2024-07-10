@@ -1,4 +1,4 @@
-import { gotoSingleBillingFacilityPage } from "@/lib/helpers/navigations";
+import { gotoSingleBillingInsurancePage } from "@/lib/helpers/navigations";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 import { Button } from "@mui/material";
 
@@ -112,8 +112,8 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
             <Button
               className="actionButton"
               onClick={() => {
-                gotoSingleBillingFacilityPage(
-                  info.row.original.facility_id,
+                gotoSingleBillingInsurancePage(
+                  info.row.original.insurance_payor_id,
                   searchParams,
                   router
                 );
@@ -210,8 +210,8 @@ const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
             <Button
               className="actionButton"
               onClick={() => {
-                gotoSingleBillingFacilityPage(
-                  info.row.original.facility_id,
+                gotoSingleBillingInsurancePage(
+                  info.row.original.insurance_payor_id,
                   searchParams,
                   router
                 );

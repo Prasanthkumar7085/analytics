@@ -28,3 +28,42 @@ export const getAllRevenueInsurancesListAPI = async (params: any) => {
     console.error(err);
   }
 };
+export const getInsuranceBilledMonthWiseCaseTypeDataAPI = async (
+  params: any,
+  id: any
+) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/billed-insurances/${id}/case-type`,
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getInsuranceRevenueMonthWiseCaseTypeDataAPI = async (
+  params: any,
+  id: any
+) => {
+  try {
+    const { success, data } = await $fetch.get(
+      `/revenue-insurances/${id}/case-type`,
+      params
+    );
+
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
