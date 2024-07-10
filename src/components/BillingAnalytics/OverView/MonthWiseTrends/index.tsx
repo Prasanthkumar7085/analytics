@@ -180,11 +180,11 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
           return (
             month +
             "<br>" +
-            "Cases: <b>" +
-            totalCases +
-            "</b><br>" +
             "Billed: <b>" +
             ": $" +
+            totalCases +
+            "</b><br>" +
+            "Cases: <b>" +
             totalTargets +
             "</b>"
           );

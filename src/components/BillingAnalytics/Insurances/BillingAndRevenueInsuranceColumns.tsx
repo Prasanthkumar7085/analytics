@@ -1,0 +1,235 @@
+import { gotoSingleBillingFacilityPage } from "@/lib/helpers/navigations";
+import formatMoney from "@/lib/Pipes/moneyFormat";
+import { Button } from "@mui/material";
+
+const BillingInsuranceColumns = ({ searchParams, router }: any) => {
+  return [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
+    {
+      accessorFn: (row: any) => row.insurance_payor_name,
+      id: "insurance_payor_name",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>INSURANCE</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+          >
+            {info.row.original.insurance_payor_name}
+          </span>
+        );
+      },
+    },
+    {
+      accessorFn: (row: any) => row.no_of_facilities,
+      id: "no_of_facilities",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
+      ),
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()?.toLocaleString()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.total_cases,
+      id: "total_cases",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()?.toLocaleString()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.targeted_cases,
+      id: "targeted_cases",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>TARGETED CASES</span>
+      ),
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue() || "--"}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.unbilled_cases,
+      id: "unbilled_cases",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>UNBILLED CASES</span>
+      ),
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue() || "--"}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.revenue_amount,
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>REVENUE AMOUNT</span>
+      ),
+      id: "revenue_amount",
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{formatMoney(getValue())}</span>;
+      },
+    },
+
+    {
+      accessorFn: (row: any) => row.actions,
+      id: "actions",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: (info: any) => {
+        return (
+          <span>
+            <Button
+              className="actionButton"
+              onClick={() => {
+                gotoSingleBillingFacilityPage(
+                  info.row.original.facility_id,
+                  searchParams,
+                  router
+                );
+              }}
+            >
+              View
+            </Button>
+          </span>
+        );
+      },
+    },
+  ];
+};
+
+const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
+  return [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      minWidth: "60px",
+      maxWidth: "60px",
+    },
+    {
+      accessorFn: (row: any) => row.insurance_payor_name,
+      id: "insurance_payor_name",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>INSURANCE</span>,
+      footer: (props: any) => props.column.id,
+      width: "220px",
+      maxWidth: "220px",
+      minWidth: "220px",
+      cell: (info: any) => {
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+          >
+            {info.row.original.insurance_payor_name}
+          </span>
+        );
+      },
+    },
+    {
+      accessorFn: (row: any) => row.no_of_facilities,
+      id: "no_of_facilities",
+      header: () => (
+        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
+      ),
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{getValue()?.toLocaleString()}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.targeted_amount,
+      id: "targeted_amount",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>TARGET</span>,
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{formatMoney(getValue())}</span>;
+      },
+    },
+
+    {
+      accessorFn: (row: any) => row.received_amount,
+      id: "received_amount",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: ({ getValue }: any) => {
+        return <span>{formatMoney(getValue()) || 222}</span>;
+      },
+    },
+    {
+      accessorFn: (row: any) => row.actions,
+      id: "actions",
+      header: () => <span style={{ whiteSpace: "nowrap" }}>ACTIONS</span>,
+      footer: (props: any) => props.column.id,
+      width: "200px",
+      maxWidth: "200px",
+      minWidth: "200px",
+      cell: (info: any) => {
+        return (
+          <span>
+            <Button
+              className="actionButton"
+              onClick={() => {
+                gotoSingleBillingFacilityPage(
+                  info.row.original.facility_id,
+                  searchParams,
+                  router
+                );
+              }}
+            >
+              View
+            </Button>
+          </span>
+        );
+      },
+    },
+  ];
+};
+
+export const tabBasedInsurancesColumns = ({ searchParams, router }: any) => {
+  if (searchParams?.tab == "billed") {
+    return BillingInsuranceColumns({ searchParams, router });
+  } else {
+    return RevenueInsurancesColumns({ searchParams, router });
+  }
+};
