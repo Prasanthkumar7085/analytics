@@ -204,7 +204,7 @@ const MonthWiseCaseTypesStats = ({ searchParams }: any) => {
           graphData={selectedGrpahData}
           graphValuesData={graphValuesData}
           graphColor={graphColor}
-          tabValue={"revenue"}
+          tabValue={searchParams?.tab}
         />
       </div>
     </div>

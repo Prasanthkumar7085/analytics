@@ -119,6 +119,64 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
             </div> */}
           </div>
         </div>
+
+        <div className="cardBody">
+          <div className={styles.cardscontainer}>
+            <div
+              className={styles.card}
+              style={{
+                background: "linear-gradient(110.31deg, #4386c5, #004e92)",
+              }}
+            >
+              <div className={styles.titlecontainer}>
+                <div className="statHeader">Revenue</div>
+              </div>
+
+              <div className={styles.row}>
+                <div className={styles.billed}>
+                  <div className={styles.header}>
+                    <label className={styles.lable}>Targeted Revenue</label>
+                  </div>
+                  <h2 className={styles.totalvalue}>
+                    {loading ? (
+                      <Skeleton width={100} height={50} />
+                    ) : (
+                      <CountUp
+                        start={0}
+                        decimal="."
+                        end={revenueCardsDetails?.["targeted_revenue"]}
+                      />
+                    )}
+                  </h2>
+                </div>
+                <Image
+                  className={styles.dividerIcon}
+                  alt=""
+                  src="/navbar/divider.svg"
+                  height={20}
+                  width={20}
+                />
+
+                <div className={styles.billed}>
+                  <div className={styles.header}>
+                    <label className={styles.lable}>Total Revenue</label>
+                  </div>
+                  <h2 className={styles.totalvalue}>
+                    {loading ? (
+                      <Skeleton width={100} height={50} />
+                    ) : (
+                      <CountUp
+                        start={0}
+                        decimal="."
+                        end={revenueCardsDetails?.["total_revenue"]}
+                      />
+                    )}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

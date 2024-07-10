@@ -1,4 +1,5 @@
 import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import { getTotalSumWithMonthWise } from "@/lib/helpers/sumsForTableColumns";
 import {
   getMonthWiseBilledTreadsDataAPI,
   getMonthWiseRevenueTreadsDataAPI,
@@ -14,6 +15,7 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
     useState<any>([]);
   const [monthWiseRevenueTrendsData, setMonthWiseRevenueTrendsData] =
     useState<any>([]);
+  const [graphData, setGraphData] = useState<any>({});
   const [loading, setLoading] = useState<any>(false);
 
   //query preparation method
@@ -49,6 +51,12 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
     try {
       const response = await getMonthWiseBilledTreadsDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
+        let graphData = getTotalSumWithMonthWise(
+          response?.data,
+          "total_cases",
+          "total_amount"
+        );
+        setGraphData(graphData);
         setMonthWiseBilledTrendsData(response?.data);
       }
     } catch (err) {
@@ -62,6 +70,12 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
     try {
       const response = await getMonthWiseRevenueTreadsDataAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
+        let graphData = getTotalSumWithMonthWise(
+          response?.data,
+          "targeted_amount",
+          "received_amount"
+        );
+        setGraphData(graphData);
         setMonthWiseRevenueTrendsData(response?.data);
       }
     } catch (err) {
@@ -70,6 +84,45 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
       setLoading(false);
     }
   };
+
+  let billedSeries = [
+    {
+      name: "Cases",
+      data: Object?.values(graphData)?.length
+        ? Object.values(graphData).map((item: any) => item[0])
+        : [],
+      type: "line",
+      color: "blue",
+    },
+    {
+      name: "Billed",
+      data: Object?.values(graphData)?.length
+        ? Object.values(graphData).map((item: any) => item[1])
+        : [],
+      type: "line",
+      zIndex: 9999,
+      color: "green",
+    },
+  ];
+  let revenueSeries = [
+    {
+      name: "Target",
+      data: Object?.values(graphData)?.length
+        ? Object.values(graphData).map((item: any) => item[0])
+        : [],
+      type: "column",
+      color: "blue",
+    },
+    {
+      name: "Revenue",
+      data: Object?.values(graphData)?.length
+        ? Object.values(graphData).map((item: any) => item[1])
+        : [],
+      type: "column",
+      zIndex: 9999,
+      color: "green",
+    },
+  ];
 
   let options = {
     chart: {
@@ -83,9 +136,14 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
       text: searchParams?.tab == "revenue" ? "Total Revenue" : "Total Billed",
     },
     xAxis: {
-      categories: monthWiseBilledTrendsData?.map((item: any) =>
-        formatMonthYear(item?.month)
-      ),
+      categories:
+        searchParams?.tab == "billed"
+          ? monthWiseBilledTrendsData?.map((item: any) =>
+              formatMonthYear(item?.month)
+            )
+          : monthWiseRevenueTrendsData?.map((item: any) =>
+              formatMonthYear(item?.month)
+            ),
     },
     yAxis: {
       title: {
@@ -93,33 +151,46 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
       },
     },
     tooltip: {
+      crosshairs: true,
+      shared: true,
       formatter: function (
         this: Highcharts.TooltipFormatterContextObject | any
       ): string {
-        return (
-          this.point.category +
-          " <b>" +
-          ": $" +
-          Highcharts.numberFormat(this.point.y, 2, ".", ",") +
-          "</b>"
-        );
+        let month = this.point.category;
+        let totalCases =
+          this.series.chart.series[1].data[this.point.index].y.toLocaleString();
+        let totalTargets =
+          this.series.chart.series[0].data[this.point.index].y.toLocaleString();
+        let pointColor = this.point.color;
+
+        if (searchParams?.tab == "revenue")
+          return (
+            month +
+            "<br>" +
+            "Received <b>" +
+            ": $" +
+            totalCases +
+            "</b><br>" +
+            "Target: <b>" +
+            ": $" +
+            totalTargets +
+            "</b>"
+          );
+        else
+          return (
+            month +
+            "<br>" +
+            "Cases: <b>" +
+            totalCases +
+            "</b><br>" +
+            "Billed: <b>" +
+            ": $" +
+            totalTargets +
+            "</b>"
+          );
       },
     },
-    series: [
-      {
-        name:
-          searchParams?.tab == "revenue" ? "Total Received" : "Total Revenue",
-        data:
-          searchParams?.tab == "billed" && monthWiseBilledTrendsData?.length
-            ? monthWiseBilledTrendsData?.map((item: any) => +item.total_amount)
-            : monthWiseRevenueTrendsData?.map(
-                (item: any) => +item?.received_amount
-              ),
-        animation: {
-          opacity: 1,
-        },
-      },
-    ],
+    series: searchParams?.tab == "billed" ? billedSeries : revenueSeries,
   };
   useEffect(() => {
     queryPreparations(
@@ -131,7 +202,8 @@ const MonthWiseTrendsGraph = ({ searchParams }: any) => {
   return (
     <div id="TrendsData">
       <div style={{ position: "relative" }}>
-        {monthWiseBilledTrendsData?.length > 0 ? (
+        {monthWiseBilledTrendsData?.length ||
+        monthWiseRevenueTrendsData?.length > 0 ? (
           <HighchartsReact highcharts={Highcharts} options={options} />
         ) : !loading ? (
           <div
