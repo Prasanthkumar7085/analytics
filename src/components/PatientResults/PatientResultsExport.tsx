@@ -47,7 +47,7 @@ const PatientResultsExport = ({
                                                         {patientResultsData[title].map(
                                                             (result: any, resultIndex: any) => (
                                                                 <td key={resultIndex}>
-                                                                    {result.results[testIndex]?.result}
+                                                                    {result.results?.find((ite: any) => ite.result_name == test.result_name)?.result}
                                                                 </td>
                                                             )
                                                         )}

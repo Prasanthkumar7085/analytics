@@ -101,10 +101,10 @@ const PatientResultTable = () => {
     getSinglePatientResult();
   }, [])
 
-  const handleGraphClick = (testIndex: number, title: string) => {
+  const handleGraphClick = (test: any, title: string) => {
     const resultsArray = patientResultsData[title]
       .map((result: any) => {
-        return parseFloat(result.results[testIndex]?.result);
+        return parseFloat(result.results?.find((ite: any) => ite.result_name == test.result_name)?.result);
       })
       .filter((value: any) => !isNaN(value));
     setRowResultsData(resultsArray);
@@ -114,11 +114,11 @@ const PatientResultTable = () => {
   const getGraphValuesData = (
     patientResultsData: any,
     title: string,
-    testIndex: number
+    test: any
   ) => {
     return patientResultsData[title]
       .map((result: any) => {
-        const value = parseFloat(result.results[testIndex]?.result);
+        const value = parseFloat(result.results?.find((ite: any) => ite.result_name == test.result_name)?.result);
         return !isNaN(value) ? value : null;
       })
       .filter((value: any) => value !== null);
@@ -340,7 +340,7 @@ const PatientResultTable = () => {
                             <td>
                               <div
                                 onClick={() => {
-                                  handleGraphClick(testIndex, title);
+                                  handleGraphClick(test, title);
                                   setPatientSingleRowData(test);
                                 }}
                                 style={{ cursor: "pointer" }}
@@ -350,7 +350,7 @@ const PatientResultTable = () => {
                                   graphValuesData={getGraphValuesData(
                                     patientResultsData,
                                     title,
-                                    testIndex
+                                    test
                                   )}
                                 />
                               </div>
