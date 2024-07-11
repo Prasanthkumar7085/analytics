@@ -31,10 +31,10 @@ const BillingAndRevenueFacilities = () => {
   const queryPreparations = async ({
     fromDate,
     toDate,
-    searchValue = searchParams?.search,
-    orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type,
-    tabValue = searchParams?.tab,
+    searchValue = params?.get("search"),
+    orderBy = params?.get("order_by"),
+    orderType = params?.get("order_type"),
+    tabValue = params?.get("tab"),
   }: any) => {
     let queryParams: any = { tab: "billed" };
 
@@ -57,7 +57,7 @@ const BillingAndRevenueFacilities = () => {
       queryParams["tab"] = tabValue;
     }
     try {
-      if (tabValue == "billed") {
+      if (queryParams?.tab == "billed") {
         await getBilledFacilitiesList(queryParams);
       } else {
         await getRevenueFacilitiesList(queryParams);

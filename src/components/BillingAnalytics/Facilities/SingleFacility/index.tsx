@@ -68,7 +68,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
     try {
       await getBillingStatsCount(queryParams);
       await getRevenueStatsCount(queryParams);
-      if (tabValue == "billed") {
+      if (queryParams?.tab == "billed") {
         await getcaseTyeWiseBillingStats(queryParams);
       } else {
         await getcaseTyeWiseRevenueStats(queryParams);
@@ -195,8 +195,8 @@ const SingleFacilityBillingAndRevenueDetails = () => {
   //api call to get stats count
   useEffect(() => {
     queryPreparations(
-      params?.get("from_date"),
-      params?.get("to_date"),
+      searchParams?.from_date,
+      searchParams?.to_date,
       searchParams?.tab
     );
   }, [searchParams]);

@@ -34,9 +34,6 @@ const BillingOverViewCaseTypes = ({
   const params = useSearchParams();
   const pathName = usePathname();
   const [selectedDates, setSelectedDates] = useState<any>([]);
-  const userType = useSelector(
-    (state: any) => state.auth.user?.user_details?.user_type
-  );
 
   useEffect(() => {
     setSelectedDates([params.get("from_date"), params.get("to_date")]);
@@ -50,7 +47,7 @@ const BillingOverViewCaseTypes = ({
         tempArray.push({
           name: item["case_type_name"],
           y:
-            selectedTabValue == "revenue"
+            params?.get("tab") == "revenue"
               ? item["received_amount"]
                 ? +item["received_amount"]
                 : 0
@@ -66,7 +63,7 @@ const BillingOverViewCaseTypes = ({
   function getSubtitle() {
     const totalNumber = totalRevenueSum?.[2]?.value;
     return `<span style="font-size: 6px,margin-left:"45px">${
-      selectedTabValue == "revenue" ? "Total Received" : "Total Billed"
+      params?.get("tab") == "revenue" ? "Total Received" : "Total Billed"
     }</span>
         <br>
         <span style="font-size: 13px;">
@@ -119,7 +116,8 @@ const BillingOverViewCaseTypes = ({
     },
     series: [
       {
-        name: selectedTabValue == "revenue" ? "Total Recevied" : "Total Billed",
+        name:
+          params?.get("tab") == "revenue" ? "Total Recevied" : "Total Billed",
         colorByPoint: true,
         data: modifyData(caseTypesWiseStatsData),
       },
@@ -130,10 +128,10 @@ const BillingOverViewCaseTypes = ({
     if (fromDate) {
       setSelectedDates([fromDate, toDate]);
       setDateFilterDefaultValue(changeDateToUTC(fromDate, toDate));
-      queryPreparations(fromDate, toDate, selectedTabValue);
+      queryPreparations(fromDate, toDate, params?.get("tab"));
     } else {
       setDateFilterDefaultValue("");
-      queryPreparations("", "", selectedTabValue);
+      queryPreparations("", "", params?.get("tab"));
     }
   };
 
@@ -143,7 +141,7 @@ const BillingOverViewCaseTypes = ({
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Case Types {selectedTabValue}
+            Case Types {params?.get("tab")}
           </h3>
           {pathName?.includes("facilities") ? (
             ""
@@ -175,7 +173,7 @@ const BillingOverViewCaseTypes = ({
               }}
               disabled={
                 caseTypesWiseStatsData?.length === 0 ||
-                selectedTabValue == "revenue"
+                params?.get("tab") == "revenue"
                   ? true
                   : false
               }
@@ -200,7 +198,7 @@ const BillingOverViewCaseTypes = ({
             <TanStackTableComponent
               data={caseTypesWiseStatsData}
               columns={
-                selectedTabValue == "billed"
+                params?.get("tab") == "billed"
                   ? BilledOverViewcolumns
                   : RevenueOverViewcolumns
               }
