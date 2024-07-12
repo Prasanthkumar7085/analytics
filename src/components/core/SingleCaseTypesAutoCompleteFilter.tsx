@@ -26,6 +26,7 @@ const SingleCaseTypesAutoCompleteFilter = ({
       case_id: id,
       fromDate: queryParams?.from_date,
       toDate: queryParams?.to_date,
+      sales_rep: queryParams?.sales_rep,
     };
     queryPreparations(temp);
   };

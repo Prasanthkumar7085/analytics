@@ -13,6 +13,8 @@ import { FC, useEffect, useState } from "react";
 import GraphDialogForFacilities from "../GraphDilogForFacilities";
 import AreaGraphForFacilities from "../AreaGraph/AreaGraphForFacilities";
 import { getAcesdingOrderMonthsForGraphs } from "@/lib/helpers/apiHelpers";
+import AreaGraph from "../AreaGraph";
+import GraphDialog from "../GraphDialog";
 
 interface pageProps {
   columns: any[];
@@ -139,7 +141,26 @@ const SingleCaseTypeTable: FC<pageProps> = ({
     const width = widthObj?.width;
     return width;
   };
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "#f5fff7";
+      } else if (totalCases >= targetVolume) {
+        return "#f5fff7";
+      } else {
+        return "#ffebe9";
+      }
+    }
 
+    const percentage = totalCases / targetVolume;
+    if (totalCases >= targetVolume) {
+      return "#f5fff7";
+    } else if (percentage >= 0.5) {
+      return "#feecd1";
+    } else {
+      return "#ffebe9";
+    }
+  };
   return (
     <div
       style={{ width: "100%", overflowX: "auto" }}
@@ -270,36 +291,100 @@ const SingleCaseTypeTable: FC<pageProps> = ({
             <td className="cell"></td>
             {headerMonths?.map((item: any, index: number) => {
               return (
-                <td key={index} className="cell" style={{ cursor: "pointer" }}>
+                <td
+                  key={index}
+                  style={{
+                    cursor: "pointer",
+                    background: useParams?.get("sales_rep")
+                      ? getBackgroundColor(
+                          +totalSumValues[item]?.[0],
+                          +totalSumValues[item]?.[1]
+                        )
+                      : "#eff1fa",
+                  }}
+                >
                   {totalSumValues[item]?.[0]?.toLocaleString()}
                 </td>
               );
             })}
+
             <td
               className="cell"
               onClick={() => setGraphDialogOpen(true)}
               style={{ cursor: "pointer" }}
             >
               {headerMonths?.length ? (
-                <AreaGraphForFacilities
-                  data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-                  graphColor={"blue"}
-                />
+                useParams?.get("sales_rep") && !useParams?.get("search") ? (
+                  <AreaGraph
+                    data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+                    graphColor={"blue"}
+                  />
+                ) : (
+                  <AreaGraphForFacilities
+                    data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+                    graphColor={"blue"}
+                  />
+                )
               ) : (
                 ""
               )}
             </td>
           </tr>
+          {useParams?.get("sales_rep") && !useParams?.get("search") ? (
+            <tr
+              className="table-row active-facilities-row"
+              style={{
+                fontSize: "clamp(12px, 0.62vw, 14px)",
+                border: "1px solid #a5a5a5",
+                fontWeight: "600",
+                color: "#1B2459",
+                background: "#90EE90",
+              }}
+            >
+              <td className="cell">Total Targets</td>
+              <td className="cell"></td>
+              <td className="cell"></td>
+              {headerMonths?.map((item: any, index: number) => {
+                return (
+                  <td
+                    className="cell"
+                    style={{ cursor: "pointer" }}
+                    key={index}
+                  >
+                    {totalSumValues[item]?.[1]?.toLocaleString()}
+                  </td>
+                );
+              })}
+              <td
+                className="cell"
+                onClick={() => setGraphDialogOpen(true)}
+                style={{ cursor: "pointer" }}
+              ></td>
+            </tr>
+          ) : (
+            ""
+          )}
         </tfoot>
       </table>
-      <GraphDialogForFacilities
-        graphDialogOpen={graphDialogOpen}
-        setGraphDialogOpen={setGraphDialogOpen}
-        graphData={totalSumValues}
-        graphValuesData={totalSumValues}
-        graphColor={"blue"}
-        tabValue={"volume"}
-      />
+      {useParams?.get("sales_rep") && !useParams?.get("search") ? (
+        <GraphDialog
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+          graphColor={"blue"}
+          tabValue={"volume"}
+        />
+      ) : (
+        <GraphDialogForFacilities
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+          graphColor={"blue"}
+          tabValue={"volume"}
+        />
+      )}
     </div>
   );
 };

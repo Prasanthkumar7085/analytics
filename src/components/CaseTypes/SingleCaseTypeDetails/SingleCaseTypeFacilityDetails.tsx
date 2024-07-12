@@ -2,7 +2,10 @@ import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFaci
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
 import SingleCaseTypeTable from "@/components/core/Table/SingleCaseTypeTable";
 import { colorCodes } from "@/lib/constants";
-import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import {
+  formatMonthYear,
+  getAcesdingOrderMonthsForGraphs,
+} from "@/lib/helpers/apiHelpers";
 import { Backdrop } from "@mui/material";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -58,6 +61,7 @@ const SingleCaseTypeFacilitiesTable = ({
         delete data?.serial;
         delete data?.sales_rep_name;
         delete data?.sales_rep_id;
+        delete data?.total_targets;
         return (
           <div
             style={{ cursor: "pointer" }}
@@ -69,7 +73,7 @@ const SingleCaseTypeFacilitiesTable = ({
             }}
           >
             <AreaGraphForFacilities
-              data={data}
+              data={getAcesdingOrderMonthsForGraphs(data)}
               graphColor={colorCodes[info.row.original.serial]}
             />
           </div>
@@ -99,7 +103,7 @@ const SingleCaseTypeFacilitiesTable = ({
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
-        graphValuesData={graphValuesData}
+        graphValuesData={getAcesdingOrderMonthsForGraphs(graphValuesData)}
         graphColor={graphColor}
         tabValue={"volume"}
       />

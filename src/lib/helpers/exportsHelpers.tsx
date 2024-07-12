@@ -240,8 +240,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -319,8 +319,8 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -401,8 +401,8 @@ export const exportToExcelSalesRepTable = (
       obj.role_id == 1
         ? "Territory Manager"
         : obj.role_id == 2
-          ? "Regional Director"
-          : "Sales Director",
+        ? "Regional Director"
+        : "Sales Director",
       obj.total_facilities || 0,
       obj.active_facilities || 0,
       obj.total_targets || 0,
@@ -486,8 +486,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -518,8 +518,8 @@ export const exportToExcelTeamSalesRepTable = (
         obj.role_id == 1
           ? "Territory Manager"
           : obj.role_id == 2
-            ? "Regional Director"
-            : "Sales Director",
+          ? "Regional Director"
+          : "Sales Director",
         obj.total_facilities || 0,
         obj.active_facilities || 0,
         obj.total_targets || 0,
@@ -537,8 +537,8 @@ export const exportToExcelTeamSalesRepTable = (
           teamMember.role_id == 1
             ? "Territory Manager"
             : teamMember.role_id == 2
-              ? "Regional Director"
-              : "Sales Director",
+            ? "Regional Director"
+            : "Sales Director",
           teamMember.total_facilities || 0,
           teamMember.active_facilities || 0,
           teamMember.total_targets || 0,
@@ -666,8 +666,8 @@ export const exportToExcelTeamSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
         font: {
@@ -1082,7 +1082,8 @@ export const exportToExcelCaseTypeTable = (
 export const exportToExcelSingleCaseTypeFacilitiesTable = (
   facilitiesData: any,
   headerMonths: any,
-  totalSumValues: any
+  totalSumValues: any,
+  searchParams: any
 ) => {
   const formattedData = facilitiesData.map((obj: any, index: number) => {
     const sortedValues = Object.entries(obj)
@@ -1092,7 +1093,8 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
           key !== "facility_name" &&
           key !== "serial" &&
           key !== "sales_rep_name" &&
-          key !== "sales_rep_id"
+          key !== "sales_rep_id" &&
+          key !== "total_targets"
       )
       .sort((a, b) => {
         const monthA = new Date(
@@ -1122,9 +1124,24 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
       return dateA - dateB;
     })
     .map(([_, value]: any) => value[0]);
-
   let totalSumSortedValues = ["Total", "", "", ...total];
+  let targetsSum: any;
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+  if (searchParams?.sales_rep) {
+    targetsSum = Object.entries(totalSumValues)
+      .sort((a, b) => {
+        const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+        const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+        return dateA - dateB;
+      })
+      .map(([_, value]: any) => value[1]);
+    totalData = [
+      ...[headers],
+      ...formattedData,
+      ...[totalSumSortedValues],
+      ...[["Total Targets", "", "", ...targetsSum]],
+    ];
+  }
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   for (let i = 0; i < headers.length; i++) {
@@ -1143,6 +1160,28 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
         fgColor: { rgb: "f0edff" },
       },
     };
+  }
+  if (searchParams?.sales_rep && !searchParams?.search) {
+    for (let i = 0; i < headers.length; i++) {
+      const cellAddress = XLSX.utils.encode_cell({
+        r: totalData.length - 2,
+        c: i,
+      });
+      const cellAddressForTargets = XLSX.utils.encode_cell({
+        r: totalData.length - 1,
+        c: i,
+      });
+      worksheet[cellAddress].s = {
+        fill: {
+          fgColor: { rgb: "f0edff" },
+        },
+      };
+      worksheet[cellAddressForTargets].s = {
+        fill: {
+          fgColor: { rgb: "7a8c95" },
+        },
+      };
+    }
   }
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -1358,7 +1397,10 @@ export const exportPatientResultsTable = (patientResultsData: any) => {
         test.result_name,
         test.reference_range + " " + test.units,
         ...patientResultsData[title].map(
-          (result: any) => result.results?.find((ite: any) => ite.result_name == test.result_name)?.result || 0
+          (result: any) =>
+            result.results?.find(
+              (ite: any) => ite.result_name == test.result_name
+            )?.result || 0
         ),
       ];
       formattedData.push(row);
