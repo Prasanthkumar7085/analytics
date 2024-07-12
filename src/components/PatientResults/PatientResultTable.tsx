@@ -18,6 +18,7 @@ const PatientResultTable = () => {
 
   const [graphDialogOpen, setGraphDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [patientDetails, setPatientDetails] = useState<any>();
   const [patientSingleRowData, setPatientSingleRowData] = useState({});
   const [rowResultsdata, setRowResultsData] = useState<number[]>([]);
@@ -40,7 +41,7 @@ const PatientResultTable = () => {
   };
 
   const getPatientResults = async ({ patient_id, result_name }: any) => {
-    setLoading(true);
+    setShowLoading(true);
     try {
       let queryParams: any = {
         patient_id: patient_id,
@@ -56,7 +57,7 @@ const PatientResultTable = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setShowLoading(false);
     }
   };
 
@@ -81,7 +82,6 @@ const PatientResultTable = () => {
   };
 
   const getPatientNames = async ({ patient_id }: any) => {
-    setLoading(true);
     try {
       let queryParams: any = {
         patient_id: patient_id
@@ -92,8 +92,6 @@ const PatientResultTable = () => {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -367,16 +365,17 @@ const PatientResultTable = () => {
           </Container>
         )
         )
-        :
-        <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
-          <Image
-            src="/Search Image.svg"
-            alt=""
-            height={200}
-            width={510}
-          />
-          <h3>No Data</h3>
-        </div>
+        : !(loading || showLoading) ? (
+          <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+            <Image
+              src="/Search Image.svg"
+              alt=""
+              height={200}
+              width={510}
+            />
+            <h3>No Data</h3>
+          </div>
+        ) : ""
       }
       <LineGraphForPatientResult
         graphDialogOpen={graphDialogOpen}
@@ -387,7 +386,7 @@ const PatientResultTable = () => {
         tabValue="Patient Result"
         patientsData={patientsData}
       />
-      <LoadingComponent loading={loading} />
+      <LoadingComponent loading={loading || showLoading} />
     </div>
   );
 };
