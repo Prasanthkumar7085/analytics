@@ -1,5 +1,6 @@
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import SalesRepsAutoComplete from "@/components/core/SalesRepAutoComplete";
 import SingleCaseTypesAutoCompleteFilter from "@/components/core/SingleCaseTypesAutoCompleteFilter";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import {
@@ -25,7 +26,10 @@ const SingleCaseTypeFilters = ({
   searchParams,
   caseTypeOptions,
   headerMonths,
+  selectedSalesRepValue,
+  setSelectedSalesRepValue,
 }: any) => {
+  console.log(totalSumValue, "Fdsaoiriew");
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
@@ -73,7 +77,7 @@ const SingleCaseTypeFilters = ({
             </li>
             <li className="eachFilterLists">
               <TextField
-                placeholder="Search Facility / marketer"
+                placeholder="Search Facility"
                 type="search"
                 InputProps={{
                   startAdornment: (
@@ -91,12 +95,21 @@ const SingleCaseTypeFilters = ({
               />
             </li>
             <li className="eachFilterLists">
+              <SalesRepsAutoComplete
+                selectedSalesRepValue={selectedSalesRepValue}
+                setSelectedSalesRepValue={setSelectedSalesRepValue}
+                queryParams={searchParams}
+                queryPreparations={queryPreparations}
+              />
+            </li>
+            <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
                   exportToExcelSingleCaseTypeFacilitiesTable(
                     caseTypeFacilityDetails,
                     headerMonths,
-                    totalSumValue
+                    totalSumValue,
+                    searchParams
                   );
                 }}
                 disabled={caseTypeFacilityDetails?.length === 0 ? true : false}

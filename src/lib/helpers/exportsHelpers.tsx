@@ -1082,7 +1082,8 @@ export const exportToExcelCaseTypeTable = (
 export const exportToExcelSingleCaseTypeFacilitiesTable = (
   facilitiesData: any,
   headerMonths: any,
-  totalSumValues: any
+  totalSumValues: any,
+  searchParams: any
 ) => {
   const formattedData = facilitiesData.map((obj: any, index: number) => {
     const sortedValues = Object.entries(obj)
@@ -1092,7 +1093,8 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
           key !== "facility_name" &&
           key !== "serial" &&
           key !== "sales_rep_name" &&
-          key !== "sales_rep_id"
+          key !== "sales_rep_id" &&
+          key !== "total_targets"
       )
       .sort((a, b) => {
         const monthA = new Date(
@@ -1122,9 +1124,24 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
       return dateA - dateB;
     })
     .map(([_, value]: any) => value[0]);
-
   let totalSumSortedValues = ["Total", "", "", ...total];
+  let targetsSum: any;
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+  if (searchParams?.sales_rep) {
+    targetsSum = Object.entries(totalSumValues)
+      .sort((a, b) => {
+        const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+        const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
+        return dateA - dateB;
+      })
+      .map(([_, value]: any) => value[1]);
+    totalData = [
+      ...[headers],
+      ...formattedData,
+      ...[totalSumSortedValues],
+      ...[["Total Targets", "", "", ...targetsSum]],
+    ];
+  }
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   for (let i = 0; i < headers.length; i++) {
