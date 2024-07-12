@@ -294,6 +294,7 @@ const SingleCaseTypeTable: FC<pageProps> = ({
             {headerMonths?.map((item: any, index: number) => {
               return (
                 <td
+                  key={index}
                   style={{
                     cursor: "pointer",
                     background: useParams?.get("sales_rep")
@@ -347,7 +348,11 @@ const SingleCaseTypeTable: FC<pageProps> = ({
               <td className="cell"></td>
               {headerMonths?.map((item: any, index: number) => {
                 return (
-                  <td className="cell" style={{ cursor: "pointer" }}>
+                  <td
+                    className="cell"
+                    style={{ cursor: "pointer" }}
+                    key={index}
+                  >
                     {totalSumValues[item]?.[1]?.toLocaleString()}
                   </td>
                 );
