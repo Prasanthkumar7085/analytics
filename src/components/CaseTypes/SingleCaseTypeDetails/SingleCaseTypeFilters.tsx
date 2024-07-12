@@ -29,7 +29,6 @@ const SingleCaseTypeFilters = ({
   selectedSalesRepValue,
   setSelectedSalesRepValue,
 }: any) => {
-  console.log(totalSumValue, "Fdsaoiriew");
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");

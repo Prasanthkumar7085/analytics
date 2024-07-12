@@ -142,7 +142,6 @@ const SingleCaseTypeTable: FC<pageProps> = ({
     return width;
   };
   const getBackgroundColor = (totalCases: any, targetVolume: any) => {
-    console.log(totalCases, "383223838");
     if (targetVolume === 0) {
       if (totalCases === 0) {
         return "#f5fff7";
@@ -162,7 +161,6 @@ const SingleCaseTypeTable: FC<pageProps> = ({
       return "#ffebe9";
     }
   };
-  console.log(totalSumValues, "poew09ew00");
   return (
     <div
       style={{ width: "100%", overflowX: "auto" }}
