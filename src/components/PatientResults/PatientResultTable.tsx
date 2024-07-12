@@ -101,24 +101,25 @@ const PatientResultTable = () => {
     getSinglePatientResult();
   }, [])
 
-  const handleGraphClick = (testIndex: number, title: string) => {
-    const resultsArray = patientResultsData[title]
-      .map((result: any) => {
-        return parseFloat(result.results[testIndex]?.result);
-      })
-      .filter((value: any) => !isNaN(value));
-    setRowResultsData(resultsArray);
+  const handleGraphClick = (test: any, title: string) => {
+    const patientResults = patientResultsData[title];
+
+    const graphData = patientResults.map((result: any) => ({
+      date: result.date,
+      result: result.results?.find((ite: any) => ite.result_name == test.result_name)?.result
+    }));
+    setRowResultsData(graphData);
     setGraphDialogOpen(true);
   };
 
   const getGraphValuesData = (
     patientResultsData: any,
     title: string,
-    testIndex: number
+    test: any
   ) => {
     return patientResultsData[title]
       .map((result: any) => {
-        const value = parseFloat(result.results[testIndex]?.result);
+        const value = parseFloat(result.results?.find((ite: any) => ite.result_name == test.result_name)?.result);
         return !isNaN(value) ? value : null;
       })
       .filter((value: any) => value !== null);
@@ -333,14 +334,14 @@ const PatientResultTable = () => {
                             {patientResultsData[title].map(
                               (result: any, resultIndex: any) => (
                                 <td key={resultIndex}>
-                                  {result.results[testIndex]?.result}
+                                  {result.results?.find((ite: any) => ite.result_name == test.result_name)?.result}
                                 </td>
                               )
                             )}
                             <td>
                               <div
                                 onClick={() => {
-                                  handleGraphClick(testIndex, title);
+                                  handleGraphClick(test, title);
                                   setPatientSingleRowData(test);
                                 }}
                                 style={{ cursor: "pointer" }}
@@ -350,7 +351,7 @@ const PatientResultTable = () => {
                                   graphValuesData={getGraphValuesData(
                                     patientResultsData,
                                     title,
-                                    testIndex
+                                    test
                                   )}
                                 />
                               </div>
