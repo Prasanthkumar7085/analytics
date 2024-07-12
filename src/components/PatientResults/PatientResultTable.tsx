@@ -102,12 +102,13 @@ const PatientResultTable = () => {
   }, [])
 
   const handleGraphClick = (test: any, title: string) => {
-    const resultsArray = patientResultsData[title]
-      .map((result: any) => {
-        return parseFloat(result.results?.find((ite: any) => ite.result_name == test.result_name)?.result);
-      })
-      .filter((value: any) => !isNaN(value));
-    setRowResultsData(resultsArray);
+    const patientResults = patientResultsData[title];
+
+    const graphData = patientResults.map((result: any) => ({
+      date: result.date,
+      result: result.results?.find((ite: any) => ite.result_name == test.result_name)?.result
+    }));
+    setRowResultsData(graphData);
     setGraphDialogOpen(true);
   };
 
