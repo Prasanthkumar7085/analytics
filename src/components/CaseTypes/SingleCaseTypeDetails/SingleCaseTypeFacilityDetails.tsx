@@ -46,6 +46,17 @@ const SingleCaseTypeFacilitiesTable = ({
     cell: (info: any) => <span>{info.getValue()?.toLocaleString() || 0}</span>,
   }));
 
+  const addExcludedMonth = (data: any) => {
+    let months = [...headerMonths];
+
+    months.forEach((month) => {
+      if (!(month in data)) {
+        data[month] = 0;
+      }
+    });
+    return data;
+  };
+
   const graphColoumn = [
     {
       accessorFn: (row: any) => row.actions,
@@ -57,6 +68,7 @@ const SingleCaseTypeFacilitiesTable = ({
 
       cell: (info: any) => {
         let data = { ...info.row.original };
+        data = addExcludedMonth(data);
         delete data?.facility_id;
         delete data?.facility_name;
         delete data?.serial;
@@ -88,6 +100,7 @@ const SingleCaseTypeFacilitiesTable = ({
     ...addtionalcolumns,
     ...graphColoumn,
   ];
+
   return (
     <div style={{ position: "relative" }}>
       <SingleCaseTypeTable

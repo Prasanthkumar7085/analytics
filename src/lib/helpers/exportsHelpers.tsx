@@ -1158,7 +1158,7 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
         "f0edff"
       );
     }
-    const salesRepFooterRowIndex = totalData.length - 2; // Assuming the index of the footer row
+    const salesRepFooterRowIndex = totalData.length - 2;
 
     headerMonths.forEach((month: string, columnIndex: number) => {
       const targetsValue = targetsRowData[month] ? targetsRowData[month][0] : 0;
@@ -1166,7 +1166,7 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
 
       let color = "f5fff7";
 
-      if (targetsValue < totalValue) {
+      if (targetsValue <= totalValue) {
         color = "f5fff7";
       } else {
         const percentage = totalValue / targetsValue;
@@ -1179,7 +1179,7 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
       const cellAddress = XLSX.utils.encode_cell({
         r: salesRepFooterRowIndex,
         c: columnIndex + 3,
-      }); // Start from the 4th column (index + 3) for data columns
+      });
 
       styleCell(cellAddress, color);
     });
