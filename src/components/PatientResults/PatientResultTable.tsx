@@ -11,6 +11,7 @@ import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResu
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientResultsExport from "./PatientResultsExport";
+import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
 
 const PatientResultTable = () => {
   const { id } = useParams();
@@ -123,7 +124,7 @@ const PatientResultTable = () => {
       .filter((value: any) => value !== null);
   };
 
-  // Function to group results by category
+  // Function to group results by category and sort by month and date
   function transformData(data: any[]) {
     const result: any = {};
 
@@ -150,6 +151,15 @@ const PatientResultTable = () => {
 
         // Add the test result to the date entry
         dateEntry.results.push(test);
+      });
+    });
+
+    // Sort the results within each category by date
+    Object.keys(result).forEach(category => {
+      result[category].sort((a: { date: string; }, b: { date: string; }) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA.getTime() - dateB.getTime();
       });
     });
 
@@ -316,7 +326,7 @@ const PatientResultTable = () => {
                         {patientResultsData[title]?.map(
                           (result: any, resultIndex: any) => (
                             <th style={{ minWidth: "100px" }} key={resultIndex}>
-                              {datePipe(result?.date, "MM-DD-YYYY")}
+                              {momentWithTimezone(result?.date)}
                             </th>
                           )
                         )}

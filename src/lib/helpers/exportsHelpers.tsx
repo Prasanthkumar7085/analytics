@@ -1,6 +1,7 @@
 import * as XLSX from "xlsx-color";
 import { formatMonthYear } from "./apiHelpers";
 import datePipe from "../Pipes/datePipe";
+import { momentWithTimezone } from "../Pipes/timeFormat";
 function sortChronological(data: any) {
   const keys = Object.keys(data).filter(
     (key) => Array.isArray(data[key]) && key !== "rowTotal"
@@ -240,8 +241,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -319,8 +320,8 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -401,8 +402,8 @@ export const exportToExcelSalesRepTable = (
       obj.role_id == 1
         ? "Territory Manager"
         : obj.role_id == 2
-        ? "Regional Director"
-        : "Sales Director",
+          ? "Regional Director"
+          : "Sales Director",
       obj.total_facilities || 0,
       obj.active_facilities || 0,
       obj.total_targets || 0,
@@ -486,8 +487,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
       };
@@ -518,8 +519,8 @@ export const exportToExcelTeamSalesRepTable = (
         obj.role_id == 1
           ? "Territory Manager"
           : obj.role_id == 2
-          ? "Regional Director"
-          : "Sales Director",
+            ? "Regional Director"
+            : "Sales Director",
         obj.total_facilities || 0,
         obj.active_facilities || 0,
         obj.total_targets || 0,
@@ -537,8 +538,8 @@ export const exportToExcelTeamSalesRepTable = (
           teamMember.role_id == 1
             ? "Territory Manager"
             : teamMember.role_id == 2
-            ? "Regional Director"
-            : "Sales Director",
+              ? "Regional Director"
+              : "Sales Director",
           teamMember.total_facilities || 0,
           teamMember.active_facilities || 0,
           teamMember.total_targets || 0,
@@ -666,8 +667,8 @@ export const exportToExcelTeamSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                ? "feecd1"
-                : "ffebe9",
+                  ? "feecd1"
+                  : "ffebe9",
           },
         },
         font: {
@@ -1387,7 +1388,7 @@ export const exportPatientResultsTable = (patientResultsData: any) => {
       "Result Code",
       "Ref Range & Units",
       ...patientResultsData[title].map((result: any) =>
-        datePipe(result.date, "MM-DD-YYYY")
+        momentWithTimezone(result.date)
       ),
     ];
     formattedData.push(headers);
