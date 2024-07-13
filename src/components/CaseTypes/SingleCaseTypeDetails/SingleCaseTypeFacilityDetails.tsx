@@ -69,7 +69,6 @@ const SingleCaseTypeFacilitiesTable = ({
       cell: (info: any) => {
         let data = { ...info.row.original };
         data = addExcludedMonth(data);
-        console.log(data, "fdfjd");
         delete data?.facility_id;
         delete data?.facility_name;
         delete data?.serial;
