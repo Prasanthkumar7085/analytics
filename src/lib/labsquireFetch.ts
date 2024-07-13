@@ -30,7 +30,7 @@ class FetchService {
         const accessToken = state?.auth?.user?.access_token;
 
         // IMPLEMENT STORE/COOCIKES DATA HERE
-        config.headers["Authorization"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzk5MzM0MWQwZmE5ZDdiZjlkNmU0MiIsImVtYWlsIjoic3dhdGhpLmJAbGFic3F1aXJlLmNvbSIsInVzZXJfdHlwZSI6IkxBQl9NQU5BR0VSIiwiZmlyc3RfbmFtZSI6Ikdvd3RoYW0iLCJsYXN0X25hbWUiOiJNYW5kYWRhcHUiLCJpYXQiOjE3MjA4NTE5NTMsImV4cCI6MTcyMTQ1Njc1M30.qniQTJaElHjH9hbqSov6lKU3k_W5yPeBdGzBR7vtH9U"
+        config.headers["Authorization"] = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwNzk5MzM0MWQwZmE5ZDdiZjlkNmU0MiIsImVtYWlsIjoic3dhdGhpLmJAbGFic3F1aXJlLmNvbSIsInVzZXJfdHlwZSI6IkxBQl9NQU5BR0VSIiwiZmlyc3RfbmFtZSI6Ikdvd3RoYW0iLCJsYXN0X25hbWUiOiJNYW5kYWRhcHUiLCJpYXQiOjE3MjA4NjQyMDAsImV4cCI6MTcyMTQ2OTAwMH0.lleo4jA5Ng2KSyrPHiydPPsQL3hrCV_tXFbZFRp4hhs"
     }
 
     setDefualtHeaders(config: any, includeHeaders: boolean) {

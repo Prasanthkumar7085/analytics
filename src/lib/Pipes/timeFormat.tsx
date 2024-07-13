@@ -7,5 +7,5 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export const momentWithTimezone = (value: any, format = "MM-DD-YYYY", timeZone = "America/New_York") => {
-    return dayjs(value).tz(timeZone).format(format);
+    return dayjs.utc(value).tz(timeZone).format(format);
 };
