@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import Image from "next/image";
 import datePipe from "@/lib/Pipes/datePipe";
+import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
 
 const PatientResultsExport = ({
     patientResultsData,
@@ -32,7 +33,7 @@ const PatientResultsExport = ({
                                                 {patientResultsData[title]?.map(
                                                     (result: any, resultIndex: any) => (
                                                         <th style={{ minWidth: "100px" }} key={resultIndex}>
-                                                            {datePipe(result?.date, "MM-DD-YYYY")}
+                                                            {momentWithTimezone(result?.date)}
                                                         </th>
                                                     )
                                                 )}

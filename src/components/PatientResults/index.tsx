@@ -74,6 +74,7 @@ const PatientResults = () => {
                 lastName={lastName}
                 setDateOfBirth={setDateOfBirth}
                 dateOfBirth={dateOfBirth}
+                loading={loading}
             />
             <LoadingComponent loading={loading} />
         </div>

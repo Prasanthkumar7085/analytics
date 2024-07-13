@@ -11,6 +11,7 @@ import LineGraphForPatientResult from "../core/LineGraph/LineGraphForPatientResu
 import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
 import LoadingComponent from "../core/LoadingComponent";
 import PatientResultsExport from "./PatientResultsExport";
+import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
 
 const PatientResultTable = () => {
   const { id } = useParams();
@@ -18,6 +19,7 @@ const PatientResultTable = () => {
 
   const [graphDialogOpen, setGraphDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [patientDetails, setPatientDetails] = useState<any>();
   const [patientSingleRowData, setPatientSingleRowData] = useState({});
   const [rowResultsdata, setRowResultsData] = useState<number[]>([]);
@@ -40,7 +42,7 @@ const PatientResultTable = () => {
   };
 
   const getPatientResults = async ({ patient_id, result_name }: any) => {
-    setLoading(true);
+    setShowLoading(true);
     try {
       let queryParams: any = {
         patient_id: patient_id,
@@ -56,7 +58,7 @@ const PatientResultTable = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      setShowLoading(false);
     }
   };
 
@@ -81,7 +83,6 @@ const PatientResultTable = () => {
   };
 
   const getPatientNames = async ({ patient_id }: any) => {
-    setLoading(true);
     try {
       let queryParams: any = {
         patient_id: patient_id
@@ -92,8 +93,6 @@ const PatientResultTable = () => {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -125,7 +124,7 @@ const PatientResultTable = () => {
       .filter((value: any) => value !== null);
   };
 
-  // Function to group results by category
+  // Function to group results by category and sort by month and date
   function transformData(data: any[]) {
     const result: any = {};
 
@@ -152,6 +151,15 @@ const PatientResultTable = () => {
 
         // Add the test result to the date entry
         dateEntry.results.push(test);
+      });
+    });
+
+    // Sort the results within each category by date
+    Object.keys(result).forEach(category => {
+      result[category].sort((a: { date: string; }, b: { date: string; }) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA.getTime() - dateB.getTime();
       });
     });
 
@@ -318,7 +326,7 @@ const PatientResultTable = () => {
                         {patientResultsData[title]?.map(
                           (result: any, resultIndex: any) => (
                             <th style={{ minWidth: "100px" }} key={resultIndex}>
-                              {datePipe(result?.date, "MM-DD-YYYY")}
+                              {momentWithTimezone(result?.date)}
                             </th>
                           )
                         )}
@@ -367,16 +375,17 @@ const PatientResultTable = () => {
           </Container>
         )
         )
-        :
-        <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
-          <Image
-            src="/Search Image.svg"
-            alt=""
-            height={200}
-            width={510}
-          />
-          <h3>No Data</h3>
-        </div>
+        : !(loading || showLoading) ? (
+          <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+            <Image
+              src="/Search Image.svg"
+              alt=""
+              height={200}
+              width={510}
+            />
+            <h3>No Data</h3>
+          </div>
+        ) : ""
       }
       <LineGraphForPatientResult
         graphDialogOpen={graphDialogOpen}
@@ -387,7 +396,7 @@ const PatientResultTable = () => {
         tabValue="Patient Result"
         patientsData={patientsData}
       />
-      <LoadingComponent loading={loading} />
+      <LoadingComponent loading={loading || showLoading} />
     </div>
   );
 };

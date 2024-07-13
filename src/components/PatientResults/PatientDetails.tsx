@@ -16,7 +16,8 @@ const PatientDetails = ({
   setLastName,
   lastName,
   setDateOfBirth,
-  dateOfBirth
+  dateOfBirth,
+  loading
 }: any) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -194,15 +195,17 @@ const PatientDetails = ({
             />
 
           ) : (
-            <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
-              <Image
-                src="/Search Image.svg"
-                alt=""
-                height={210}
-                width={410}
-              />
-              <h3 className="no-data-text">No Data</h3>
-            </div>
+            !loading ? (
+              <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+                <Image
+                  src="/Search Image.svg"
+                  alt=""
+                  height={210}
+                  width={410}
+                />
+                <h3 className="no-data-text">No Data</h3>
+              </div>
+            ) : ""
           )}
         </div>
       </div>
