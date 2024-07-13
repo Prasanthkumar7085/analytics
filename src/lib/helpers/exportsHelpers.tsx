@@ -1083,7 +1083,8 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
   facilitiesData: any,
   headerMonths: any,
   totalSumValues: any,
-  searchParams: any
+  searchParams: any,
+  targetsRowData: any
 ) => {
   const formattedData = facilitiesData.map((obj: any, index: number) => {
     const sortedValues = Object.entries(obj)
@@ -1128,13 +1129,13 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
   let targetsSum: any;
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   if (searchParams?.sales_rep) {
-    targetsSum = Object.entries(totalSumValues)
+    targetsSum = Object.entries(targetsRowData)
       .sort((a, b) => {
         const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
         const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
         return dateA - dateB;
       })
-      .map(([_, value]: any) => value[1]);
+      .map(([_, value]: any) => value[0]);
     totalData = [
       ...[headers],
       ...formattedData,
@@ -1164,23 +1165,23 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
   if (searchParams?.sales_rep && !searchParams?.search) {
     for (let i = 0; i < headers.length; i++) {
       const cellAddress = XLSX.utils.encode_cell({
-        r: totalData.length - 2,
+        r: totalData.length - 1,
         c: i,
       });
       const cellAddressForTargets = XLSX.utils.encode_cell({
-        r: totalData.length - 1,
+        r: totalData.length - 2,
         c: i,
       });
       worksheet[cellAddress].s = {
         fill: {
-          fgColor: { rgb: "f0edff" },
-        },
-      };
-      worksheet[cellAddressForTargets].s = {
-        fill: {
           fgColor: { rgb: "7a8c95" },
         },
       };
+      // worksheet[cellAddressForTargets].s = {
+      //   fill: {
+      //     fgColor: { rgb: "f0edff" },
+      //   },
+      // };
     }
   }
   const workbook = XLSX.utils.book_new();

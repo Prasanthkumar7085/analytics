@@ -8,6 +8,7 @@ import {
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
   getAllCaseTypesListAPI,
+  getMonthWiseVolumeCaseTypesForSinglePageAPI,
   getSingleCaseTypeMonthWiseFacilityDetailsAPI,
 } from "@/services/caseTypesAPIs";
 import { ArrowBack } from "@mui/icons-material";
@@ -43,6 +44,9 @@ const SingleCaseTypeDetails = () => {
   const [selectedCaseType, setSelectedCaseType] = useState<any>(null);
   const [completeData, setCompleteData] = useState([]);
   const [caseTypeOptions, setCaseTypeOptions] = useState<any>([]);
+  const [targetsRowData, setTargetRowData] = useState<any>({});
+  const [targetHeaders, setTargetHeaders] = useState<any>([]);
+
   const queryPreparations = async ({
     fromDate,
     toDate,
@@ -76,6 +80,9 @@ const SingleCaseTypeDetails = () => {
     }
     try {
       await getSingleCaseTypeDetails(queryParams);
+      if (queryParams?.sales_rep) {
+        await getDetailsOfSingleSalesRepTargets(queryParams);
+      }
     } catch (err: any) {
       console.error(err);
     } finally {
@@ -178,6 +185,29 @@ const SingleCaseTypeDetails = () => {
     return groupedData;
   };
 
+  const groupDataForTargets = (data: any) => {
+    const groupedData: any = {};
+    data?.forEach((item: any) => {
+      const {
+        case_type_name,
+        case_type_id,
+        month,
+        total_cases,
+        total_targets,
+      } = item;
+      if (!groupedData[case_type_id]) {
+        groupedData[case_type_id] = {
+          case_type_id,
+          case_type_name,
+          total_targets,
+        };
+      }
+      const formattedMonth = month.replace(/\s/g, "");
+      groupedData[case_type_id][formattedMonth] = [total_targets];
+    });
+    return groupedData;
+  };
+
   // Grouping the data by month sum
   const groupDatasumValue = (data: any, queryParams: any) => {
     const groupedDataSum: any = {};
@@ -186,18 +216,11 @@ const SingleCaseTypeDetails = () => {
       const formattedMonth = month.replace(/\s/g, "");
       const amount = parseFloat(total_cases);
       const totalTargets = parseFloat(total_targets);
-      if (queryParams?.sales_rep && !queryParams?.search) {
-        if (!groupedDataSum[formattedMonth]) {
-          groupedDataSum[formattedMonth] = [0, 0];
-        }
-        groupedDataSum[formattedMonth][0] += amount;
-        groupedDataSum[formattedMonth][1] = totalTargets;
-      } else {
-        if (!groupedDataSum[formattedMonth]) {
-          groupedDataSum[formattedMonth] = [0];
-        }
-        groupedDataSum[formattedMonth][0] += amount;
+
+      if (!groupedDataSum[formattedMonth]) {
+        groupedDataSum[formattedMonth] = [0];
       }
+      groupedDataSum[formattedMonth][0] += amount;
     });
     return groupedDataSum;
   };
@@ -278,6 +301,43 @@ const SingleCaseTypeDetails = () => {
     setLoading(false);
   };
 
+  const getDetailsOfSingleSalesRepTargets = async (queryParamsObj: any) => {
+    setLoading(true);
+    let pageName: any = "sales-reps";
+    let queryParams: any = {
+      from_date: queryParamsObj?.from_date,
+      to_date: queryParamsObj?.to_date,
+    };
+    try {
+      const response = await getMonthWiseVolumeCaseTypesForSinglePageAPI({
+        pageName,
+        id: queryParamsObj?.sales_rep,
+        queryParams,
+      });
+      if (
+        response.status == 200 ||
+        (response.status == 201 && response?.data?.length > 0)
+      ) {
+        const groupedData: any = groupDataForTargets(response?.data);
+        let data: any = Object.values(groupedData);
+        data = data.find(
+          (item: any) => item.case_type_id == queryParamsObj?.case_type_id
+        );
+        delete data?.case_type_id;
+        delete data?.case_type_name;
+        delete data?.total_targets;
+        delete data?.total_cases;
+        setTargetRowData(data);
+        let uniqueMonths = getUniqueMonths(response?.data);
+        setTargetHeaders(uniqueMonths);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (searchParams?.case_type_id) {
       queryPreparations({
@@ -328,9 +388,15 @@ const SingleCaseTypeDetails = () => {
             setSelectedCaseType={setSelectedCaseType}
             searchParams={searchParams}
             caseTypeOptions={caseTypeOptions}
-            headerMonths={headerMonths}
+            headerMonths={
+              headerMonths?.length > 0 &&
+              headerMonths?.length >= targetHeaders?.length
+                ? headerMonths
+                : targetHeaders
+            }
             selectedSalesRepValue={selectedSalesRepValue}
             setSelectedSalesRepValue={setSelectedSalesRepValue}
+            targetsRowData={targetsRowData}
           />
         </div>
         <div
@@ -341,16 +407,24 @@ const SingleCaseTypeDetails = () => {
             <Grid item xs={12}>
               <SingleCaseTypeFacilitiesTable
                 searchParams={searchParams}
-                caseTypeFacilityDetails={filterDataByZeroValues(
-                  caseTypeFacilityDetails
-                )}
+                caseTypeFacilityDetails={
+                  targetsRowData?.length > 0
+                    ? caseTypeFacilityDetails
+                    : filterDataByZeroValues(caseTypeFacilityDetails)
+                }
                 monthWiseTotalSum={monthWiseTotalSum}
                 loading={loading}
-                headerMonths={headerMonths}
+                headerMonths={
+                  headerMonths?.length > 0 &&
+                  headerMonths?.length >= targetHeaders?.length
+                    ? headerMonths
+                    : targetHeaders
+                }
                 completeData={completeData}
                 groupDatasumValue={groupDatasumValue}
                 setCaseTypeFacilityDetails={setCaseTypeFacilityDetails}
                 onUpdateData={onUpdateData}
+                targetsRowData={targetsRowData}
               />
             </Grid>
           </Grid>

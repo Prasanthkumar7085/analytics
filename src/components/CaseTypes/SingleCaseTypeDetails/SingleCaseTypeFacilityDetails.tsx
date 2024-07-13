@@ -22,6 +22,7 @@ const SingleCaseTypeFacilitiesTable = ({
   groupDatasumValue,
   setCaseTypeFacilityDetails,
   onUpdateData,
+  targetsRowData,
 }: any) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -42,7 +43,7 @@ const SingleCaseTypeFacilitiesTable = ({
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
-    cell: (info: any) => <span>{info.getValue()?.toLocaleString()}</span>,
+    cell: (info: any) => <span>{info.getValue()?.toLocaleString() || 0}</span>,
   }));
 
   const graphColoumn = [
@@ -96,6 +97,7 @@ const SingleCaseTypeFacilitiesTable = ({
         loading={loading}
         headerMonths={headerMonths}
         getData={onUpdateData}
+        targetsRowData={targetsRowData}
       />
 
       <LoadingComponent loading={loading} />

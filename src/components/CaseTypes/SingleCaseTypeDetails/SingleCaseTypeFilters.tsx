@@ -28,6 +28,7 @@ const SingleCaseTypeFilters = ({
   headerMonths,
   selectedSalesRepValue,
   setSelectedSalesRepValue,
+  targetsRowData,
 }: any) => {
   const params = useSearchParams();
   const [status, setStatus] = useState("all");
@@ -108,7 +109,8 @@ const SingleCaseTypeFilters = ({
                     caseTypeFacilityDetails,
                     headerMonths,
                     totalSumValue,
-                    searchParams
+                    searchParams,
+                    targetsRowData
                   );
                 }}
                 disabled={caseTypeFacilityDetails?.length === 0 ? true : false}
