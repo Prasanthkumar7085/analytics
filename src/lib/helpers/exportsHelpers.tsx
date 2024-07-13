@@ -241,8 +241,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -320,8 +320,8 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -402,8 +402,8 @@ export const exportToExcelSalesRepTable = (
       obj.role_id == 1
         ? "Territory Manager"
         : obj.role_id == 2
-          ? "Regional Director"
-          : "Sales Director",
+        ? "Regional Director"
+        : "Sales Director",
       obj.total_facilities || 0,
       obj.active_facilities || 0,
       obj.total_targets || 0,
@@ -487,8 +487,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -519,8 +519,8 @@ export const exportToExcelTeamSalesRepTable = (
         obj.role_id == 1
           ? "Territory Manager"
           : obj.role_id == 2
-            ? "Regional Director"
-            : "Sales Director",
+          ? "Regional Director"
+          : "Sales Director",
         obj.total_facilities || 0,
         obj.active_facilities || 0,
         obj.total_targets || 0,
@@ -538,8 +538,8 @@ export const exportToExcelTeamSalesRepTable = (
           teamMember.role_id == 1
             ? "Territory Manager"
             : teamMember.role_id == 2
-              ? "Regional Director"
-              : "Sales Director",
+            ? "Regional Director"
+            : "Sales Director",
           teamMember.total_facilities || 0,
           teamMember.active_facilities || 0,
           teamMember.total_targets || 0,
@@ -667,8 +667,8 @@ export const exportToExcelTeamSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
         font: {
@@ -1088,28 +1088,13 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
   targetsRowData: any
 ) => {
   const formattedData = facilitiesData.map((obj: any, index: number) => {
-    const sortedValues = Object.entries(obj)
-      .filter(
-        ([key, value]) =>
-          key !== "facility_id" &&
-          key !== "facility_name" &&
-          key !== "serial" &&
-          key !== "sales_rep_name" &&
-          key !== "sales_rep_id" &&
-          key !== "total_targets"
-      )
-      .sort((a, b) => {
-        const monthA = new Date(
-          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        const monthB = new Date(
-          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        return monthA - monthB;
-      })
-      .map(([_, value]: any) => value);
+    const sortedValues = headerMonths.map((month: string) => {
+      const value = obj[month] || 0;
+      return value;
+    });
     return [index + 1, obj.facility_name, obj.sales_rep_name, ...sortedValues];
   });
+
   let formatHeaderMonth = headerMonths?.map((item: any) =>
     formatMonthYear(item)
   );
@@ -1119,75 +1104,90 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
     "Marketer Name",
     ...formatHeaderMonth,
   ];
-  const total: any = Object.entries(totalSumValues)
-    .sort((a, b) => {
-      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      return dateA - dateB;
-    })
-    .map(([_, value]: any) => value[0]);
+
+  const total: any = headerMonths.map((month: string) => {
+    const value = totalSumValues[month] ? totalSumValues[month][0] : 0;
+    return value;
+  });
+
   let totalSumSortedValues = ["Total", "", "", ...total];
-  let targetsSum: any;
-  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
-  if (searchParams?.sales_rep) {
-    targetsSum = Object.entries(targetsRowData)
-      .sort((a, b) => {
-        const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-        const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-        return dateA - dateB;
-      })
-      .map(([_, value]: any) => value[0]);
-    totalData = [
-      ...[headers],
-      ...formattedData,
-      ...[totalSumSortedValues],
-      ...[["Total Targets", "", "", ...targetsSum]],
-    ];
+
+  let totalData = [headers, ...formattedData, totalSumSortedValues];
+
+  if (searchParams?.sales_rep && !searchParams?.search) {
+    const targetsSum: any = headerMonths.map((month: string) => {
+      const value = targetsRowData[month] ? targetsRowData[month][0] : 0;
+      return value;
+    });
+
+    totalData.push(["Total Targets", "", "", ...targetsSum]);
   }
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
-  for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+
+  const styleCell = (cellAddress: any, fillColor: string) => {
     worksheet[cellAddress].s = {
       fill: {
-        fgColor: { rgb: "f0edff" },
+        fgColor: { rgb: fillColor },
       },
     };
-  }
-  const footerRowIndex = totalData.length - 1;
+  };
+
   for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
+    styleCell(XLSX.utils.encode_cell({ r: 0, c: i }), "f0edff");
+    styleCell(
+      XLSX.utils.encode_cell({ r: totalData.length - 1, c: i }),
+      "f0edff"
+    );
   }
+
   if (searchParams?.sales_rep && !searchParams?.search) {
     for (let i = 0; i < headers.length; i++) {
-      const cellAddress = XLSX.utils.encode_cell({
-        r: totalData.length - 1,
-        c: i,
-      });
-      const cellAddressForTargets = XLSX.utils.encode_cell({
-        r: totalData.length - 2,
-        c: i,
-      });
-      worksheet[cellAddress].s = {
-        fill: {
-          fgColor: { rgb: "7a8c95" },
-        },
-      };
-      // worksheet[cellAddressForTargets].s = {
-      //   fill: {
-      //     fgColor: { rgb: "f0edff" },
-      //   },
-      // };
+      styleCell(
+        XLSX.utils.encode_cell({
+          r: totalData.length - 1,
+          c: i,
+        }),
+        "7a8c95"
+      );
+      styleCell(
+        XLSX.utils.encode_cell({
+          r: totalData.length - 2,
+          c: i,
+        }),
+        "f0edff"
+      );
     }
+    const salesRepFooterRowIndex = totalData.length - 2; // Assuming the index of the footer row
+
+    headerMonths.forEach((month: string, columnIndex: number) => {
+      const targetsValue = targetsRowData[month] ? targetsRowData[month][0] : 0;
+      const totalValue = totalSumValues[month] ? totalSumValues[month][0] : 0;
+
+      let color = "f5fff7";
+
+      if (targetsValue < totalValue) {
+        color = "f5fff7";
+      } else {
+        const percentage = totalValue / targetsValue;
+        if (percentage >= 0.5) {
+          color = "feecd1";
+        } else {
+          color = "ffebe9";
+        }
+      }
+      const cellAddress = XLSX.utils.encode_cell({
+        r: salesRepFooterRowIndex,
+        c: columnIndex + 3,
+      }); // Start from the 4th column (index + 3) for data columns
+
+      styleCell(cellAddress, color);
+    });
   }
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-  XLSX.writeFile(workbook, "case-types-month-volume.xlsx");
+  XLSX.writeFile(workbook, "single-case-type-month-volume.xlsx");
 };
 
 export const exportToExcelMonthWiseCaseTypeFacilities = (
