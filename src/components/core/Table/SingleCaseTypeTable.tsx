@@ -164,6 +164,17 @@ const SingleCaseTypeTable: FC<pageProps> = ({
       return "not-reached ";
     }
   };
+
+  const addExcludedMonth = (data: any) => {
+    let months = [...headerMonths];
+
+    months.forEach((month) => {
+      if (!(month in data)) {
+        data[month] = 0;
+      }
+    });
+    return data;
+  };
   return (
     <div
       style={{ width: "100%", overflowX: "auto" }}
@@ -298,8 +309,8 @@ const SingleCaseTypeTable: FC<pageProps> = ({
                   className={
                     useParams?.get("sales_rep") && !useParams?.get("search")
                       ? getBackgroundColor(
-                          +totalSumValues[item]?.[0],
-                          +targetsRowData?.[item]?.[0]
+                          +totalSumValues[item]?.[0] || 0,
+                          +targetsRowData?.[item]?.[0] || 0
                         )
                       : ""
                   }
@@ -381,14 +392,18 @@ const SingleCaseTypeTable: FC<pageProps> = ({
           graphData={getAcesdingOrderMonthsForGraphs(targetsRowData)}
           graphValuesData={getAcesdingOrderMonthsForGraphs(targetsRowData)}
           graphColor={"blue"}
-          tabValue={"volume"}
+          tabValue={"Targets"}
         />
       ) : (
         <GraphDialogForFacilities
           graphDialogOpen={graphDialogOpen}
           setGraphDialogOpen={setGraphDialogOpen}
-          graphData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-          graphValuesData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+          graphData={getAcesdingOrderMonthsForGraphs(
+            addExcludedMonth(totalSumValues)
+          )}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(
+            addExcludedMonth(totalSumValues)
+          )}
           graphColor={"blue"}
           tabValue={"volume"}
         />
