@@ -74,6 +74,9 @@ const SingleCaseTypesAutoCompleteFilter = ({
           "& .MuiInputBase-input": {
             paddingRight: "2rem !important",
           },
+          "& .MuiSvgIcon-root": {
+            display: "none !important",
+          },
         }}
         renderInput={(params) => (
           <TextField {...params} placeholder="Select Case Type" size="small" />

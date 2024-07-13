@@ -23,6 +23,7 @@ interface pageProps {
   loading: boolean;
   headerMonths: any;
   getData: any;
+  targetsRowData: any;
 }
 const SingleCaseTypeTable: FC<pageProps> = ({
   columns,
@@ -31,6 +32,7 @@ const SingleCaseTypeTable: FC<pageProps> = ({
   loading,
   headerMonths,
   getData,
+  targetsRowData,
 }) => {
   const pathName = usePathname();
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
@@ -56,6 +58,7 @@ const SingleCaseTypeTable: FC<pageProps> = ({
   });
 
   const useParams = useSearchParams();
+  const [showTargetsDialog, setShowTargetsDialog] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
   );
@@ -144,21 +147,21 @@ const SingleCaseTypeTable: FC<pageProps> = ({
   const getBackgroundColor = (totalCases: any, targetVolume: any) => {
     if (targetVolume === 0) {
       if (totalCases === 0) {
-        return "#f5fff7";
+        return "success-cell";
       } else if (totalCases >= targetVolume) {
-        return "#f5fff7";
+        return "success-cell";
       } else {
-        return "#ffebe9";
+        return "not-reached ";
       }
     }
 
     const percentage = totalCases / targetVolume;
     if (totalCases >= targetVolume) {
-      return "#f5fff7";
+      return "success-cell";
     } else if (percentage >= 0.5) {
-      return "#feecd1";
+      return "medium-success";
     } else {
-      return "#ffebe9";
+      return "not-reached ";
     }
   };
   return (
@@ -292,18 +295,20 @@ const SingleCaseTypeTable: FC<pageProps> = ({
             {headerMonths?.map((item: any, index: number) => {
               return (
                 <td
+                  className={
+                    useParams?.get("sales_rep") && !useParams?.get("search")
+                      ? getBackgroundColor(
+                          +totalSumValues[item]?.[0],
+                          +targetsRowData?.[item]?.[0]
+                        )
+                      : ""
+                  }
                   key={index}
                   style={{
                     cursor: "pointer",
-                    background: useParams?.get("sales_rep")
-                      ? getBackgroundColor(
-                          +totalSumValues[item]?.[0],
-                          +totalSumValues[item]?.[1]
-                        )
-                      : "#eff1fa",
                   }}
                 >
-                  {totalSumValues[item]?.[0]?.toLocaleString()}
+                  {totalSumValues[item]?.[0]?.toLocaleString() || 0}
                 </td>
               );
             })}
@@ -314,17 +319,10 @@ const SingleCaseTypeTable: FC<pageProps> = ({
               style={{ cursor: "pointer" }}
             >
               {headerMonths?.length ? (
-                useParams?.get("sales_rep") && !useParams?.get("search") ? (
-                  <AreaGraph
-                    data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-                    graphColor={"blue"}
-                  />
-                ) : (
-                  <AreaGraphForFacilities
-                    data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-                    graphColor={"blue"}
-                  />
-                )
+                <AreaGraphForFacilities
+                  data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+                  graphColor={"blue"}
+                />
               ) : (
                 ""
               )}
@@ -351,27 +349,37 @@ const SingleCaseTypeTable: FC<pageProps> = ({
                     style={{ cursor: "pointer" }}
                     key={index}
                   >
-                    {totalSumValues[item]?.[1]?.toLocaleString()}
+                    {targetsRowData?.[item]?.[0]?.toLocaleString()}
                   </td>
                 );
               })}
               <td
                 className="cell"
-                onClick={() => setGraphDialogOpen(true)}
+                onClick={() => setShowTargetsDialog(true)}
                 style={{ cursor: "pointer" }}
-              ></td>
+              >
+                {headerMonths?.length ? (
+                  <AreaGraph
+                    data={getAcesdingOrderMonthsForGraphs(targetsRowData)}
+                    graphColor={"blue"}
+                  />
+                ) : (
+                  ""
+                )}
+              </td>
             </tr>
           ) : (
             ""
           )}
         </tfoot>
       </table>
-      {useParams?.get("sales_rep") && !useParams?.get("search") ? (
-        <GraphDialog
-          graphDialogOpen={graphDialogOpen}
-          setGraphDialogOpen={setGraphDialogOpen}
-          graphData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-          graphValuesData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+
+      {showTargetsDialog ? (
+        <GraphDialogForFacilities
+          graphDialogOpen={showTargetsDialog}
+          setGraphDialogOpen={setShowTargetsDialog}
+          graphData={getAcesdingOrderMonthsForGraphs(targetsRowData)}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(targetsRowData)}
           graphColor={"blue"}
           tabValue={"volume"}
         />

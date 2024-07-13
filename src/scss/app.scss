@@ -235,7 +235,6 @@ table {
     overflow: auto;
     background-color: #fff;
   }
-
 }
 
 .inputItemDate {
@@ -628,10 +627,8 @@ table {
   }
 
   table {
-
     td,
     th {
-
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -684,7 +681,6 @@ table {
   tfoot {
     tr {
       td {
-
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -704,17 +700,18 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(circle at center center,
+    repeating-radial-gradient(
+      circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px);
+      transparent 10px
+    );
   background-blend-mode: multiply;
 }
 
 #mothWiseCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -785,7 +782,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -842,9 +839,7 @@ table {
   }
 }
 
-
 #mothWiseSingleCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -924,11 +919,22 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
     tfoot {
+      .success-cell {
+        background: #f5fff7 !important;
+      }
+      .medium-success {
+        background: #feecd1 !important;
+      }
+
+      .not-reached {
+        background: #ffebe9 !important;
+      }
+
       td {
         background: #eff1fa !important ;
       }
@@ -946,9 +952,7 @@ table {
       z-index: 1;
     }
   }
-
 }
-
 
 #mothWiseTargetsSaleRep {
   table {
@@ -1006,7 +1010,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -1096,7 +1100,6 @@ $actionButtonWidth: 95px;
 
       td,
       th {
-
         &:nth-child(3) {
           width: $width-140;
           min-width: $width-140;
@@ -1116,9 +1119,7 @@ $actionButtonWidth: 95px;
           width: $width-120;
           min-width: $width-120;
           max-width: $width-120;
-
         }
-
       }
     }
   }
@@ -1146,7 +1147,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1170,8 +1170,6 @@ $actionButtonWidth: 95px;
   $totalFacilitiesWidth: 140px;
 
   table {
-   
-
     tfoot {
       td {
         &:nth-last-child(-n + 2) {
@@ -1192,7 +1190,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1440,7 +1437,6 @@ $actionButtonWidth: 95px;
 
 .s-no-column {
   table {
-
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
@@ -1480,8 +1476,6 @@ $actionButtonWidth: 95px;
   }
 }
 
-
-
 .overViewTabs {
   height: 40px;
   min-height: 40px;
@@ -1505,10 +1499,8 @@ $actionButtonWidth: 95px;
 #insuranceCaseTypesData {
   table {
     tr {
-
       td,
       th {
-
         &:nth-child(3),
         &:nth-child(4),
         &:nth-child(5),
@@ -1599,7 +1591,7 @@ input:-webkit-autofill {
   .tableFiltersContainer {
     padding-right: 0;
 
-    >div {
+    > div {
       justify-content: flex-end;
     }
 
@@ -1609,11 +1601,6 @@ input:-webkit-autofill {
 
     input {
       min-width: 180px;
-    }
-
-    button {
-      color: #fff !important;
-      height: 35px;
     }
   }
 
