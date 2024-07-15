@@ -80,6 +80,7 @@ const SingleCaseTypeDetails = () => {
     }
     try {
       await getSingleCaseTypeDetails(queryParams);
+      setTargetRowData({});
       if (queryParams?.sales_rep) {
         await getDetailsOfSingleSalesRepTargets(queryParams);
       }
@@ -389,10 +390,9 @@ const SingleCaseTypeDetails = () => {
             searchParams={searchParams}
             caseTypeOptions={caseTypeOptions}
             headerMonths={
-              headerMonths?.length > 0 &&
-              headerMonths?.length >= targetHeaders?.length
-                ? headerMonths
-                : targetHeaders
+              params?.get("sales_rep") && !params.get("search")
+                ? targetHeaders
+                : headerMonths
             }
             selectedSalesRepValue={selectedSalesRepValue}
             setSelectedSalesRepValue={setSelectedSalesRepValue}
@@ -408,17 +408,16 @@ const SingleCaseTypeDetails = () => {
               <SingleCaseTypeFacilitiesTable
                 searchParams={searchParams}
                 caseTypeFacilityDetails={
-                  targetsRowData?.length > 0
+                  Object.keys(targetsRowData)?.length > 0
                     ? caseTypeFacilityDetails
                     : filterDataByZeroValues(caseTypeFacilityDetails)
                 }
                 monthWiseTotalSum={monthWiseTotalSum}
                 loading={loading}
                 headerMonths={
-                  headerMonths?.length > 0 &&
-                  headerMonths?.length >= targetHeaders?.length
-                    ? headerMonths
-                    : targetHeaders
+                  params?.get("sales_rep") && !params.get("search")
+                    ? targetHeaders
+                    : headerMonths
                 }
                 completeData={completeData}
                 groupDatasumValue={groupDatasumValue}
