@@ -180,7 +180,10 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                           start={0}
                           decimal="."
                           prefix="$"
-                          end={revenueCardsDetails?.[0]?.["total_revenue"]}
+                          end={
+                            revenueCardsDetails?.[0]?.["received_revenue"] ||
+                            revenueCardsDetails?.[0]?.["total_revenue"]
+                          }
                         />
                       )}
                     </h2>

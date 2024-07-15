@@ -63,7 +63,7 @@ const SingleInsuranceBillingAndRevenueDetails = () => {
     }
     let queryString = prepareURLEncodedParams("", queryParams);
 
-    router.push(`${pathname}${queryString}`);
+    router.replace(`${pathname}${queryString}`);
     setDashBoardQueryParams(queryParams);
   };
 

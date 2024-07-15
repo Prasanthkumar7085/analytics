@@ -31,10 +31,10 @@ const BillingAndRevenueInsurances = () => {
   const queryPreparations = async ({
     fromDate,
     toDate,
-    searchValue = searchParams?.search,
-    orderBy = searchParams?.order_by,
-    orderType = searchParams?.order_type,
-    tabValue = searchParams?.tab,
+    searchValue = params?.get("search"),
+    orderBy = params?.get("order_by"),
+    orderType = params?.get("order_type"),
+    tabValue = params?.get("tab"),
   }: any) => {
     let queryParams: any = { tab: "billed" };
 
@@ -57,7 +57,7 @@ const BillingAndRevenueInsurances = () => {
       queryParams["tab"] = tabValue;
     }
     try {
-      if (tabValue == "billed") {
+      if (queryParams?.tab == "billed") {
         await getBilledInsurancesList(queryParams);
       } else {
         await getRevenueInsurancesList(queryParams);
@@ -86,7 +86,7 @@ const BillingAndRevenueInsurances = () => {
         let data = response?.data;
         if (queryParams.search) {
           data = data.filter((item: any) =>
-            item.insurance_payor_name
+            item.insurance_payer_name
               ?.toLowerCase()
               ?.includes(search?.toLowerCase()?.trim())
           );
@@ -219,7 +219,7 @@ const BillingAndRevenueInsurances = () => {
 
     if (search) {
       filteredData = filteredData.filter((item: any) =>
-        item.insurance_payor_name
+        item.insurance_payer_name
           ?.toLowerCase()
           ?.includes(search.toLowerCase().trim())
       );
@@ -253,6 +253,7 @@ const BillingAndRevenueInsurances = () => {
       Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
     );
   }, [params]);
+
   return (
     <div id="FacilitiesTablePage" className="facilitiesPage s-no-column">
       <BillingInsurancesFilters

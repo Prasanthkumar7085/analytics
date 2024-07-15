@@ -25,7 +25,7 @@ import {
 import dayjs from "dayjs";
 
 const BillingOverView = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -180,13 +180,13 @@ const BillingOverView = () => {
     } else {
       callCaseTypesStatsCounts();
     }
-  }, []);
+  }, [params?.get("tab")]);
 
-  useEffect(() => {
-    setSearchParams(
-      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
-    );
-  }, [params]);
+  // useEffect(() => {
+  //   setSearchParams(
+  //     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+  //   );
+  // }, [params]);
   return (
     <>
       <Grid container spacing={2} className="mb-5">
@@ -212,13 +212,13 @@ const BillingOverView = () => {
         </Grid>
         <Grid item xs={12}>
           <MonthWiseCaseTypesStats
-            searchParams={searchParams}
+            searchParams={dashBoardQueryParams}
             pathName={"overview"}
           />
         </Grid>
         <Grid item xs={12}>
           <MonthWiseTrendsGraph
-            searchParams={searchParams}
+            searchParams={dashBoardQueryParams}
             pathName={"overview"}
           />
         </Grid>

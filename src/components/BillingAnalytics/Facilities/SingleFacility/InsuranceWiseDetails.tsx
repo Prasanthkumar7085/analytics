@@ -14,6 +14,7 @@ import { groupAllBilledColumns } from "../../OverView/MonthWiseStats/MonthWiseCa
 import { Backdrop } from "@mui/material";
 import GraphDialog from "@/components/core/GraphDialog";
 import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
+import BillingAndRevenueCoreTable from "@/components/core/Table/BillingAndRevenueCoreTable";
 
 const InsuranceWiseDetails = ({ searchParams }: any) => {
   const { id } = useParams();
@@ -167,7 +168,7 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
             justifyContent: "flex-end",
           }}
         ></div>
-        <CaseTypesColumnTable
+        <BillingAndRevenueCoreTable
           data={monthWiseInsuranceData}
           columns={groupAllBilledColumns({
             headerMonths,
@@ -181,7 +182,7 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
           totalSumValues={totalSumValues}
           loading={loading}
           headerMonths={headerMonths}
-          tabValue={"revenue"}
+          tabValue={searchParams?.tab}
           rowTotalSum={rowTotalSum}
         />
         {loading ? (

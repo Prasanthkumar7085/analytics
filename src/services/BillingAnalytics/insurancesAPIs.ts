@@ -54,7 +54,7 @@ export const getInsuranceRevenueMonthWiseCaseTypeDataAPI = async (
 ) => {
   try {
     const { success, data } = await $fetch.get(
-      `/revenue-insurances/${id}/monthly-case-type`,
+      `/revenue-insurances/${id}/case-type`,
       params
     );
 
@@ -94,7 +94,7 @@ export const getMonthWiseInsuranceRevenueTreadsDataAPI = async (
 ) => {
   try {
     const { success, data } = await $fetch.get(
-      `revenue-insurances/${1}/trend`,
+      `/revenue-insurances/${1}/trend`,
       params
     );
 

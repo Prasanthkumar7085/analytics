@@ -1,5 +1,5 @@
-import CaseTypesColumnTable from "@/components/CaseTypes/caseTypesColumnTable";
 import GraphDialog from "@/components/core/GraphDialog";
+import BillingAndRevenueCoreTable from "@/components/core/Table/BillingAndRevenueCoreTable";
 import {
   getUniqueMonthsInBilling,
   rearrangeDataWithCasetypes,
@@ -22,7 +22,7 @@ import {
 import { Backdrop } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { groupAllBilledColumns } from "./MonthWiseCaseTypesStatsColumns";
+import { groupAllBilledAndRevenueColumns } from "./MonthWiseCaseTypesStatsColumns";
 
 const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
   const { id } = useParams();
@@ -185,9 +185,9 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
             justifyContent: "flex-end",
           }}
         ></div>
-        <CaseTypesColumnTable
+        <BillingAndRevenueCoreTable
           data={monthWiseCaseData}
-          columns={groupAllBilledColumns({
+          columns={groupAllBilledAndRevenueColumns({
             headerMonths,
             setGraphDialogOpen,
             setSelectedGraphData,
@@ -199,7 +199,7 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
           totalSumValues={totalSumValues}
           loading={loading}
           headerMonths={headerMonths}
-          tabValue={"revenue"}
+          tabValue={searchParams?.tab}
           rowTotalSum={rowTotalSum}
         />
 

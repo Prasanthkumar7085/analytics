@@ -194,7 +194,7 @@ const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
               className="actionButton"
               onClick={() => {
                 gotoSingleBillingInsurancePage(
-                  info.row.original.insurance_payor_id,
+                  info.row.original.insurance_payer_id,
                   searchParams,
                   router
                 );

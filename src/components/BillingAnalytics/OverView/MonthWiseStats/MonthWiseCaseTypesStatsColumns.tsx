@@ -134,18 +134,16 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
       const rowDataA = rowA.original[columnId];
       const rowDataB = rowB.original[columnId];
 
-      // Extract the case values from the row data
       const valueA = rowDataA[0] || 0;
       const valueB = rowDataB[0] || 0;
 
-      // Compare the case values for sorting
       return valueA - valueB;
     },
     columns: [
       {
         accessorFn: (row: any) => row?.[item][0],
         header: () => <span style={{ whiteSpace: "nowrap" }}>Cases</span>,
-        id: item,
+        id: item[0],
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
@@ -158,7 +156,7 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
       {
         accessorFn: (row: any) => row?.[item][1],
         header: () => <span style={{ whiteSpace: "nowrap" }}>Billed</span>,
-        id: item,
+        id: item[1],
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
@@ -189,18 +187,16 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
       const rowDataA = rowA.original[columnId];
       const rowDataB = rowB.original[columnId];
 
-      // Extract the case values from the row data
       const valueA = rowDataA[0] || 0;
       const valueB = rowDataB[0] || 0;
 
-      // Compare the case values for sorting
       return valueA - valueB;
     },
     columns: [
       {
         accessorFn: (row: any) => row?.[item][0],
         header: () => <span style={{ whiteSpace: "nowrap" }}>Target</span>,
-        id: item,
+        id: item[0],
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
@@ -211,7 +207,7 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
       {
         accessorFn: (row: any) => row?.[item][1],
         header: () => <span style={{ whiteSpace: "nowrap" }}>Received</span>,
-        id: item,
+        id: item[1],
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
@@ -224,7 +220,7 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
   return addtionalcolumns;
 };
 
-export const groupAllBilledColumns = ({
+export const groupAllBilledAndRevenueColumns = ({
   headerMonths,
   setGraphDialogOpen,
   setSelectedGraphData,
