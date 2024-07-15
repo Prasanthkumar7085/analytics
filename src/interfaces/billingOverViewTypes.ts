@@ -1,5 +1,6 @@
 export interface BillingOverViewStatsCardTypes {
-    loading: boolean;
-    billingCardsDetails: any
-    revenueCardsDetails:any
+  loading: boolean;
+  billingCardsDetails: any;
+  revenueCardsDetails: any;
+  searchParams: any;
 }

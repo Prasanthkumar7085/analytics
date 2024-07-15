@@ -180,7 +180,7 @@ const BillingOverView = () => {
     } else {
       callCaseTypesStatsCounts();
     }
-  }, [params]);
+  }, []);
 
   useEffect(() => {
     setSearchParams(
@@ -195,6 +195,7 @@ const BillingOverView = () => {
             loading={loading}
             billingCardsDetails={billingCardsDetails}
             revenueCardsDetails={revenueCardsDetails}
+            searchParams={searchParams}
           />
         </Grid>
         <Grid item xs={8}>

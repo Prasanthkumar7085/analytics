@@ -94,8 +94,8 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
         setHeaderMonths(uniqueMonths);
         const groupedData: any = groupDataWithMonthWise(
           response?.data,
-          "received_amount",
-          "targeted_amount"
+          "targeted_amount",
+          "received_amount"
         );
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.insurance_name.localeCompare(b.insurance_name);
@@ -104,8 +104,8 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
         setMonthWiseInsuranceData(modifieData);
         let total = getTotalSumOfColmnsWithMonths(
           response?.data,
-          "received_amount",
-          "targeted_amount"
+          "targeted_amount",
+          "received_amount"
         );
         setTotalSumValues(total);
       }
@@ -167,27 +167,23 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
             justifyContent: "flex-end",
           }}
         ></div>
-        {headerMonths?.length ? (
-          <CaseTypesColumnTable
-            data={monthWiseInsuranceData}
-            columns={groupAllBilledColumns({
-              headerMonths,
-              setGraphDialogOpen,
-              setSelectedGraphData,
-              setGraphValuesData,
-              setGraphColor,
-              searchParams,
-              tableType,
-            })}
-            totalSumValues={totalSumValues}
-            loading={loading}
-            headerMonths={headerMonths}
-            tabValue={"revenue"}
-            rowTotalSum={rowTotalSum}
-          />
-        ) : (
-          ""
-        )}
+        <CaseTypesColumnTable
+          data={monthWiseInsuranceData}
+          columns={groupAllBilledColumns({
+            headerMonths,
+            setGraphDialogOpen,
+            setSelectedGraphData,
+            setGraphValuesData,
+            setGraphColor,
+            searchParams,
+            tableType,
+          })}
+          totalSumValues={totalSumValues}
+          loading={loading}
+          headerMonths={headerMonths}
+          tabValue={"revenue"}
+          rowTotalSum={rowTotalSum}
+        />
         {loading ? (
           <Backdrop
             open={true}

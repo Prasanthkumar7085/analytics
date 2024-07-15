@@ -167,12 +167,8 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
     xAxis: {
       categories:
         searchParams?.tab == "billed"
-          ? monthWiseBilledTrendsData?.map((item: any) =>
-              formatMonthYear(item?.month)
-            )
-          : monthWiseRevenueTrendsData?.map((item: any) =>
-              formatMonthYear(item?.month)
-            ),
+          ? Object?.keys(graphData)?.map((item: any) => formatMonthYear(item))
+          : Object?.keys(graphData)?.map((item: any) => formatMonthYear(item)),
     },
     yAxis: {
       title: {
@@ -221,6 +217,7 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
     },
     series: searchParams?.tab == "billed" ? billedSeries : revenueSeries,
   };
+
   useEffect(() => {
     queryPreparations(
       searchParams?.from_date,
@@ -228,6 +225,7 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
       searchParams?.tab
     );
   }, [searchParams]);
+
   return (
     <div id="TrendsData">
       <div style={{ position: "relative" }}>

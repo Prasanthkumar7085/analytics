@@ -144,8 +144,8 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
         setHeaderMonths(uniqueMonths);
         const groupedData: any = groupDataWithMonthWise(
           response?.data,
-          "received_amount",
-          "targeted_amount"
+          "targeted_amount",
+          "received_amount"
         );
         const sortedData = Object.values(groupedData).sort((a: any, b: any) => {
           return a.case_type_name.localeCompare(b.case_type_name);
@@ -155,8 +155,8 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
         setMonthWiseCaseData(rearrangedData);
         let total = getTotalSumOfColmnsWithMonths(
           response?.data,
-          "received_amount",
-          "targeted_amount"
+          "targeted_amount",
+          "received_amount"
         );
         setTotalSumValues(total);
       }
@@ -174,6 +174,7 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
       searchParams?.tab
     );
   }, [searchParams]);
+
   return (
     <div id="mothWiseCaseTypeData">
       <div style={{ position: "relative" }}>
@@ -184,27 +185,24 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
             justifyContent: "flex-end",
           }}
         ></div>
-        {headerMonths?.length ? (
-          <CaseTypesColumnTable
-            data={monthWiseCaseData}
-            columns={groupAllBilledColumns({
-              headerMonths,
-              setGraphDialogOpen,
-              setSelectedGraphData,
-              setGraphValuesData,
-              setGraphColor,
-              searchParams,
-              tableType,
-            })}
-            totalSumValues={totalSumValues}
-            loading={loading}
-            headerMonths={headerMonths}
-            tabValue={"revenue"}
-            rowTotalSum={rowTotalSum}
-          />
-        ) : (
-          ""
-        )}
+        <CaseTypesColumnTable
+          data={monthWiseCaseData}
+          columns={groupAllBilledColumns({
+            headerMonths,
+            setGraphDialogOpen,
+            setSelectedGraphData,
+            setGraphValuesData,
+            setGraphColor,
+            searchParams,
+            tableType,
+          })}
+          totalSumValues={totalSumValues}
+          loading={loading}
+          headerMonths={headerMonths}
+          tabValue={"revenue"}
+          rowTotalSum={rowTotalSum}
+        />
+
         {loading ? (
           <Backdrop
             open={true}

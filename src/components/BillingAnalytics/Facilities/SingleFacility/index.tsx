@@ -63,7 +63,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
     }
     let queryString = prepareURLEncodedParams("", queryParams);
 
-    router.push(`${pathname}${queryString}`);
+    router.replace(`${pathname}${queryString}`);
     setDashBoardQueryParams(queryParams);
     try {
       await getBillingStatsCount(queryParams);
@@ -199,7 +199,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
       searchParams?.to_date,
       searchParams?.tab
     );
-  }, [searchParams]);
+  }, [searchParams?.tab]);
   //api call to get stats count
   useEffect(() => {
     if (id) {
@@ -269,6 +269,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
               loading={loading}
               billingCardsDetails={billingCardsDetails}
               revenueCardsDetails={revenueCardsDetails}
+              searchParams={searchParams}
             />
           </Grid>
           <Grid item xs={8}>
