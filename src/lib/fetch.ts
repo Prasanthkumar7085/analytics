@@ -8,21 +8,16 @@ interface IAPIResponse {
   data: any;
 }
 class FetchService {
-
   authStatusCodes: number[] = [];
 
-  authErrorURLs: string[] = [
-    "/signin",
-    "/forgot-password",
-  ];
+  authErrorURLs: string[] = ["/signin", "/forgot-password"];
 
   private _isGlobal: Boolean;
 
   constructor(isGlobal = false) {
     this._isGlobal = isGlobal;
-    store.subscribe(() => { });
+    store.subscribe(() => {});
   }
-
 
   configureAuthorization(config: any) {
     const state = store.getState();
@@ -83,13 +78,11 @@ class FetchService {
 
     const response: any = await fetch(url, config);
     if (response.status == 200 || response.status == 201) {
-
       return {
         success: true,
         status: response.status,
         data: { ...(await response.json()), status: response.status },
       };
-
     } else if (
       this.authStatusCodes.includes(response.status) &&
       !this.checkToLogOutOrNot(path)
@@ -148,9 +141,13 @@ class FetchService {
       url = prepareURLEncodedParams(url, queryParams);
     }
 
-    return await this.hit(url, {
-      method: "GET",
-    }, false);
+    return await this.hit(
+      url,
+      {
+        method: "GET",
+      },
+      false
+    );
   }
 
   async delete(url: string, payload = {}) {
@@ -205,9 +202,3 @@ class FetchService {
 // for app search
 export const $fetch = new FetchService();
 export const $globalFetch = new FetchService(true);
-
-
-
-
-
-

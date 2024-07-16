@@ -10,7 +10,7 @@ import {
 } from "@/services/BillingAnalytics/facilitiesAPIs";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { groupAllBilledColumns } from "../../OverView/MonthWiseStats/MonthWiseCaseTypesStatsColumns";
+import { groupAllBilledAndRevenueColumns } from "../../OverView/MonthWiseStats/MonthWiseCaseTypesStatsColumns";
 import { Backdrop } from "@mui/material";
 import GraphDialog from "@/components/core/GraphDialog";
 import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
@@ -170,7 +170,7 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
         ></div>
         <BillingAndRevenueCoreTable
           data={monthWiseInsuranceData}
-          columns={groupAllBilledColumns({
+          columns={groupAllBilledAndRevenueColumns({
             headerMonths,
             setGraphDialogOpen,
             setSelectedGraphData,

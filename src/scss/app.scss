@@ -235,7 +235,6 @@ table {
     overflow: auto;
     background-color: #fff;
   }
-
 }
 
 .inputItemDate {
@@ -628,10 +627,8 @@ table {
   }
 
   table {
-
     td,
     th {
-
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -684,7 +681,6 @@ table {
   tfoot {
     tr {
       td {
-
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -704,17 +700,18 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(circle at center center,
+    repeating-radial-gradient(
+      circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px);
+      transparent 10px
+    );
   background-blend-mode: multiply;
 }
 
 #mothWiseCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -785,7 +782,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -842,9 +839,7 @@ table {
   }
 }
 
-
 #mothWiseSingleCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -924,7 +919,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -946,9 +941,7 @@ table {
       z-index: 1;
     }
   }
-
 }
-
 
 #mothWiseTargetsSaleRep {
   table {
@@ -1006,7 +999,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -1096,7 +1089,6 @@ $actionButtonWidth: 95px;
 
       td,
       th {
-
         &:nth-child(3) {
           width: $width-140;
           min-width: $width-140;
@@ -1116,9 +1108,7 @@ $actionButtonWidth: 95px;
           width: $width-120;
           min-width: $width-120;
           max-width: $width-120;
-
         }
-
       }
     }
   }
@@ -1146,7 +1136,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1171,7 +1160,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       th,
       td {
         &:nth-child(3) {
@@ -1208,7 +1196,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1456,7 +1443,6 @@ $actionButtonWidth: 95px;
 
 .s-no-column {
   table {
-
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
@@ -1496,8 +1482,6 @@ $actionButtonWidth: 95px;
   }
 }
 
-
-
 .overViewTabs {
   height: 40px;
   min-height: 40px;
@@ -1521,10 +1505,8 @@ $actionButtonWidth: 95px;
 #insuranceCaseTypesData {
   table {
     tr {
-
       td,
       th {
-
         &:nth-child(3),
         &:nth-child(4),
         &:nth-child(5),
@@ -1615,7 +1597,7 @@ input:-webkit-autofill {
   .tableFiltersContainer {
     padding-right: 0;
 
-    >div {
+    > div {
       justify-content: flex-end;
     }
 
@@ -1648,4 +1630,70 @@ input:-webkit-autofill {
 
 .gray-bg {
   background: #f1f1f1;
+}
+// UploadFile.scss
+
+.upload-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 2px dashed #555;
+  background-color: #f0edfe;
+  text-align: center;
+}
+
+.upload-label {
+  display: block;
+  padding: 10px;
+  background-color: #6c63ff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.file-input {
+  display: none;
+}
+
+#ErrorsTablecontainer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+
+  .table {
+    width: 30%;
+    margin-bottom: 20px;
+
+    h2 {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+      }
+
+      td {
+        font-size: 14px;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+    }
+  }
 }
