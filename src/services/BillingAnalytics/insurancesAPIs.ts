@@ -94,7 +94,7 @@ export const getMonthWiseInsuranceRevenueTreadsDataAPI = async (
 ) => {
   try {
     const { success, data } = await $fetch.get(
-      `/revenue-insurances/${1}/trend`,
+      `/revenue-insurances/${id}/trend`,
       params
     );
 

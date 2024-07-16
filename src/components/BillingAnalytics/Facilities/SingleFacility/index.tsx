@@ -10,7 +10,7 @@ import {
   getFacilitycaseTyeWiseRevenueStatsAPI,
   getFacilityRevenueStatsCardDataAPI,
 } from "@/services/BillingAnalytics/facilitiesAPIs";
-import { Avatar, Grid } from "@mui/material";
+import { Avatar, Grid, Typography } from "@mui/material";
 import {
   useParams,
   usePathname,
@@ -285,12 +285,14 @@ const SingleFacilityBillingAndRevenueDetails = () => {
             />
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="caption">MonthWise</Typography>
             <MonthWiseCaseTypesStats
               searchParams={searchParams}
               pathName={"facilities"}
             />
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="caption">Insurances Case Types</Typography>
             <InsuranceWiseDetails searchParams={searchParams} />
           </Grid>
         </Grid>

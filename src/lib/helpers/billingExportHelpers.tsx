@@ -255,7 +255,6 @@ export const exportToExcelBilledInsurancesData = (
   insuranceData: any,
   totalSumValue: any
 ) => {
-  console.log(totalSumValue, "Fdsafsd");
   const formattedData = insuranceData.map((obj: any, index: number) => {
     return [
       index + 1,
@@ -311,4 +310,105 @@ export const exportToExcelRevenueInsurancesData = (
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "revenue-insurances-data.xlsx");
+};
+
+export const exportToExcelBillingMonthWiseInsurancesData = (
+  monthwiseData: any,
+  headerMonths: any,
+  totalSumValues: any
+) => {
+  const formattedData = monthwiseData.map((obj: any, index: number) => {
+    const sortedValues = headerMonths.map((month: string) => {
+      const value = obj[month] || [0, 0];
+      return value;
+    });
+    return [
+      index + 1,
+      obj.insurance_name,
+      ...sortedValues.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+    ];
+  });
+
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
+  let headers = [
+    "",
+    "",
+    ...formatHeaderMonth.flatMap((item: any) => [item, ""]),
+  ];
+
+  let Subheaders = [
+    "Sl.No",
+    "Insurances Name",
+    ...headerMonths.flatMap(() => ["Cases", "Billed"]),
+  ];
+
+  const total = headerMonths.map((month: any) => {
+    const values = totalSumValues[month] || [0, 0];
+    return values;
+  });
+  let totalSumSortedValues = [
+    "Total",
+    "",
+    ...total.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+  ];
+
+  let totalData = [headers, Subheaders, ...formattedData, totalSumSortedValues];
+  coreExportFunction(
+    totalData,
+    headers,
+    "monthWise-billed-Insurances-stats.xlsx"
+  );
+};
+
+export const exportToExcelRevenueMonthWiseInsurancesData = (
+  monthwiseData: any,
+  headerMonths: any,
+  totalSumValues: any
+) => {
+  const formattedData = monthwiseData.map((obj: any, index: number) => {
+    const sortedValues = headerMonths.map((month: string) => {
+      const value = obj[month] || [0, 0];
+      return value;
+    });
+    return [
+      index + 1,
+      obj.insurance_name,
+      ...sortedValues.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+    ];
+  });
+
+  let formatHeaderMonth = headerMonths?.map((item: any) =>
+    formatMonthYear(item)
+  );
+  let headers = [
+    "",
+    "",
+    ...formatHeaderMonth.flatMap((item: any) => [item, ""]),
+  ];
+
+  let Subheaders = [
+    "Sl.No",
+    "Insurances Name",
+    ...headerMonths.flatMap(() => ["Target", "Received"]),
+  ];
+
+  const total = headerMonths.map((month: any) => {
+    const values = totalSumValues[month] || [0, 0];
+    return values;
+  });
+
+  let totalSumSortedValues = [
+    "Total",
+    "",
+    ...total.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+  ];
+
+  let totalData = [headers, Subheaders, ...formattedData, totalSumSortedValues];
+  coreExportFunction(
+    totalData,
+    headers,
+    "monthWise-Revenue-Insurance-stats.xlsx"
+  );
 };

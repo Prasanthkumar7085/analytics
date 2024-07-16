@@ -25,7 +25,13 @@ const BillingInsuranceColumns = ({ searchParams, router }: any) => {
         return (
           <span
             style={{ cursor: "pointer" }}
-            //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+            onClick={() => {
+              gotoSingleBillingInsurancePage(
+                info.row.original.insurance_payer_id,
+                searchParams,
+                router
+              );
+            }}
           >
             {info.row.original.insurance_payer_name}
           </span>
@@ -134,7 +140,13 @@ const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
         return (
           <span
             style={{ cursor: "pointer" }}
-            //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+            onClick={() => {
+              gotoSingleBillingInsurancePage(
+                info.row.original.insurance_payer_id,
+                searchParams,
+                router
+              );
+            }}
           >
             {info.row.original.insurance_payer_name}
           </span>

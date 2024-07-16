@@ -29,7 +29,7 @@ const BilledAndRevenueTabs = ({
       tab: newValue == 0 ? "billed" : "revenue",
     };
     let queryString = prepareURLEncodedParams("", queryParams);
-    router.push(`${pathname}${queryString}`);
+    router.replace(`${pathname}${queryString}`);
   };
 
   useEffect(() => {

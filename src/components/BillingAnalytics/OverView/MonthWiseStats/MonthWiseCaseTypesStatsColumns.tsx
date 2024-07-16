@@ -5,6 +5,7 @@ import {
   formatMonthYear,
   getAcesdingOrderMonthsForGraphs,
 } from "@/lib/helpers/apiHelpers";
+import { gotoSingleBillingInsurancePage } from "@/lib/helpers/navigations";
 import formatMoney from "@/lib/Pipes/moneyFormat";
 
 const MonthWiseCaseTypesBilledStatsColumns = () => {
@@ -40,7 +41,10 @@ const MonthWiseCaseTypesBilledStatsColumns = () => {
   ];
 };
 
-const MonthWiseInsuranceBilledStatsColumns = () => {
+const MonthWiseInsuranceBilledStatsColumns = (
+  searchParams: any,
+  router: any
+) => {
   return [
     {
       accessorFn: (row: any) => row.serial,
@@ -67,7 +71,20 @@ const MonthWiseInsuranceBilledStatsColumns = () => {
       maxWidth: "220px",
       minWidth: "220px",
       cell: (info: any) => {
-        return <span style={{ cursor: "pointer" }}>{info.getValue()}</span>;
+        return (
+          <span
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              gotoSingleBillingInsurancePage(
+                info.row.original.insurance_id,
+                searchParams,
+                router
+              );
+            }}
+          >
+            {info.getValue()}
+          </span>
+        );
       },
     },
   ];
@@ -233,6 +250,7 @@ export const groupAllBilledAndRevenueColumns = ({
   setGraphColor,
   searchParams,
   tableType,
+  router,
 }: any) => {
   let GroupdBilledColmns = MonthWiseCaseTypesBilledStatsAdditionalColumns({
     headerMonths,
@@ -251,7 +269,7 @@ export const groupAllBilledAndRevenueColumns = ({
     searchParams?.tab == "billed" ? GroupdBilledColmns : GroupdRevenueColmns;
   let NormalColumns =
     tableType == "insurance"
-      ? MonthWiseInsuranceBilledStatsColumns()
+      ? MonthWiseInsuranceBilledStatsColumns(searchParams, router)
       : MonthWiseCaseTypesBilledStatsColumns();
   return [...NormalColumns, ...GroupdColmns, ...GraphColumn];
 };

@@ -20,7 +20,7 @@ import {
   getMonthWiseRevenueCaseTypesDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
 import { Backdrop, Button } from "@mui/material";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { groupAllBilledAndRevenueColumns } from "./MonthWiseCaseTypesStatsColumns";
 import GraphDialogForBillingAndReveune from "@/components/core/GraphDialogForBillingAndRevenue";
@@ -32,6 +32,7 @@ import {
 
 const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
   const { id } = useParams();
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [monthWiseCaseData, setMonthWiseCaseData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -183,24 +184,6 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
 
   return (
     <div id="mothWiseCaseTypeData">
-      <ExportButton
-        onClick={() => {
-          if (searchParams?.tab == "billed") {
-            exportToExcelBillingMonthWiseCaseTypeData(
-              monthWiseCaseData,
-              headerMonths,
-              totalSumValues
-            );
-          } else {
-            exportToExcelRevenueMonthWiseCaseTypeData(
-              monthWiseCaseData,
-              headerMonths,
-              totalSumValues
-            );
-          }
-        }}
-        disabled={monthWiseCaseData?.length == 0 ? true : false}
-      />
       <div style={{ position: "relative" }}>
         <div
           style={{
@@ -208,7 +191,26 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
             flexDirection: "row",
             justifyContent: "flex-end",
           }}
-        ></div>
+        >
+          <ExportButton
+            onClick={() => {
+              if (searchParams?.tab == "billed") {
+                exportToExcelBillingMonthWiseCaseTypeData(
+                  monthWiseCaseData,
+                  headerMonths,
+                  totalSumValues
+                );
+              } else {
+                exportToExcelRevenueMonthWiseCaseTypeData(
+                  monthWiseCaseData,
+                  headerMonths,
+                  totalSumValues
+                );
+              }
+            }}
+            disabled={monthWiseCaseData?.length == 0 ? true : false}
+          />
+        </div>
         <BillingAndRevenueCoreTable
           data={monthWiseCaseData}
           columns={groupAllBilledAndRevenueColumns({
@@ -219,6 +221,7 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
             setGraphColor,
             searchParams,
             tableType,
+            router,
           })}
           totalSumValues={totalSumValues}
           loading={loading}

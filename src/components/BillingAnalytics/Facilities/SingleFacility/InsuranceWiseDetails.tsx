@@ -8,7 +8,7 @@ import {
   getFacilityMonthWiseInsuranceWiseBilledCaseTypesDataAPI,
   getFacilityMonthWiseInsuranceWiseRevenueCaseTypesDataAPI,
 } from "@/services/BillingAnalytics/facilitiesAPIs";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { groupAllBilledAndRevenueColumns } from "../../OverView/MonthWiseStats/MonthWiseCaseTypesStatsColumns";
 import { Backdrop } from "@mui/material";
@@ -16,9 +16,15 @@ import GraphDialog from "@/components/core/GraphDialog";
 import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
 import BillingAndRevenueCoreTable from "@/components/core/Table/BillingAndRevenueCoreTable";
 import GraphDialogForBillingAndReveune from "@/components/core/GraphDialogForBillingAndRevenue";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
+import {
+  exportToExcelBillingMonthWiseInsurancesData,
+  exportToExcelRevenueMonthWiseInsurancesData,
+} from "@/lib/helpers/billingExportHelpers";
 
 const InsuranceWiseDetails = ({ searchParams }: any) => {
   const { id } = useParams();
+  const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
   const [monthWiseInsuranceData, setMonthWiseInsuranceData] = useState<any>([]);
   const [totalSumValues, setTotalSumValues] = useState<any>({});
@@ -168,7 +174,26 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
             flexDirection: "row",
             justifyContent: "flex-end",
           }}
-        ></div>
+        >
+          <ExportButton
+            onClick={() => {
+              if (searchParams?.tab == "billed") {
+                exportToExcelBillingMonthWiseInsurancesData(
+                  monthWiseInsuranceData,
+                  headerMonths,
+                  totalSumValues
+                );
+              } else {
+                exportToExcelRevenueMonthWiseInsurancesData(
+                  monthWiseInsuranceData,
+                  headerMonths,
+                  totalSumValues
+                );
+              }
+            }}
+            disabled={monthWiseInsuranceData?.length == 0 ? true : false}
+          />
+        </div>
         <BillingAndRevenueCoreTable
           data={monthWiseInsuranceData}
           columns={groupAllBilledAndRevenueColumns({
@@ -179,6 +204,7 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
             setGraphColor,
             searchParams,
             tableType,
+            router,
           })}
           totalSumValues={totalSumValues}
           loading={loading}

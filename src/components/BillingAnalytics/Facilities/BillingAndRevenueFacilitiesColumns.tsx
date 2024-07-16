@@ -25,7 +25,13 @@ const BillingFacilitiesColumns = ({ searchParams, router }: any) => {
         return (
           <span
             style={{ cursor: "pointer" }}
-            //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+            onClick={() => {
+              gotoSingleBillingFacilityPage(
+                info.row.original.facility_id,
+                searchParams,
+                router
+              );
+            }}
           >
             {info.row.original.facility_name}
           </span>
@@ -140,7 +146,13 @@ const RevenueFacilitiesColumns = ({ searchParams, router }: any) => {
         return (
           <span
             style={{ cursor: "pointer" }}
-            //   onClick={() => gotoSingleFacilityPage(info.row.original.facility_id)}
+            onClick={() => {
+              gotoSingleBillingFacilityPage(
+                info.row.original.facility_id,
+                searchParams,
+                router
+              );
+            }}
           >
             {info.row.original.facility_name}
           </span>
