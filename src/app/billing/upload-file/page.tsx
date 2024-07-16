@@ -1,11 +1,14 @@
 "use client";
 import UploadDataWithFile from "@/components/BillingAnalytics/UploadFile";
+import { Suspense } from "react";
 
 const UploadDataPage = () => {
   return (
-    <div>
-      <UploadDataWithFile />
-    </div>
+    <Suspense>
+      <div>
+        <UploadDataWithFile />
+      </div>
+    </Suspense>
   );
 };
 export default UploadDataPage;
