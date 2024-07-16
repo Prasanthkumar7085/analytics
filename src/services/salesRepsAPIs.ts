@@ -14,7 +14,10 @@ export const getSalesRepsAPI = async (params: any) => {
 };
 export const getTeamWiseSalesRepsAPI = async (params: any) => {
   try {
-    const { success, data } = await $fetch.get("/sales-reps/stats/team-wise", params);
+    const { success, data } = await $fetch.get(
+      "/sales-reps/stats/team-wise",
+      params
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -24,7 +27,10 @@ export const getTeamWiseSalesRepsAPI = async (params: any) => {
   }
 };
 
-export const getSingleSalesRepCaseTypesVolumeAPI = async (id: string, queryParams: any) => {
+export const getSingleSalesRepCaseTypesVolumeAPI = async (
+  id: string,
+  queryParams: any
+) => {
   try {
     const { success, data } = await $fetch.get(
       `/sales-reps/${id}/case-types-volume-targets`,
@@ -39,9 +45,15 @@ export const getSingleSalesRepCaseTypesVolumeAPI = async (id: string, queryParam
   }
 };
 
-export const getSingleSalesRepCaseTypesRevenueAPI = async (id: string, queryParams: any) => {
+export const getSingleSalesRepCaseTypesRevenueAPI = async (
+  id: string,
+  queryParams: any
+) => {
   try {
-    const { success, data } = await $fetch.get(`/sales-reps/${id}/case-types-revenue`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/sales-reps/${id}/case-types-revenue`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -50,7 +62,6 @@ export const getSingleSalesRepCaseTypesRevenueAPI = async (id: string, queryPara
     throw err;
   }
 };
-
 
 export const getSingleRepDeatilsAPI = async (salerep_id: string) => {
   try {
@@ -76,20 +87,19 @@ export const getSingleRepProfileDeatilsAPI = async () => {
   }
 };
 
-
-
 export const getTrendsForRevenueBySalesRepIdAPI = async ({
   pageName,
   id,
-  queryParams
+  queryParams,
 }: {
-  pageName: string,
+  pageName: string;
   id: string;
-  queryParams: any
+  queryParams: any;
 }) => {
   try {
     const { success, data } = await $fetch.get(
-      `/${pageName}/${id}/trends/revenue`, queryParams
+      `/${pageName}/${id}/trends/revenue`,
+      queryParams
     );
     if (!success) {
       return handleAPIErrorResponse(data);
@@ -103,11 +113,11 @@ export const getTrendsForRevenueBySalesRepIdAPI = async ({
 export const getTrendsForVolumeBySalesRepIdAPI = async ({
   pageName,
   id,
-  queryParams
+  queryParams,
 }: {
   pageName: string;
   id: string;
-  queryParams: any
+  queryParams: any;
 }) => {
   try {
     const { success, data } = await $fetch.get(
@@ -168,14 +178,17 @@ export const getRevenueDetailsOfFacilitiesBySalesRepIdAPI = async ({
 export const getVolumeInsurancePayorsBySalesRepIdAPI = async ({
   pageName,
   id,
-  queryParams
+  queryParams,
 }: {
-  pageName: string,
+  pageName: string;
   id: string;
   queryParams: any;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors/volume`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/${pageName}/${id}/insurance-payors/volume`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -188,14 +201,17 @@ export const getVolumeInsurancePayorsBySalesRepIdAPI = async ({
 export const getRevenueInsurancePayorsBySalesRepIdAPI = async ({
   pageName,
   id,
-  queryParams
+  queryParams,
 }: {
-  pageName: string,
+  pageName: string;
   id: string;
   queryParams: any;
 }) => {
   try {
-    const { success, data } = await $fetch.get(`/${pageName}/${id}/insurance-payors/revenue`, queryParams);
+    const { success, data } = await $fetch.get(
+      `/${pageName}/${id}/insurance-payors/revenue`,
+      queryParams
+    );
     if (!success) {
       return handleAPIErrorResponse(data);
     }
@@ -224,5 +240,14 @@ export const getDetailsOfTargetsForEverySalesRep = async ({
   }
 };
 
-
-
+export const getAllSalesRepsAPI = async () => {
+  try {
+    const { success, data } = await $fetch.get(`/sales-reps`);
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};

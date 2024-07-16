@@ -1,6 +1,7 @@
 import * as XLSX from "xlsx-color";
 import { formatMonthYear } from "./apiHelpers";
 import datePipe from "../Pipes/datePipe";
+import { momentWithTimezone } from "../Pipes/timeFormat";
 function sortChronological(data: any) {
   const keys = Object.keys(data).filter(
     (key) => Array.isArray(data[key]) && key !== "rowTotal"
@@ -180,7 +181,7 @@ export const exportToExcelCaseTypesVolumes = (
       obj.total_cases,
     ];
   });
-  let headers = ["Sl.No", "Case Type", "Month Targets", "Targets", "Total"];
+  let headers = ["Sl.No", "Case Type", "Month Targets", "Targets", "Received"];
 
   let totalSumSortedValues = [
     "Total",
@@ -240,8 +241,8 @@ export const exportToExcelCaseTypesVolumes = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -260,7 +261,7 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
   const formattedData = caseTypesStatsData.map((obj: any, index: number) => {
     return [index + 1, obj.case_type_name, obj.total_targets, obj.total_cases];
   });
-  let headers = ["Sl.No", "Case Type", "Total Target", "Total"];
+  let headers = ["Sl.No", "Case Type", "Total Target", "Received"];
 
   let totalSumSortedValues = [
     "Total",
@@ -319,8 +320,8 @@ export const exportToExcelCaseTypesVolumesWithoutDayWiseTargets = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -342,7 +343,7 @@ export const exportToExcelCaseTypesVolumesForFacilites = (
       return [index + 1, ...sortedValues];
     })
     .map((array: any) => array.slice(1));
-  let headers = ["Sl.No", "CASE TYPE", "TOTAL", "FINALIZED", "PENDING"];
+  let headers = ["Sl.No", "CASE TYPE", "RECEIVED", "FINALIZED", "PENDING"];
 
   let totalSumSortedValues = [
     "Total",
@@ -401,8 +402,8 @@ export const exportToExcelSalesRepTable = (
       obj.role_id == 1
         ? "Territory Manager"
         : obj.role_id == 2
-          ? "Regional Director"
-          : "Sales Director",
+        ? "Regional Director"
+        : "Sales Director",
       obj.total_facilities || 0,
       obj.active_facilities || 0,
       obj.total_targets || 0,
@@ -418,7 +419,7 @@ export const exportToExcelSalesRepTable = (
     "TOTAL",
     "ACTIVE",
     "TARGET",
-    "TOTAL",
+    "RECEIVED",
     "TARGET REACHED",
   ];
 
@@ -486,8 +487,8 @@ export const exportToExcelSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
       };
@@ -518,8 +519,8 @@ export const exportToExcelTeamSalesRepTable = (
         obj.role_id == 1
           ? "Territory Manager"
           : obj.role_id == 2
-            ? "Regional Director"
-            : "Sales Director",
+          ? "Regional Director"
+          : "Sales Director",
         obj.total_facilities || 0,
         obj.active_facilities || 0,
         obj.total_targets || 0,
@@ -537,8 +538,8 @@ export const exportToExcelTeamSalesRepTable = (
           teamMember.role_id == 1
             ? "Territory Manager"
             : teamMember.role_id == 2
-              ? "Regional Director"
-              : "Sales Director",
+            ? "Regional Director"
+            : "Sales Director",
           teamMember.total_facilities || 0,
           teamMember.active_facilities || 0,
           teamMember.total_targets || 0,
@@ -558,7 +559,7 @@ export const exportToExcelTeamSalesRepTable = (
     "TOTAL",
     "ACTIVE",
     "TARGET",
-    "TOTAL",
+    "RECEIVED",
     "TARGET REACHED",
   ];
 
@@ -666,8 +667,8 @@ export const exportToExcelTeamSalesRepTable = (
               total >= targets
                 ? "f5fff7"
                 : percentCompleted >= 0.5
-                  ? "feecd1"
-                  : "ffebe9",
+                ? "feecd1"
+                : "ffebe9",
           },
         },
         font: {
@@ -699,42 +700,17 @@ export const exportToExcelInsurancesTable = (
       obj.insurance_payor_name,
       obj.no_of_facilities,
       obj.total_cases,
-      obj.generated_amount,
-      obj.paid_amount,
-      obj.pending_amount,
     ];
   });
-  let mainHeaders = ["", "", "", "", "REVENUE", "", ""];
-  let headers = [
-    "S.No",
-    "INSURANCE",
-    "NO.OF FACILITIES",
-    "TOTAL CASES",
-    "BILLED",
-    "RECEIVED",
-    "ARREARS",
-  ];
+  let headers = ["S.No", "INSURANCE", "NO.OF FACILITIES", "RECEIVED"];
 
   const toatalSumValuesRow = totalSumValues.map((obj: any) =>
     obj.value === null ? "" : obj.value
   );
-  let totalData = [
-    ...[mainHeaders],
-    ...[headers],
-    ...formattedData,
-    ...[toatalSumValuesRow],
-  ];
+  let totalData = [...[headers], ...formattedData, ...[toatalSumValuesRow]];
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 1, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
-  }
-  for (let i = 0; i < mainHeaders.length; i++) {
     const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
     worksheet[cellAddress].s = {
       fill: {
@@ -750,56 +726,6 @@ export const exportToExcelInsurancesTable = (
         fgColor: { rgb: "f0edff" },
       },
     };
-  }
-  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
-    const row = totalData[rowIndex];
-
-    if (rowIndex === totalData.length - 1) {
-      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({
-          r: rowIndex,
-          c: columnIndex,
-        });
-        worksheet[cellAddress].s = {
-          fill: {
-            fgColor: { rgb: "f0edff" },
-          },
-        };
-      }
-    } else {
-      const billed = row[4];
-      const received = row[5];
-      const arrears = row[6];
-      const cellAddressBilled = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
-      const cellAddressReceived = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
-      const cellAddressArrears = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
-      const percentCompleted = received / billed / arrears;
-
-      worksheet[cellAddressBilled].s = {
-        font: {
-          color: { rgb: "ff9932" },
-        },
-        fill: {
-          fgColor: { rgb: "f9feff" },
-        },
-      };
-      worksheet[cellAddressReceived].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-        fill: {
-          fgColor: { rgb: "f5fff7" },
-        },
-      };
-      worksheet[cellAddressArrears].s = {
-        font: {
-          color: { rgb: "fe5046" },
-        },
-        fill: {
-          fgColor: { rgb: "fff9f9" },
-        },
-      };
-    }
   }
 
   const workbook = XLSX.utils.book_new();
@@ -817,42 +743,17 @@ export const exportToExcelCaseTypesTable = (
       obj.case_type_name,
       obj.no_of_facilities,
       obj.total_cases,
-      obj.generated_amount,
-      obj.paid_amount,
-      obj.pending_amount,
     ];
   });
-  let mainHeaders = ["", "", "", "", "REVENUE", "", ""];
-  let headers = [
-    "S.No",
-    "CASE TYPES",
-    "NO.OF FACILITIES",
-    "TOTAL CASES",
-    "BILLED",
-    "RECEIVED",
-    "ARREARS",
-  ];
+  let headers = ["S.No", "CASE TYPES", "NO.OF FACILITIES", "RECEIVED"];
 
   const toatalSumValuesRow = totalSumValues.map((obj: any) =>
     obj.value === null ? "" : obj.value
   );
-  let totalData = [
-    ...[mainHeaders],
-    ...[headers],
-    ...formattedData,
-    ...[toatalSumValuesRow],
-  ];
+  let totalData = [...[headers], ...formattedData, ...[toatalSumValuesRow]];
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 1, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
-  }
-  for (let i = 0; i < mainHeaders.length; i++) {
     const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
     worksheet[cellAddress].s = {
       fill: {
@@ -868,56 +769,6 @@ export const exportToExcelCaseTypesTable = (
         fgColor: { rgb: "f0edff" },
       },
     };
-  }
-  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
-    const row = totalData[rowIndex];
-
-    if (rowIndex === totalData.length - 1) {
-      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({
-          r: rowIndex,
-          c: columnIndex,
-        });
-        worksheet[cellAddress].s = {
-          fill: {
-            fgColor: { rgb: "f0edff" },
-          },
-        };
-      }
-    } else {
-      const billed = row[4];
-      const received = row[5];
-      const arrears = row[6];
-      const cellAddressBilled = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
-      const cellAddressReceived = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
-      const cellAddressArrears = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
-      const percentCompleted = received / billed / arrears;
-
-      worksheet[cellAddressBilled].s = {
-        font: {
-          color: { rgb: "ff9932" },
-        },
-        fill: {
-          fgColor: { rgb: "f9feff" },
-        },
-      };
-      worksheet[cellAddressReceived].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-        fill: {
-          fgColor: { rgb: "f5fff7" },
-        },
-      };
-      worksheet[cellAddressArrears].s = {
-        font: {
-          color: { rgb: "fe5046" },
-        },
-        fill: {
-          fgColor: { rgb: "fff9f9" },
-        },
-      };
-    }
   }
 
   const workbook = XLSX.utils.book_new();
@@ -938,7 +789,7 @@ export const exportToExcelInsurancePayorsVolumeTable = (
       obj.pending_cases,
     ];
   });
-  let headers = ["S.No", "INSURANCE NAME", "TOTAL", "FINALIZED", "PENDING"];
+  let headers = ["S.No", "INSURANCE NAME", "RECEIVED", "FINALIZED", "PENDING"];
 
   const toatalSumValuesRow = totalInsurancePayors.map((obj: any) =>
     obj.value === null ? "" : obj.value
@@ -1137,45 +988,15 @@ export const exportToExcelFacilitiesTable = (
   totalSumValue: any
 ) => {
   const formattedData = facilitiesData?.map((obj: any, index: number) => {
-    return [
-      index + 1,
-      obj.facility_name,
-      obj.sales_rep_name,
-      obj.total_cases,
-      obj.generated_amount,
-      obj.paid_amount,
-      obj.pending_amount,
-    ];
+    return [index + 1, obj.facility_name, obj.sales_rep_name, obj.total_cases];
   });
-  let mainHeaders = ["", "", "REVENUE", "", "", "", ""];
-  let headers = [
-    "Sl.no",
-    "FACILITY NAME",
-    "MARKETER NAME",
-    "TOTAL CASES",
-    "BILLED",
-    "RECEIVED",
-    "ARREARS",
-  ];
+  let headers = ["Sl.no", "FACILITY NAME", "MARKETER NAME", "RECEIVED"];
   const totalSumValuesRow = totalSumValue?.map((obj: any) =>
     obj.value == null ? "" : obj.value
   );
-  let totalData = [
-    ...[mainHeaders],
-    ...[headers],
-    ...formattedData,
-    ...[totalSumValuesRow],
-  ];
+  let totalData = [...[headers], ...formattedData, ...[totalSumValuesRow]];
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
   for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 1, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
-  }
-  for (let i = 0; i < mainHeaders.length; i++) {
     const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
     worksheet[cellAddress].s = {
       fill: {
@@ -1191,56 +1012,6 @@ export const exportToExcelFacilitiesTable = (
         fgColor: { rgb: "f0edff" },
       },
     };
-  }
-  for (let rowIndex = 2; rowIndex < totalData.length; rowIndex++) {
-    const row = totalData[rowIndex];
-
-    if (rowIndex === totalData.length - 1) {
-      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({
-          r: rowIndex,
-          c: columnIndex,
-        });
-        worksheet[cellAddress].s = {
-          fill: {
-            fgColor: { rgb: "f0edff" },
-          },
-        };
-      }
-    } else {
-      const billed = row[4];
-      const received = row[5];
-      const arrears = row[6];
-      const cellAddressBilled = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
-      const cellAddressReceived = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
-      const cellAddressArrears = XLSX.utils.encode_cell({ r: rowIndex, c: 6 });
-      const percentCompleted = received / billed / arrears;
-
-      worksheet[cellAddressBilled].s = {
-        font: {
-          color: { rgb: "ff9932" },
-        },
-        fill: {
-          fgColor: { rgb: "f9feff" },
-        },
-      };
-      worksheet[cellAddressReceived].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-        fill: {
-          fgColor: { rgb: "f5fff7" },
-        },
-      };
-      worksheet[cellAddressArrears].s = {
-        font: {
-          color: { rgb: "fe5046" },
-        },
-        fill: {
-          fgColor: { rgb: "fff9f9" },
-        },
-      };
-    }
   }
 
   const workbook = XLSX.utils.book_new();
@@ -1312,30 +1083,18 @@ export const exportToExcelCaseTypeTable = (
 export const exportToExcelSingleCaseTypeFacilitiesTable = (
   facilitiesData: any,
   headerMonths: any,
-  totalSumValues: any
+  totalSumValues: any,
+  searchParams: any,
+  targetsRowData: any
 ) => {
   const formattedData = facilitiesData.map((obj: any, index: number) => {
-    const sortedValues = Object.entries(obj)
-      .filter(
-        ([key, value]) =>
-          key !== "facility_id" &&
-          key !== "facility_name" &&
-          key !== "serial" &&
-          key !== "sales_rep_name" &&
-          key !== "sales_rep_id"
-      )
-      .sort((a, b) => {
-        const monthA = new Date(
-          a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        const monthB = new Date(
-          b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1")
-        ).getTime();
-        return monthA - monthB;
-      })
-      .map(([_, value]: any) => value);
+    const sortedValues = headerMonths.map((month: string) => {
+      const value = obj[month] || 0;
+      return value;
+    });
     return [index + 1, obj.facility_name, obj.sales_rep_name, ...sortedValues];
   });
+
   let formatHeaderMonth = headerMonths?.map((item: any) =>
     formatMonthYear(item)
   );
@@ -1345,38 +1104,90 @@ export const exportToExcelSingleCaseTypeFacilitiesTable = (
     "Marketer Name",
     ...formatHeaderMonth,
   ];
-  const total: any = Object.entries(totalSumValues)
-    .sort((a, b) => {
-      const dateA: any = new Date(a[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      const dateB: any = new Date(b[0].replace(/(^\w+)(\d{4}$)/i, "$2-$1"));
-      return dateA - dateB;
-    })
-    .map(([_, value]: any) => value[0]);
+
+  const total: any = headerMonths.map((month: string) => {
+    const value = totalSumValues[month] ? totalSumValues[month][0] : 0;
+    return value;
+  });
 
   let totalSumSortedValues = ["Total", "", "", ...total];
-  let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
+
+  let totalData = [headers, ...formattedData, totalSumSortedValues];
+
+  if (searchParams?.sales_rep && !searchParams?.search) {
+    const targetsSum: any = headerMonths.map((month: string) => {
+      const value = targetsRowData[month] ? targetsRowData[month][0] : 0;
+      return value;
+    });
+
+    totalData.push(["Total Targets", "", "", ...targetsSum]);
+  }
 
   const worksheet = XLSX.utils.aoa_to_sheet(totalData);
-  for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: 0, c: i });
+
+  const styleCell = (cellAddress: any, fillColor: string) => {
     worksheet[cellAddress].s = {
       fill: {
-        fgColor: { rgb: "f0edff" },
+        fgColor: { rgb: fillColor },
       },
     };
-  }
-  const footerRowIndex = totalData.length - 1;
+  };
+
   for (let i = 0; i < headers.length; i++) {
-    const cellAddress = XLSX.utils.encode_cell({ r: footerRowIndex, c: i });
-    worksheet[cellAddress].s = {
-      fill: {
-        fgColor: { rgb: "f0edff" },
-      },
-    };
+    styleCell(XLSX.utils.encode_cell({ r: 0, c: i }), "f0edff");
+    styleCell(
+      XLSX.utils.encode_cell({ r: totalData.length - 1, c: i }),
+      "f0edff"
+    );
   }
+
+  if (searchParams?.sales_rep && !searchParams?.search) {
+    for (let i = 0; i < headers.length; i++) {
+      styleCell(
+        XLSX.utils.encode_cell({
+          r: totalData.length - 1,
+          c: i,
+        }),
+        "7a8c95"
+      );
+      styleCell(
+        XLSX.utils.encode_cell({
+          r: totalData.length - 2,
+          c: i,
+        }),
+        "f0edff"
+      );
+    }
+    const salesRepFooterRowIndex = totalData.length - 2;
+
+    headerMonths.forEach((month: string, columnIndex: number) => {
+      const targetsValue = targetsRowData[month] ? targetsRowData[month][0] : 0;
+      const totalValue = totalSumValues[month] ? totalSumValues[month][0] : 0;
+
+      let color = "f5fff7";
+
+      if (targetsValue <= totalValue) {
+        color = "f5fff7";
+      } else {
+        const percentage = totalValue / targetsValue;
+        if (percentage >= 0.5) {
+          color = "feecd1";
+        } else {
+          color = "ffebe9";
+        }
+      }
+      const cellAddress = XLSX.utils.encode_cell({
+        r: salesRepFooterRowIndex,
+        c: columnIndex + 3,
+      });
+
+      styleCell(cellAddress, color);
+    });
+  }
+
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-  XLSX.writeFile(workbook, "case-types-month-volume.xlsx");
+  XLSX.writeFile(workbook, "single-case-type-month-volume.xlsx");
 };
 
 export const exportToExcelMonthWiseCaseTypeFacilities = (
@@ -1536,26 +1347,10 @@ export const exportToExcelInsuranceCaseTypeTable = (
       obj.case_type_name,
       obj.total_cases,
       obj.completed_cases,
-      obj.generated_amount,
-      obj.expected_amount,
-      obj.paid_amount,
       obj.pending_cases,
-      obj.pending_amount,
-      obj.paid_amount + "/" + obj.expected_amount,
     ];
   });
-  let headers = [
-    "S.No",
-    "CASE TYPE",
-    "VOLUME",
-    "CLEARED VOL",
-    "BILLED",
-    "EXPECTED",
-    "CLEARED BILL",
-    "PEN VOL",
-    "PENDING REV",
-    "PAID PRICE/TARGET PRICE",
-  ];
+  let headers = ["S.No", "CASE TYPE", "VOLUME", "CLEARED VOL", "PEN VOL"];
 
   const toatalSumValuesRow = totalInsurancePayors.map((obj: any) =>
     obj.value === null ? "" : obj.value
@@ -1580,40 +1375,6 @@ export const exportToExcelInsuranceCaseTypeTable = (
       },
     };
   }
-  for (let rowIndex = 1; rowIndex < totalData.length; rowIndex++) {
-    const row = totalData[rowIndex];
-
-    if (rowIndex === totalData.length - 1) {
-      for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({
-          r: rowIndex,
-          c: columnIndex,
-        });
-        worksheet[cellAddress].s = {
-          fill: {
-            fgColor: { rgb: "f0edff" },
-          },
-        };
-      }
-    } else {
-      const expected = row[4];
-      const cleared = row[5];
-      const cellAddressExpected = XLSX.utils.encode_cell({ r: rowIndex, c: 4 });
-      const cellAddressCleared = XLSX.utils.encode_cell({ r: rowIndex, c: 5 });
-      const percentCompleted = cleared / expected;
-
-      worksheet[cellAddressExpected].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-      };
-      worksheet[cellAddressCleared].s = {
-        font: {
-          color: { rgb: "36c24d" },
-        },
-      };
-    }
-  }
 
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -1628,7 +1389,7 @@ export const exportPatientResultsTable = (patientResultsData: any) => {
       "Result Code",
       "Ref Range & Units",
       ...patientResultsData[title].map((result: any) =>
-        datePipe(result.date, "MM-DD-YYYY")
+        momentWithTimezone(result.date)
       ),
     ];
     formattedData.push(headers);
@@ -1636,9 +1397,12 @@ export const exportPatientResultsTable = (patientResultsData: any) => {
     testResults.forEach((test: any, testIndex: any) => {
       const row = [
         test.result_name,
-        test.reference_range,
+        test.reference_range + " " + test.units,
         ...patientResultsData[title].map(
-          (result: any) => result.results[testIndex]?.result || ""
+          (result: any) =>
+            result.results?.find(
+              (ite: any) => ite.result_name == test.result_name
+            )?.result || 0
         ),
       ];
       formattedData.push(row);

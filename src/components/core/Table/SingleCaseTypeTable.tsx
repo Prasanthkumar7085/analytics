@@ -13,6 +13,8 @@ import { FC, useEffect, useState } from "react";
 import GraphDialogForFacilities from "../GraphDilogForFacilities";
 import AreaGraphForFacilities from "../AreaGraph/AreaGraphForFacilities";
 import { getAcesdingOrderMonthsForGraphs } from "@/lib/helpers/apiHelpers";
+import AreaGraph from "../AreaGraph";
+import GraphDialog from "../GraphDialog";
 
 interface pageProps {
   columns: any[];
@@ -21,6 +23,7 @@ interface pageProps {
   loading: boolean;
   headerMonths: any;
   getData: any;
+  targetsRowData: any;
 }
 const SingleCaseTypeTable: FC<pageProps> = ({
   columns,
@@ -29,6 +32,7 @@ const SingleCaseTypeTable: FC<pageProps> = ({
   loading,
   headerMonths,
   getData,
+  targetsRowData,
 }) => {
   const pathName = usePathname();
   const [graphDialogOpen, setGraphDialogOpen] = useState<boolean>(false);
@@ -54,6 +58,7 @@ const SingleCaseTypeTable: FC<pageProps> = ({
   });
 
   const useParams = useSearchParams();
+  const [showTargetsDialog, setShowTargetsDialog] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(useParams.entries())))
   );
@@ -139,7 +144,37 @@ const SingleCaseTypeTable: FC<pageProps> = ({
     const width = widthObj?.width;
     return width;
   };
+  const getBackgroundColor = (totalCases: any, targetVolume: any) => {
+    if (targetVolume === 0) {
+      if (totalCases === 0) {
+        return "success-cell";
+      } else if (totalCases >= targetVolume) {
+        return "success-cell";
+      } else {
+        return "not-reached ";
+      }
+    }
 
+    const percentage = totalCases / targetVolume;
+    if (totalCases >= targetVolume) {
+      return "success-cell";
+    } else if (percentage >= 0.5) {
+      return "medium-success";
+    } else {
+      return "not-reached ";
+    }
+  };
+
+  const addExcludedMonth = (data: any) => {
+    let months = [...headerMonths];
+
+    months.forEach((month) => {
+      if (!(month in data)) {
+        data[month] = 0;
+      }
+    });
+    return data;
+  };
   return (
     <div
       style={{ width: "100%", overflowX: "auto" }}
@@ -270,11 +305,25 @@ const SingleCaseTypeTable: FC<pageProps> = ({
             <td className="cell"></td>
             {headerMonths?.map((item: any, index: number) => {
               return (
-                <td key={index} className="cell" style={{ cursor: "pointer" }}>
-                  {totalSumValues[item]?.[0]?.toLocaleString()}
+                <td
+                  className={
+                    useParams?.get("sales_rep") && !useParams?.get("search")
+                      ? getBackgroundColor(
+                          +totalSumValues[item]?.[0] || 0,
+                          +targetsRowData?.[item]?.[0] || 0
+                        )
+                      : ""
+                  }
+                  key={index}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                >
+                  {totalSumValues[item]?.[0]?.toLocaleString() || 0}
                 </td>
               );
             })}
+
             <td
               className="cell"
               onClick={() => setGraphDialogOpen(true)}
@@ -290,16 +339,75 @@ const SingleCaseTypeTable: FC<pageProps> = ({
               )}
             </td>
           </tr>
+          {useParams?.get("sales_rep") && !useParams?.get("search") ? (
+            <tr
+              className="table-row active-facilities-row"
+              style={{
+                fontSize: "clamp(12px, 0.62vw, 14px)",
+                border: "1px solid #a5a5a5",
+                fontWeight: "600",
+                color: "#1B2459",
+                background: "#90EE90",
+              }}
+            >
+              <td className="cell">Total Targets</td>
+              <td className="cell"></td>
+              <td className="cell"></td>
+              {headerMonths?.map((item: any, index: number) => {
+                return (
+                  <td
+                    className="cell"
+                    style={{ cursor: "pointer" }}
+                    key={index}
+                  >
+                    {targetsRowData?.[item]?.[0]?.toLocaleString()}
+                  </td>
+                );
+              })}
+              <td
+                className="cell"
+                onClick={() => setShowTargetsDialog(true)}
+                style={{ cursor: "pointer" }}
+              >
+                {headerMonths?.length ? (
+                  <AreaGraph
+                    data={getAcesdingOrderMonthsForGraphs(targetsRowData)}
+                    graphColor={"blue"}
+                  />
+                ) : (
+                  ""
+                )}
+              </td>
+            </tr>
+          ) : (
+            ""
+          )}
         </tfoot>
       </table>
-      <GraphDialogForFacilities
-        graphDialogOpen={graphDialogOpen}
-        setGraphDialogOpen={setGraphDialogOpen}
-        graphData={totalSumValues}
-        graphValuesData={totalSumValues}
-        graphColor={"blue"}
-        tabValue={"volume"}
-      />
+
+      {showTargetsDialog ? (
+        <GraphDialogForFacilities
+          graphDialogOpen={showTargetsDialog}
+          setGraphDialogOpen={setShowTargetsDialog}
+          graphData={getAcesdingOrderMonthsForGraphs(targetsRowData)}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(targetsRowData)}
+          graphColor={"blue"}
+          tabValue={"Targets"}
+        />
+      ) : (
+        <GraphDialogForFacilities
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={getAcesdingOrderMonthsForGraphs(
+            addExcludedMonth(totalSumValues)
+          )}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(
+            addExcludedMonth(totalSumValues)
+          )}
+          graphColor={"blue"}
+          tabValue={"volume"}
+        />
+      )}
     </div>
   );
 };

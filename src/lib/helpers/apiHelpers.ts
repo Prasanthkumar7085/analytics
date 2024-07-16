@@ -90,7 +90,7 @@ export const getUniqueMonthsForAutoCompleted = (data: any) => {
   return uniqueMonths;
 };
 export const getAcesdingOrderMonthsForGraphs = (monthArray: any) => {
-  const monthArrayKeys = Object.keys(monthArray);
+  const monthArrayKeys = Object?.keys(monthArray);
   monthArrayKeys.sort((a, b) => {
     const [monthA, yearA] = a.split(/(\d+)/).filter(Boolean);
     const [monthB, yearB] = b.split(/(\d+)/).filter(Boolean);

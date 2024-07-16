@@ -75,7 +75,7 @@ export const VolumecolumnsWithDayWiseTargets = (
         </span>
       ),
       sortDescFirst: false,
-      header: () => <span className={styles.tableHeading}>TOTAL</span>,
+      header: () => <span className={styles.tableHeading}>RECEIVED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -137,7 +137,7 @@ export const VolumecolumnsTargets = (searchParams: any, router: any) => {
         </span>
       ),
       sortDescFirst: false,
-      header: () => <span className={styles.tableHeading}>TOTAL</span>,
+      header: () => <span className={styles.tableHeading}>RECEIVED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },
@@ -185,7 +185,7 @@ export const VolumecolumnsForFacilities = (searchParams: any, router: any) => {
         </span>
       ),
       sortDescFirst: false,
-      header: () => <span className={styles.tableHeading}>TOTAL</span>,
+      header: () => <span className={styles.tableHeading}>RECEIVED</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
     },

@@ -77,10 +77,10 @@ const GraphDialog = ({
           return (
             month +
             "<br>" +
-            "Total Cases: <b>" +
+            "Received: <b>" +
             totalCases +
             "</b><br>" +
-            "Total Target: <b>" +
+            "Target: <b>" +
             totalTargets +
             "</b>"
           );
@@ -97,7 +97,7 @@ const GraphDialog = ({
     },
     series: [
       {
-        name: "Total Target",
+        name: "Target",
         data: Object?.values(graphValuesData)?.length
           ? Object.values(graphValuesData).map((item: any) => item[1])
           : [],
@@ -105,7 +105,7 @@ const GraphDialog = ({
         zIndex: 9999,
       },
       {
-        name: "Total cases",
+        name: "Received",
         data: Object?.values(graphValuesData)?.length
           ? Object.values(graphValuesData).map((item: any) => item[0])
           : [],

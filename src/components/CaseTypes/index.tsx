@@ -187,18 +187,6 @@ const CaseTypes = () => {
       0
     );
 
-    const billedAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.generated_amount,
-      0
-    );
-    const paidRevenueSum = data.reduce(
-      (sum: any, item: any) => sum + +item.paid_amount,
-      0
-    );
-    const pendingAmoumnt = data.reduce(
-      (sum: any, item: any) => sum + +item.pending_amount,
-      0
-    );
     const totalFacilitesSum = data.reduce(
       (sum: any, item: any) => sum + +item.no_of_facilities,
       0
@@ -209,9 +197,6 @@ const CaseTypes = () => {
       { value: null, dolorSymbol: false },
       { value: totalFacilitesSum, dolorSymbol: false },
       { value: totalCases, dolorSymbol: false },
-      { value: billedAmoumnt, dolorSymbol: true },
-      { value: paidRevenueSum, dolorSymbol: true },
-      { value: pendingAmoumnt, dolorSymbol: true },
     ];
     setTotalCaseTypeSum(result);
   };
@@ -270,7 +255,7 @@ const CaseTypes = () => {
     {
       accessorFn: (row: any) => row.total_cases,
       id: "total_cases",
-      header: () => <span style={{ whiteSpace: "nowrap" }}>TOTAL CASES</span>,
+      header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
       footer: (props: any) => props.column.id,
       width: "200px",
       maxWidth: "200px",
@@ -278,47 +263,6 @@ const CaseTypes = () => {
       cell: ({ getValue }: any) => {
         return <span>{getValue()?.toLocaleString()}</span>;
       },
-    },
-    {
-      accessorFn: (row: any) => row._id,
-      header: () => <span style={{ whiteSpace: "nowrap" }}>REVENUE</span>,
-      id: "revenue",
-      width: "800px",
-      columns: [
-        {
-          accessorFn: (row: any) => row.generated_amount,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>BILLED</span>,
-          id: "generated_amount",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: ({ getValue }: any) => {
-            return <span>{formatMoney(getValue())}</span>;
-          },
-        },
-        {
-          accessorFn: (row: any) => row.paid_amount,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>RECEIVED</span>,
-          id: "paid_amount",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: ({ getValue }: any) => {
-            return <span>{formatMoney(getValue())}</span>;
-          },
-        },
-        {
-          accessorFn: (row: any) => row.pending_amount,
-          header: () => <span style={{ whiteSpace: "nowrap" }}>ARREARS</span>,
-          id: "pending_amount",
-          width: "200px",
-          maxWidth: "200px",
-          minWidth: "200px",
-          cell: ({ getValue }: any) => {
-            return <span>{formatMoney(getValue())}</span>;
-          },
-        },
-      ],
     },
   ];
 

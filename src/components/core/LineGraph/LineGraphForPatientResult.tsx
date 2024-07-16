@@ -1,4 +1,5 @@
 import datePipe from "@/lib/Pipes/datePipe";
+import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, IconButton } from "@mui/material";
 import Highcharts from "highcharts";
@@ -13,9 +14,8 @@ const LineGraphForPatientResult = ({
     tabValue,
     patientsData
 }: any) => {
-    const date = patientsData[0]?.final_results?.map((item: any) => item?.date);
-    const formattedDates = date?.map((item: any) => datePipe(item, 'MM/DD/YYYY'));
-
+    const filterData = graphValuesData?.filter((item: any) => item?.result !== "-");
+    const formattedDates = filterData?.map((item: any) => momentWithTimezone(item?.date));
 
     const options = {
         title: {
@@ -62,8 +62,8 @@ const LineGraphForPatientResult = ({
         series: [
             {
                 name: "Results",
-                data: graphValuesData?.length
-                    ? graphValuesData?.map((item: any) => item)
+                data: filterData?.length
+                    ? filterData?.map((item: any) => item.result)
                     : [],
                 type: "line",
                 zIndex: 9999,

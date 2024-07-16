@@ -1,13 +1,12 @@
 "use client";
 import { Button, TextField } from "@mui/material";
-import Container from "@mui/material/Container";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from 'react';
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import datePipe from "@/lib/Pipes/datePipe";
 import SingleColumnTable from "../core/Table/SingleColumn/SingleColumnTable";
-import { useEffect } from 'react';
 
 const PatientDetails = ({
   getDetails,
@@ -17,7 +16,8 @@ const PatientDetails = ({
   setLastName,
   lastName,
   setDateOfBirth,
-  dateOfBirth
+  dateOfBirth,
+  loading
 }: any) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -195,15 +195,17 @@ const PatientDetails = ({
             />
 
           ) : (
-            <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
-              <Image
-                src="/Search Image.svg"
-                alt=""
-                height={210}
-                width={410}
-              />
-              <h3 className="no-data-text">No Data</h3>
-            </div>
+            !loading ? (
+              <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
+                <Image
+                  src="/Search Image.svg"
+                  alt=""
+                  height={210}
+                  width={410}
+                />
+                <h3 className="no-data-text">No Data</h3>
+              </div>
+            ) : ""
           )}
         </div>
       </div>

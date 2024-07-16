@@ -2,32 +2,24 @@
 import {
   averageUptoDateTargets,
   getDatesForStatsCards,
-  getThisMonthDates,
   rearrangeDataWithCasetypes,
 } from "@/lib/helpers/apiHelpers";
-import {
-  getDashboardCaseTypesRevenueStatsAPI,
-  getDashboardCaseTypesVolumeStatsAPI,
-} from "@/services/caseTypesAPIs";
-import {
-  getRevenueStatsDetailsAPI,
-  getVolumeStatsDetailsAPI,
-} from "@/services/statsAPI";
+import { getDashboardCaseTypesVolumeStatsAPI } from "@/services/caseTypesAPIs";
+import { getVolumeStatsDetailsAPI } from "@/services/statsAPI";
 import Grid from "@mui/material/Grid";
+import dayjs from "dayjs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   addMonths,
   endOfMonth,
   startOfMonth,
 } from "rsuite/esm/internals/utils/date";
+import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
 import CaseType from "./CaseType";
 import RevenueBlock from "./RevenueAndVolume";
 import SalesRep from "./SalesRep";
 import Stats from "./Stats";
-import dayjs from "dayjs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import { useSelector } from "react-redux";
 const DashboardPage = () => {
   const router = useRouter();
   const pathname = usePathname();

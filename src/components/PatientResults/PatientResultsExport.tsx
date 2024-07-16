@@ -1,7 +1,7 @@
-import datePipe from "@/lib/Pipes/datePipe";
 import { Container } from "@mui/material";
 import Image from "next/image";
-import LineGraphForResults from "../core/LineGraph/LineGraphForResults";
+import datePipe from "@/lib/Pipes/datePipe";
+import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
 
 const PatientResultsExport = ({
     patientResultsData,
@@ -33,7 +33,7 @@ const PatientResultsExport = ({
                                                 {patientResultsData[title]?.map(
                                                     (result: any, resultIndex: any) => (
                                                         <th style={{ minWidth: "100px" }} key={resultIndex}>
-                                                            {datePipe(result?.date, "MM-DD-YYYY")}
+                                                            {momentWithTimezone(result?.date)}
                                                         </th>
                                                     )
                                                 )}
@@ -48,7 +48,7 @@ const PatientResultsExport = ({
                                                         {patientResultsData[title].map(
                                                             (result: any, resultIndex: any) => (
                                                                 <td key={resultIndex}>
-                                                                    {result.results[testIndex]?.result}
+                                                                    {result.results?.find((ite: any) => ite.result_name == test.result_name)?.result}
                                                                 </td>
                                                             )
                                                         )}

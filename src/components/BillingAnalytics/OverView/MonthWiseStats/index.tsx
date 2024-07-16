@@ -19,11 +19,16 @@ import {
   getMonthWiseBilledCaseTypesDataAPI,
   getMonthWiseRevenueCaseTypesDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
-import { Backdrop } from "@mui/material";
+import { Backdrop, Button } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { groupAllBilledAndRevenueColumns } from "./MonthWiseCaseTypesStatsColumns";
 import GraphDialogForBillingAndReveune from "@/components/core/GraphDialogForBillingAndRevenue";
+import ExportButton from "@/components/core/ExportButton/ExportButton";
+import {
+  exportToExcelBillingMonthWiseCaseTypeData,
+  exportToExcelRevenueMonthWiseCaseTypeData,
+} from "@/lib/helpers/billingExportHelpers";
 
 const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
   const { id } = useParams();
@@ -178,6 +183,24 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
 
   return (
     <div id="mothWiseCaseTypeData">
+      <ExportButton
+        onClick={() => {
+          if (searchParams?.tab == "billed") {
+            exportToExcelBillingMonthWiseCaseTypeData(
+              monthWiseCaseData,
+              headerMonths,
+              totalSumValues
+            );
+          } else {
+            exportToExcelRevenueMonthWiseCaseTypeData(
+              monthWiseCaseData,
+              headerMonths,
+              totalSumValues
+            );
+          }
+        }}
+        disabled={monthWiseCaseData?.length == 0 ? true : false}
+      />
       <div style={{ position: "relative" }}>
         <div
           style={{
@@ -203,7 +226,6 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
           tabValue={searchParams?.tab}
           rowTotalSum={rowTotalSum}
         />
-
         {loading ? (
           <Backdrop
             open={true}

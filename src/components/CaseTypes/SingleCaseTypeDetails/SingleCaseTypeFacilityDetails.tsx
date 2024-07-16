@@ -2,7 +2,10 @@ import AreaGraphForFacilities from "@/components/core/AreaGraph/AreaGraphForFaci
 import GraphDialogForFacilities from "@/components/core/GraphDilogForFacilities";
 import SingleCaseTypeTable from "@/components/core/Table/SingleCaseTypeTable";
 import { colorCodes } from "@/lib/constants";
-import { formatMonthYear } from "@/lib/helpers/apiHelpers";
+import {
+  formatMonthYear,
+  getAcesdingOrderMonthsForGraphs,
+} from "@/lib/helpers/apiHelpers";
 import { Backdrop } from "@mui/material";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,6 +22,7 @@ const SingleCaseTypeFacilitiesTable = ({
   groupDatasumValue,
   setCaseTypeFacilityDetails,
   onUpdateData,
+  targetsRowData,
 }: any) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -39,8 +43,19 @@ const SingleCaseTypeFacilitiesTable = ({
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
-    cell: (info: any) => <span>{info.getValue()?.toLocaleString()}</span>,
+    cell: (info: any) => <span>{info.getValue()?.toLocaleString() || 0}</span>,
   }));
+
+  const addExcludedMonth = (data: any) => {
+    let months = [...headerMonths];
+
+    months.forEach((month) => {
+      if (!(month in data)) {
+        data[month] = 0;
+      }
+    });
+    return data;
+  };
 
   const graphColoumn = [
     {
@@ -53,11 +68,13 @@ const SingleCaseTypeFacilitiesTable = ({
 
       cell: (info: any) => {
         let data = { ...info.row.original };
+        data = addExcludedMonth(data);
         delete data?.facility_id;
         delete data?.facility_name;
         delete data?.serial;
         delete data?.sales_rep_name;
         delete data?.sales_rep_id;
+        delete data?.total_targets;
         return (
           <div
             style={{ cursor: "pointer" }}
@@ -69,7 +86,7 @@ const SingleCaseTypeFacilitiesTable = ({
             }}
           >
             <AreaGraphForFacilities
-              data={data}
+              data={getAcesdingOrderMonthsForGraphs(data)}
               graphColor={colorCodes[info.row.original.serial]}
             />
           </div>
@@ -83,6 +100,7 @@ const SingleCaseTypeFacilitiesTable = ({
     ...addtionalcolumns,
     ...graphColoumn,
   ];
+
   return (
     <div style={{ position: "relative" }}>
       <SingleCaseTypeTable
@@ -92,6 +110,7 @@ const SingleCaseTypeFacilitiesTable = ({
         loading={loading}
         headerMonths={headerMonths}
         getData={onUpdateData}
+        targetsRowData={targetsRowData}
       />
 
       <LoadingComponent loading={loading} />
@@ -99,7 +118,7 @@ const SingleCaseTypeFacilitiesTable = ({
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={selectedGrpahData}
-        graphValuesData={graphValuesData}
+        graphValuesData={getAcesdingOrderMonthsForGraphs(graphValuesData)}
         graphColor={graphColor}
         tabValue={"volume"}
       />

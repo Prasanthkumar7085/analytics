@@ -924,8 +924,19 @@ table {
     }
 
     tfoot {
+      .success-cell {
+        background: #f5fff7 !important;
+      }
+      .medium-success {
+        background: #feecd1 !important;
+      }
+
+      .not-reached {
+        background: #ffebe9 !important;
+      }
+
       td {
-        background: #eff1fa !important;
+        background: #eff1fa !important ;
       }
     }
 
@@ -1159,23 +1170,6 @@ $actionButtonWidth: 95px;
   $totalFacilitiesWidth: 140px;
 
   table {
-    tr {
-      th,
-      td {
-        &:nth-child(3) {
-          width: $totalFacilitiesWidth !important;
-          min-width: $totalFacilitiesWidth !important;
-          max-width: $totalFacilitiesWidth !important;
-        }
-
-        &:nth-child(4) {
-          width: $totalCasesWidth !important;
-          min-width: $totalCasesWidth !important;
-          max-width: $totalCasesWidth !important;
-        }
-      }
-    }
-
     tfoot {
       td {
         &:nth-last-child(-n + 2) {
@@ -1607,11 +1601,6 @@ input:-webkit-autofill {
 
     input {
       min-width: 180px;
-    }
-
-    button {
-      color: #fff !important;
-      height: 35px;
     }
   }
 
