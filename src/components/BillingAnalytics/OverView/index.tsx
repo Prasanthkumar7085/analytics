@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { FC, useEffect, useState } from "react";
 import BillingStatsCards from "./BillingStatsCard";
 import BillingOverViewCaseTypes from "./BillingCaseTypes";
@@ -171,7 +171,7 @@ const BillingOverView = () => {
 
   //api call to get stats count
   useEffect(() => {
-    if (Object?.keys(dashBoardQueryParams)?.length !== 0) {
+    if (Object?.keys(searchParams)?.length !== 0) {
       queryPreparations(
         params?.get("from_date"),
         params?.get("to_date"),
@@ -180,13 +180,13 @@ const BillingOverView = () => {
     } else {
       callCaseTypesStatsCounts();
     }
-  }, [params?.get("tab")]);
+  }, [searchParams]);
 
-  // useEffect(() => {
-  //   setSearchParams(
-  //     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
-  //   );
-  // }, [params]);
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
   return (
     <>
       <Grid container spacing={2} className="mb-5">
@@ -211,16 +211,27 @@ const BillingOverView = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <MonthWiseCaseTypesStats
-            searchParams={dashBoardQueryParams}
-            pathName={"overview"}
-          />
+          <Typography variant="caption">MonthWise</Typography>
+
+          {Object.keys(searchParams)?.length ? (
+            <MonthWiseCaseTypesStats
+              searchParams={searchParams}
+              pathName={"overview"}
+            />
+          ) : (
+            ""
+          )}
         </Grid>
         <Grid item xs={12}>
-          <MonthWiseTrendsGraph
-            searchParams={dashBoardQueryParams}
-            pathName={"overview"}
-          />
+          <Typography variant="caption">Trend</Typography>
+          {Object.keys(searchParams)?.length ? (
+            <MonthWiseTrendsGraph
+              searchParams={searchParams}
+              pathName={"overview"}
+            />
+          ) : (
+            ""
+          )}
         </Grid>
       </Grid>
     </>

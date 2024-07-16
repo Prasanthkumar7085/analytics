@@ -10,6 +10,10 @@ import formatMoney from "@/lib/Pipes/moneyFormat";
 import { graphColors } from "@/lib/constants";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import {
+  exportToExcelBilledCaseTypesStatsData,
+  exportToExcelRevenueCaseTypesStatsData,
+} from "@/lib/helpers/billingExportHelpers";
+import {
   exportToExcelCaseTypesVolumes,
   exportToExcelCaseTypesVolumesWithoutDayWiseTargets,
 } from "@/lib/helpers/exportsHelpers";
@@ -166,17 +170,19 @@ const BillingOverViewCaseTypes = ({
           >
             <ExportButton
               onClick={() => {
-                exportToExcelCaseTypesVolumesWithoutDayWiseTargets(
-                  caseTypesWiseStatsData,
-                  totalRevenueSum
-                );
+                if (params?.get("tab") == "billed") {
+                  exportToExcelBilledCaseTypesStatsData(
+                    caseTypesWiseStatsData,
+                    totalRevenueSum
+                  );
+                } else {
+                  exportToExcelRevenueCaseTypesStatsData(
+                    caseTypesWiseStatsData,
+                    totalRevenueSum
+                  );
+                }
               }}
-              disabled={
-                caseTypesWiseStatsData?.length === 0 ||
-                params?.get("tab") == "revenue"
-                  ? true
-                  : false
-              }
+              disabled={caseTypesWiseStatsData?.length == 0 ? true : false}
             />
           </div>
         </div>

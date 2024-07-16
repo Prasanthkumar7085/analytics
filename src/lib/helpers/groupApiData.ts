@@ -18,8 +18,8 @@ export const groupDataWithMonthWise = (
       const { month } = monthItem;
       const formattedMonth = month.replace(/\s/g, "");
       groupedData[case_type_id][formattedMonth] = [
-        monthItem?.[key1],
-        monthItem?.[key2],
+        monthItem?.[key1] ? monthItem?.[key1] : 0,
+        monthItem?.[key2] ? monthItem?.[key2] : 0,
       ];
     });
   });

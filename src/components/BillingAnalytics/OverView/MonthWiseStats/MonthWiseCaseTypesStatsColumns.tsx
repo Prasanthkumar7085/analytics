@@ -187,7 +187,7 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
     width: "80px",
     maxWidth: "220px",
     minWidth: "220px",
-    sortDescFirst: false,
+    sortDescFirst: true,
     sortingFn: (rowA: any, rowB: any, columnId: any) => {
       const rowDataA = rowA.original[columnId];
       const rowDataB = rowB.original[columnId];
@@ -195,11 +195,11 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
       const valueA = rowDataA[0] || 0;
       const valueB = rowDataB[0] || 0;
 
-      return valueA - valueB;
+      return valueB - valueA;
     },
     columns: [
       {
-        accessorFn: (row: any) => row?.[item][0],
+        accessorFn: (row: any) => row?.[item],
         header: () => <span style={{ whiteSpace: "nowrap" }}>Target</span>,
         id: item[0],
         width: "300px",
@@ -210,7 +210,7 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
         },
       },
       {
-        accessorFn: (row: any) => row?.[item][1],
+        accessorFn: (row: any) => row?.[item],
         header: () => <span style={{ whiteSpace: "nowrap" }}>Received</span>,
         id: item[1],
         width: "300px",
