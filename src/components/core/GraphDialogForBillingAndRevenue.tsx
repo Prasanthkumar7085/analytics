@@ -37,7 +37,7 @@ const GraphDialogForBillingAndReveune = ({
 
   let revenueSeries = [
     {
-      name: "Targets",
+      name: "Target",
       data: Object?.values(graphValuesData)?.length
         ? Object.values(graphValuesData).map((item: any) => item[0])
         : [],

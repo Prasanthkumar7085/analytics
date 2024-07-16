@@ -4,7 +4,7 @@ import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { getSingleInsurancesDetailsAPI } from "@/services/insurancesAPI";
 import { ArrowBack } from "@mui/icons-material";
-import { Avatar, Grid } from "@mui/material";
+import { Avatar, Grid, Typography } from "@mui/material";
 import {
   useParams,
   usePathname,
@@ -141,12 +141,15 @@ const SingleInsuranceBillingAndRevenueDetails = () => {
 
         <Grid container spacing={2} className="mb-5">
           <Grid item xs={12}>
+            <Typography variant="caption">Case Type wise</Typography>
+
             <MonthWiseCaseTypesStats
               searchParams={searchParams}
               pathName={"insurance"}
             />
           </Grid>
           <Grid item xs={12}>
+            <Typography variant="caption">Trend</Typography>
             <MonthWiseTrendsGraph
               searchParams={searchParams}
               pathName={"insurance"}
