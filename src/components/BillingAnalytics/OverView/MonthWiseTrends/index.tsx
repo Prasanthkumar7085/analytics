@@ -143,7 +143,7 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
       color: "blue",
     },
     {
-      name: "Revenue",
+      name: "Received",
       data: Object?.values(graphData)?.length
         ? Object.values(graphData).map((item: any) => item[1])
         : [],

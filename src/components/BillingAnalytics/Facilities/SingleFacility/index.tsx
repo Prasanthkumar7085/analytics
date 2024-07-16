@@ -44,6 +44,8 @@ const SingleFacilityBillingAndRevenueDetails = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
+  const [caseTypeLoading, setCaseTypeLoading] = useState<boolean>(false);
+
   //prepare query params
   const queryPreparations = async (
     fromDate: any,
@@ -126,6 +128,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
   };
 
   const getcaseTyeWiseBillingStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
     try {
       const response = await getFacilitycaseTyeWiseBillingStatsAPI(
         queryParams,
@@ -138,11 +141,13 @@ const SingleFacilityBillingAndRevenueDetails = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      setCaseTypeLoading(false);
     }
   };
 
   const getcaseTyeWiseRevenueStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
+
     try {
       const response = await getFacilitycaseTyeWiseRevenueStatsAPI(
         queryParams,
@@ -155,7 +160,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      setCaseTypeLoading(false);
     }
   };
 
@@ -275,7 +280,7 @@ const SingleFacilityBillingAndRevenueDetails = () => {
           <Grid item xs={8}>
             <BillingOverViewCaseTypes
               caseTypesWiseStatsData={caseTypesWiseStatsData}
-              loading={loading}
+              loading={caseTypeLoading}
               totalRevenueSum={totalSumValues}
               queryPreparations={queryPreparations}
               dateFilterDefaultValue={dateFilterDefaultValue}

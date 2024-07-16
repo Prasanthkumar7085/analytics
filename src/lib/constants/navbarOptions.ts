@@ -2,7 +2,7 @@ export const BillingNavBarOptions = [
   { title: "Overview", link: "billing/dashboard" },
   { title: "Facilities", link: "billing/facilities" },
   { title: "Insurance", link: "billing/insurances" },
-  { title: "Upload", link: "billing/upload-file" },
+  { title: "Upload", link: "billing/upload-file?tab=billed" },
   { title: "Test Kits", link: "billing/test-kits" },
   { title: "Facility Expense", link: "billing/facility-expense" },
   { title: "Sample Collector Timesheet", link: "billing/sample-collector" },

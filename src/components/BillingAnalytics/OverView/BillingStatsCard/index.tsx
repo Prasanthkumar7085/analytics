@@ -145,7 +145,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                 <div className={styles.row}>
                   <div className={styles.billed}>
                     <div className={styles.header}>
-                      <label className={styles.lable}>Targeted Revenue</label>
+                      <label className={styles.lable}>Revenue Target</label>
                     </div>
                     <h2 className={styles.totalvalue}>
                       {loading ? (
@@ -170,7 +170,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
 
                   <div className={styles.billed}>
                     <div className={styles.header}>
-                      <label className={styles.lable}>Total Revenue</label>
+                      <label className={styles.lable}>Revenue Received</label>
                     </div>
                     <h2 className={styles.totalvalue}>
                       {loading ? (

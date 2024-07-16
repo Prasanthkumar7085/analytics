@@ -143,9 +143,9 @@ const BillingOverViewCaseTypes = ({
     <div style={{ position: "relative" }}>
       <div className="eachDataCard" id="CaseTypesGraphsData">
         <div className="cardHeader">
-          <h3>
+          <h3 style={{ textTransform: "capitalize" }}>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Case Types {params?.get("tab")}
+            Case Types {params?.get("tab")?.toLowerCase()}
           </h3>
           {pathName?.includes("facilities") ? (
             ""

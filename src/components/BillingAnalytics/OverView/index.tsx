@@ -37,7 +37,7 @@ const BillingOverView = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [selectedTabValue, setSelectedTabValue] = useState<any>("billed");
   const [tabValue, setTabValue] = useState<any>();
-  const [caseTypeLoading, setCaseTypeLoading] = useState<boolean>(true);
+  const [caseTypeLoading, setCaseTypeLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -176,14 +176,14 @@ const BillingOverView = () => {
   useEffect(() => {
     if (Object?.keys(searchParams)?.length !== 0) {
       queryPreparations(
-        searchParams?.from_date,
-        searchParams?.to_date,
-        searchParams?.tab
+        params?.get("from_date"),
+        params?.get("to_date"),
+        params?.get("tab")
       );
     } else {
       callCaseTypesStatsCounts();
     }
-  }, [searchParams]);
+  }, [params?.get("tab")]);
 
   useEffect(() => {
     if (searchParams?.from_date) {
@@ -222,7 +222,7 @@ const BillingOverView = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="caption">MonthWise</Typography>
+          <Typography variant="caption">Month-wise</Typography>
 
           {Object.keys(searchParams)?.length ? (
             <MonthWiseCaseTypesStats
