@@ -75,17 +75,10 @@ const UploadDataWithFile = () => {
   }, [selectedTabValue]);
 
   return (
-    <div>
-      <div className="salesPersonDataDetails">
-        <div className="persodnDetails">
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+    <div id="uploadFile">
+      <div className="totalUploadBlocks">
+        <div className="tabsBlock">
+          <div >
             <BilledAndRevenueTabs
               selectedTabValue={selectedTabValue}
               setSelectedTabValue={setSelectedTabValue}

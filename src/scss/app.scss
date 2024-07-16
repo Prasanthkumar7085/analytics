@@ -1,4 +1,5 @@
 @import "./components/patientResults.scss";
+@import "./components/upload.scss";
 
 ul {
   margin: 0 !important;
@@ -1622,67 +1623,4 @@ input:-webkit-autofill {
 }
 // UploadFile.scss
 
-.upload-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
-  padding: 20px;
-  border: 2px dashed #555;
-  background-color: #f0edfe;
-  text-align: center;
-}
 
-.upload-label {
-  display: block;
-  padding: 10px;
-  background-color: #6c63ff;
-  color: #fff;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.file-input {
-  display: none;
-}
-
-#ErrorsTablecontainer {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-
-  .table {
-    width: 30%;
-    margin-bottom: 20px;
-
-    h2 {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-
-      th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-      }
-
-      td {
-        font-size: 14px;
-      }
-
-      tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-    }
-  }
-}
