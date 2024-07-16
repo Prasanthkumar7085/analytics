@@ -220,25 +220,28 @@ const NavBar: FC<pageProps> = ({ children }) => {
             open={Boolean(adminMenuanchorElUser)}
             onClose={handleCloseAdminMenu}
           >
-            {/* <MenuItem className={styles.dropDownMenu} sx={{ fontSize: "12px" }}>
-              <CheckBoxForExcludeGenSales />
-            </MenuItem> */}
             <MenuItem
               className={styles.dropDownMenu}
               onClick={() => {
                 window.open("/patient-results", "_blank");
+                handleCloseAdminMenu();
               }}
             >
               1. Patient Results
             </MenuItem>
-            <MenuItem
-              className={styles.dropDownMenu}
-              onClick={() => {
-                window.open("/billing/dashboard", "_blank");
-              }}
-            >
-              2. Billing analytics
-            </MenuItem>
+            {!pathname?.includes("billing") ? (
+              <MenuItem
+                className={styles.dropDownMenu}
+                onClick={() => {
+                  window.open("/billing/dashboard", "_blank");
+                  handleCloseAdminMenu();
+                }}
+              >
+                2. Billing analytics
+              </MenuItem>
+            ) : (
+              ""
+            )}
           </Menu>
 
           <Menu
