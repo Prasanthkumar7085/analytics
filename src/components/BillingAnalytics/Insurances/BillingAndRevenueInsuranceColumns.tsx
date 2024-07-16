@@ -141,20 +141,7 @@ const RevenueInsurancesColumns = ({ searchParams, router }: any) => {
         );
       },
     },
-    {
-      accessorFn: (row: any) => row.no_of_facilities,
-      id: "no_of_facilities",
-      header: () => (
-        <span style={{ whiteSpace: "nowrap" }}>NO OF FACILITIES</span>
-      ),
-      footer: (props: any) => props.column.id,
-      width: "200px",
-      maxWidth: "200px",
-      minWidth: "200px",
-      cell: ({ getValue }: any) => {
-        return <span>{getValue()?.toLocaleString()}</span>;
-      },
-    },
+
     {
       accessorFn: (row: any) => row.targeted_amount,
       id: "targeted_amount",

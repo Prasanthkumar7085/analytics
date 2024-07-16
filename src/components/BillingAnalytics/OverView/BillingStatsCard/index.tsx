@@ -195,10 +195,13 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
         ) : (
           ""
         )}
-
-        <div className={styles.card11}>
-          <Image alt="" src="/sales-rep-stats.svg" height={660} width={660} />
-        </div>
+        {pathName?.includes("billing/dashboard") ? (
+          ""
+        ) : (
+          <div className={styles.card11}>
+            <Image alt="" src="/sales-rep-stats.svg" height={660} width={660} />
+          </div>
+        )}
       </div>
     </>
   );

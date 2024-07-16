@@ -1,4 +1,5 @@
 import AreaGraph from "@/components/core/AreaGraph";
+import AreaGraphForBillingAndRevenue from "@/components/core/AreaGraph/AreaGraphForBillingAndRevenue";
 import { graphColors } from "@/lib/constants";
 import {
   formatMonthYear,
@@ -77,6 +78,7 @@ const MonthWiseCaseTypesBilledStatsGraphColumn = ({
   setSelectedGraphData,
   setGraphValuesData,
   setGraphColor,
+  searchParams,
 }: any) => {
   return [
     {
@@ -93,6 +95,8 @@ const MonthWiseCaseTypesBilledStatsGraphColumn = ({
         delete data?.case_type_name;
         delete data?.serial;
         delete data?.rowTotal;
+        delete data?.insurance_name;
+        delete data?.insurance_id;
         let rearrangeData = getAcesdingOrderMonthsForGraphs(data);
 
         return (
@@ -105,9 +109,10 @@ const MonthWiseCaseTypesBilledStatsGraphColumn = ({
               setGraphColor(graphColors[info.row.original.case_type_name]);
             }}
           >
-            <AreaGraph
+            <AreaGraphForBillingAndRevenue
               data={rearrangeData}
               graphColor={graphColors[info.row.original.case_type_name]}
+              tabValue={searchParams?.tab}
             />
           </div>
         );
@@ -149,7 +154,7 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
         minWidth: "300px",
         cell: (info: any) => {
           return (
-            <span>{info.row.original?.[item]?.[0]?.toLocaleString()}</span>
+            <span>{info.row.original?.[item]?.[0]?.toLocaleString() || 0}</span>
           );
         },
       },
@@ -240,6 +245,7 @@ export const groupAllBilledAndRevenueColumns = ({
     setSelectedGraphData,
     setGraphValuesData,
     setGraphColor,
+    searchParams,
   });
   let GroupdColmns =
     searchParams?.tab == "billed" ? GroupdBilledColmns : GroupdRevenueColmns;

@@ -185,7 +185,6 @@ const BillingAndRevenueInsurances = () => {
       );
     } else {
       result.push(
-        { value: aggregates["no_of_facilities"] ?? 0, dolorSymbol: false },
         { value: aggregates["targeted_amount"] ?? 0, dolorSymbol: true },
         { value: aggregates["received_amount"], dolorSymbol: true },
         { value: null, dolorSymbol: false }

@@ -15,6 +15,7 @@ import { Backdrop } from "@mui/material";
 import GraphDialog from "@/components/core/GraphDialog";
 import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns";
 import BillingAndRevenueCoreTable from "@/components/core/Table/BillingAndRevenueCoreTable";
+import GraphDialogForBillingAndReveune from "@/components/core/GraphDialogForBillingAndRevenue";
 
 const InsuranceWiseDetails = ({ searchParams }: any) => {
   const { id } = useParams();
@@ -212,13 +213,13 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
         ) : (
           ""
         )}
-        <GraphDialog
+        <GraphDialogForBillingAndReveune
           graphDialogOpen={graphDialogOpen}
           setGraphDialogOpen={setGraphDialogOpen}
           graphData={selectedGrpahData}
           graphValuesData={graphValuesData}
           graphColor={graphColor}
-          tabValue={"revenue"}
+          tabValue={searchParams?.tab}
         />
       </div>
     </div>

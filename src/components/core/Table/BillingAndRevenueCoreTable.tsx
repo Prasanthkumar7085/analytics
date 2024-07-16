@@ -15,6 +15,8 @@ import { getAcesdingOrderMonthsForGraphs } from "@/lib/helpers/apiHelpers";
 import AreaGraph from "../AreaGraph";
 import AreaGraphForFacilities from "../AreaGraph/AreaGraphForFacilities";
 import GraphDialog from "../GraphDialog";
+import AreaGraphForBillingAndRevenue from "../AreaGraph/AreaGraphForBillingAndRevenue";
+import GraphDialogForBillingAndReveune from "../GraphDialogForBillingAndRevenue";
 
 interface pageProps {
   columns: any;
@@ -286,9 +288,10 @@ const BillingAndRevenueCoreTable: FC<pageProps> = ({
             >
               {headerMonths?.length &&
               totalSumValues[headerMonths[0]]?.length == 2 ? (
-                <AreaGraph
+                <AreaGraphForBillingAndRevenue
                   data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
                   graphColor={"blue"}
+                  tabValue={searchParams?.tab}
                 />
               ) : (
                 <AreaGraphForFacilities
@@ -300,7 +303,7 @@ const BillingAndRevenueCoreTable: FC<pageProps> = ({
           </tr>
         </tfoot>
       </table>
-      <GraphDialog
+      <GraphDialogForBillingAndReveune
         graphDialogOpen={graphDialogOpen}
         setGraphDialogOpen={setGraphDialogOpen}
         graphData={totalSumValues}

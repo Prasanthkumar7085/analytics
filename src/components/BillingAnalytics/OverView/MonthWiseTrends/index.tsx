@@ -121,6 +121,7 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
         ? Object.values(graphData).map((item: any) => item[0])
         : [],
       type: "line",
+      zIndex: 9999,
       color: "blue",
     },
     {
@@ -129,7 +130,6 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
         ? Object.values(graphData).map((item: any) => item[1])
         : [],
       type: "line",
-      zIndex: 9999,
       color: "green",
     },
   ];

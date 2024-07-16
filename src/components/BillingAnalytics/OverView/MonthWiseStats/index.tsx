@@ -23,6 +23,7 @@ import { Backdrop } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { groupAllBilledAndRevenueColumns } from "./MonthWiseCaseTypesStatsColumns";
+import GraphDialogForBillingAndReveune from "@/components/core/GraphDialogForBillingAndRevenue";
 
 const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
   const { id } = useParams();
@@ -230,7 +231,7 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
         ) : (
           ""
         )}
-        <GraphDialog
+        <GraphDialogForBillingAndReveune
           graphDialogOpen={graphDialogOpen}
           setGraphDialogOpen={setGraphDialogOpen}
           graphData={selectedGrpahData}
