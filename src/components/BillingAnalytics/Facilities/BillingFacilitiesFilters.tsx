@@ -2,7 +2,10 @@ import BilledAndRevenueTabs from "@/components/core/BilledAndRevenueTabs";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
-import { exportToExcelFacilitiesTable } from "@/lib/helpers/exportsHelpers";
+import {
+  exportToExcelBilledFacilitiesData,
+  exportToExcelRevenueFacilitiesData,
+} from "@/lib/helpers/billingExportHelpers";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
@@ -80,7 +83,17 @@ const BillingFacilitiesFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelFacilitiesTable(facilitiesData, totalSumValue);
+                  if (params?.get("tab") == "billed") {
+                    exportToExcelBilledFacilitiesData(
+                      facilitiesData,
+                      totalSumValue
+                    );
+                  } else {
+                    exportToExcelRevenueFacilitiesData(
+                      facilitiesData,
+                      totalSumValue
+                    );
+                  }
                 }}
                 disabled={facilitiesData?.length === 0 ? true : false}
               ></ExportButton>

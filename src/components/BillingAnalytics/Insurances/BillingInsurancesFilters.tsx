@@ -2,6 +2,10 @@ import BilledAndRevenueTabs from "@/components/core/BilledAndRevenueTabs";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import { changeDateToUTC } from "@/lib/helpers/apiHelpers";
+import {
+  exportToExcelBilledInsurancesData,
+  exportToExcelRevenueInsurancesData,
+} from "@/lib/helpers/billingExportHelpers";
 import { exportToExcelFacilitiesTable } from "@/lib/helpers/exportsHelpers";
 import SearchIcon from "@mui/icons-material/Search";
 import { TextField } from "@mui/material";
@@ -80,7 +84,17 @@ const BillingInsurancesFilters = ({
             <li className="eachFilterLists">
               <ExportButton
                 onClick={() => {
-                  exportToExcelFacilitiesTable(insuranceData, totalSumValue);
+                  if (params?.get("tab") == "billed") {
+                    exportToExcelBilledInsurancesData(
+                      insuranceData,
+                      totalSumValue
+                    );
+                  } else {
+                    exportToExcelRevenueInsurancesData(
+                      insuranceData,
+                      totalSumValue
+                    );
+                  }
                 }}
                 disabled={insuranceData?.length === 0 ? true : false}
               ></ExportButton>
