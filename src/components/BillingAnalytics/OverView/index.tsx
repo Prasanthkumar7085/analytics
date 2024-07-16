@@ -1,28 +1,28 @@
-import { Grid, Typography } from "@mui/material";
-import { FC, useEffect, useState } from "react";
-import BillingStatsCards from "./BillingStatsCard";
-import BillingOverViewCaseTypes from "./BillingCaseTypes";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import {
+  changeDateToUTC,
+  getDatesForStatsCards,
+  rearrangeDataWithCasetypes,
+} from "@/lib/helpers/apiHelpers";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
   getBillingStatsCardDataAPI,
   getcaseTyeWiseBillingStatsAPI,
   getcaseTyeWiseRevenueStatsAPI,
   getRevenueStatsCardDataAPI,
 } from "@/services/BillingAnalytics/overViewAPIs";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import {
-  getDatesForStatsCards,
-  rearrangeDataWithCasetypes,
-} from "@/lib/helpers/apiHelpers";
-import MonthWiseCaseTypesStats from "./MonthWiseStats";
-import MonthWiseTrendsGraph from "./MonthWiseTrends";
+import { Grid, Typography } from "@mui/material";
+import dayjs from "dayjs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import {
   addMonths,
   endOfMonth,
-  set,
   startOfMonth,
 } from "rsuite/esm/internals/utils/date";
-import dayjs from "dayjs";
+import BillingOverViewCaseTypes from "./BillingCaseTypes";
+import BillingStatsCards from "./BillingStatsCard";
+import MonthWiseCaseTypesStats from "./MonthWiseStats";
+import MonthWiseTrendsGraph from "./MonthWiseTrends";
 
 const BillingOverView = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,6 +37,7 @@ const BillingOverView = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [selectedTabValue, setSelectedTabValue] = useState<any>("billed");
   const [tabValue, setTabValue] = useState<any>();
+  const [caseTypeLoading, setCaseTypeLoading] = useState<boolean>(true);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -64,7 +65,7 @@ const BillingOverView = () => {
     try {
       await getBillingStatsCount(queryParams);
       await getRevenueStatsCount(queryParams);
-      if (tabValue == "billed") {
+      if (queryParams?.tab == "billed") {
         await getcaseTyeWiseBillingStats(queryParams);
       } else {
         await getcaseTyeWiseRevenueStats(queryParams);
@@ -101,6 +102,7 @@ const BillingOverView = () => {
   };
 
   const getcaseTyeWiseBillingStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
     try {
       const response = await getcaseTyeWiseBillingStatsAPI(queryParams);
       let data = [...response?.data];
@@ -110,11 +112,12 @@ const BillingOverView = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      setCaseTypeLoading(false);
     }
   };
 
   const getcaseTyeWiseRevenueStats = async (queryParams: any) => {
+    setCaseTypeLoading(true);
     try {
       const response = await getcaseTyeWiseRevenueStatsAPI(queryParams);
       let data = [...response?.data];
@@ -124,7 +127,7 @@ const BillingOverView = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
-      setLoading(false);
+      setCaseTypeLoading(false);
     }
   };
 
@@ -173,12 +176,20 @@ const BillingOverView = () => {
   useEffect(() => {
     if (Object?.keys(searchParams)?.length !== 0) {
       queryPreparations(
-        params?.get("from_date"),
-        params?.get("to_date"),
-        params?.get("tab")
+        searchParams?.from_date,
+        searchParams?.to_date,
+        searchParams?.tab
       );
     } else {
       callCaseTypesStatsCounts();
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (searchParams?.from_date) {
+      setDateFilterDefaultValue(
+        changeDateToUTC(searchParams?.from_date, searchParams?.to_date)
+      );
     }
   }, [searchParams]);
 
@@ -201,7 +212,7 @@ const BillingOverView = () => {
         <Grid item xs={8}>
           <BillingOverViewCaseTypes
             caseTypesWiseStatsData={caseTypesWiseStatsData}
-            loading={loading}
+            loading={caseTypeLoading}
             totalRevenueSum={totalSumValues}
             queryPreparations={queryPreparations}
             dateFilterDefaultValue={dateFilterDefaultValue}

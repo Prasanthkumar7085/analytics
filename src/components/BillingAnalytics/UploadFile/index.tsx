@@ -5,7 +5,7 @@ import {
 } from "@/services/BillingAnalytics/uploadFileAPIs";
 import { Grid, IconButton } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import CloseIcon from "@mui/icons-material/Close";
 import LoadingComponent from "@/components/core/LoadingComponent";
@@ -69,6 +69,10 @@ const UploadDataWithFile = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    renderInputFeild();
+  }, [selectedTabValue]);
 
   return (
     <div>
