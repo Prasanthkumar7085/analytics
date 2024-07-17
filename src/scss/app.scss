@@ -1634,6 +1634,13 @@ input:-webkit-autofill {
   min-height: 468px;
 }
 
+.admit-settings-menu {
+  .MuiPaper-elevation {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
 // External Components
 @import "./components/patientResults.scss";
 @import "./components/upload.scss";
