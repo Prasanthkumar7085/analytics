@@ -6,6 +6,7 @@ const ErrorsTable = ({ errors, notExisted, existed }: any) => {
         <table>
           <thead>
             <tr>
+              <th>Sl.No</th>
               <th>Accession ID</th>
               <th>Error Message</th>
             </tr>
@@ -14,6 +15,7 @@ const ErrorsTable = ({ errors, notExisted, existed }: any) => {
             {errors?.length > 0
               ? errors.map((error: any, index: any) => (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{error.accession_id}</td>
                     <td>{error.message}</td>
                   </tr>
@@ -28,6 +30,7 @@ const ErrorsTable = ({ errors, notExisted, existed }: any) => {
         <table>
           <thead>
             <tr>
+              <th>Sl.No</th>
               <th>Accession ID</th>
             </tr>
           </thead>
@@ -35,6 +38,7 @@ const ErrorsTable = ({ errors, notExisted, existed }: any) => {
             {notExisted?.length > 0
               ? notExisted.map((item: any, index: any) => (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{item.accessionId}</td>
                   </tr>
                 ))
@@ -48,6 +52,7 @@ const ErrorsTable = ({ errors, notExisted, existed }: any) => {
         <table>
           <thead>
             <tr>
+              <th>Sl.No</th>
               <th>Accession ID</th>
             </tr>
           </thead>
@@ -55,6 +60,7 @@ const ErrorsTable = ({ errors, notExisted, existed }: any) => {
             {existed?.length > 0
               ? existed.map((item: any, index: any) => (
                   <tr key={index}>
+                    <td>{index + 1}</td>
                     <td>{item.accessionId}</td>
                   </tr>
                 ))

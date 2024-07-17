@@ -205,10 +205,12 @@ const SingleFacilityBillingAndRevenueDetails = () => {
   }, [searchParams?.tab]);
 
   useEffect(() => {
-    if (searchParams?.tab == "billed") {
-      getBillingStatsCount(searchParams);
-    } else {
-      getRevenueStatsCount(searchParams);
+    if (Object.keys(searchParams)?.length !== 0) {
+      if (searchParams?.tab == "billed") {
+        getBillingStatsCount(searchParams);
+      } else {
+        getRevenueStatsCount(searchParams);
+      }
     }
   }, [searchParams?.from_date || searchParams?.to_date]);
 

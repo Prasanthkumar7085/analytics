@@ -3,13 +3,17 @@ import {
   uploadBillingDataAPI,
   uploadRevenueDataAPI,
 } from "@/services/BillingAnalytics/uploadFileAPIs";
-import { Grid, IconButton } from "@mui/material";
+import { Button, Grid, IconButton } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import CloseIcon from "@mui/icons-material/Close";
 import LoadingComponent from "@/components/core/LoadingComponent";
 import ErrorsTable from "./ErrorsTable";
+import {
+  exampleBillingCsvFile,
+  exampleRevenueCsvFile,
+} from "@/lib/helpers/billingExportHelpers";
 
 const UploadDataWithFile = () => {
   const params = useSearchParams();
@@ -78,18 +82,39 @@ const UploadDataWithFile = () => {
     <div id="uploadFile">
       <div className="totalUploadBlocks">
         <div className="tabsBlock">
-          <div >
+          <div>
             <BilledAndRevenueTabs
               selectedTabValue={selectedTabValue}
               setSelectedTabValue={setSelectedTabValue}
             />
           </div>
         </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <Button
+            onClick={() => {
+              if (params.get("tab") == "billed") {
+                exampleBillingCsvFile();
+              } else {
+                exampleRevenueCsvFile();
+              }
+            }}
+          >
+            {params.get("tab") == "billed"
+              ? "Download Sample Billing File"
+              : "Download Sample Revenue File"}
+          </Button>
+        </div>
         <Grid container spacing={2} className="mb-5">
           <Grid item xs={12}>
             <div className="upload-container">
               {fileName ? (
-                <div>
+                <div style={{ display: "flex", alignItems: "center" }}>
                   <p> {fileName}</p>
                   <IconButton
                     onClick={() => {

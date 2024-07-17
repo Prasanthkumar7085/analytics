@@ -192,8 +192,10 @@ const BillingOverView = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    getBillingStatsCount(searchParams);
-    getRevenueStatsCount(searchParams);
+    if (Object?.keys(searchParams)?.length !== 0) {
+      getBillingStatsCount(searchParams);
+      getRevenueStatsCount(searchParams);
+    }
   }, [searchParams?.from_date || searchParams?.to_date]);
 
   useEffect(() => {
@@ -203,7 +205,12 @@ const BillingOverView = () => {
   }, [params]);
   return (
     <>
-      <Grid container spacing={2} className="mb-5" id="billing-overview-dashboard">
+      <Grid
+        container
+        spacing={2}
+        className="mb-5"
+        id="billing-overview-dashboard"
+      >
         <Grid item xs={4}>
           <BillingStatsCards
             loading={loading}
