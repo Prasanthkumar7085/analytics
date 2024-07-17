@@ -1641,6 +1641,27 @@ input:-webkit-autofill {
   }
 }
 
+#billingMothWiseCaseTypeData,
+#BillingInsuranceCasesTypes {
+  table {
+    tr {
+
+      td,
+      th {
+        &:first-child {
+          width: 60px !important;
+          max-width: 60px !important;
+        }
+
+        &:last-child {
+          width: 200px !important;
+          max-width: 200px !important;
+        }
+      }
+    }
+  }
+}
+
 // External Components
 @import "./components/patientResults.scss";
 @import "./components/upload.scss";
