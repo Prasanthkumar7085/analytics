@@ -164,7 +164,7 @@ const BillingAndRevenueFacilities = () => {
       }, {});
 
     let aggregates: any;
-    if (selectedTabValue === "billed") {
+    if (params.get("tab") === "billed") {
       aggregates = aggregateKeys(keysForBilledTab);
     } else {
       aggregates = aggregateKeys(keysForRevenueTab);
@@ -175,7 +175,7 @@ const BillingAndRevenueFacilities = () => {
       { value: null, dolorSymbol: false },
     ];
 
-    if (selectedTabValue === "billed") {
+    if (params.get("tab") === "billed") {
       result.push(
         { value: aggregates["total_cases"], dolorSymbol: false },
         { value: aggregates["billed_cases"], dolorSymbol: false },
