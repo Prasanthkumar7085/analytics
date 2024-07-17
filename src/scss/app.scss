@@ -1,6 +1,3 @@
-@import "./components/patientResults.scss";
-@import "./components/upload.scss";
-
 ul {
   margin: 0 !important;
   padding: 0 !important;
@@ -1612,6 +1609,17 @@ input:-webkit-autofill {
   }
 }
 
+.navbar-avatar {
+  width: 30px !important;
+  height: 30px !important;
+}
+
 .gray-bg {
   background: #f1f1f1;
 }
+
+
+// External Components
+@import "./components/patientResults.scss";
+@import "./components/upload.scss";
+@import "./components/billing-revenue.scss";

@@ -152,9 +152,10 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
     maxWidth: "220px",
     minWidth: "220px",
     sortDescFirst: false,
+    enableSorting: false,
     sortingFn: (rowA: any, rowB: any, columnId: any) => {
-      const rowDataA = rowA.original[columnId];
-      const rowDataB = rowB.original[columnId];
+      const rowDataA = rowA.original[columnId] || [0, 0];
+      const rowDataB = rowB.original[columnId] || [0, 0];
 
       const valueA = rowDataA[0] || 0;
       const valueB = rowDataB[0] || 0;
@@ -163,12 +164,13 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
     },
     columns: [
       {
-        accessorFn: (row: any) => row?.[item][0],
+        accessorFn: (row: any) => (row[item] || [0, 0])[0] || 0,
         header: () => <span style={{ whiteSpace: "nowrap" }}>Cases</span>,
-        id: item[0],
+        id: `${item}_cases`,
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
+        sortDescFirst: false,
         cell: (info: any) => {
           return (
             <span>{info.row.original?.[item]?.[0]?.toLocaleString() || 0}</span>
@@ -176,12 +178,13 @@ const MonthWiseCaseTypesBilledStatsAdditionalColumns = ({
         },
       },
       {
-        accessorFn: (row: any) => row?.[item][1],
+        accessorFn: (row: any) => (row[item] || [0, 0])[1] || 0,
         header: () => <span style={{ whiteSpace: "nowrap" }}>Billed</span>,
-        id: item[1],
+        id: `${item}_billed`,
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
+        sortDescFirst: false,
         cell: (info: any) => {
           return <span>{formatMoney(info.row.original?.[item]?.[1])}</span>;
         },
@@ -204,35 +207,38 @@ const MonthWiseCaseTypesRevenueStatsAdditionalColumns = ({
     width: "80px",
     maxWidth: "220px",
     minWidth: "220px",
-    sortDescFirst: true,
+    sortDescFirst: false,
+    enableSorting: false,
     sortingFn: (rowA: any, rowB: any, columnId: any) => {
-      const rowDataA = rowA.original[columnId];
-      const rowDataB = rowB.original[columnId];
+      const rowDataA = rowA.original[columnId] || [0, 0];
+      const rowDataB = rowB.original[columnId] || [0, 0];
 
       const valueA = rowDataA[0] || 0;
       const valueB = rowDataB[0] || 0;
 
-      return valueB - valueA;
+      return valueA - valueB;
     },
     columns: [
       {
-        accessorFn: (row: any) => row?.[item],
+        accessorFn: (row: any) => (row[item] || [0, 0])[0] || 0,
         header: () => <span style={{ whiteSpace: "nowrap" }}>Target</span>,
-        id: item[0],
+        id: `${item}_target`,
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
+        sortDescFirst: false,
         cell: (info: any) => {
           return <span>{formatMoney(info.row.original?.[item]?.[0])}</span>;
         },
       },
       {
-        accessorFn: (row: any) => row?.[item],
+        accessorFn: (row: any) => (row[item] || [0, 0])[1] || 0,
         header: () => <span style={{ whiteSpace: "nowrap" }}>Received</span>,
-        id: item[1],
+        id: `${item}_received`,
         width: "300px",
         maxWidth: "300px",
         minWidth: "300px",
+        sortDescFirst: false,
         cell: (info: any) => {
           return <span>{formatMoney(info.row.original?.[item]?.[1])}</span>;
         },

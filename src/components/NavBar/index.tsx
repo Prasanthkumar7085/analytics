@@ -72,7 +72,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
               />
             </Grid>
             <Grid item xs={9}>
-              <ul className="flex items-center justify-end space-x-7">
+              <ul className="flex items-center justify-end space-x-5">
                 {AnalyticsNavBarOptions?.length &&
                   !pathname?.includes("billing")
                   ? AnalyticsNavBarOptions?.map((item, index) => {
@@ -144,7 +144,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     className={styles.profileBlock}
                     onClick={handleOpenUserMenu}
                   >
-                    <Avatar sx={{ bgcolor: "orange" }}>
+                    <Avatar sx={{ bgcolor: "orange" }} className="navbar-avatar">
                       {userDetails?.username?.slice(0, 1).toUpperCase()}
                     </Avatar>
                     <div className={styles.adminCaption}>

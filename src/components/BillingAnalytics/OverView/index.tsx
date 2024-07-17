@@ -37,7 +37,7 @@ const BillingOverView = () => {
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
   const [selectedTabValue, setSelectedTabValue] = useState<any>("billed");
   const [tabValue, setTabValue] = useState<any>();
-  const [caseTypeLoading, setCaseTypeLoading] = useState<boolean>(false);
+  const [caseTypeLoading, setCaseTypeLoading] = useState<boolean>(true);
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
@@ -63,8 +63,6 @@ const BillingOverView = () => {
     router.push(`${pathname}${queryString}`);
     setDashBoardQueryParams(queryParams);
     try {
-      await getBillingStatsCount(queryParams);
-      await getRevenueStatsCount(queryParams);
       if (queryParams?.tab == "billed") {
         await getcaseTyeWiseBillingStats(queryParams);
       } else {
@@ -162,7 +160,7 @@ const BillingOverView = () => {
       endOfMonth(addMonths(new Date(), -1)),
     ];
     let defaultDates = getDatesForStatsCards(thisMonth);
-    queryPreparations(defaultDates[0], defaultDates[1], params?.get("tab"));
+    queryPreparations(defaultDates[0], defaultDates[1], searchParams?.tab);
     if (
       dayjs(thisMonth[0]).format("YYYY-MM-DD") == dayjs().format("YYYY-MM-DD")
     ) {
@@ -183,7 +181,7 @@ const BillingOverView = () => {
     } else {
       callCaseTypesStatsCounts();
     }
-  }, [params?.get("tab")]);
+  }, [searchParams?.tab]);
 
   useEffect(() => {
     if (searchParams?.from_date) {
@@ -192,6 +190,11 @@ const BillingOverView = () => {
       );
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    getBillingStatsCount(searchParams);
+    getRevenueStatsCount(searchParams);
+  }, [searchParams?.from_date || searchParams?.to_date]);
 
   useEffect(() => {
     setSearchParams(

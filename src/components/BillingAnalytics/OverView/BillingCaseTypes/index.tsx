@@ -13,17 +13,12 @@ import {
   exportToExcelBilledCaseTypesStatsData,
   exportToExcelRevenueCaseTypesStatsData,
 } from "@/lib/helpers/billingExportHelpers";
-import {
-  exportToExcelCaseTypesVolumes,
-  exportToExcelCaseTypesVolumesWithoutDayWiseTargets,
-} from "@/lib/helpers/exportsHelpers";
 import { Backdrop } from "@mui/material";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import Image from "next/image";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
 const BillingOverViewCaseTypes = ({
   caseTypesWiseStatsData,
@@ -56,8 +51,8 @@ const BillingOverViewCaseTypes = ({
                 ? +item["received_amount"]
                 : 0
               : item["billed_amount"]
-              ? +item["billed_amount"]
-              : 0,
+                ? +item["billed_amount"]
+                : 0,
         });
       });
       return tempArray;
@@ -66,9 +61,8 @@ const BillingOverViewCaseTypes = ({
 
   function getSubtitle() {
     const totalNumber = totalRevenueSum?.[2]?.value;
-    return `<span style="font-size: 6px,margin-left:"45px">${
-      params?.get("tab") == "revenue" ? "Total Received" : "Total Billed"
-    }</span>
+    return `<span style="font-size: 6px,margin-left:"45px">${params?.get("tab") == "revenue" ? "Total Received" : "Total Billed"
+      }</span>
         <br>
         <span style="font-size: 13px;">
             <b>
@@ -141,7 +135,7 @@ const BillingOverViewCaseTypes = ({
 
   return (
     <div style={{ position: "relative" }}>
-      <div className="eachDataCard" id="CaseTypesGraphsData">
+      <div className="eachDataCard" id="billedCaseTypesGraphsData">
         <div className="cardHeader">
           <h3 style={{ textTransform: "capitalize" }}>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
@@ -151,14 +145,15 @@ const BillingOverViewCaseTypes = ({
             ""
           ) : (
             <>
-              <GlobalDateRangeFilter
-                onChangeData={onChangeData}
-                dateFilterDefaultValue={dateFilterDefaultValue}
-              />
               <BilledAndRevenueTabs
                 selectedTabValue={selectedTabValue}
                 setSelectedTabValue={setSelectedTabValue}
               />
+              <GlobalDateRangeFilter
+                onChangeData={onChangeData}
+                dateFilterDefaultValue={dateFilterDefaultValue}
+              />
+
             </>
           )}
           <div

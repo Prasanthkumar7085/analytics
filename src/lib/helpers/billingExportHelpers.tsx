@@ -1,6 +1,7 @@
 import * as XLSX from "xlsx-color";
 import { formatMonthYear } from "./apiHelpers";
 import datePipe from "../Pipes/datePipe";
+import formatMoney from "../Pipes/moneyFormat";
 
 const coreExportFunction = (
   totalData: any,
@@ -41,7 +42,7 @@ export const exportToExcelBilledCaseTypesStatsData = (
         index + 1,
         obj.case_type_name,
         obj.billed_cases,
-        obj.billed_amount,
+        formatMoney(obj.billed_amount),
       ];
     }
   );
@@ -51,7 +52,7 @@ export const exportToExcelBilledCaseTypesStatsData = (
     "Total",
     "",
     totalVolumeSum[1]?.value,
-    totalVolumeSum[2]?.value,
+    formatMoney(totalVolumeSum[2]?.value),
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "billing-case-type-stats.xlsx");
@@ -66,8 +67,8 @@ export const exportToExcelRevenueCaseTypesStatsData = (
       return [
         index + 1,
         obj.case_type_name,
-        obj.targeted_amount,
-        obj.received_amount,
+        formatMoney(obj.targeted_amount),
+        formatMoney(obj.received_amount),
       ];
     }
   );
@@ -76,8 +77,8 @@ export const exportToExcelRevenueCaseTypesStatsData = (
   let totalSumSortedValues = [
     "Total",
     "",
-    totalVolumeSum[1]?.value,
-    totalVolumeSum[2]?.value,
+    formatMoney(totalVolumeSum[1]?.value),
+    formatMoney(totalVolumeSum[2]?.value),
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "revenue-case-type-stats.xlsx");
@@ -96,7 +97,10 @@ export const exportToExcelBillingMonthWiseCaseTypeData = (
     return [
       index + 1,
       obj.case_type_name,
-      ...sortedValues.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+      ...sortedValues.flatMap((item: any) => [
+        item[0] || 0,
+        formatMoney(item[1]) || 0,
+      ]),
     ];
   });
 
@@ -122,7 +126,7 @@ export const exportToExcelBillingMonthWiseCaseTypeData = (
   let totalSumSortedValues = [
     "Total",
     "",
-    ...total.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+    ...total.flatMap((item: any) => [item[0] || 0, formatMoney(item[1]) || 0]),
   ];
 
   let totalData = [headers, Subheaders, ...formattedData, totalSumSortedValues];
@@ -146,7 +150,10 @@ export const exportToExcelRevenueMonthWiseCaseTypeData = (
     return [
       index + 1,
       obj.case_type_name,
-      ...sortedValues.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+      ...sortedValues.flatMap((item: any) => [
+        formatMoney(item[0]) || 0,
+        formatMoney(item[1]) || 0,
+      ]),
     ];
   });
 
@@ -173,7 +180,10 @@ export const exportToExcelRevenueMonthWiseCaseTypeData = (
   let totalSumSortedValues = [
     "Total",
     "",
-    ...total.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+    ...total.flatMap((item: any) => [
+      formatMoney(item[0]) || 0,
+      formatMoney(item[1]) || 0,
+    ]),
   ];
 
   let totalData = [headers, Subheaders, ...formattedData, totalSumSortedValues];
@@ -195,7 +205,7 @@ export const exportToExcelBilledFacilitiesData = (
       obj.sales_rep_name,
       obj.total_cases,
       obj.billed_cases,
-      obj.billed_amount,
+      formatMoney(obj.billed_amount),
     ];
   });
   let headers = [
@@ -213,7 +223,7 @@ export const exportToExcelBilledFacilitiesData = (
     "",
     totalSumValue[3]?.value,
     totalSumValue[4]?.value,
-    totalSumValue[5]?.value,
+    formatMoney(totalSumValue[5]?.value),
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "billed-facilities-data.xlsx");
@@ -228,8 +238,8 @@ export const exportToExcelRevenueFacilitiesData = (
       index + 1,
       obj.facility_name,
       obj.sales_rep_name,
-      obj.targeted_amount,
-      obj.received_amount,
+      formatMoney(obj.targeted_amount),
+      formatMoney(obj.received_amount),
     ];
   });
   let headers = [
@@ -244,8 +254,8 @@ export const exportToExcelRevenueFacilitiesData = (
     "Total",
     "",
     "",
-    totalSumValue[3]?.value,
-    totalSumValue[4]?.value,
+    formatMoney(totalSumValue[3]?.value),
+    formatMoney(totalSumValue[4]?.value),
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "revenue-facilities-data.xlsx");
@@ -262,7 +272,7 @@ export const exportToExcelBilledInsurancesData = (
       obj.total_cases,
       obj.billed_cases,
       obj.unbilled_cases,
-      obj.billed_amount,
+      formatMoney(obj.billed_amount),
     ];
   });
   let headers = [
@@ -280,7 +290,7 @@ export const exportToExcelBilledInsurancesData = (
     totalSumValue[2]?.value,
     totalSumValue[3]?.value,
     totalSumValue[4]?.value,
-    totalSumValue[5]?.value,
+    formatMoney(totalSumValue[5]?.value),
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "billed-insurances-data.xlsx");
@@ -290,12 +300,13 @@ export const exportToExcelRevenueInsurancesData = (
   insuranceData: any,
   totalSumValue: any
 ) => {
+  console.log(totalSumValue, "fsadfdsfsad");
   const formattedData = insuranceData.map((obj: any, index: number) => {
     return [
       index + 1,
       obj.insurance_payer_name,
-      obj.targeted_amount,
-      obj.received_amount,
+      formatMoney(obj.targeted_amount),
+      formatMoney(obj.received_amount),
     ];
   });
   let headers = ["Sl.No", "Insurance Name", "Target", "Received"];
@@ -303,10 +314,8 @@ export const exportToExcelRevenueInsurancesData = (
   let totalSumSortedValues = [
     "Total",
     "",
-    totalSumValue[2]?.value,
-    totalSumValue[3]?.value,
-    totalSumValue[4]?.value,
-    totalSumValue[5]?.value,
+    formatMoney(totalSumValue[2]?.value),
+    formatMoney(totalSumValue[3]?.value),
   ];
   let totalData = [...[headers], ...formattedData, ...[totalSumSortedValues]];
   coreExportFunction(totalData, headers, "revenue-insurances-data.xlsx");
@@ -325,7 +334,10 @@ export const exportToExcelBillingMonthWiseInsurancesData = (
     return [
       index + 1,
       obj.insurance_name,
-      ...sortedValues.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+      ...sortedValues.flatMap((item: any) => [
+        item[0] || 0,
+        formatMoney(item[1]) || 0,
+      ]),
     ];
   });
 
@@ -351,7 +363,7 @@ export const exportToExcelBillingMonthWiseInsurancesData = (
   let totalSumSortedValues = [
     "Total",
     "",
-    ...total.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+    ...total.flatMap((item: any) => [item[0] || 0, formatMoney(item[1]) || 0]),
   ];
 
   let totalData = [headers, Subheaders, ...formattedData, totalSumSortedValues];
@@ -375,7 +387,10 @@ export const exportToExcelRevenueMonthWiseInsurancesData = (
     return [
       index + 1,
       obj.insurance_name,
-      ...sortedValues.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+      ...sortedValues.flatMap((item: any) => [
+        formatMoney(item[0]) || 0,
+        formatMoney(item[1]) || 0,
+      ]),
     ];
   });
 
@@ -402,7 +417,10 @@ export const exportToExcelRevenueMonthWiseInsurancesData = (
   let totalSumSortedValues = [
     "Total",
     "",
-    ...total.flatMap((item: any) => [item[0] || 0, item[1] || 0]),
+    ...total.flatMap((item: any) => [
+      formatMoney(item[0]) || 0,
+      formatMoney(item[1]) || 0,
+    ]),
   ];
 
   let totalData = [headers, Subheaders, ...formattedData, totalSumSortedValues];

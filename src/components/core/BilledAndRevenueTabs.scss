@@ -1,0 +1,24 @@
+.billing-revenue-tabs {
+  min-height: auto;
+
+  button {
+    border: 1px solid transparent;
+    padding: 3px 10px;
+    margin: 0 10px;
+    min-height: auto;
+    text-transform: capitalize;
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: auto;
+    border-radius: 2px;
+
+    &.Mui-selected {
+      border-color: #BF1B39;
+      color: #BF1B39;
+    }
+  }
+
+  .MuiTabs-indicator {
+    display: none;
+  }
+}
