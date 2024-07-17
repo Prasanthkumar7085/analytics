@@ -23,7 +23,7 @@ import BillingOverViewCaseTypes from "./BillingCaseTypes";
 import BillingStatsCards from "./BillingStatsCard";
 import MonthWiseCaseTypesStats from "./MonthWiseStats";
 import MonthWiseTrendsGraph from "./MonthWiseTrends";
-
+import Image from "next/image";
 const BillingOverView = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
@@ -203,7 +203,7 @@ const BillingOverView = () => {
   }, [params]);
   return (
     <>
-      <Grid container spacing={2} className="mb-5">
+      <Grid container spacing={2} className="mb-5" id="billing-overview-dashboard">
         <Grid item xs={4}>
           <BillingStatsCards
             loading={loading}
@@ -225,27 +225,28 @@ const BillingOverView = () => {
           />
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="caption">Month-wise</Typography>
-
-          {Object.keys(searchParams)?.length ? (
-            <MonthWiseCaseTypesStats
-              searchParams={searchParams}
-              pathName={"overview"}
-            />
-          ) : (
-            ""
-          )}
+          <div className="eachDataCard" id="BillingMonthWiseData">
+            {Object.keys(searchParams)?.length ? (
+              <MonthWiseCaseTypesStats
+                searchParams={searchParams}
+                pathName={"overview"}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="caption">Trend</Typography>
-          {Object.keys(searchParams)?.length ? (
-            <MonthWiseTrendsGraph
-              searchParams={searchParams}
-              pathName={"overview"}
-            />
-          ) : (
-            ""
-          )}
+          <div className="eachDataCard" id="BillingTrendData">
+            {Object.keys(searchParams)?.length ? (
+              <MonthWiseTrendsGraph
+                searchParams={searchParams}
+                pathName={"overview"}
+              />
+            ) : (
+              ""
+            )}
+          </div>
         </Grid>
       </Grid>
     </>

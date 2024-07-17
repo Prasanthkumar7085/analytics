@@ -3,7 +3,7 @@
   position: relative;
 font-size: clamp(14px,0.72vw, 16px );
   font-weight: 500;
- 
+
 }
 .headingcontainer {
   display: flex;
@@ -65,7 +65,7 @@ font-size: clamp(14px,0.72vw, 16px );
   line-height: 100%;
 }
 .title {
- 
+
   font-size: clamp(14px, 0.72vw, 16px);
   font-weight: 400;
 
@@ -124,7 +124,7 @@ font-size: clamp(14px,0.72vw, 16px );
   align-self: stretch;
   height: 2.25rem;
   position: relative;
-  font-size: clamp(12px, 1.8vw, 30px);
+  font-size: clamp(11px, 1.8vw, 30px);
   line-height: 100%;
   font-weight: 200;
   font-family: inherit;
@@ -169,7 +169,7 @@ font-size: clamp(14px,0.72vw, 16px );
   align-items: flex-end;
   justify-content: flex-start;
   font-size: clamp(12px, 0.72vw, 28px);
-  
+
 }
 .revenuecard {
   border-radius: 6px;
@@ -247,6 +247,3 @@ justify-content: space-between;
   padding: 1rem;
   box-sizing: border-box;
 }
-
-
-

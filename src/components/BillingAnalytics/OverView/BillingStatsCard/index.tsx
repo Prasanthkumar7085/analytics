@@ -16,7 +16,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
   const pathName = usePathname();
   return (
     <>
-      <div className="eachDataCard" id="StatsData">
+      <div className="eachDataCard" id="BillingStatsData">
         <div className="cardHeader">
           <h3>
             <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
@@ -24,13 +24,13 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
           </h3>
         </div>
         {searchParams?.tab == "billed" ||
-        pathName?.includes("/billing/dashboard") ? (
+          pathName?.includes("/billing/dashboard") ? (
           <div className="cardBody">
             <div className={styles.cardscontainer}>
               <div
                 className={styles.card}
                 style={{
-                  background: "linear-gradient(110.31deg, #4386c5, #004e92)",
+                  background: "linear-gradient(110.31deg, #EE0979, #CF8BF3)",
                 }}
               >
                 <div className={styles.titlecontainer}>
@@ -121,70 +121,50 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
           ""
         )}
         {searchParams?.tab == "revenue" ||
-        pathName?.includes("/billing/dashboard") ? (
+          pathName?.includes("/billing/dashboard") ? (
           <div className="cardBody">
-            <div className={styles.cardscontainer}>
-              <div
-                className={styles.card}
-                style={{
-                  background: "linear-gradient(110.31deg, #4386c5, #004e92)",
-                }}
-              >
-                <div className={styles.titlecontainer}>
-                  <div className="statHeader">Revenue</div>
-                </div>
-
-                <div className={styles.row}>
-                  <div className={styles.billed}>
-                    <div className={styles.header}>
-                      <label className={styles.lable}>Revenue Target</label>
-                    </div>
-                    <h2 className={styles.totalvalue}>
-                      {loading ? (
-                        <Skeleton width={100} height={50} />
-                      ) : (
-                        <CountUp
-                          start={0}
-                          decimal="."
-                          prefix="$"
-                          decimals={2}
-                          end={revenueCardsDetails?.[0]?.["targeted_revenue"]}
-                        />
-                      )}
-                    </h2>
-                  </div>
-                  <Image
-                    className={styles.dividerIcon}
-                    alt=""
-                    src="/navbar/divider.svg"
-                    height={20}
-                    width={20}
-                  />
-
-                  <div className={styles.billed}>
-                    <div className={styles.header}>
-                      <label className={styles.lable}>Revenue Received</label>
-                    </div>
-                    <h2 className={styles.totalvalue}>
-                      {loading ? (
-                        <Skeleton width={100} height={50} />
-                      ) : (
-                        <CountUp
-                          start={0}
-                          decimal="."
-                          prefix="$"
-                          decimals={2}
-                          end={
-                            revenueCardsDetails?.[0]?.["received_revenue"] ||
-                            revenueCardsDetails?.[0]?.["total_revenue"]
-                          }
-                        />
-                      )}
-                    </h2>
-                  </div>
-                </div>
+            <div className="revenue-count rounded-md p-3" style={{
+              background: "linear-gradient(110.31deg, #4386c5, #004e92)",
+            }}>
+              <h4 className="text-[17px] text-white font-normal mb-5">Revenue Target</h4>
+              <div className="eachValue text-center">
+                <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Target</h5>
+                <h2 className="text-white text-[28px] font-normal">
+                  {loading ? (
+                    <Skeleton width={100} height={50} />
+                  ) : (
+                    <CountUp
+                      start={0}
+                      decimal="."
+                      prefix="$"
+                      decimals={2}
+                      end={revenueCardsDetails?.[0]?.["targeted_revenue"]}
+                    />
+                  )}
+                </h2>
+              </div>
+              <hr className="mt-2 mb-2" />
+              <div className="eachValue text-center">
+                <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Received</h5>
+                <h2 className="text-white text-[28px] font-normal">
+                  {loading ? (
+                    <Skeleton width={100} height={50} />
+                  ) : (
+                    <CountUp
+                      start={0}
+                      decimal="."
+                      prefix="$"
+                      decimals={2}
+                      end={
+                        revenueCardsDetails?.[0]?.["received_revenue"] ||
+                        revenueCardsDetails?.[0]?.["total_revenue"]
+                      }
+                    />
+                  )}
+                </h2>
               </div>
             </div>
+
           </div>
         ) : (
           ""

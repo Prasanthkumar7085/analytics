@@ -229,63 +229,71 @@ const MonthWiseTrendsGraph = ({ searchParams, pathName }: any) => {
   return (
     <div id="TrendsData">
       <div style={{ position: "relative" }}>
-        {monthWiseBilledTrendsData?.length ||
-        monthWiseRevenueTrendsData?.length > 0 ? (
-          <HighchartsReact highcharts={Highcharts} options={options} />
-        ) : !loading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "40vh",
-            }}
-          >
-            <Image
-              src="/NoDataImageAnalytics.svg"
-              alt=""
-              height={150}
-              width={250}
-            />
-          </div>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "40vh",
-            }}
-          ></div>
-        )}
-        {loading ? (
-          <Backdrop
-            open={true}
-            style={{
-              zIndex: 999,
-              color: "red",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              background: "rgba(256,256,256,0.8)",
-            }}
-          >
-            {/* <CircularProgress color="inherit" /> */}
-            <object
-              type="image/svg+xml"
-              data={"/core/loading.svg"}
-              width={150}
-              height={150}
-            />
-          </Backdrop>
-        ) : (
-          ""
-        )}
+        <div className="cardHeader">
+          <h3>
+            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+            Trend
+          </h3>
+        </div>
+        <div className="cardBody">
+          {monthWiseBilledTrendsData?.length ||
+            monthWiseRevenueTrendsData?.length > 0 ? (
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          ) : !loading ? (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "40vh",
+              }}
+            >
+              <Image
+                src="/NoDataImageAnalytics.svg"
+                alt=""
+                height={150}
+                width={250}
+              />
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "40vh",
+              }}
+            ></div>
+          )}
+          {loading ? (
+            <Backdrop
+              open={true}
+              style={{
+                zIndex: 999,
+                color: "red",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(256,256,256,0.8)",
+              }}
+            >
+              {/* <CircularProgress color="inherit" /> */}
+              <object
+                type="image/svg+xml"
+                data={"/core/loading.svg"}
+                width={150}
+                height={150}
+              />
+            </Backdrop>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </div>
   );
