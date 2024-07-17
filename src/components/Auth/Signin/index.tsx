@@ -90,9 +90,9 @@ const SignIn = () => {
       </div>
       <div className="w-full md:w-1/2 p-8 md:p-16 flex items-center justify-center">
         <div className="max-w-md w-full">
-          <div className="logo flex items-center justify-center mb-20">
+          <div className="logo flex items-center justify-center mb-10">
             <Image
-              className="w-[600px]"
+              className="w-[250px]"
               alt=""
               src="/auth/login/logo.svg"
               height={20}
@@ -100,9 +100,9 @@ const SignIn = () => {
             />
           </div>
           <form onSubmit={signIn}>
-            <h4 className="text-3xl mb-7">Sign In</h4>
+            <h4 className="text-2xl mb-4">Sign In</h4>
             <div className="formGroupItem mb-7">
-              <label htmlFor="email" className="block text-gray-700">
+              <label htmlFor="email" className="block text-gray-700 text-md">
                 Username
               </label>
               <input
@@ -119,7 +119,7 @@ const SignIn = () => {
               />
             </div>
             <div className="form-group mb-5">
-              <label htmlFor="password" className="block text-gray-700">
+              <label htmlFor="password" className="block text-gray-700 text-md">
                 Password
               </label>
               <div>

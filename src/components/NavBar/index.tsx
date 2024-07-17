@@ -74,45 +74,43 @@ const NavBar: FC<pageProps> = ({ children }) => {
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-7">
                 {AnalyticsNavBarOptions?.length &&
-                !pathname?.includes("billing")
+                  !pathname?.includes("billing")
                   ? AnalyticsNavBarOptions?.map((item, index) => {
-                      return hasAccessOrNot(`/${item?.link}`, userType) &&
-                        userType ? (
-                        <li
-                          onClick={() => router.push(`/${item?.link}`)}
-                          className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                            styles[
-                              pathname == `/${item?.link}`
-                                ? "activePagename"
-                                : "active"
-                            ]
+                    return hasAccessOrNot(`/${item?.link}`, userType) &&
+                      userType ? (
+                      <li
+                        onClick={() => router.push(`/${item?.link}`)}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname == `/${item?.link}`
+                            ? "activePagename"
+                            : "active"
+                        ]
                           }`}
-                        >
-                          {item?.title}
-                        </li>
-                      ) : (
-                        ""
-                      );
-                    })
+                      >
+                        {item?.title}
+                      </li>
+                    ) : (
+                      ""
+                    );
+                  })
                   : BillingNavBarOptions?.map((item, index) => {
-                      return hasAccessOrNot(`/${item?.link}`, userType) &&
-                        userType ? (
-                        <li
-                          onClick={() => router.push(`/${item?.link}`)}
-                          className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${
-                            styles[
-                              pathname?.includes(`/${item?.link}`)
-                                ? "activePagename"
-                                : "active"
-                            ]
+                    return hasAccessOrNot(`/${item?.link}`, userType) &&
+                      userType ? (
+                      <li
+                        onClick={() => router.push(`/${item?.link}`)}
+                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline ${styles[
+                          pathname?.includes(`/${item?.link}`)
+                            ? "activePagename"
+                            : "active"
+                        ]
                           }`}
-                        >
-                          {item?.title}
-                        </li>
-                      ) : (
-                        ""
-                      );
-                    })}
+                      >
+                        {item?.title}
+                      </li>
+                    ) : (
+                      ""
+                    );
+                  })}
                 {adminAccess() ? (
                   <Box
                     className={styles.navList}
@@ -206,7 +204,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 },
               },
             }}
-            id="menu-appbar"
+            id="menu-appbar admin-settings-menu"
             anchorEl={adminMenuanchorElUser}
             anchorOrigin={{
               vertical: "top",
@@ -222,6 +220,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
           >
             <MenuItem
               className={styles.dropDownMenu}
+              id="admin-settings-menu-items"
               onClick={() => {
                 window.open("/patient-results", "_blank");
                 handleCloseAdminMenu();
