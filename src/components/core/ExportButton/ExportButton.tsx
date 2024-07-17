@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-
+import Image from "next/image";
 const ExportButton = ({
   onClick,
   disabled
@@ -7,10 +7,11 @@ const ExportButton = ({
 
   return (
     <div>
-      <Button variant="outlined" className="exportButton" onClick={onClick} disabled={disabled}>
+      <button className="exportButton uppercase bg-blue-800 text-white rounded-md px-2 py-2 flex items-center" onClick={onClick} disabled={disabled}>
         Export
-        <img src="/log-out.svg" alt="export button" />
-      </Button>
+        <Image alt="export button" className="w-5 ml-2" src="/log-out.svg" height={20} width={20} />
+      </button>
+
     </div>
   );
 }
