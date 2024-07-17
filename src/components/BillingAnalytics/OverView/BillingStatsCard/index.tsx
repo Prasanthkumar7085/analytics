@@ -25,106 +25,63 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
         </div>
         {searchParams?.tab == "billed" ||
           pathName?.includes("/billing/dashboard") ? (
-          <div className="cardBody">
-            {/* <div className="billed-count rounded-md p-3" style={{
-              background: "linear-gradient(110.31deg, #EE0979, #CF8BF3)",
-            }}>
-              <h4 className="text-[17px] text-white font-normal mb-2">Billed</h4>
-              <div>
+          <div className="cardBody no-pb">
+            <div
+              className="rounded-md p-3"
+              style={{
+                background: "linear-gradient(110.31deg, #EE0979, #CF8BF3)",
+              }}
+            >
+              <h4 className="text-[17px] text-white font-normal mb-2">$ Billed</h4>
+              <div className="flex justify-between">
                 <div className="eachValue">
-                  <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Target</h5>
-                  <h2 className="text-white text-[28px] font-normal">
+                  <h5 className="text-white text-[15px] mb-0 font-normal">Total Cases</h5>
+                  <h2 className="text-white text-[22px] font-normal leading-7">
                     {loading ? (
                       <Skeleton width={100} height={50} />
                     ) : (
                       <CountUp
                         start={0}
                         decimal="."
-                        prefix="$"
-                        decimals={2}
-                        end={revenueCardsDetails?.[0]?.["targeted_revenue"]}
+                        end={billingCardsDetails?.[0]?.["total_cases"]}
+                      />
+                    )}
+                  </h2>
+                </div>
+                <div className="eachValue">
+                  <h5 className="text-white text-[15px] mb-0 font-normal">Cases Billed</h5>
+                  <h2 className="text-white text-[22px] font-normal leading-7">
+                    {loading ? (
+                      <Skeleton width={100} height={50} />
+                    ) : (
+                      <CountUp
+                        start={0}
+                        decimal="."
+                        end={billingCardsDetails?.[0]?.["cases_billed"]}
+                      />
+                    )}
+                  </h2>
+                </div>
+                <div className="eachValue">
+                  <h5 className="text-white text-[15px] mb-0 font-normal">Cases Unbilled</h5>
+                  <h2 className="text-white text-[22px] font-normal leading-7">
+                    {loading ? (
+                      <Skeleton width={100} height={50} />
+                    ) : (
+                      <CountUp
+                        start={0}
+                        decimal="."
+                        end={billingCardsDetails?.[0]?.["cases_unbilled"]}
                       />
                     )}
                   </h2>
                 </div>
               </div>
-            </div> */}
-
-            <div className={styles.cardscontainer}>
-              <div
-                className={styles.card}
-                style={{
-                  background: "linear-gradient(110.31deg, #EE0979, #CF8BF3)",
-                }}
-              >
-                <div className={styles.titlecontainer}>
-                  <div className="statHeader">Billed</div>
-                </div>
-
-                <div className={styles.row}>
-                  <div className={styles.billed}>
-                    <div className={styles.header}>
-                      <label className={styles.lable}>Total Cases</label>
-                    </div>
-                    <h2 className={styles.totalvalue}>
-                      {loading ? (
-                        <Skeleton width={100} height={50} />
-                      ) : (
-                        <CountUp
-                          start={0}
-                          decimal="."
-                          end={billingCardsDetails?.[0]?.["total_cases"]}
-                        />
-                      )}
-                    </h2>
-                  </div>
-                  <Image
-                    className={styles.dividerIcon}
-                    alt=""
-                    src="/navbar/divider.svg"
-                    height={20}
-                    width={20}
-                  />
-
-                  <div className={styles.billed}>
-                    <div className={styles.header}>
-                      <label className={styles.lable}>Cases Billed</label>
-                    </div>
-                    <h2 className={styles.totalvalue}>
-                      {loading ? (
-                        <Skeleton width={100} height={50} />
-                      ) : (
-                        <CountUp
-                          start={0}
-                          decimal="."
-                          end={billingCardsDetails?.[0]?.["cases_billed"]}
-                        />
-                      )}
-                    </h2>
-                  </div>
-
-                  <div className={styles.billed}>
-                    <div className={styles.header}>
-                      <label className={styles.lable}>Cases Unbilled</label>
-                    </div>
-                    <h2 className={styles.totalvalue}>
-                      {loading ? (
-                        <Skeleton width={100} height={50} />
-                      ) : (
-                        <CountUp
-                          start={0}
-                          decimal="."
-                          end={billingCardsDetails?.[0]?.["cases_unbilled"]}
-                        />
-                      )}
-                    </h2>
-                  </div>
-                </div>
-                <div className={styles.billed}>
-                  <div className={styles.header}>
-                    <label className={styles.lable}>Total Billed Amount</label>
-                  </div>
-                  <h2 className={styles.totalvalue}>
+              <hr className="mt-2 mb-2" />
+              <div>
+                <div className="eachValue text-center">
+                  <h5 className="text-white text-[15px] mb-0 font-normal">Total Billed Amount</h5>
+                  <h2 className="text-white text-[22px] font-normal leading-7">
                     {loading ? (
                       <Skeleton width={100} height={50} />
                     ) : (
@@ -153,7 +110,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
               <h4 className="text-[17px] text-white font-normal mb-2">Revenue Target</h4>
               <div className="eachValue text-center">
                 <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Target</h5>
-                <h2 className="text-white text-[28px] font-normal">
+                <h2 className="text-white text-[22px] font-normal leading-7">
                   {loading ? (
                     <Skeleton width={100} height={50} />
                   ) : (
@@ -170,7 +127,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
               <hr className="mt-2 mb-2" />
               <div className="eachValue text-center">
                 <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Received</h5>
-                <h2 className="text-white text-[28px] font-normal">
+                <h2 className="text-white text-[22px] font-normal leading-7">
                   {loading ? (
                     <Skeleton width={100} height={50} />
                   ) : (
@@ -188,7 +145,6 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                 </h2>
               </div>
             </div>
-
           </div>
         ) : (
           ""

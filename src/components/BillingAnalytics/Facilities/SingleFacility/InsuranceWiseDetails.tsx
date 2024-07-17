@@ -17,6 +17,7 @@ import { getTotalSumOfColmnsWithMonths } from "@/lib/helpers/sumsForTableColumns
 import BillingAndRevenueCoreTable from "@/components/core/Table/BillingAndRevenueCoreTable";
 import GraphDialogForBillingAndReveune from "@/components/core/GraphDialogForBillingAndRevenue";
 import ExportButton from "@/components/core/ExportButton/ExportButton";
+import Image from "next/image";
 import {
   exportToExcelBillingMonthWiseInsurancesData,
   exportToExcelRevenueMonthWiseInsurancesData,
@@ -166,87 +167,103 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
     );
   }, [searchParams]);
   return (
-    <div id="mothWiseCaseTypeData">
+    <div id="BillingInsuranceCasesTypes">
       <div style={{ position: "relative" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "flex-end",
-          }}
-        >
-          <ExportButton
-            onClick={() => {
-              if (searchParams?.tab == "billed") {
-                exportToExcelBillingMonthWiseInsurancesData(
-                  monthWiseInsuranceData,
-                  headerMonths,
-                  totalSumValues
-                );
-              } else {
-                exportToExcelRevenueMonthWiseInsurancesData(
-                  monthWiseInsuranceData,
-                  headerMonths,
-                  totalSumValues
-                );
-              }
-            }}
-            disabled={monthWiseInsuranceData?.length == 0 ? true : false}
-          />
-        </div>
-        <BillingAndRevenueCoreTable
-          data={monthWiseInsuranceData}
-          columns={groupAllBilledAndRevenueColumns({
-            headerMonths,
-            setGraphDialogOpen,
-            setSelectedGraphData,
-            setGraphValuesData,
-            setGraphColor,
-            searchParams,
-            tableType,
-            router,
-          })}
-          totalSumValues={totalSumValues}
-          loading={loading}
-          headerMonths={headerMonths}
-          tabValue={searchParams?.tab}
-          rowTotalSum={rowTotalSum}
-        />
-        {loading ? (
-          <Backdrop
-            open={true}
-            style={{
-              zIndex: 9999,
-              color: "red",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              background: "rgba(256,256,256,0.8)",
-            }}
-          >
-            <object
-              type="image/svg+xml"
-              data={"/core/loading.svg"}
-              width={150}
-              height={150}
+        <div className="eachDataCard">
+          <div className="cardHeader">
+            <h3>
+              <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+              Insurances Case Types
+            </h3>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <ExportButton
+                onClick={() => {
+                  if (searchParams?.tab == "billed") {
+                    exportToExcelBillingMonthWiseInsurancesData(
+                      monthWiseInsuranceData,
+                      headerMonths,
+                      totalSumValues
+                    );
+                  } else {
+                    exportToExcelRevenueMonthWiseInsurancesData(
+                      monthWiseInsuranceData,
+                      headerMonths,
+                      totalSumValues
+                    );
+                  }
+                }}
+                disabled={monthWiseInsuranceData?.length == 0 ? true : false}
+              />
+            </div>
+          </div>
+          <div className="cardBody">
+
+            <BillingAndRevenueCoreTable
+              data={monthWiseInsuranceData}
+              columns={groupAllBilledAndRevenueColumns({
+                headerMonths,
+                setGraphDialogOpen,
+                setSelectedGraphData,
+                setGraphValuesData,
+                setGraphColor,
+                searchParams,
+                tableType,
+                router,
+              })}
+              totalSumValues={totalSumValues}
+              loading={loading}
+              headerMonths={headerMonths}
+              tabValue={searchParams?.tab}
+              rowTotalSum={rowTotalSum}
             />
-          </Backdrop>
-        ) : (
-          ""
-        )}
-        <GraphDialogForBillingAndReveune
-          graphDialogOpen={graphDialogOpen}
-          setGraphDialogOpen={setGraphDialogOpen}
-          graphData={selectedGrpahData}
-          graphValuesData={graphValuesData}
-          graphColor={graphColor}
-          tabValue={searchParams?.tab}
-        />
+            {loading ? (
+              <Backdrop
+                open={true}
+                style={{
+                  zIndex: 9999,
+                  color: "red",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  background: "rgba(256,256,256,0.8)",
+                }}
+              >
+                <object
+                  type="image/svg+xml"
+                  data={"/core/loading.svg"}
+                  width={150}
+                  height={150}
+                />
+              </Backdrop>
+            ) : (
+              ""
+            )}
+          </div>
+          <div className="cardBody">
+            <GraphDialogForBillingAndReveune
+              graphDialogOpen={graphDialogOpen}
+              setGraphDialogOpen={setGraphDialogOpen}
+              graphData={selectedGrpahData}
+              graphValuesData={graphValuesData}
+              graphColor={graphColor}
+              tabValue={searchParams?.tab}
+            />
+          </div>
+        </div>
+
+
+
       </div>
     </div>
   );

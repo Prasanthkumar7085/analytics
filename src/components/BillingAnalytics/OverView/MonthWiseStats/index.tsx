@@ -183,99 +183,101 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
   }, [searchParams]);
 
   return (
-    <div id="mothWiseCaseTypeData">
+    <div id="billingMothWiseCaseTypeData">
       <div style={{ position: "relative" }}>
-        <div className="cardHeader">
-          <h3>
-            <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-            Month-wise
-          </h3>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-end",
-            }}
-          >
-            <ExportButton
-              onClick={() => {
-                if (searchParams?.tab == "billed") {
-                  exportToExcelBillingMonthWiseCaseTypeData(
-                    monthWiseCaseData,
-                    headerMonths,
-                    totalSumValues
-                  );
-                } else {
-                  exportToExcelRevenueMonthWiseCaseTypeData(
-                    monthWiseCaseData,
-                    headerMonths,
-                    totalSumValues
-                  );
-                }
+        <div className="eachDataCard">
+          <div className="cardHeader">
+            <h3>
+              <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
+              Month-wise
+            </h3>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "flex-end",
               }}
-              disabled={monthWiseCaseData?.length == 0 ? true : false}
+            >
+              <ExportButton
+                onClick={() => {
+                  if (searchParams?.tab == "billed") {
+                    exportToExcelBillingMonthWiseCaseTypeData(
+                      monthWiseCaseData,
+                      headerMonths,
+                      totalSumValues
+                    );
+                  } else {
+                    exportToExcelRevenueMonthWiseCaseTypeData(
+                      monthWiseCaseData,
+                      headerMonths,
+                      totalSumValues
+                    );
+                  }
+                }}
+                disabled={monthWiseCaseData?.length == 0 ? true : false}
+              />
+            </div>
+          </div>
+          <div className="cardBody">
+            <BillingAndRevenueCoreTable
+              data={monthWiseCaseData}
+              columns={groupAllBilledAndRevenueColumns({
+                headerMonths,
+                setGraphDialogOpen,
+                setSelectedGraphData,
+                setGraphValuesData,
+                setGraphColor,
+                searchParams,
+                tableType,
+                router,
+              })}
+              totalSumValues={totalSumValues}
+              loading={loading}
+              headerMonths={headerMonths}
+              tabValue={searchParams?.tab}
+              rowTotalSum={rowTotalSum}
+            />
+          </div>
+          {loading ? (
+            <Backdrop
+              open={true}
+              style={{
+                zIndex: 9999,
+                color: "red",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: "rgba(256,256,256,0.8)",
+              }}
+            >
+              <object
+                type="image/svg+xml"
+                data={"/core/loading.svg"}
+                width={150}
+                height={150}
+              />
+            </Backdrop>
+          ) : (
+            ""
+          )}
+          <div className="cardBody">
+            <GraphDialogForBillingAndReveune
+              graphDialogOpen={graphDialogOpen}
+              setGraphDialogOpen={setGraphDialogOpen}
+              graphData={selectedGrpahData}
+              graphValuesData={graphValuesData}
+              graphColor={graphColor}
+              tabValue={searchParams?.tab}
             />
           </div>
         </div>
-        <div className="cardBody">
-          <BillingAndRevenueCoreTable
-            data={monthWiseCaseData}
-            columns={groupAllBilledAndRevenueColumns({
-              headerMonths,
-              setGraphDialogOpen,
-              setSelectedGraphData,
-              setGraphValuesData,
-              setGraphColor,
-              searchParams,
-              tableType,
-              router,
-            })}
-            totalSumValues={totalSumValues}
-            loading={loading}
-            headerMonths={headerMonths}
-            tabValue={searchParams?.tab}
-            rowTotalSum={rowTotalSum}
-          />
-        </div>
 
 
-        {loading ? (
-          <Backdrop
-            open={true}
-            style={{
-              zIndex: 9999,
-              color: "red",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              background: "rgba(256,256,256,0.8)",
-            }}
-          >
-            <object
-              type="image/svg+xml"
-              data={"/core/loading.svg"}
-              width={150}
-              height={150}
-            />
-          </Backdrop>
-        ) : (
-          ""
-        )}
-        <div className="cardBody">
-          <GraphDialogForBillingAndReveune
-            graphDialogOpen={graphDialogOpen}
-            setGraphDialogOpen={setGraphDialogOpen}
-            graphData={selectedGrpahData}
-            graphValuesData={graphValuesData}
-            graphColor={graphColor}
-            tabValue={searchParams?.tab}
-          />
-        </div>
       </div>
     </div>
   );

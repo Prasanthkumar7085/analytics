@@ -164,21 +164,21 @@ const BillingAndRevenueCoreTable: FC<pageProps> = ({
                               />
                             ),
                           }[header.column.getIsSorted() as string] ?? (
-                            <Image
-                              src="/core/sort/un-sort.svg"
-                              height={8}
-                              width={8}
-                              alt="Unsorted"
-                              style={{
-                                display:
-                                  removeSortingForColumnIds?.includes(
-                                    header.id
-                                  ) || header.colSpan == 2
-                                    ? "none"
-                                    : "",
-                              }}
-                            />
-                          )}
+                              <Image
+                                src="/core/sort/un-sort.svg"
+                                height={8}
+                                width={8}
+                                alt="Unsorted"
+                                style={{
+                                  display:
+                                    removeSortingForColumnIds?.includes(
+                                      header.id
+                                    ) || header.colSpan == 2
+                                      ? "none"
+                                      : "",
+                                }}
+                              />
+                            )}
                         </div>
                       )}
                     </th>
@@ -286,7 +286,7 @@ const BillingAndRevenueCoreTable: FC<pageProps> = ({
               style={{ cursor: "pointer" }}
             >
               {headerMonths?.length &&
-              totalSumValues[headerMonths[0]]?.length == 2 ? (
+                totalSumValues[headerMonths[0]]?.length == 2 ? (
                 <AreaGraphForBillingAndRevenue
                   data={getAcesdingOrderMonthsForGraphs(totalSumValues)}
                   graphColor={"blue"}

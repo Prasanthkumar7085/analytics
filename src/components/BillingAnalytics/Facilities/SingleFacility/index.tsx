@@ -297,14 +297,12 @@ const SingleFacilityBillingAndRevenueDetails = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="caption">MonthWise</Typography>
             <MonthWiseCaseTypesStats
               searchParams={searchParams}
               pathName={"facilities"}
             />
           </Grid>
           <Grid item xs={12}>
-            <Typography variant="caption">Insurances Case Types</Typography>
             <InsuranceWiseDetails searchParams={searchParams} />
           </Grid>
         </Grid>
