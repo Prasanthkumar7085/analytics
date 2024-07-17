@@ -26,6 +26,30 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
         {searchParams?.tab == "billed" ||
           pathName?.includes("/billing/dashboard") ? (
           <div className="cardBody">
+            {/* <div className="billed-count rounded-md p-3" style={{
+              background: "linear-gradient(110.31deg, #EE0979, #CF8BF3)",
+            }}>
+              <h4 className="text-[17px] text-white font-normal mb-2">Billed</h4>
+              <div>
+                <div className="eachValue">
+                  <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Target</h5>
+                  <h2 className="text-white text-[28px] font-normal">
+                    {loading ? (
+                      <Skeleton width={100} height={50} />
+                    ) : (
+                      <CountUp
+                        start={0}
+                        decimal="."
+                        prefix="$"
+                        decimals={2}
+                        end={revenueCardsDetails?.[0]?.["targeted_revenue"]}
+                      />
+                    )}
+                  </h2>
+                </div>
+              </div>
+            </div> */}
+
             <div className={styles.cardscontainer}>
               <div
                 className={styles.card}
@@ -126,7 +150,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
             <div className="revenue-count rounded-md p-3" style={{
               background: "linear-gradient(110.31deg, #4386c5, #004e92)",
             }}>
-              <h4 className="text-[17px] text-white font-normal mb-5">Revenue Target</h4>
+              <h4 className="text-[17px] text-white font-normal mb-2">Revenue Target</h4>
               <div className="eachValue text-center">
                 <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Target</h5>
                 <h2 className="text-white text-[28px] font-normal">
