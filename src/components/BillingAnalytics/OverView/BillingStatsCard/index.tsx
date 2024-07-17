@@ -108,21 +108,13 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                         start={0}
                         decimal="."
                         prefix="$"
+                        decimals={2}
                         end={billingCardsDetails?.[0]?.["total_billed_amount"]}
                       />
                     )}
                   </h2>
                 </div>
               </div>
-
-              {/* <div className={styles.card11}>
-              <Image
-                alt=""
-                src="/sales-rep-stats.svg"
-                height={660}
-                width={660}
-              />
-            </div> */}
             </div>
           </div>
         ) : (
@@ -155,6 +147,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                           start={0}
                           decimal="."
                           prefix="$"
+                          decimals={2}
                           end={revenueCardsDetails?.[0]?.["targeted_revenue"]}
                         />
                       )}
@@ -180,6 +173,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                           start={0}
                           decimal="."
                           prefix="$"
+                          decimals={2}
                           end={
                             revenueCardsDetails?.[0]?.["received_revenue"] ||
                             revenueCardsDetails?.[0]?.["total_revenue"]

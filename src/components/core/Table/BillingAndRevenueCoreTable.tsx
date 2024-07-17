@@ -302,14 +302,18 @@ const BillingAndRevenueCoreTable: FC<pageProps> = ({
           </tr>
         </tfoot>
       </table>
-      <GraphDialogForBillingAndReveune
-        graphDialogOpen={graphDialogOpen}
-        setGraphDialogOpen={setGraphDialogOpen}
-        graphData={totalSumValues}
-        graphValuesData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
-        graphColor={"blue"}
-        tabValue={tabValue}
-      />
+      {headerMonths?.length > 0 ? (
+        <GraphDialogForBillingAndReveune
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={totalSumValues}
+          graphValuesData={getAcesdingOrderMonthsForGraphs(totalSumValues)}
+          graphColor={"blue"}
+          tabValue={tabValue}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

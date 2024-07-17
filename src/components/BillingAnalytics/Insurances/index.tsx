@@ -150,11 +150,7 @@ const BillingAndRevenueInsurances = () => {
       "unbilled_cases",
       "billed_amount",
     ];
-    const keysForRevenueTab = [
-      "no_of_facilities",
-      "targeted_amount",
-      "received_amount",
-    ];
+    const keysForRevenueTab = ["targeted_amount", "received_amount"];
     const aggregateKeys = (keys: string[]) =>
       keys.reduce((aggregates: any, key: string) => {
         aggregates[key] = data.reduce(

@@ -68,8 +68,6 @@ const SingleFacilityBillingAndRevenueDetails = () => {
     router.replace(`${pathname}${queryString}`);
     setDashBoardQueryParams(queryParams);
     try {
-      await getBillingStatsCount(queryParams);
-      await getRevenueStatsCount(queryParams);
       if (queryParams?.tab == "billed") {
         await getcaseTyeWiseBillingStats(queryParams);
       } else {
@@ -205,6 +203,15 @@ const SingleFacilityBillingAndRevenueDetails = () => {
       searchParams?.tab
     );
   }, [searchParams?.tab]);
+
+  useEffect(() => {
+    if (searchParams?.tab == "billed") {
+      getBillingStatsCount(searchParams);
+    } else {
+      getRevenueStatsCount(searchParams);
+    }
+  }, [searchParams?.from_date || searchParams?.to_date]);
+
   //api call to get stats count
   useEffect(() => {
     if (id) {
