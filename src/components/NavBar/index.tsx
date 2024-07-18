@@ -74,43 +74,45 @@ const NavBar: FC<pageProps> = ({ children }) => {
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-5">
                 {AnalyticsNavBarOptions?.length &&
-                  !pathname?.includes("billing")
+                !pathname?.includes("billing")
                   ? AnalyticsNavBarOptions?.map((item, index) => {
-                    return hasAccessOrNot(`/${item?.link}`, userType) &&
-                      userType ? (
-                      <li
-                        onClick={() => router.push(`/${item?.link}`)}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-sm hover:no-underline focus:no-underline ${styles[
-                          pathname == `/${item?.link}`
-                            ? "activePagename"
-                            : "active"
-                        ]
+                      return hasAccessOrNot(`/${item?.link}`, userType) &&
+                        userType ? (
+                        <li
+                          onClick={() => router.push(`/${item?.link}`)}
+                          className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-sm hover:no-underline focus:no-underline ${
+                            styles[
+                              pathname == `/${item?.link}`
+                                ? "activePagename"
+                                : "active"
+                            ]
                           }`}
-                      >
-                        {item?.title}
-                      </li>
-                    ) : (
-                      ""
-                    );
-                  })
+                        >
+                          {item?.title}
+                        </li>
+                      ) : (
+                        ""
+                      );
+                    })
                   : BillingNavBarOptions?.map((item, index) => {
-                    return hasAccessOrNot(`/${item?.link}`, userType) &&
-                      userType ? (
-                      <li
-                        onClick={() => router.push(`/${item?.link}`)}
-                        className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline text-sm ${styles[
-                          pathname?.includes(`/${item?.link}`)
-                            ? "activePagename"
-                            : "active"
-                        ]
+                      return hasAccessOrNot(`/${item?.link}`, userType) &&
+                        userType ? (
+                        <li
+                          onClick={() => router.push(`/${item?.link}`)}
+                          className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline text-sm ${
+                            styles[
+                              pathname?.includes(`/${item?.link}`)
+                                ? "activePagename"
+                                : "active"
+                            ]
                           }`}
-                      >
-                        {item?.title}
-                      </li>
-                    ) : (
-                      ""
-                    );
-                  })}
+                        >
+                          {item?.title}
+                        </li>
+                      ) : (
+                        ""
+                      );
+                    })}
                 {adminAccess() ? (
                   <Box
                     className={styles.navList}
@@ -144,7 +146,10 @@ const NavBar: FC<pageProps> = ({ children }) => {
                     className={styles.profileBlock}
                     onClick={handleOpenUserMenu}
                   >
-                    <Avatar sx={{ bgcolor: "orange" }} className="navbar-avatar">
+                    <Avatar
+                      sx={{ bgcolor: "orange" }}
+                      className="navbar-avatar"
+                    >
                       {userDetails?.username?.slice(0, 1).toUpperCase()}
                     </Avatar>
                     <div className={styles.adminCaption}>
@@ -276,7 +281,8 @@ const NavBar: FC<pageProps> = ({ children }) => {
       </nav>
       <div
         className={
-          pathname?.includes("patient-results")
+          pathname?.includes("patient-results") ||
+          pathname?.includes("toxicology-results")
             ? "patientResultstsDashboard"
             : styles.primaryMainDashboard
         }
