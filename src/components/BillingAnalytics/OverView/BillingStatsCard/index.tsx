@@ -24,7 +24,7 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
           </h3>
         </div>
         {searchParams?.tab == "billed" ||
-          pathName?.includes("/billing/dashboard") ? (
+        pathName?.includes("/billing/dashboard") ? (
           <div className="cardBody no-pb">
             <div
               className="rounded-md p-3"
@@ -32,10 +32,14 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                 background: "linear-gradient(110.31deg, #EE0979, #CF8BF3)",
               }}
             >
-              <h4 className="text-[17px] text-white font-normal mb-2">$ Billed</h4>
+              <h4 className="text-[17px] text-white font-normal mb-2">
+                Billing
+              </h4>
               <div className="flex justify-between">
                 <div className="eachValue">
-                  <h5 className="text-white text-[15px] mb-0 font-normal">Total Cases</h5>
+                  <h5 className="text-white text-[15px] mb-0 font-normal">
+                    Total Cases
+                  </h5>
                   <h2 className="text-white text-[22px] font-normal leading-7">
                     {loading ? (
                       <Skeleton width={100} height={50} />
@@ -49,7 +53,9 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                   </h2>
                 </div>
                 <div className="eachValue">
-                  <h5 className="text-white text-[15px] mb-0 font-normal">Cases Billed</h5>
+                  <h5 className="text-white text-[15px] mb-0 font-normal">
+                    Cases Billed
+                  </h5>
                   <h2 className="text-white text-[22px] font-normal leading-7">
                     {loading ? (
                       <Skeleton width={100} height={50} />
@@ -63,7 +69,9 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
                   </h2>
                 </div>
                 <div className="eachValue">
-                  <h5 className="text-white text-[15px] mb-0 font-normal">Cases Unbilled</h5>
+                  <h5 className="text-white text-[15px] mb-0 font-normal">
+                    Cases Unbilled
+                  </h5>
                   <h2 className="text-white text-[22px] font-normal leading-7">
                     {loading ? (
                       <Skeleton width={100} height={50} />
@@ -80,7 +88,9 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
               <hr className="mt-2 mb-2" />
               <div>
                 <div className="eachValue text-center">
-                  <h5 className="text-white text-[15px] mb-0 font-normal">Total Billed Amount</h5>
+                  <h5 className="text-white text-[15px] mb-0 font-normal">
+                    Total Billed Amount
+                  </h5>
                   <h2 className="text-white text-[22px] font-normal leading-7">
                     {loading ? (
                       <Skeleton width={100} height={50} />
@@ -102,14 +112,21 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
           ""
         )}
         {searchParams?.tab == "revenue" ||
-          pathName?.includes("/billing/dashboard") ? (
+        pathName?.includes("/billing/dashboard") ? (
           <div className="cardBody">
-            <div className="revenue-count rounded-md p-3" style={{
-              background: "linear-gradient(110.31deg, #4386c5, #004e92)",
-            }}>
-              <h4 className="text-[17px] text-white font-normal mb-2">Revenue Target</h4>
+            <div
+              className="revenue-count rounded-md p-3"
+              style={{
+                background: "linear-gradient(110.31deg, #4386c5, #004e92)",
+              }}
+            >
+              <h4 className="text-[17px] text-white font-normal mb-2">
+                Revenue
+              </h4>
               <div className="eachValue text-center">
-                <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Target</h5>
+                <h5 className="text-white text-[15px] mb-0 font-normal">
+                  Revenue Target
+                </h5>
                 <h2 className="text-white text-[22px] font-normal leading-7">
                   {loading ? (
                     <Skeleton width={100} height={50} />
@@ -126,7 +143,9 @@ const BillingStatsCards: FC<BillingOverViewStatsCardTypes> = ({
               </div>
               <hr className="mt-2 mb-2" />
               <div className="eachValue text-center">
-                <h5 className="text-white text-[15px] mb-0 font-normal">Revenue Received</h5>
+                <h5 className="text-white text-[15px] mb-0 font-normal">
+                  Revenue Received
+                </h5>
                 <h2 className="text-white text-[22px] font-normal leading-7">
                   {loading ? (
                     <Skeleton width={100} height={50} />

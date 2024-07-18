@@ -183,7 +183,7 @@ const MonthWiseCaseTypesStats = ({ searchParams, pathName }: any) => {
   }, [searchParams]);
 
   return (
-    <div id="billingMothWiseCaseTypeData">
+    <div id="billingMothWiseCaseTypeData" >
       <div style={{ position: "relative" }}>
         <div className="eachDataCard">
           <div className="cardHeader">

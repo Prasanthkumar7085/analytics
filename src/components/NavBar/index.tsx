@@ -166,6 +166,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
             </Grid>
           </Grid>
           <Menu
+            className="admit-settings-menu"
             sx={{
               mt: "45px",
               "& .MuiPaper-root": {
