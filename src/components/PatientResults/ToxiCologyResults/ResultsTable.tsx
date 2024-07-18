@@ -22,12 +22,11 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
         </tr>
       </thead>
       <tbody>
-        {/* Render table rows based on tableRows */}
         {toxicologyResults?.tableRows?.map((row: any, rowIndex: any) => (
           <tr key={rowIndex}>
             <td>{capitalizeAndRemoveUnderscore(row?.category)}</td>
-            <td>{"Fdsaf"}</td>
-            <td>{"FDdsfds"}</td>
+            <td>{"10 ng/mL"}</td>
+            <td>{"50-5000 ng/mL"}</td>
             {Object.keys(row.results)?.map((item: any, index) => {
               return (
                 <td

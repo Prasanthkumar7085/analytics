@@ -9,6 +9,8 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ToxiCologyResultsTable from "./ResultsTable";
+import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
+import dayjs from "dayjs";
 
 const ToxiCologyResults = () => {
   const { id } = useParams();
@@ -16,8 +18,9 @@ const ToxiCologyResults = () => {
   const [loading, setLoading] = useState(false);
   const [toxicologyResults, setToxiCologyResults] = useState<any>({});
   const [patientsData, setPatientsData] = useState<any>({});
+  const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
 
-  function formatDataForTable(data: any) {
+  const formatDataForTable = (data: any) => {
     const groupedByCategory: any = {};
 
     data.forEach((entry: any) => {
@@ -77,14 +80,26 @@ const ToxiCologyResults = () => {
     });
 
     return { resultDates, tableRows };
-  }
+  };
 
-  const getPatientToxicologyResult = async (patient_id: any) => {
+  const getPatientToxicologyResult = async (
+    patient_id: any,
+    fromDate: any,
+    toDate: any
+  ) => {
     setLoading(true);
     try {
       let queryParams: any = {
         patient_id: patient_id,
       };
+
+      if (fromDate) {
+        queryParams["from_date"] = fromDate;
+      }
+      if (toDate) {
+        queryParams["to_date"] = toDate;
+      }
+
       const response = await getAllToxicologyPatientResultsAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
         let groupedPatientResultsData: any = formatDataForTable(response?.data);
@@ -98,8 +113,20 @@ const ToxiCologyResults = () => {
     }
   };
 
+  const onChangeData = (fromDate: any, toDate: any) => {
+    if (fromDate) {
+      getPatientToxicologyResult(id, fromDate, toDate);
+      const fromDateUTC = dayjs(fromDate).toDate();
+      const toDateUTC = dayjs(toDate).toDate();
+      setDateFilterDefaultValue([fromDateUTC, toDateUTC]);
+    } else {
+      setDateFilterDefaultValue(["", ""]);
+      getPatientToxicologyResult(id, fromDate, toDate);
+    }
+  };
+
   useEffect(() => {
-    getPatientToxicologyResult(id);
+    getPatientToxicologyResult(id, "", "");
   }, []);
 
   return (
@@ -129,7 +156,6 @@ const ToxiCologyResults = () => {
             <div className="namesData">
               <label className="label">First Name</label>
               <p className="value">
-                {" "}
                 {patientsData?.first_name ? patientsData?.first_name : "--"}
               </p>
             </div>
@@ -163,62 +189,12 @@ const ToxiCologyResults = () => {
           </div>
         </div>
       </div>
-      {/* <div className="navActionsBlock">
-        <Autocomplete
-          className="defaultAutoComplete"
-          options={sortedPatientNames}
-          value={selectedPatient}
-          onChange={(event, newValue) => {
-            setSelectedPatient(newValue);
-            getPatientResults({
-              result_name: newValue,
-              patient_id: patientsData?.patient_id,
-            });
-          }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              placeholder="Select Result Code"
-              variant="outlined"
-            />
-          )}
-          style={{ width: 300 }}
+      <div className="navActionsBlock">
+        <GlobalDateRangeFilter
+          onChangeData={onChangeData}
+          dateFilterDefaultValue={dateFilterDefaultValue}
         />
-        {patientsData?.length ? (
-          <Button
-            className="bacKBtn"
-            variant="contained"
-            onClick={handleMenuClick}
-          >
-            Export
-          </Button>
-        ) : (
-          ""
-        )}
-        <Menu
-          id="export-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleMenuClose}
-        >
-          <MenuItem
-            onClick={() => {
-              handleMenuClose();
-              downloadAsPdf();
-            }}
-          >
-            Export as PDF
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              handleMenuClose();
-              exportPatientResultsTable(patientResultsData);
-            }}
-          >
-            Export as Excel
-          </MenuItem>
-        </Menu>
-      </div> */}
+      </div>
       {toxicologyResults?.["resultDates"]?.length ? (
         <Container maxWidth="xl">
           <div className="eachPatientResultTable" style={{ marginTop: "30px" }}>
