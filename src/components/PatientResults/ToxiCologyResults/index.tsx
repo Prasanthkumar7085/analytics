@@ -1,6 +1,9 @@
 import LoadingComponent from "@/components/core/LoadingComponent";
 import datePipe from "@/lib/Pipes/datePipe";
-import { getSinglePatientResultAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
+import {
+  getAllToxicologyPatientResultsAPI,
+  getSinglePatientResultAPI,
+} from "@/services/patientResults/getAllPatientResultsAPIs";
 import { Button, Container } from "@mui/material";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
@@ -10,24 +13,83 @@ import ToxiCologyResultsTable from "./ResultsTable";
 const ToxiCologyResults = () => {
   const { id } = useParams();
   const router = useRouter();
-  const [patientDetails, setPatientDetails] = useState<any>();
   const [loading, setLoading] = useState(false);
-  const [toxicologyResults, setToxiCologyResults] = useState<any>({
-    title: "ffdskdd",
-  });
+  const [toxicologyResults, setToxiCologyResults] = useState<any>({});
+  const [patientsData, setPatientsData] = useState<any>({});
 
-  const getSinglePatientResult = async () => {
+  function formatDataForTable(data: any) {
+    const groupedByCategory: any = {};
+
+    data.forEach((entry: any) => {
+      Object.keys(entry).forEach((key) => {
+        if (
+          key !== "id" &&
+          key !== "patient_id" &&
+          key !== "first_name" &&
+          key !== "last_name" &&
+          key !== "middle_name" &&
+          key !== "dob" &&
+          key !== "gender" &&
+          key !== "result_date" &&
+          key !== "accession_id" &&
+          key !== "lab_id" &&
+          key !== "created_at" &&
+          key !== "updated_at"
+        ) {
+          if (!groupedByCategory[key]) {
+            groupedByCategory[key] = [];
+          }
+          groupedByCategory[key].push({
+            result_date: entry.result_date,
+            result: entry[key].result,
+            positive: entry[key].positive,
+            consistent: entry[key]?.consistent,
+            prescribed: entry[key]?.prescribed,
+          });
+        }
+      });
+    });
+
+    const resultDates = Array.from(
+      new Set(data.map((entry: any) => entry.result_date))
+    );
+    resultDates.sort();
+
+    const tableRows = Object.keys(groupedByCategory).map((category) => {
+      const row: any = {
+        category: category,
+        results: {},
+      };
+
+      resultDates.forEach((date: any) => {
+        const result: any = groupedByCategory[category].find(
+          (item: any) => item.result_date === date
+        );
+        row.results[date] = {
+          result: result ? result.result : "",
+          positive: result?.positive,
+          consistent: result?.consistent,
+          prescribed: result?.prescribed,
+        };
+      });
+
+      return row;
+    });
+
+    return { resultDates, tableRows };
+  }
+
+  const getPatientToxicologyResult = async (patient_id: any) => {
     setLoading(true);
     try {
-      const response = await getSinglePatientResultAPI(id);
+      let queryParams: any = {
+        patient_id: patient_id,
+      };
+      const response = await getAllToxicologyPatientResultsAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
-        setPatientDetails(response?.data);
-        // getPatientResults({
-        //   patient_id: response?.data?.patient_id,
-        // });
-        // getPatientNames({
-        //   patient_id: response?.data?.patient_id,
-        // });
+        let groupedPatientResultsData: any = formatDataForTable(response?.data);
+        setPatientsData(response?.data[0]);
+        setToxiCologyResults(groupedPatientResultsData);
       }
     } catch (err) {
       console.error(err);
@@ -37,7 +99,7 @@ const ToxiCologyResults = () => {
   };
 
   useEffect(() => {
-    getSinglePatientResult();
+    getPatientToxicologyResult(id);
   }, []);
 
   return (
@@ -58,7 +120,7 @@ const ToxiCologyResults = () => {
             <div className="namesData">
               <label className="label">Patient ID</label>
               <p className="value">
-                {patientDetails?.patient_id ? patientDetails?.patient_id : "--"}
+                {patientsData?.patient_id ? patientsData?.patient_id : "--"}
               </p>
             </div>
           </div>
@@ -68,7 +130,7 @@ const ToxiCologyResults = () => {
               <label className="label">First Name</label>
               <p className="value">
                 {" "}
-                {patientDetails?.first_name ? patientDetails?.first_name : "--"}
+                {patientsData?.first_name ? patientsData?.first_name : "--"}
               </p>
             </div>
           </div>
@@ -77,7 +139,7 @@ const ToxiCologyResults = () => {
             <div className="namesData">
               <label className="label">Last Name</label>
               <p className="value">
-                {patientDetails?.last_name ? patientDetails?.last_name : "--"}
+                {patientsData?.last_name ? patientsData?.last_name : "--"}
               </p>
             </div>
           </div>
@@ -86,7 +148,7 @@ const ToxiCologyResults = () => {
             <div className="namesData">
               <label className="label">Gender</label>
               <p className="value">
-                {patientDetails?.gender ? patientDetails?.gender : "--"}
+                {patientsData?.gender ? patientsData?.gender : "--"}
               </p>
             </div>
           </div>
@@ -95,12 +157,7 @@ const ToxiCologyResults = () => {
             <div className="namesData">
               <label className="label">Date of Birth</label>
               <p className="value">
-                {datePipe(
-                  patientDetails?.date_of_birth
-                    ? patientDetails?.date_of_birth
-                    : "--",
-                  "MM-DD-YYYY"
-                )}
+                {patientsData?.dob ? patientsData?.dob : "--"}
               </p>
             </div>
           </div>
@@ -115,7 +172,7 @@ const ToxiCologyResults = () => {
             setSelectedPatient(newValue);
             getPatientResults({
               result_name: newValue,
-              patient_id: patientDetails?.patient_id,
+              patient_id: patientsData?.patient_id,
             });
           }}
           renderInput={(params) => (
@@ -162,23 +219,17 @@ const ToxiCologyResults = () => {
           </MenuItem>
         </Menu>
       </div> */}
-      {Object.keys(toxicologyResults).length ? (
-        Object.keys(toxicologyResults).map((title, index) => (
-          <Container maxWidth="xl" key={index}>
-            <div
-              className="eachPatientResultTable"
-              key={index}
-              style={{ marginTop: "30px" }}
-            >
-              <h2 className="tableHeading">{"Tale Title"}</h2>
-              <div className="allPatientResultTable">
-                <div className="tableContainer">
-                  <ToxiCologyResultsTable />
-                </div>
+      {toxicologyResults?.["resultDates"]?.length ? (
+        <Container maxWidth="xl">
+          <div className="eachPatientResultTable" style={{ marginTop: "30px" }}>
+            <h2 className="tableHeading">{"Toxicology Tests"}</h2>
+            <div className="allPatientResultTable">
+              <div className="tableContainer">
+                <ToxiCologyResultsTable toxicologyResults={toxicologyResults} />
               </div>
             </div>
-          </Container>
-        ))
+          </div>
+        </Container>
       ) : !loading ? (
         <div
           style={{

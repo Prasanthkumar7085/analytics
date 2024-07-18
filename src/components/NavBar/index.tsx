@@ -71,48 +71,57 @@ const NavBar: FC<pageProps> = ({ children }) => {
                 width={160}
               />
             </Grid>
+
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-5">
-                {AnalyticsNavBarOptions?.length &&
-                !pathname?.includes("billing")
-                  ? AnalyticsNavBarOptions?.map((item, index) => {
-                      return hasAccessOrNot(`/${item?.link}`, userType) &&
-                        userType ? (
-                        <li
-                          onClick={() => router.push(`/${item?.link}`)}
-                          className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-sm hover:no-underline focus:no-underline ${
-                            styles[
-                              pathname == `/${item?.link}`
-                                ? "activePagename"
-                                : "active"
-                            ]
-                          }`}
-                        >
-                          {item?.title}
-                        </li>
-                      ) : (
-                        ""
-                      );
-                    })
-                  : BillingNavBarOptions?.map((item, index) => {
-                      return hasAccessOrNot(`/${item?.link}`, userType) &&
-                        userType ? (
-                        <li
-                          onClick={() => router.push(`/${item?.link}`)}
-                          className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline text-sm ${
-                            styles[
-                              pathname?.includes(`/${item?.link}`)
-                                ? "activePagename"
-                                : "active"
-                            ]
-                          }`}
-                        >
-                          {item?.title}
-                        </li>
-                      ) : (
-                        ""
-                      );
-                    })}
+                {pathname?.includes("toxicology-results") ||
+                pathname?.includes("patient-results") ? (
+                  ""
+                ) : (
+                  <>
+                    {AnalyticsNavBarOptions?.length &&
+                    !pathname?.includes("billing")
+                      ? AnalyticsNavBarOptions?.map((item, index) => {
+                          return hasAccessOrNot(`/${item?.link}`, userType) &&
+                            userType ? (
+                            <li
+                              onClick={() => router.push(`/${item?.link}`)}
+                              className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-sm hover:no-underline focus:no-underline ${
+                                styles[
+                                  pathname == `/${item?.link}`
+                                    ? "activePagename"
+                                    : "active"
+                                ]
+                              }`}
+                            >
+                              {item?.title}
+                            </li>
+                          ) : (
+                            ""
+                          );
+                        })
+                      : BillingNavBarOptions?.map((item, index) => {
+                          return hasAccessOrNot(`/${item?.link}`, userType) &&
+                            userType ? (
+                            <li
+                              onClick={() => router.push(`/${item?.link}`)}
+                              className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline text-sm ${
+                                styles[
+                                  pathname?.includes(`/${item?.link}`)
+                                    ? "activePagename"
+                                    : "active"
+                                ]
+                              }`}
+                            >
+                              {item?.title}
+                            </li>
+                          ) : (
+                            ""
+                          );
+                        })}
+                  </>
+                )}
+
                 {adminAccess() ? (
                   <Box
                     className={styles.navList}
@@ -247,6 +256,16 @@ const NavBar: FC<pageProps> = ({ children }) => {
             ) : (
               ""
             )}
+            <MenuItem
+              className={styles.dropDownMenu}
+              id="admin-settings-menu-items"
+              onClick={() => {
+                window.open("/toxicology-results", "_blank");
+                handleCloseAdminMenu();
+              }}
+            >
+              2.Toxicology Results
+            </MenuItem>
           </Menu>
 
           <Menu

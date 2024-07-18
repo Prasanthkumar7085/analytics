@@ -1,8 +1,8 @@
 "use client";
 import { Button, TextField } from "@mui/material";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { DatePicker } from "rsuite";
 import "rsuite/dist/rsuite.css";
 import datePipe from "@/lib/Pipes/datePipe";
@@ -17,7 +17,7 @@ const PatientDetails = ({
   lastName,
   setDateOfBirth,
   dateOfBirth,
-  loading
+  loading,
 }: any) => {
   const router = useRouter();
   const params = useSearchParams();
@@ -25,7 +25,7 @@ const PatientDetails = ({
   const onChangeDateOfBirth = (date: any) => {
     setDateOfBirth(date);
   };
-
+  const pathName = usePathname();
   let dateFormat = datePipe(dateOfBirth, "YYYY-MM-DD");
 
   const patientcolumns = [
@@ -56,7 +56,9 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.first_name,
       id: "first_name",
       sortDescFirst: false,
-      cell: (info: any) => <span>{info.getValue() ? info.getValue() : "--"}</span>,
+      cell: (info: any) => (
+        <span>{info.getValue() ? info.getValue() : "--"}</span>
+      ),
       header: () => <span>FIRST NAME</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -65,7 +67,9 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.last_name,
       sortDescFirst: false,
       id: "last_name",
-      cell: (info: any) => <span>{info.getValue() ? info.getValue() : "--"}</span>,
+      cell: (info: any) => (
+        <span>{info.getValue() ? info.getValue() : "--"}</span>
+      ),
       header: () => <span>LAST NAME</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -74,9 +78,13 @@ const PatientDetails = ({
       accessorFn: (row: any) => row.date_of_birth,
       sortDescFirst: false,
       id: "date_of_birth",
-      cell: (info: any) => (
-        <span>{datePipe(info.getValue() ? info.getValue() : "--", "MM-DD-YYYY")}</span>
-      ),
+      cell: (info: any) => {
+        return (
+          <span>
+            {datePipe(info.getValue() ? info.getValue() : "--", "MM-DD-YYYY")}
+          </span>
+        );
+      },
       header: () => <span>DATE OF BIRTH</span>,
       footer: (props: any) => props.column.id,
       width: "150px",
@@ -102,12 +110,93 @@ const PatientDetails = ({
       width: "150px",
     },
   ];
+
+  const patientcolumnsForToxiResults = [
+    {
+      accessorFn: (row: any) => row.serial,
+      id: "id",
+      enableSorting: false,
+      header: () => <span>S.No</span>,
+      footer: (props: any) => props.column.id,
+      width: "60px",
+      cell: ({ row, table }: any) =>
+        (table
+          .getSortedRowModel()
+          ?.flatRows?.findIndex((flatRow: any) => flatRow.id === row.id) || 0) +
+        1,
+    },
+    {
+      accessorFn: (row: any) => row.patient_id,
+      id: "patient_id",
+      header: () => <span>PATIENT ID</span>,
+      cell: (info: any) => {
+        return <span>{info.getValue() ? info.getValue() : "--"}</span>;
+      },
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.first_name,
+      id: "first_name",
+      sortDescFirst: false,
+      cell: (info: any) => (
+        <span>{info.getValue() ? info.getValue() : "--"}</span>
+      ),
+      header: () => <span>FIRST NAME</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.last_name,
+      sortDescFirst: false,
+      id: "last_name",
+      cell: (info: any) => (
+        <span>{info.getValue() ? info.getValue() : "--"}</span>
+      ),
+      header: () => <span>LAST NAME</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row.dob,
+      sortDescFirst: false,
+      id: "dob",
+      cell: (info: any) => {
+        return <span>{info.getValue() ? info.getValue() : "--"}</span>;
+      },
+      header: () => <span>DATE OF BIRTH</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+    {
+      accessorFn: (row: any) => row,
+      sortDescFirst: false,
+      id: "actions",
+      cell: (info: any) => (
+        <span>
+          <Button
+            variant="outlined"
+            onClick={() => {
+              router.push(
+                `/toxicology-results/${info?.row?.original?.patient_id}`
+              );
+            }}
+          >
+            View
+          </Button>
+        </span>
+      ),
+      header: () => <span>ACTIONS</span>,
+      footer: (props: any) => props.column.id,
+      width: "150px",
+    },
+  ];
   useEffect(() => {
-    document.body.classList.add('navbar-type-two', 'gray-bg');
+    document.body.classList.add("navbar-type-two", "gray-bg");
 
     // Clean up by removing the class when the component is unmounted
     return () => {
-      document.body.classList.remove('navbar-type-two', 'gray-bg');
+      document.body.classList.remove("navbar-type-two", "gray-bg");
     };
   }, []);
 
@@ -162,7 +251,11 @@ const PatientDetails = ({
             </div>
           </div>
           <Button
-            className={!(firstName || lastName || dateOfBirth) ? "btnWithDisabled" : "bacKBtn"}
+            className={
+              !(firstName || lastName || dateOfBirth)
+                ? "btnWithDisabled"
+                : "bacKBtn"
+            }
             // sx={{ cursor: !(firstName || lastName || dateOfBirth) ? "not-allowed" : "pointer" }}
             variant="outlined"
             disabled={!(firstName || lastName || dateOfBirth)}
@@ -187,25 +280,29 @@ const PatientDetails = ({
         </div>
         <div className="cardBody">
           {getDetails?.length ? (
-
             <SingleColumnTable
               data={getDetails}
-              columns={patientcolumns}
+              columns={
+                pathName?.includes("toxicology-results")
+                  ? patientcolumnsForToxiResults
+                  : patientcolumns
+              }
               loading={false}
             />
-
+          ) : !loading ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Image src="/Search Image.svg" alt="" height={210} width={410} />
+              <h3 className="no-data-text">No Data</h3>
+            </div>
           ) : (
-            !loading ? (
-              <div style={{ display: "flex", alignItems: 'center', justifyContent: "center", flexDirection: "column" }}>
-                <Image
-                  src="/Search Image.svg"
-                  alt=""
-                  height={210}
-                  width={410}
-                />
-                <h3 className="no-data-text">No Data</h3>
-              </div>
-            ) : ""
+            ""
           )}
         </div>
       </div>

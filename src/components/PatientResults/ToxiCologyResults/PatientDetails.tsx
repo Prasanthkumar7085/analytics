@@ -1,10 +1,10 @@
+import LoadingComponent from "@/components/core/LoadingComponent";
 import { addSerial } from "@/lib/Pipes/addSerial";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { getAllToxocologyPatientDetailsAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PatientDetails from "../PatientDetails";
-import LoadingComponent from "@/components/core/LoadingComponent";
-import { getAllPatientDetailsAPI } from "@/services/patientResults/getAllPatientResultsAPIs";
 
 const ToxiCologyPatientDetails = () => {
   const router = useRouter();
@@ -41,7 +41,7 @@ const ToxiCologyPatientDetails = () => {
 
     router.push(`${pathname}${queryString}`);
     try {
-      const response = await getAllPatientDetailsAPI(queryParams);
+      const response = await getAllToxocologyPatientDetailsAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
         const modifieData = addSerial(
           response?.data,

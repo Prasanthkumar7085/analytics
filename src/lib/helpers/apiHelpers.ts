@@ -400,3 +400,8 @@ export const formatTeamWiseSalesRepsData = (data: any) => {
   });
   return formatData;
 };
+export const capitalizeAndRemoveUnderscore = (text: any) => {
+  return text
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (char: string) => char.toUpperCase());
+};
