@@ -134,8 +134,8 @@ const GraphDialogForFacilities = ({
           margin: "0 !important",
           width: "100%",
           height: "calc(100% - 10px)",
-          maxWidth: "80% !important",
-          maxHeight: "600px",
+          maxWidth: "75% !important",
+          maxHeight: "520px",
         },
         "& .MuiTypography-root": {
           color: "#fff",
@@ -148,8 +148,7 @@ const GraphDialogForFacilities = ({
             setGraphDialogOpen(false);
           }}
         >
-          <CloseIcon />
-        </IconButton>
+          <CloseIcon />        </IconButton>
       </div>
       <div className="hightChartsGraph">
         <HighchartsReact highcharts={Highcharts} options={options} />

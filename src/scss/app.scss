@@ -625,10 +625,8 @@ table {
   }
 
   table {
-
     td,
     th {
-
       &:nth-child(2),
       &:nth-child(3),
       &:nth-child(4) {
@@ -681,7 +679,6 @@ table {
   tfoot {
     tr {
       td {
-
         &:nth-child(6),
         &:nth-child(7),
         &:nth-child(8) {
@@ -701,17 +698,18 @@ table {
   background-color: #1414f4;
   opacity: 0.8;
   background-image: radial-gradient(circle at center center, #444cf7, #1414f4),
-    repeating-radial-gradient(circle at center center,
+    repeating-radial-gradient(
+      circle at center center,
       #444cf7,
       #444cf7,
       10px,
       transparent 20px,
-      transparent 10px);
+      transparent 10px
+    );
   background-blend-mode: multiply;
 }
 
 #mothWiseCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -782,7 +780,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -840,7 +838,6 @@ table {
 }
 
 #mothWiseSingleCaseTypeData {
-
   table thead th:first-child,
   table tbody td:first-child,
   table tfoot td:first-child {
@@ -920,7 +917,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -1012,7 +1009,7 @@ table {
       }
     }
 
-    .remove-tooltip>div {
+    .remove-tooltip > div {
       height: 20px !important;
     }
 
@@ -1149,7 +1146,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1193,7 +1189,6 @@ $actionButtonWidth: 95px;
 
   table {
     tr {
-
       td,
       th {
         &:nth-child(3) {
@@ -1241,7 +1236,7 @@ $actionButtonWidth: 95px;
 .hightChartsGraph {
   padding: 20px;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  margin: 30px;
+  margin: auto 30px;
   border-radius: 7px;
 }
 
@@ -1441,7 +1436,6 @@ $actionButtonWidth: 95px;
 
 .s-no-column {
   table {
-
     thead th:first-child,
     tbody td:first-child,
     tfoot td:first-child {
@@ -1497,10 +1491,8 @@ $actionButtonWidth: 95px;
 #insuranceCaseTypesData {
   table {
     tr {
-
       td,
       th {
-
         &:nth-child(3),
         &:nth-child(4),
         &:nth-child(5),
@@ -1589,7 +1581,7 @@ input:-webkit-autofill {
   .tableFiltersContainer {
     padding-right: 0;
 
-    >div {
+    > div {
       justify-content: flex-end;
     }
 
@@ -1645,7 +1637,6 @@ input:-webkit-autofill {
 #BillingInsuranceCasesTypes {
   table {
     tr {
-
       td,
       th {
         &:first-child {
@@ -1660,7 +1651,17 @@ input:-webkit-autofill {
       }
     }
   }
+  // .remove-tooltip {
+  //   .highcharts-container {
+  //     height: 30px !important;
+  //   }
+  // }
+  .remove-tooltip > div {
+    height: 30px !important;
+  }
 }
+
+
 
 // External Components
 @import "./components/patientResults.scss";

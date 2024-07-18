@@ -182,15 +182,15 @@ const BillingOverViewCaseTypes = ({
           </div>
         </div>
         <div className="cardBody">
-          <div style={{ display: "flex", height: "40vh" }}>
-            <div style={{ width: "35%" }}>
+          <div style={{ display: "flex", height: "50vh",margin:"1rem 0",alignItems:"center",}}>
+            <div style={{ width: "40%" }}>
               <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
                 containerProps={{
                   style: {
-                    height: "280px",
-                    width: "280px",
+                    height: "320px",
+                    width: "320px",
                     background: "none",
                   },
                 }}
