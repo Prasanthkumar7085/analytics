@@ -36,7 +36,7 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
     "1_facilities_total_facilities",
     "1_volume_total_cases",
     "1_volume_total_targets",
-    "role_id"
+    "role_id",
   ];
 
   const table = useReactTable({
@@ -170,7 +170,7 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
       return "#ffebe9";
     }
   };
-
+  console.log(totalSumValues, "Fdsfdfdfd");
   return (
     <div
       className="tableContainer"
@@ -246,12 +246,12 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                           width: "100%",
                           backgroundColor:
                             row?.original.hasOwnProperty("target_reached") &&
-                              cell?.id &&
-                              cell?.id.includes("total_cases")
+                            cell?.id &&
+                            cell?.id.includes("total_cases")
                               ? getBackgroundColor(
-                                row?.original?.total_cases,
-                                row?.original?.total_targets
-                              )
+                                  row?.original?.total_cases,
+                                  row?.original?.total_targets
+                                )
                               : "",
                         }}
                       >
@@ -317,8 +317,8 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
                   {index == 0 || index == 1
                     ? item.value
                     : item.dolorSymbol
-                      ? formatMoney(item.value)
-                      : item?.value?.toLocaleString()}
+                    ? formatMoney(item.value)
+                    : item?.value?.toLocaleString()}
                 </td>
               );
             })}

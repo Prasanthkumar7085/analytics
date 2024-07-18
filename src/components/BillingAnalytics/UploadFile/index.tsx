@@ -79,7 +79,7 @@ const UploadDataWithFile = () => {
   }, [selectedTabValue]);
 
   return (
-    <div id="uploadFile">
+    <div id="uploadFile" className="bg-gray-50 p-10 border rounded-lg">
       <div className="totalUploadBlocks">
         <div className="tabsBlock">
           <div>
@@ -89,14 +89,10 @@ const UploadDataWithFile = () => {
             />
           </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
+        <div className="flex items-center justify-center mt-5 "
         >
           <Button
+            className="bg-blue-500 px-5 text-white text-[13px]"
             onClick={() => {
               if (params.get("tab") == "billed") {
                 exampleBillingCsvFile();
@@ -110,7 +106,7 @@ const UploadDataWithFile = () => {
               : "Download Sample Revenue File"}
           </Button>
         </div>
-        <Grid container spacing={2} className="mb-5">
+        <Grid container spacing={2} className="mt-5 ">
           <Grid item xs={12}>
             <div className="upload-container">
               {fileName ? (
@@ -145,7 +141,7 @@ const UploadDataWithFile = () => {
             </div>
           </Grid>
           {Object.keys(fileData)?.length ? (
-            <Grid item xs={12}>
+            <Grid item xs={12} className="mt-5">
               <ErrorsTable
                 errors={fileData?.errors}
                 notExisted={fileData?.data?.notExisted}
