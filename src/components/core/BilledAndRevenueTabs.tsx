@@ -8,7 +8,7 @@ import { Autocomplete, Box, Paper, Tab, Tabs, TextField } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { prepareURLEncodedParams } from "../utils/prepareUrlEncodedParams";
-import "../core/BilledAndRevenueTabs.scss"
+import "../core/BilledAndRevenueTabs.scss";
 import Image from "next/image";
 const BilledAndRevenueTabs = ({
   selectedTabValue,
@@ -49,9 +49,17 @@ const BilledAndRevenueTabs = ({
       >
         <Tab
           label={
-            <div style={{ display: 'flex', alignItems: 'center' }} className="gap-2">
-              {value === 0 ? (
-                <Image src="/billing-active.svg" alt="billed-active" width={15} height={15} />
+            <div
+              style={{ display: "flex", alignItems: "center" }}
+              className="gap-2"
+            >
+              {params?.get("tab") == "billed" ? (
+                <Image
+                  src="/billing-active.svg"
+                  alt="billed-active"
+                  width={15}
+                  height={15}
+                />
               ) : (
                 <Image src="/billing.svg" alt="billed" width={15} height={15} />
               )}
@@ -61,11 +69,24 @@ const BilledAndRevenueTabs = ({
         />
         <Tab
           label={
-            <div style={{ display: 'flex', alignItems: 'center' }} className="gap-2">
-              {value === 1 ? (
-                <Image src="/revenue-active.svg" alt="revenue-active" width={15} height={15} />
+            <div
+              style={{ display: "flex", alignItems: "center" }}
+              className="gap-2"
+            >
+              {params?.get("tab") == "revenue" ? (
+                <Image
+                  src="/revenue-active.svg"
+                  alt="revenue-active"
+                  width={15}
+                  height={15}
+                />
               ) : (
-                <Image src="/revenue.svg" alt="revenue" width={15} height={15} />
+                <Image
+                  src="/revenue.svg"
+                  alt="revenue"
+                  width={15}
+                  height={15}
+                />
               )}
               Revenue
             </div>

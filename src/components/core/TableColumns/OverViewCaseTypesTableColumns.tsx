@@ -247,7 +247,7 @@ export const BilledOverViewcolumns = [
     cell: (info: any) => (
       <span className={styles.totalCasesRow}>{info.getValue()}</span>
     ),
-    header: () => <span className={styles.tableHeading}>BILLED CASES</span>,
+    header: () => <span className={styles.tableHeading}>CASES</span>,
     footer: (props: any) => props.column.id,
     width: "150px",
   },
@@ -260,7 +260,7 @@ export const BilledOverViewcolumns = [
         {formatMoney(info.getValue())}
       </span>
     ),
-    header: () => <span className={styles.tableHeading}>BILLED AMOUNT</span>,
+    header: () => <span className={styles.tableHeading}>BILLED</span>,
     footer: (props: any) => props.column.id,
     width: "150px",
   },
@@ -309,7 +309,7 @@ export const RevenueOverViewcolumns = [
         {formatMoney(info.getValue())}
       </span>
     ),
-    header: () => <span className={styles.tableHeading}>RECEIVED AMOUNT</span>,
+    header: () => <span className={styles.tableHeading}>RECEIVED</span>,
     footer: (props: any) => props.column.id,
     width: "150px",
   },

@@ -173,7 +173,7 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
           <div className="cardHeader">
             <h3>
               <Image alt="" src="/tableDataIcon.svg" height={20} width={20} />
-              Insurances Case Types
+              Insurances-wise
             </h3>
             <div
               style={{
@@ -203,7 +203,6 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
             </div>
           </div>
           <div className="cardBody">
-
             <BillingAndRevenueCoreTable
               data={monthWiseInsuranceData}
               columns={groupAllBilledAndRevenueColumns({
@@ -261,9 +260,6 @@ const InsuranceWiseDetails = ({ searchParams }: any) => {
             />
           </div>
         </div>
-
-
-
       </div>
     </div>
   );

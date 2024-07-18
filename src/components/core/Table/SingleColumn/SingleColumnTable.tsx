@@ -250,7 +250,7 @@ const SingleColumnTable: FC<pageProps> = ({
           >
             {totalSumValues?.map((item: any, index: number) => {
               return (
-                <td key={index}>
+                <td key={index} style={{ paddingInline: "1.5rem" }}>
                   {item
                     ? index == 0
                       ? item.value
