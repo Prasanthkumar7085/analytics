@@ -300,7 +300,6 @@ export const exportToExcelRevenueInsurancesData = (
   insuranceData: any,
   totalSumValue: any
 ) => {
-  console.log(totalSumValue, "fsadfdsfsad");
   const formattedData = insuranceData.map((obj: any, index: number) => {
     return [
       index + 1,

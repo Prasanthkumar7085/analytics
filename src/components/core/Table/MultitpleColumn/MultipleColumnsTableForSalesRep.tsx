@@ -170,7 +170,6 @@ const MultipleColumnsTableForSalesRep: FC<pageProps> = ({
       return "#ffebe9";
     }
   };
-  console.log(totalSumValues, "Fdsfdfdfd");
   return (
     <div
       className="tableContainer"

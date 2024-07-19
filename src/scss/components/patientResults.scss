@@ -58,7 +58,11 @@
     align-items: center;
     column-gap: 1rem;
     padding: 10px;
-
+    .tableHeading {
+      color: #1b2459;
+      font-size: 1.2rem;
+      margin: 0;
+    }
     .defaultAutoComplete {
       .MuiInputBase-root {
         height: 35px;
@@ -183,7 +187,6 @@
 
     table {
       tr {
-
         td,
         th {
           &:nth-child(1) {
@@ -225,7 +228,6 @@
   margin-right: 1rem;
   box-shadow: none;
 
-
   &:hover {
     background-color: #273480;
     color: #fff;
@@ -254,10 +256,7 @@
   }
 }
 
-
-
 #patientDetails {
-
   .subNavBar {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -268,7 +267,6 @@
         margin-top: -4px;
       }
     }
-
   }
 
   .patientDetailsTable {
@@ -285,7 +283,6 @@
 
   table {
     tr {
-
       td,
       th {
         &:first-child {
