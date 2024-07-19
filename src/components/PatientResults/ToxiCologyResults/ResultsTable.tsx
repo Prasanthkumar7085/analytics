@@ -14,19 +14,23 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
           {toxicologyResults?.["resultDates"]?.map(
             (result: any, resultIndex: any) => (
               <th style={{ minWidth: "50px" }} key={resultIndex}>
-                {momentWithTimezone(result?.date)}
+                {momentWithTimezone(result)}
               </th>
             )
           )}
-          <th style={{ minWidth: "120px" }}>Trend</th>
+          <th style={{ minWidth: "120px" }}>TREND</th>
         </tr>
       </thead>
       <tbody>
         {toxicologyResults?.tableRows?.map((row: any, rowIndex: any) => (
           <tr key={rowIndex}>
             <td>{capitalizeAndRemoveUnderscore(row?.category)}</td>
-            <td>{"10 ng/mL"}</td>
-            <td>{"50-5000 ng/mL"}</td>
+            <td>
+              {row?.cutoff ? row?.cutoff : "-"} {row?.units}
+            </td>
+            <td>
+              {row?.ref_range ? row?.ref_range : "-"} {row?.units}
+            </td>
             {Object.keys(row.results)?.map((item: any, index) => {
               return (
                 <td

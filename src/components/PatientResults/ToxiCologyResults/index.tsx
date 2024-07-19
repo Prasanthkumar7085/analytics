@@ -1,82 +1,96 @@
 import LoadingComponent from "@/components/core/LoadingComponent";
 import datePipe from "@/lib/Pipes/datePipe";
 import {
+  getAllToxicologyPatientRangesAPI,
   getAllToxicologyPatientResultsAPI,
   getSinglePatientResultAPI,
 } from "@/services/patientResults/getAllPatientResultsAPIs";
 import { Button, Container } from "@mui/material";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation";
 import { useEffect, useState } from "react";
 import ToxiCologyResultsTable from "./ResultsTable";
 import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
 import dayjs from "dayjs";
+import ToxiResultsFilters from "./ToxiResultsFilters";
 
 const ToxiCologyResults = () => {
   const { id } = useParams();
   const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [toxicologyResults, setToxiCologyResults] = useState<any>({});
   const [patientsData, setPatientsData] = useState<any>({});
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
+  const [completeData, setCompleteData] = useState<any>({});
+  const [searchParams, setSearchParams] = useState(
+    Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+  );
 
-  const formatDataForTable = (data: any) => {
+  const formatDataForTable = (data: any, rangesData: any) => {
+    const excludedKeys = [
+      "id",
+      "patient_id",
+      "first_name",
+      "last_name",
+      "middle_name",
+      "dob",
+      "gender",
+      "result_date",
+      "accession_id",
+      "lab_id",
+      "created_at",
+      "updated_at",
+    ];
+
     const groupedByCategory: any = {};
+    const resultDatesSet = new Set<string>();
 
     data.forEach((entry: any) => {
       Object.keys(entry).forEach((key) => {
-        if (
-          key !== "id" &&
-          key !== "patient_id" &&
-          key !== "first_name" &&
-          key !== "last_name" &&
-          key !== "middle_name" &&
-          key !== "dob" &&
-          key !== "gender" &&
-          key !== "result_date" &&
-          key !== "accession_id" &&
-          key !== "lab_id" &&
-          key !== "created_at" &&
-          key !== "updated_at"
-        ) {
+        if (!excludedKeys.includes(key)) {
           if (!groupedByCategory[key]) {
             groupedByCategory[key] = [];
           }
+          const { result, positive, consistent, prescribed } = entry[key];
           groupedByCategory[key].push({
             result_date: entry.result_date,
-            result: entry[key].result,
-            positive: entry[key].positive,
-            consistent: entry[key]?.consistent,
-            prescribed: entry[key]?.prescribed,
+            result: result,
+            positive: positive,
+            consistent: consistent,
+            prescribed: prescribed,
           });
         }
       });
+      resultDatesSet.add(entry.result_date);
     });
 
-    const resultDates = Array.from(
-      new Set(data.map((entry: any) => entry.result_date))
-    );
-    resultDates.sort();
+    const resultDates = Array.from(resultDatesSet).sort();
 
     const tableRows = Object.keys(groupedByCategory).map((category) => {
-      const row: any = {
-        category: category,
-        results: {},
-      };
+      const resultsByDate: any = {};
+      const ranges = rangesData.find(
+        (item: any) => item.mapped_key === category
+      );
 
-      resultDates.forEach((date: any) => {
-        const result: any = groupedByCategory[category].find(
+      resultDates.forEach((date) => {
+        const result = groupedByCategory[category].find(
           (item: any) => item.result_date === date
         );
-        row.results[date] = {
+        resultsByDate[date] = {
           result: result ? result.result : "",
           positive: result?.positive,
           consistent: result?.consistent,
           prescribed: result?.prescribed,
         };
       });
-
-      return row;
+      return { category, ...ranges, results: resultsByDate };
     });
 
     return { resultDates, tableRows };
@@ -102,9 +116,14 @@ const ToxiCologyResults = () => {
 
       const response = await getAllToxicologyPatientResultsAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
-        let groupedPatientResultsData: any = formatDataForTable(response?.data);
+        let rangesData = await getPatientToxicologyRangeValues(queryParams);
+        let groupedPatientResultsData: any = formatDataForTable(
+          response?.data,
+          rangesData
+        );
         setPatientsData(response?.data[0]);
         setToxiCologyResults(groupedPatientResultsData);
+        setCompleteData(groupedPatientResultsData);
       }
     } catch (err) {
       console.error(err);
@@ -113,21 +132,29 @@ const ToxiCologyResults = () => {
     }
   };
 
-  const onChangeData = (fromDate: any, toDate: any) => {
-    if (fromDate) {
-      getPatientToxicologyResult(id, fromDate, toDate);
-      const fromDateUTC = dayjs(fromDate).toDate();
-      const toDateUTC = dayjs(toDate).toDate();
-      setDateFilterDefaultValue([fromDateUTC, toDateUTC]);
-    } else {
-      setDateFilterDefaultValue(["", ""]);
-      getPatientToxicologyResult(id, fromDate, toDate);
+  const getPatientToxicologyRangeValues = async (queryParams: any) => {
+    setLoading(true);
+    try {
+      const response = await getAllToxicologyPatientRangesAPI(queryParams);
+      if (response.status == 200 || response.status == 201) {
+        return response?.data;
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getPatientToxicologyResult(id, "", "");
   }, []);
+
+  useEffect(() => {
+    setSearchParams(
+      Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
+    );
+  }, [params]);
 
   return (
     <div style={{ paddingTop: "10px" }}>
@@ -190,15 +217,23 @@ const ToxiCologyResults = () => {
         </div>
       </div>
       <div className="navActionsBlock">
-        <GlobalDateRangeFilter
-          onChangeData={onChangeData}
+        <h2 className="tableHeading">{"Toxicology Tests"}</h2>
+        <ToxiResultsFilters
+          getPatientToxicologyResult={getPatientToxicologyResult}
+          id={id}
+          setDateFilterDefaultValue={setDateFilterDefaultValue}
           dateFilterDefaultValue={dateFilterDefaultValue}
+          toxicologyResults={toxicologyResults}
+          setToxiCologyResults={setToxiCologyResults}
+          searchParams={searchParams}
+          router={router}
+          pathname={pathname}
+          completeData={completeData}
         />
       </div>
       {toxicologyResults?.["resultDates"]?.length ? (
         <Container maxWidth="xl">
-          <div className="eachPatientResultTable" style={{ marginTop: "30px" }}>
-            <h2 className="tableHeading">{"Toxicology Tests"}</h2>
+          <div className="eachPatientResultTable">
             <div className="allPatientResultTable">
               <div className="tableContainer">
                 <ToxiCologyResultsTable toxicologyResults={toxicologyResults} />

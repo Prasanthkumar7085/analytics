@@ -74,6 +74,21 @@ export const getAllToxicologyPatientResultsAPI = async (params: any) => {
   }
 };
 
+export const getAllToxicologyPatientRangesAPI = async (params: any) => {
+  try {
+    const { success, data } = await $globalFetch.get(
+      "/toxicology-results/config",
+      params
+    );
+    if (!success) {
+      return handleAPIErrorResponse(data);
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export const getAllToxocologyPatientDetailsAPI = async (params: any) => {
   try {
     const { success, data } = await $globalFetch.get(
