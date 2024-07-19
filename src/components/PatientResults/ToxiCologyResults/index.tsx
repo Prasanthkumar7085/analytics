@@ -115,7 +115,7 @@ const ToxiCologyResults = () => {
 
   const getPatientToxicologyResult = async ({
     patient_id,
-    test,
+    test = searchParams?.test,
     fromDate,
     toDate,
     consistent = searchParams?.consistent,
@@ -237,14 +237,14 @@ const ToxiCologyResults = () => {
   useEffect(() => {
     getPatientToxicologyResult({
       patient_id: id,
-      test: searchParams?.test,
-      fromDate: searchParams?.from_date,
-      toDate: searchParams?.to_date,
-      consistent: searchParams?.consistent,
-      prescribed: searchParams?.prescribed,
-      positive: searchParams?.positive,
+      test: params?.get("test"),
+      fromDate: params?.get("from_date"),
+      toDate: params?.get("to_date"),
+      consistent: params?.get("consistent"),
+      prescribed: params?.get("prescribed"),
+      positive: params?.get("positive"),
     });
-  }, [searchParams]);
+  }, [params]);
 
   useEffect(() => {
     setSearchParams(

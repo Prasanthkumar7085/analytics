@@ -14,6 +14,7 @@ const GraphDialogForToxiResults = ({
   graphData,
   dates,
 }: any) => {
+  console.log(graphData, "fsdaodsodsodos");
   const getGraphValuesData = (data: any) => {
     const resultArrayWithDates = Object.entries(data.results).map(
       ([date, entry]: any) => [date, entry.result]
@@ -28,6 +29,50 @@ const GraphDialogForToxiResults = ({
     yAxis: {
       title: {
         text: `Reference Range ${graphData?.units}`,
+      },
+      min: Math.max(0, +graphData?.lower_limit * 0.8),
+      max: Math.max(+graphData?.upper_limit, +graphData?.cutoff) * 1.2,
+      plotLines: [
+        {
+          value: +graphData?.lower_limit,
+          color: "red",
+          dashStyle: "line",
+          width: 2,
+          label: {
+            text: `Lower Limit (${graphData?.lower_limit} ng/mL)`,
+          },
+        },
+        {
+          value: +graphData?.cutoff,
+          color: "green",
+          dashStyle: "shortdash",
+          width: 2,
+          label: {
+            text: `Normal (${graphData?.cutoff} ng/mL)`,
+          },
+        },
+        {
+          value: +graphData?.upper_limit,
+          color: "red",
+          dashStyle: "line",
+          width: 2,
+          label: {
+            text: `Upper Limit (${graphData?.upper_limit} ng/mL)`,
+          },
+        },
+      ],
+    },
+    tooltip: {
+      formatter: function (
+        this: Highcharts.TooltipFormatterContextObject | any
+      ): string {
+        return (
+          this.point.category +
+          "<b>" +
+          " :" +
+          Highcharts.numberFormat(this.point.y, 0, ".", ", ") +
+          "</b>"
+        );
       },
     },
     xAxis: {
