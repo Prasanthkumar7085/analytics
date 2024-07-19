@@ -24,29 +24,56 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
       <tbody>
         {toxicologyResults?.tableRows?.map((row: any, rowIndex: any) => (
           <tr key={rowIndex}>
-            <td>{capitalizeAndRemoveUnderscore(row?.category)}</td>
-            <td>
-              {row?.cutoff ? row?.cutoff : "-"} {row?.units}
+            <td
+              style={{
+                backgroundColor: row?.nodata == true ? "#f0edfe" : "",
+              }}
+            >
+              {capitalizeAndRemoveUnderscore(row?.category)}
             </td>
-            <td>
-              {row?.ref_range ? row?.ref_range : "-"} {row?.units}
+            <td
+              style={{
+                backgroundColor: row?.nodata == true ? "#f0edfe" : "",
+              }}
+            >
+              {row?.cutoff ? row?.cutoff : "-"} {row?.cutoff ? row?.units : ""}
+            </td>
+            <td
+              style={{
+                backgroundColor: row?.nodata == true ? "#f0edfe" : "",
+              }}
+            >
+              {row?.ref_range ? row?.ref_range : "-"}{" "}
+              {row?.ref_range ? row?.units : ""}
             </td>
             {Object.keys(row.results)?.map((item: any, index) => {
+              console.log(row, "Fdkd2132213");
               return (
                 <td
                   style={{
-                    background: row?.results[item]?.positive
-                      ? "#f2d2d7"
-                      : "#cce7d4",
+                    background:
+                      row?.results[item]?.positive == "true"
+                        ? "#f2d2d7"
+                        : row?.results[item]?.positive == "false"
+                        ? "#cce7d4"
+                        : "#f0edfe",
                   }}
                   key={index}
                 >
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    {row.results[item]?.result}
-                    <div style={{ display: "flex", gap: "4px" }}>
-                      {row.results[item]?.prescribed ? (
+                    {row.results[item]?.result
+                      ? row.results[item]?.result
+                      : "-"}
+
+                    <div
+                      style={{
+                        display: row.results[item]?.result ? "flex" : "none",
+                        gap: "4px",
+                      }}
+                    >
+                      {row.results[item]?.prescribed == "true" ? (
                         <Image
                           src={"/PR.svg"}
                           alt="pr"
@@ -61,7 +88,7 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                           height={23}
                         />
                       )}
-                      {row.results[item]?.consistent ? (
+                      {row.results[item]?.consistent == "true" ? (
                         <Image
                           src={"/CO.svg"}
                           alt="co"

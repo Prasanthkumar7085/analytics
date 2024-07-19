@@ -6,9 +6,17 @@ const AutoCompleteForSearch = ({
   setSelectedValue,
   autocompleteOptions,
   label,
+  onUpdateData,
 }: any) => {
   const handleOnChange = (_: any, newValue: any) => {
     setSelectedValue(newValue);
+    if (newValue) {
+      let param = newValue?.["paramValue"];
+      onUpdateData({ [param]: newValue?.value });
+    } else {
+      let param = newValue?.["paramValue"];
+      onUpdateData({ [autocompleteOptions?.[0]?.["paramValue"]]: "" });
+    }
   };
   return (
     <div>
