@@ -26,7 +26,7 @@ const ToxiCologyResults = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [toxicologyResults, setToxiCologyResults] = useState<any>({});
   const [patientsData, setPatientsData] = useState<any>({});
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
@@ -37,33 +37,6 @@ const ToxiCologyResults = () => {
   const [testAutoCompleteOptions, setTestAutoCompleteOptions] = useState<any>(
     []
   );
-
-  const getTestOptions = (data: any) => {
-    const excludedKeys = [
-      "id",
-      "patient_id",
-      "first_name",
-      "last_name",
-      "middle_name",
-      "dob",
-      "gender",
-      "result_date",
-      "accession_id",
-      "lab_id",
-      "created_at",
-      "updated_at",
-    ];
-
-    let options = Object.keys(data).filter(
-      (item) => !excludedKeys.includes(item)
-    );
-    let changeFormat = options.map((item) => ({
-      label: capitalizeAndRemoveUnderscore(item),
-      value: item,
-      paramValue: "test",
-    }));
-    setTestAutoCompleteOptions(changeFormat);
-  };
 
   const formatDataForTable = (data: any, rangesData: any) => {
     const excludedKeys = [
@@ -174,14 +147,13 @@ const ToxiCologyResults = () => {
       }
       const response = await getAllToxicologyPatientResultsAPI(queryParams);
       let queryString = prepareURLEncodedParams("", queryParams);
-      router.push(`${pathname}${queryString}`);
+      router.replace(`${pathname}${queryString}`);
       if (response.status == 200 || response.status == 201) {
         let rangesData = await getPatientToxicologyRangeValues(queryParams);
         let groupedPatientResultsData: any = formatDataForTable(
           response?.data,
           rangesData
         );
-        getTestOptions(response?.data[0]);
         setPatientsData(response?.data[0]);
         let filterData = dataFilters({
           data: groupedPatientResultsData,
@@ -252,7 +224,6 @@ const ToxiCologyResults = () => {
   };
 
   const getPatientToxicologyRangeValues = async (queryParams: any) => {
-    setLoading(true);
     try {
       const response = await getAllToxicologyPatientRangesAPI(queryParams);
       if (response.status == 200 || response.status == 201) {
@@ -260,8 +231,6 @@ const ToxiCologyResults = () => {
       }
     } catch (err) {
       console.error(err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -337,7 +306,9 @@ const ToxiCologyResults = () => {
             <div className="namesData">
               <label className="label">Date of Birth</label>
               <p className="value">
-                {patientsData?.dob ? patientsData?.dob : "--"}
+                {patientsData?.dob
+                  ? datePipe(patientsData?.dob, "MM-DD-YYYY")
+                  : "--"}
               </p>
             </div>
           </div>
@@ -384,15 +355,7 @@ const ToxiCologyResults = () => {
       ) : (
         ""
       )}
-      {/* <LineGraphForPatientResult
-        graphDialogOpen={graphDialogOpen}
-        setGraphDialogOpen={setGraphDialogOpen}
-        graphValuesData={rowResultsdata}
-        data={patientSingleRowData}
-        graphColor="blue"
-        tabValue="Patient Result"
-        patientsData={patientsData}
-      /> */}
+
       <LoadingComponent loading={loading} />
     </div>
   );

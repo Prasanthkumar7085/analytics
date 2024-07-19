@@ -32,6 +32,7 @@ const ToxiResultsFilters = ({
     if (fromDate) {
       getPatientToxicologyResult({
         patient_id: id,
+        test: searchParams?.test,
         fromDate: fromDate,
         toDate: toDate,
         consistent: searchParams?.consistent,
@@ -45,6 +46,7 @@ const ToxiResultsFilters = ({
       setDateFilterDefaultValue("", "");
       getPatientToxicologyResult({
         patient_id: id,
+        test: searchParams?.test,
         fromDate: "",
         toDate: "",
         consistent: searchParams?.consistent,

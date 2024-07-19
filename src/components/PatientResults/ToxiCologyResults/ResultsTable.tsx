@@ -1,8 +1,20 @@
+import GraphDialogForToxiResults from "@/components/core/GrpahDilogInToxiResults";
+import LineGraphForResults from "@/components/core/LineGraph/LineGraphForResults";
 import { capitalizeAndRemoveUnderscore } from "@/lib/helpers/apiHelpers";
 import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
 import Image from "next/image";
+import { useState } from "react";
 
 const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
+  const [graphDialogOpen, setGraphDialogOpen] = useState<any>(false);
+  const [graphData, setGraphData] = useState<any>({});
+  console.log(graphData, "Fdi9329392032");
+  const getGraphValuesData = (data: any) => {
+    const resultArrayWithDates = Object.entries(data.results).map(
+      ([date, entry]: any) => [date, entry.result]
+    );
+    return resultArrayWithDates;
+  };
   return (
     <table>
       <thead>
@@ -18,7 +30,7 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
               </th>
             )
           )}
-          <th style={{ minWidth: "120px" }}>TREND</th>
+          <th style={{ minWidth: "70px" }}>TREND</th>
         </tr>
       </thead>
       <tbody>
@@ -47,7 +59,6 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
               {row?.ref_range ? row?.units : ""}
             </td>
             {Object.keys(row.results)?.map((item: any, index) => {
-              console.log(row, "Fdkd2132213");
               return (
                 <td
                   style={{
@@ -109,10 +120,31 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
               );
             })}
 
-            <td>{/* Placeholder for trend */}</td>
+            <td
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                setGraphDialogOpen(true);
+                setGraphData(row);
+              }}
+            >
+              <LineGraphForResults
+                patientsData={[]}
+                graphValuesData={getGraphValuesData(row)}
+              />
+            </td>
           </tr>
         ))}
       </tbody>
+      {graphDialogOpen ? (
+        <GraphDialogForToxiResults
+          graphDialogOpen={graphDialogOpen}
+          setGraphDialogOpen={setGraphDialogOpen}
+          graphData={graphData}
+          dates={toxicologyResults?.["resultDates"]}
+        />
+      ) : (
+        ""
+      )}
     </table>
   );
 };

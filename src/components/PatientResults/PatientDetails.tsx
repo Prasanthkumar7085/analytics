@@ -162,7 +162,11 @@ const PatientDetails = ({
       sortDescFirst: false,
       id: "dob",
       cell: (info: any) => {
-        return <span>{info.getValue() ? info.getValue() : "--"}</span>;
+        return (
+          <span>
+            {info.getValue() ? datePipe(info.getValue(), "MM-DD-YYYY") : "--"}
+          </span>
+        );
       },
       header: () => <span>DATE OF BIRTH</span>,
       footer: (props: any) => props.column.id,
