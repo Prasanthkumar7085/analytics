@@ -10,6 +10,8 @@ import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { Button } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import ToxiCologyResultsTable from "./ResultsTable";
+import ReactDOMServer from "react-dom/server";
 
 const ToxiResultsFilters = ({
   getPatientToxicologyResult,
@@ -28,6 +30,41 @@ const ToxiResultsFilters = ({
   const [consistentOrnot, setConsistentOrnot] = useState<any>();
   const [prescribedOrNot, setPrescribedOrNot] = useState<any>();
   const [selectedTest, setSelectedTest] = useState<any>();
+
+  const downloadAsPdf = async () => {
+    const downloadRefElement = (
+      <ToxiCologyResultsTable toxicologyResults={toxicologyResults} />
+    );
+
+    const htmlString: any = ReactDOMServer.renderToString(downloadRefElement);
+
+    print(htmlString);
+  };
+
+  const print = (htmlString: string) => {
+    const printWindow: any = window.open("", "blank");
+
+    if (!printWindow) {
+      console.error("Failed to open the window.");
+      return;
+    }
+
+    if (!printWindow.document) {
+      console.error("The document property of the window is undefined.");
+      return;
+    }
+
+    try {
+      printWindow.document.write(htmlString);
+      printWindow.document.close();
+      setTimeout(() => {
+        printWindow.focus();
+        printWindow.print();
+      }, 100);
+    } catch (error) {
+      console.error("An error occurred while writing to the document:", error);
+    }
+  };
 
   const onChangeData = (fromDate: any, toDate: any) => {
     if (fromDate) {
@@ -207,6 +244,15 @@ const ToxiResultsFilters = ({
         onChangeData={onChangeData}
         dateFilterDefaultValue={dateFilterDefaultValue}
       />
+      <Button
+        onClick={() => {
+          downloadAsPdf();
+        }}
+        disabled={Object?.keys(toxicologyResults)?.length > 0 ? false : true}
+        variant="outlined"
+      >
+        Export to pdf
+      </Button>
     </div>
   );
 };

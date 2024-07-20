@@ -1,11 +1,10 @@
 import LoadingComponent from "@/components/core/LoadingComponent";
-import datePipe from "@/lib/Pipes/datePipe";
+import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import {
   getAllToxicologyPatientRangesAPI,
   getAllToxicologyPatientResultsAPI,
-  getSinglePatientResultAPI,
 } from "@/services/patientResults/getAllPatientResultsAPIs";
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import Image from "next/image";
 import {
   useParams,
@@ -14,14 +13,10 @@ import {
   useSearchParams,
 } from "next/navigation";
 import { useEffect, useState } from "react";
-import ToxiCologyResultsTable from "./ResultsTable";
-import GlobalDateRangeFilter from "@/components/core/GlobalDateRangeFilter";
-import dayjs from "dayjs";
-import ToxiResultsFilters from "./ToxiResultsFilters";
-import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
-import { capitalizeAndRemoveUnderscore } from "@/lib/helpers/apiHelpers";
-import ResultsNavBar from "./ResultsNavBar";
 import ToxiCologyPatientDetailsDialog from "./PatientDetailsDialog";
+import ResultsNavBar from "./ResultsNavBar";
+import ToxiCologyResultsTable from "./ResultsTable";
+import ToxiResultsFilters from "./ToxiResultsFilters";
 
 const ToxiCologyResults = () => {
   const { id } = useParams();
@@ -56,6 +51,8 @@ const ToxiCologyResults = () => {
       "lab_id",
       "created_at",
       "updated_at",
+      "hospital_id",
+      "physician_id",
     ];
 
     const groupedByCategory: any = {};

@@ -38,3 +38,9 @@ body {
 .rs-picker-popup {
   z-index: 9999 !important;
 }
+@media print {
+  table tr {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

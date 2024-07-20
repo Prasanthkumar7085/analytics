@@ -16,7 +16,7 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
   };
   return (
     <table>
-      <thead>
+      <thead style={{ backgroundColor: "blue" }}>
         <tr>
           <th style={{ minWidth: "150px" }}>CONFIRMATION</th>
           <th style={{ minWidth: "150px" }}>CUTOFF</th>
