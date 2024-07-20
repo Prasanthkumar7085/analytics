@@ -1,5 +1,5 @@
 "use client";
-import ToxiCologyPatientDetails from "@/components/PatientResults/ToxiCologyResults/PatientDetails";
+import ToxiCologyPatientDetails from "@/components/PatientResults/ToxiCologyResults/PatientDetailsDialog";
 import { Suspense } from "react";
 
 const ToxiCologyPatientResultDetails = () => {

@@ -21,6 +21,7 @@ import ToxiResultsFilters from "./ToxiResultsFilters";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { capitalizeAndRemoveUnderscore } from "@/lib/helpers/apiHelpers";
 import ResultsNavBar from "./ResultsNavBar";
+import ToxiCologyPatientDetailsDialog from "./PatientDetailsDialog";
 
 const ToxiCologyResults = () => {
   const { id } = useParams();
@@ -35,6 +36,8 @@ const ToxiCologyResults = () => {
   const [searchParams, setSearchParams] = useState(
     Object.fromEntries(new URLSearchParams(Array.from(params.entries())))
   );
+  const [patientsDetailsDialog, setPatientsDetailsDialog] =
+    useState<boolean>(false);
   const [testAutoCompleteOptions, setTestAutoCompleteOptions] = useState<any>(
     []
   );
@@ -256,7 +259,10 @@ const ToxiCologyResults = () => {
   return (
     <div style={{ paddingTop: "10px" }} className={"patientResultstsDashboard"}>
       <div className="subNavBar">
-        <ResultsNavBar patientsData={patientsData} />
+        <ResultsNavBar
+          patientsData={patientsData}
+          setPatientsDetailsDialog={setPatientsDetailsDialog}
+        />
       </div>
 
       <div className="navActionsBlock">
@@ -300,6 +306,10 @@ const ToxiCologyResults = () => {
       ) : (
         ""
       )}
+      <ToxiCologyPatientDetailsDialog
+        patientsDetailsDialog={patientsDetailsDialog}
+        setPatientsDetailsDialog={setPatientsDetailsDialog}
+      />
 
       <LoadingComponent loading={loading} />
     </div>

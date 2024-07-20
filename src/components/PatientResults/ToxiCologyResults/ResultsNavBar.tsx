@@ -1,8 +1,8 @@
 import datePipe from "@/lib/Pipes/datePipe";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Image from "next/image";
 
-const ResultsNavBar = ({ patientsData }: any) => {
+const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
   return (
     <div style={{ display: "flex" }}>
       <div className="SubNavPointsBlock">
@@ -53,6 +53,7 @@ const ResultsNavBar = ({ patientsData }: any) => {
             </p>
           </div>
         </div>
+        <Button onClick={() => setPatientsDetailsDialog(true)}>Change</Button>
       </div>
     </div>
   );
