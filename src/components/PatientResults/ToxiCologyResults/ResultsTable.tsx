@@ -8,7 +8,6 @@ import { useState } from "react";
 const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<any>(false);
   const [graphData, setGraphData] = useState<any>({});
-  console.log(graphData, "Fdi9329392032");
   const getGraphValuesData = (data: any) => {
     const resultArrayWithDates = Object.entries(data.results).map(
       ([date, entry]: any) => [date, entry.result]
@@ -124,12 +123,12 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
               style={{ cursor: "pointer" }}
               onClick={() => {
                 setGraphDialogOpen(true);
-                setGraphData(row);
+                setGraphData({ ...row });
               }}
             >
               <LineGraphForResults
                 patientsData={[]}
-                graphValuesData={getGraphValuesData(row)}
+                graphValuesData={getGraphValuesData({ ...row })}
               />
             </td>
           </tr>

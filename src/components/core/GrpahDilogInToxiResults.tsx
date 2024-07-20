@@ -3,8 +3,10 @@ import {
   formatMonthYear,
 } from "@/lib/helpers/apiHelpers";
 import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
+import { CommentsDisabledOutlined } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Dialog, IconButton } from "@mui/material";
+import dayjs from "dayjs";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -14,10 +16,29 @@ const GraphDialogForToxiResults = ({
   graphData,
   dates,
 }: any) => {
-  console.log(graphData, "fsdaodsodsodos");
-  const getGraphValuesData = (data: any) => {
-    const resultArrayWithDates = Object.entries(data.results).map(
-      ([date, entry]: any) => [date, entry.result]
+  const getGraphValuesDataInnerTable = (data: any) => {
+    let results = JSON.parse(JSON.stringify(data.results));
+    const resultArrayWithDates = Object.entries(results).map(
+      ([date, entry]: any) => {
+        graphData.upper_limit = +graphData.upper_limit;
+        graphData.cutoff = +graphData.cutoff;
+        graphData.lower_limit = +graphData.lower_limit;
+
+        let max = graphData.upper_limit;
+
+        if (max >= entry.result && graphData.cutoff < entry.result) {
+          let units = graphData.cutoff;
+          let gap = max - graphData.cutoff;
+
+          let singleUnit = gap / units;
+          entry.result = entry.result / singleUnit + graphData.cutoff;
+        } else if (max < entry.result) {
+          entry.result =
+            graphData.cutoff * 2 +
+            (graphData.cutoff - graphData.lower_limit) / 2;
+        }
+        return [date, entry.result];
+      }
     );
     return resultArrayWithDates;
   };
@@ -30,8 +51,12 @@ const GraphDialogForToxiResults = ({
       title: {
         text: `Reference Range ${graphData?.units}`,
       },
-      min: Math.max(0, +graphData?.lower_limit * 0.8),
-      max: Math.max(+graphData?.upper_limit, +graphData?.cutoff) * 1.2,
+      tickPositions: [
+        0,
+        +graphData?.lower_limit,
+        +graphData?.cutoff,
+        +graphData?.cutoff * 2 + (graphData?.cutoff - graphData?.lower_limit),
+      ],
       plotLines: [
         {
           value: +graphData?.lower_limit,
@@ -39,7 +64,7 @@ const GraphDialogForToxiResults = ({
           dashStyle: "line",
           width: 2,
           label: {
-            text: `Lower Limit (${graphData?.lower_limit} ng/mL)`,
+            text: `Lower Limit (${graphData?.lower_limit} ${graphData?.units})`,
           },
         },
         {
@@ -48,16 +73,16 @@ const GraphDialogForToxiResults = ({
           dashStyle: "shortdash",
           width: 2,
           label: {
-            text: `Normal (${graphData?.cutoff} ng/mL)`,
+            text: `Normal (${graphData?.cutoff} ${graphData?.units})`,
           },
         },
         {
-          value: +graphData?.upper_limit,
+          value: +graphData?.cutoff * 2,
           color: "red",
           dashStyle: "line",
           width: 2,
           label: {
-            text: `Upper Limit (${graphData?.upper_limit} ng/mL)`,
+            text: `Upper Limit (${graphData?.upper_limit} ${graphData?.units})`,
           },
         },
       ],
@@ -70,7 +95,9 @@ const GraphDialogForToxiResults = ({
           this.point.category +
           "<b>" +
           " :" +
-          Highcharts.numberFormat(this.point.y, 0, ".", ", ") +
+          graphData.results[dates[this.point.index]]?.result +
+          " " +
+          graphData?.units +
           "</b>"
         );
       },
@@ -81,7 +108,7 @@ const GraphDialogForToxiResults = ({
     series: [
       {
         name: capitalizeAndRemoveUnderscore(graphData?.category),
-        data: getGraphValuesData(graphData),
+        data: getGraphValuesDataInnerTable(graphData),
         marker: {
           symbol: "triangle",
         },
@@ -120,7 +147,7 @@ const GraphDialogForToxiResults = ({
           <CloseIcon />
         </IconButton>
       </div>
-      <div className="hightChartsGraph">
+      <div className="hightChartsGraph lineGraph">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>
     </Dialog>

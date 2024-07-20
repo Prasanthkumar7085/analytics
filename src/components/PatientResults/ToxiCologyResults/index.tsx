@@ -28,7 +28,7 @@ const ToxiCologyResults = () => {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [toxicologyResults, setToxiCologyResults] = useState<any>({});
   const [patientsData, setPatientsData] = useState<any>({});
   const [dateFilterDefaultValue, setDateFilterDefaultValue] = useState<any>();
@@ -239,15 +239,17 @@ const ToxiCologyResults = () => {
   };
 
   useEffect(() => {
-    getPatientToxicologyResult({
-      patient_id: id,
-      test: params?.get("test"),
-      fromDate: params?.get("from_date"),
-      toDate: params?.get("to_date"),
-      consistent: params?.get("consistent"),
-      prescribed: params?.get("prescribed"),
-      positive: params?.get("positive"),
-    });
+    if (id) {
+      getPatientToxicologyResult({
+        patient_id: id,
+        test: params?.get("test"),
+        fromDate: params?.get("from_date"),
+        toDate: params?.get("to_date"),
+        consistent: params?.get("consistent"),
+        prescribed: params?.get("prescribed"),
+        positive: params?.get("positive"),
+      });
+    }
   }, [params]);
 
   useEffect(() => {

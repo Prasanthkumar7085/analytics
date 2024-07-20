@@ -1,8 +1,10 @@
 import datePipe from "@/lib/Pipes/datePipe";
 import { Button, TextField } from "@mui/material";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
+  const { id } = useParams();
   return (
     <div style={{ display: "flex" }}>
       <div className="SubNavPointsBlock">
@@ -53,7 +55,18 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
             </p>
           </div>
         </div>
-        <Button onClick={() => setPatientsDetailsDialog(true)}>Change</Button>
+        <Button
+          sx={{
+            height: "25px",
+            textTransform: "capitalize",
+            marginTop: "15px",
+          }}
+          size="small"
+          onClick={() => setPatientsDetailsDialog(true)}
+          variant="outlined"
+        >
+          {id ? "Change Patient" : "Search"}
+        </Button>
       </div>
     </div>
   );

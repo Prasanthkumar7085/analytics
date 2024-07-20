@@ -207,7 +207,6 @@ const ToxiResultsFilters = ({
         onChangeData={onChangeData}
         dateFilterDefaultValue={dateFilterDefaultValue}
       />
-      <Button>Export</Button>
     </div>
   );
 };

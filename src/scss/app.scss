@@ -1660,8 +1660,11 @@ input:-webkit-autofill {
     height: 30px !important;
   }
 }
-
-
+.lineGraph {
+  .highcharts-yaxis-labels {
+    display: none !important;
+  }
+}
 
 // External Components
 @import "./components/patientResults.scss";

@@ -243,19 +243,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
             >
               1. Patient Results
             </MenuItem>
-            {!pathname?.includes("billing") ? (
-              <MenuItem
-                className={styles.dropDownMenu}
-                onClick={() => {
-                  window.open("/billing/dashboard", "_blank");
-                  handleCloseAdminMenu();
-                }}
-              >
-                2. Billing analytics
-              </MenuItem>
-            ) : (
-              ""
-            )}
+
             <MenuItem
               className={styles.dropDownMenu}
               id="admin-settings-menu-items"
@@ -266,6 +254,20 @@ const NavBar: FC<pageProps> = ({ children }) => {
             >
               2.Toxicology Results
             </MenuItem>
+
+            {!pathname?.includes("billing") ? (
+              <MenuItem
+                className={styles.dropDownMenu}
+                onClick={() => {
+                  window.open("/billing/dashboard", "_blank");
+                  handleCloseAdminMenu();
+                }}
+              >
+                3. Billing analytics
+              </MenuItem>
+            ) : (
+              ""
+            )}
           </Menu>
 
           <Menu

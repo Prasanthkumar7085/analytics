@@ -1,12 +1,12 @@
 "use client";
-import ToxiCologyPatientDetails from "@/components/PatientResults/ToxiCologyResults/PatientDetailsDialog";
+import ToxiCologyResults from "@/components/PatientResults/ToxiCologyResults";
 import { Suspense } from "react";
 
 const ToxiCologyPatientResultDetails = () => {
   return (
     <Suspense>
       <div>
-        <ToxiCologyPatientDetails />
+        <ToxiCologyResults />
       </div>
     </Suspense>
   );
