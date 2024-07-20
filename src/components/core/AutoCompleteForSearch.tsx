@@ -43,12 +43,12 @@ const AutoCompleteForSearch = ({
         sx={{
           zIndex: "99999 !important",
           "& .MuiFormControl-root": {
-            width: "250px",
+            width: "150px",
             background: "#fff",
             borderRadius: "5px",
           },
           "& .MuiInputBase-root": {
-            padding: "2.5px !Important",
+            padding: "5.5px !Important",
             fontSize: "clamp(12px, 0.72vw, 14px) !important",
             zIndex: "99999 !important",
             paddingBlock: "0",

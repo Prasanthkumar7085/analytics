@@ -10,9 +10,12 @@
 
     .SubNavPointsBlock {
       display: flex;
-      align-items: center;
       column-gap: 0.5rem;
-
+      .tableHeading {
+        color: #1b2459;
+        font-size: 1.2rem;
+        margin: 0;
+      }
       .eachBlocks {
         display: flex;
         align-items: flex-start;
@@ -54,7 +57,7 @@
     background-color: #fff;
     margin: 10px 0;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     column-gap: 1rem;
     padding: 10px;

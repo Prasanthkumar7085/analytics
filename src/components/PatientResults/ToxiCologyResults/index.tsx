@@ -20,6 +20,7 @@ import dayjs from "dayjs";
 import ToxiResultsFilters from "./ToxiResultsFilters";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
 import { capitalizeAndRemoveUnderscore } from "@/lib/helpers/apiHelpers";
+import ResultsNavBar from "./ResultsNavBar";
 
 const ToxiCologyResults = () => {
   const { id } = useParams();
@@ -253,67 +254,11 @@ const ToxiCologyResults = () => {
   }, [params]);
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }} className={"patientResultstsDashboard"}>
       <div className="subNavBar">
-        <Button
-          className="bacKBtn"
-          variant="outlined"
-          onClick={() => {
-            router.back();
-          }}
-        >
-          Back
-        </Button>
-        <div className="SubNavPointsBlock">
-          <div className="eachBlocks">
-            <Image alt="" src="/card.svg" height={20} width={20} />
-            <div className="namesData">
-              <label className="label">Patient ID</label>
-              <p className="value">
-                {patientsData?.patient_id ? patientsData?.patient_id : "--"}
-              </p>
-            </div>
-          </div>
-          <div className="eachBlocks">
-            <Image alt="" src="/vector-patient.svg" height={20} width={20} />
-            <div className="namesData">
-              <label className="label">First Name</label>
-              <p className="value">
-                {patientsData?.first_name ? patientsData?.first_name : "--"}
-              </p>
-            </div>
-          </div>
-          <div className="eachBlocks">
-            <Image alt="" src="/vector-patient.svg" height={20} width={20} />
-            <div className="namesData">
-              <label className="label">Last Name</label>
-              <p className="value">
-                {patientsData?.last_name ? patientsData?.last_name : "--"}
-              </p>
-            </div>
-          </div>
-          <div className="eachBlocks">
-            <Image alt="" src="/Group.svg" height={20} width={20} />
-            <div className="namesData">
-              <label className="label">Gender</label>
-              <p className="value">
-                {patientsData?.gender ? patientsData?.gender : "--"}
-              </p>
-            </div>
-          </div>
-          <div className="eachBlocks b-right">
-            <Image alt="" src="/calendar.svg" height={20} width={20} />
-            <div className="namesData">
-              <label className="label">Date of Birth</label>
-              <p className="value">
-                {patientsData?.dob
-                  ? datePipe(patientsData?.dob, "MM-DD-YYYY")
-                  : "--"}
-              </p>
-            </div>
-          </div>
-        </div>
+        <ResultsNavBar patientsData={patientsData} />
       </div>
+
       <div className="navActionsBlock">
         <h2 className="tableHeading">{"Toxicology Tests"}</h2>
         <ToxiResultsFilters

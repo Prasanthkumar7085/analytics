@@ -7,9 +7,6 @@ import "./index.css";
 import "./globals.css";
 import "../scss/app.scss";
 
-
-
-
 export default function RootLayout({
   children,
 }: Readonly<{

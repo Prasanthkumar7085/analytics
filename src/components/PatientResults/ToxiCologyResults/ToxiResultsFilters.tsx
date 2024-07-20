@@ -7,6 +7,7 @@ import {
   toxiTestOptions,
 } from "@/lib/constants/filterOptions";
 import { prepareURLEncodedParams } from "@/lib/prepareUrlEncodedParams";
+import { Button } from "@mui/material";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -166,6 +167,7 @@ const ToxiResultsFilters = ({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        justifyContent: "center",
         gap: "10px",
       }}
     >
@@ -205,6 +207,7 @@ const ToxiResultsFilters = ({
         onChangeData={onChangeData}
         dateFilterDefaultValue={dateFilterDefaultValue}
       />
+      <Button>Export</Button>
     </div>
   );
 };
