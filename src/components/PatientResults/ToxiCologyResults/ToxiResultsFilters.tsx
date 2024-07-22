@@ -133,7 +133,9 @@ const ToxiResultsFilters = ({
         });
       }
     }
-
+    filteredData.sort((a: any, b: any) => {
+      return a.category.localeCompare(b.category);
+    });
     return filteredData;
   };
 
