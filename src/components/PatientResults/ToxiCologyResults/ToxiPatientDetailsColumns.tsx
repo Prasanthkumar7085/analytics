@@ -76,7 +76,7 @@ export const ToxiPatientDetailsColumns = ({
             variant="outlined"
             onClick={() => {
               setPatientsDetailsDialog(false);
-              router.push(
+              router.replace(
                 `/toxicology-results/${info?.row?.original?.patient_id}`
               );
             }}

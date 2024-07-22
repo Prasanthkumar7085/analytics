@@ -39,7 +39,7 @@ const AutoCompleteForSearch = ({
         getOptionLabel={(option: any) =>
           typeof option === "string" ? option : option?.[label]
         }
-        renderOption={(props, option) => {
+        renderOption={(props: any, option: any) => {
           const { key, ...optionProps } = props;
           return (
             <Box
@@ -56,14 +56,18 @@ const AutoCompleteForSearch = ({
                   gap: "0.6rem",
                 }}
               >
-                <div
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    background: option?.color,
-                    borderRadius: "50%",
-                  }}
-                ></div>
+                {option?.color ? (
+                  <div
+                    style={{
+                      width: "10px",
+                      height: "10px",
+                      background: option?.color,
+                      borderRadius: "50%",
+                    }}
+                  ></div>
+                ) : (
+                  ""
+                )}
                 {option.label}
               </div>
             </Box>
