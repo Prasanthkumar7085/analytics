@@ -34,13 +34,91 @@
   .patientResultstsDashboard {
     #patientDetails {
       .subNavBar {
+        margin-block: 8px !important;
         .SubNavPointsBlock {
           align-items: center;
-          .bacKBtn,
-          .btnWithDisabled {
-            min-height: inherit !important;
-            height: 40px;
-            text-transform: capitalize;
+          .btnBlock {
+            align-items: center !important;
+            border-left: 0 !important;
+            .bacKBtn,
+            .btnWithDisabled {
+              min-height: inherit !important;
+              height: inherit !important;
+              text-transform: capitalize;
+              font-family: $font-poppins;
+              font-size: 11px;
+              white-space: nowrap !important;
+              padding: 4px 10px !important;
+              margin: 0 !important;
+            }
+            .closeBtn {
+              text-transform: capitalize;
+              font-family: $font-poppins;
+              color: #bf1b39;
+              font-size: 11px;
+
+              &:hover {
+                background: transparent;
+              }
+            }
+          }
+          .patientLabel {
+            gap: 3px !important;
+            .inputTextField {
+              .MuiInputBase-root {
+                height: 27px;
+                font-size: 12px;
+                padding-right: 15px !important;
+                padding: 0 5px;
+                background-color: #ffffff;
+                border-radius: 4px;
+                overflow: hidden;
+                border: 1px solid rgba(0, 0, 0, 0.23);
+              }
+              fieldset {
+                border-color: transparent !important;
+              }
+            }
+            .inputItemDate {
+              .rs-input-group {
+                height: inherit !important;
+              }
+              .rs-input-group input {
+                height: 27px !important;
+                border-radius: 4px !important;
+                padding-right: 10px !important;
+              }
+            }
+          }
+        }
+      }
+      .eachDataCard {
+        margin: 0 0.5rem;
+        padding: 12px 0;
+        box-sizing: border-box;
+        .cardHeader {
+          h3 {
+            line-height: 100% !important;
+          }
+        }
+        .cardBody {
+          max-height: 350px;
+          overflow-y: auto;
+          .nodata {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+
+            .tableHeading {
+              color: #1b2459;
+              font-size: 0.9rem;
+              margin: 0;
+              line-height: 100% !important;
+              font-weight: 500;
+              font-family: $font-poppins;
+            }
           }
         }
       }
