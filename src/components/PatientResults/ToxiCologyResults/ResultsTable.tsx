@@ -76,7 +76,6 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-
                       }}
                     >
                       {row.results[item]?.result
@@ -86,7 +85,7 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                       <div
                         style={{
                           display: row.results[item]?.result ? "flex" : "none",
-                          alignItems:"center",
+                          alignItems: "center",
                           gap: "4px",
                         }}
                       >

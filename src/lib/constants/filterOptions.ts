@@ -1,16 +1,46 @@
 export const postiveOrnegativeOptions = [
-  { value: "true", label: "Positive", paramValue: "positive" },
-  { value: "false", label: "Negative", paramValue: "positive" },
+  {
+    value: "true",
+    label: "Positive",
+    paramValue: "positive",
+    color: "#f2d2d7",
+  },
+  {
+    value: "false",
+    label: "Negative",
+    paramValue: "positive",
+    color: "#cce7d4",
+  },
 ];
 
 export const consistantOrInconsistantsOptions = [
-  { value: "true", label: "Consistant (CO)", paramValue: "consistent" },
-  { value: "false", label: "Inconsistant (IN)", paramValue: "consistent" },
+  {
+    value: "true",
+    label: "Consistant (CO)",
+    paramValue: "consistent",
+    color: "#e9f8fb",
+  },
+  {
+    value: "false",
+    label: "Inconsistant (IN)",
+    paramValue: "consistent",
+    color: "#d8b26f",
+  },
 ];
 
 export const prescribedOrNotOptions = [
-  { value: "true", label: "Prescribed (PR)", paramValue: "prescribed" },
-  { value: "false", label: "Not Prescribed (NP)", paramValue: "prescribed" },
+  {
+    value: "true",
+    label: "Prescribed (PR)",
+    paramValue: "prescribed",
+    color: "#aabae3",
+  },
+  {
+    value: "false",
+    label: "Not Prescribed (NP)",
+    paramValue: "prescribed",
+    color: "#fdb375",
+  },
 ];
 
 export const toxiTestOptions = [

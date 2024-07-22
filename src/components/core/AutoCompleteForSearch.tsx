@@ -1,4 +1,4 @@
-import { Autocomplete, Paper, TextField } from "@mui/material";
+import { Autocomplete, Box, Paper, TextField } from "@mui/material";
 
 const AutoCompleteForSearch = ({
   placeholder,
@@ -39,13 +39,42 @@ const AutoCompleteForSearch = ({
         getOptionLabel={(option: any) =>
           typeof option === "string" ? option : option?.[label]
         }
+        renderOption={(props, option) => {
+          const { key, ...optionProps } = props;
+          return (
+            <Box
+              key={key}
+              component="li"
+              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+              {...optionProps}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "0.6rem",
+                }}
+              >
+                <div
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    background: option?.color,
+                    borderRadius: "50%",
+                  }}
+                ></div>
+                {option.label}
+              </div>
+            </Box>
+          );
+        }}
         onChange={handleOnChange}
         sx={{
           "& .MuiFormControl-root": {
             width: "170px",
             background: "#fff",
           },
-         
         }}
         renderInput={(params) => (
           <TextField {...params} placeholder={placeholder} size="small" />

@@ -269,7 +269,8 @@ const ToxiCologyResults = () => {
             testAutoCompleteOptions={testAutoCompleteOptions}
           />
         </div>
-        {toxicologyResults?.["resultDates"]?.length ? (
+        {toxicologyResults?.["resultDates"]?.length &&
+        toxicologyResults?.tableRows?.length ? (
           <div className="eachPatientResultTable">
             <div className="allPatientResultTable">
               <div className="tableContainer">
