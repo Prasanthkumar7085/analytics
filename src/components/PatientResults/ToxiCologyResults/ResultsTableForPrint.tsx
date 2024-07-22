@@ -2,11 +2,10 @@ import GraphDialogForToxiResults from "@/components/core/GrpahDilogInToxiResults
 import LineGraphForResults from "@/components/core/LineGraph/LineGraphForResults";
 import { capitalizeAndRemoveUnderscore } from "@/lib/helpers/apiHelpers";
 import { momentWithTimezone } from "@/lib/Pipes/timeFormat";
-import { Tooltip } from "@mui/material";
 import Image from "next/image";
 import { useState } from "react";
 
-const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
+const ToxiCologyResultsTableForPrint = ({ toxicologyResults }: any) => {
   const [graphDialogOpen, setGraphDialogOpen] = useState<any>(false);
   const [graphData, setGraphData] = useState<any>({});
   const getGraphValuesData = (data: any) => {
@@ -30,7 +29,6 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
               </th>
             )
           )}
-          <th style={{ minWidth: "70px" }}>TREND</th>
         </tr>
       </thead>
       <tbody>
@@ -91,42 +89,34 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                         }}
                       >
                         {row.results[item]?.prescribed == "true" ? (
-                          <Tooltip title="prescribed">
-                            <Image
-                              src={"/PR.svg"}
-                              alt="pr"
-                              width={18}
-                              height={18}
-                            />
-                          </Tooltip>
+                          <Image
+                            src={"/PR.svg"}
+                            alt="pr"
+                            width={18}
+                            height={18}
+                          />
                         ) : (
-                          <Tooltip title="Not prescribed">
-                            <Image
-                              src={"/NP.svg"}
-                              alt="np"
-                              width={18}
-                              height={18}
-                            />
-                          </Tooltip>
+                          <Image
+                            src={"/NP.svg"}
+                            alt="np"
+                            width={18}
+                            height={18}
+                          />
                         )}
                         {row.results[item]?.consistent == "true" ? (
-                          <Tooltip title="consistent">
-                            <Image
-                              src={"/CO.svg"}
-                              alt="co"
-                              width={18}
-                              height={18}
-                            />
-                          </Tooltip>
+                          <Image
+                            src={"/CO.svg"}
+                            alt="co"
+                            width={18}
+                            height={18}
+                          />
                         ) : (
-                          <Tooltip title="In consistent">
-                            <Image
-                              src={"/IN.svg"}
-                              alt="in"
-                              width={18}
-                              height={18}
-                            />
-                          </Tooltip>
+                          <Image
+                            src={"/IN.svg"}
+                            alt="in"
+                            width={18}
+                            height={18}
+                          />
                         )}
                       </div>
                     </div>
@@ -134,32 +124,10 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                 );
               }
             )}
-
-            <td
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                setGraphDialogOpen(true);
-                setGraphData({ ...row });
-              }}
-            >
-              <LineGraphForResults
-                patientsData={[]}
-                graphValuesData={getGraphValuesData({ ...row })}
-              />
-            </td>
           </tr>
         ))}
       </tbody>
-      {graphDialogOpen ? (
-        <GraphDialogForToxiResults
-          graphDialogOpen={graphDialogOpen}
-          setGraphDialogOpen={setGraphDialogOpen}
-          graphData={graphData}
-        />
-      ) : (
-        ""
-      )}
     </table>
   );
 };
-export default ToxiCologyResultsTable;
+export default ToxiCologyResultsTableForPrint;

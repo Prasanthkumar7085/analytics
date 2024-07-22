@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import ToxiCologyResultsTable from "./ResultsTable";
 import ReactDOMServer from "react-dom/server";
+import ToxiCologyResultsTableForPrint from "./ResultsTableForPrint";
 
 const ToxiResultsFilters = ({
   getPatientToxicologyResult,
@@ -33,7 +34,7 @@ const ToxiResultsFilters = ({
 
   const downloadAsPdf = async () => {
     const downloadRefElement = (
-      <ToxiCologyResultsTable toxicologyResults={toxicologyResults} />
+      <ToxiCologyResultsTableForPrint toxicologyResults={toxicologyResults} />
     );
 
     const htmlString: any = ReactDOMServer.renderToString(downloadRefElement);
@@ -144,11 +145,13 @@ const ToxiResultsFilters = ({
     consistent = searchParams?.consistent,
     prescribed = searchParams?.prescribed,
     positive = searchParams?.positive,
+    physician_id = searchParams?.physician_id,
   }: Partial<{
     test: any;
     consistent: any;
     prescribed: any;
     positive: any;
+    physician_id: any;
   }>) => {
     const queryParams: any = {
       ...(searchParams?.from_date && {
@@ -158,6 +161,9 @@ const ToxiResultsFilters = ({
     };
     if (test) {
       queryParams["test"] = test;
+    }
+    if (physician_id) {
+      queryParams["physician_id"] = physician_id;
     }
     if (consistent) {
       queryParams["consistent"] = consistent;

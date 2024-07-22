@@ -122,6 +122,7 @@ const ToxiCologyResults = () => {
     consistent = searchParams?.consistent,
     prescribed = -searchParams?.prescribed,
     positive = searchParams?.positive,
+    physician_id = searchParams?.physician_id,
   }: any) => {
     setLoading(true);
     try {
@@ -130,6 +131,9 @@ const ToxiCologyResults = () => {
       };
       if (test) {
         queryParams["test"] = test;
+      }
+      if (physician_id) {
+        queryParams["physician_id"] = physician_id;
       }
       if (fromDate) {
         queryParams["from_date"] = fromDate;
@@ -252,6 +256,7 @@ const ToxiCologyResults = () => {
         <ResultsNavBar
           patientsData={patientsData}
           setPatientsDetailsDialog={setPatientsDetailsDialog}
+          searchParams={searchParams}
         />
       </div>
       <div className="toxicologyContainer">

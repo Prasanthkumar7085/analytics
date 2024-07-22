@@ -3,8 +3,13 @@ import { Button, TextField } from "@mui/material";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
-const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
+const ResultsNavBar = ({
+  patientsData,
+  setPatientsDetailsDialog,
+  searchParams,
+}: any) => {
   const { id } = useParams();
+
   return (
     <div style={{ display: "flex" }}>
       <div className="SubNavPointsBlock">
@@ -55,14 +60,18 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
             </p>
           </div>
         </div>
-        <Button
-          className="changeBtn"
-          size="small"
-          onClick={() => setPatientsDetailsDialog(true)}
-          variant="outlined"
-        >
-          {id ? "Change Patient" : "Search"}
-        </Button>
+        {searchParams?.physician_id ? (
+          ""
+        ) : (
+          <Button
+            className="changeBtn"
+            size="small"
+            onClick={() => setPatientsDetailsDialog(true)}
+            variant="outlined"
+          >
+            {id ? "Change Patient" : "Search"}
+          </Button>
+        )}
       </div>
     </div>
   );
