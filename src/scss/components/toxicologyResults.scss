@@ -27,6 +27,7 @@
     height: calc(100% - 10px);
     max-width: 75% !important;
     max-height: 520px;
+    border-radius: 10px;
   }
   .MuiTypography-root {
     color: #fff;
@@ -87,6 +88,7 @@
                 height: 27px !important;
                 border-radius: 4px !important;
                 padding-right: 10px !important;
+                                font-size: 12px !important;
               }
             }
           }
@@ -121,6 +123,10 @@
             }
           }
         }
+      }
+      .tableContainer {
+        max-height: 350px !important;
+        min-height: 100px !important;
       }
     }
   }
