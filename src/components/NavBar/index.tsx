@@ -58,17 +58,14 @@ const NavBar: FC<pageProps> = ({ children }) => {
 
   const getClassNames = () => {
     if (pathname.includes("/toxicology-results")) {
-      return `${styles.primaryNavbar} ${styles.toxicologyHeader}`
+      return `${styles.primaryNavbar} ${styles.toxicologyHeader}`;
+    } else {
+      return `${styles.primaryNavbar}`;
     }
-    else {
-      return `${styles.primaryNavbar}`
-    }
-  }
+  };
   return (
     <section>
-      <nav
-        className={getClassNames()}
-        id="navbar">
+      <nav className={getClassNames()} id="navbar">
         <Container maxWidth="xl">
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={3}>
@@ -86,48 +83,50 @@ const NavBar: FC<pageProps> = ({ children }) => {
             <Grid item xs={9}>
               <ul className="flex items-center justify-end space-x-5">
                 {pathname?.includes("toxicology-results") ||
-                  pathname?.includes("patient-results") ? (
+                pathname?.includes("patient-results") ? (
                   ""
                 ) : (
                   <>
                     {AnalyticsNavBarOptions?.length &&
-                      !pathname?.includes("billing")
+                    !pathname?.includes("billing")
                       ? AnalyticsNavBarOptions?.map((item, index) => {
-                        return hasAccessOrNot(`/${item?.link}`, userType) &&
-                          userType ? (
-                          <li
-                            onClick={() => router.push(`/${item?.link}`)}
-                            className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-sm hover:no-underline focus:no-underline ${styles[
-                              pathname == `/${item?.link}`
-                                ? "activePagename"
-                                : "active"
-                            ]
+                          return hasAccessOrNot(`/${item?.link}`, userType) &&
+                            userType ? (
+                            <li
+                              onClick={() => router.push(`/${item?.link}`)}
+                              className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-sm hover:no-underline focus:no-underline ${
+                                styles[
+                                  pathname == `/${item?.link}`
+                                    ? "activePagename"
+                                    : "active"
+                                ]
                               }`}
-                          >
-                            {item?.title}
-                          </li>
-                        ) : (
-                          ""
-                        );
-                      })
+                            >
+                              {item?.title}
+                            </li>
+                          ) : (
+                            ""
+                          );
+                        })
                       : BillingNavBarOptions?.map((item, index) => {
-                        return hasAccessOrNot(`/${item?.link}`, userType) &&
-                          userType ? (
-                          <li
-                            onClick={() => router.push(`/${item?.link}`)}
-                            className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline text-sm ${styles[
-                              pathname?.includes(`/${item?.link}`)
-                                ? "activePagename"
-                                : "active"
-                            ]
+                          return hasAccessOrNot(`/${item?.link}`, userType) &&
+                            userType ? (
+                            <li
+                              onClick={() => router.push(`/${item?.link}`)}
+                              className={`text-white font-normal capitalize cursor-pointer hover:text-[#DD5050] leading-5 focus:text-white text-md hover:no-underline focus:no-underline text-sm ${
+                                styles[
+                                  pathname?.includes(`/${item?.link}`)
+                                    ? "activePagename"
+                                    : "active"
+                                ]
                               }`}
-                          >
-                            {item?.title}
-                          </li>
-                        ) : (
-                          ""
-                        );
-                      })}
+                            >
+                              {item?.title}
+                            </li>
+                          ) : (
+                            ""
+                          );
+                        })}
                   </>
                 )}
 
@@ -264,7 +263,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
               2.Toxicology Results
             </MenuItem>
 
-            {!pathname?.includes("billing") ? (
+            {/* {!pathname?.includes("billing") ? (
               <MenuItem
                 className={styles.dropDownMenu}
                 onClick={() => {
@@ -276,7 +275,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
               </MenuItem>
             ) : (
               ""
-            )}
+            )} */}
           </Menu>
 
           <Menu
@@ -312,7 +311,7 @@ const NavBar: FC<pageProps> = ({ children }) => {
       <div
         className={
           pathname?.includes("patient-results") ||
-            pathname?.includes("toxicology-results")
+          pathname?.includes("toxicology-results")
             ? "patientResultstsDashboard"
             : styles.primaryMainDashboard
         }
