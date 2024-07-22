@@ -93,50 +93,46 @@ const ToxiResultsFilters = ({
       });
     }
   };
-  const dataFilters = ({
-    data,
-    test,
-    consistent,
-    prescribed,
-    positive,
-  }: any) => {
-    if (!data || !data.tableRows || !data.resultDates) {
-      return { ...data };
-    }
-    const filteredData = {
-      ...data,
-      tableRows: data.tableRows.filter((categoryItem: any) => {
-        const results = categoryItem.results || {};
-        const filteredResults = {};
-        const passesFilters = data.resultDates.some((date: any) => {
-          const result = results[date];
-          if (!result) return false;
 
-          let passTest = true;
-          if (test) {
-            const searchTerm = test.toLowerCase().trim();
-            passTest = categoryItem.category.toLowerCase().includes(searchTerm);
-          }
-          let passConsistent = true;
-          if (consistent !== undefined) {
-            passConsistent = result.consistent === consistent;
-          }
-          let passPositive = true;
-          if (positive !== undefined) {
-            passPositive = result.positive === positive;
-          }
+  // Function to filter data based on criteria
+  const dataFilters = (criteria: any, data: any) => {
+    const filteredData = [];
+    for (const row of data.tableRows) {
+      const filteredResults: any = {};
+      for (const date in row.results) {
+        const result = row.results[date];
+        let matchCriteria = true;
 
-          let passPrescribed = true;
-          if (prescribed !== undefined) {
-            passPrescribed = result.prescribed === prescribed;
-          }
+        if (criteria.hasOwnProperty("positive")) {
+          matchCriteria =
+            matchCriteria && result.positive === criteria.positive;
+        }
 
-          return passTest && passConsistent && passPrescribed && passPositive;
+        if (criteria.hasOwnProperty("prescribed")) {
+          matchCriteria =
+            matchCriteria && result.prescribed === criteria.prescribed;
+        }
+        if (criteria.hasOwnProperty("test")) {
+          const searchTerm = criteria.test.toLowerCase().trim();
+          matchCriteria =
+            matchCriteria && row.category.toLowerCase().includes(searchTerm);
+        }
+        if (criteria.hasOwnProperty("consistent")) {
+          matchCriteria =
+            matchCriteria && result.consistent === criteria.consistent;
+        }
+
+        if (matchCriteria) {
+          filteredResults[date] = result;
+        }
+      }
+      if (Object.keys(filteredResults).length > 0) {
+        filteredData.push({
+          ...row,
+          results: filteredResults,
         });
-
-        return passesFilters;
-      }),
-    };
+      }
+    }
 
     return filteredData;
   };
@@ -172,8 +168,14 @@ const ToxiResultsFilters = ({
     }
     router.replace(`${pathname}${prepareURLEncodedParams("", queryParams)}`);
     let data: any = { ...completeData };
-    data = dataFilters({ data, test, consistent, prescribed, positive });
-    setToxiCologyResults(data);
+    // data = dataFilters({ data, test, consistent, prescribed, positive });
+
+    let temp = dataFilters(queryParams, data);
+    let filteredData = {
+      ...data,
+      tableRows: temp,
+    };
+    setToxiCologyResults(filteredData);
   };
 
   const autoFillValues = () => {

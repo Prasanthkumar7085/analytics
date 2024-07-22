@@ -156,16 +156,13 @@ const ToxiCologyResults = () => {
           rangesData
         );
         setPatientsData(response?.data[0]);
-        let filterData = dataFilters({
-          data: groupedPatientResultsData,
-          test: queryParams?.test,
-          consistent: queryParams?.consistent,
-          prescribed: queryParams?.prescribed,
-          positive: queryParams?.positive,
-        });
-
-        setToxiCologyResults(filterData);
-        setCompleteData(filterData);
+        let filterData = dataFilters(queryParams, groupedPatientResultsData);
+        let filteredData = {
+          ...groupedPatientResultsData,
+          tableRows: filterData,
+        };
+        setToxiCologyResults(filteredData);
+        setCompleteData(filteredData);
       }
     } catch (err) {
       console.error(err);
@@ -174,52 +171,44 @@ const ToxiCologyResults = () => {
     }
   };
 
-  const dataFilters = ({
-    data,
-    test,
-    consistent,
-    prescribed,
-    positive,
-  }: any) => {
-    if (!data || !data.tableRows || !data.resultDates) {
-      return { ...data };
-    }
-    const filteredData = {
-      ...data,
-      tableRows: data.tableRows.filter((categoryItem: any) => {
-        const results = categoryItem.results || {};
-        const filteredResults = {};
+  const dataFilters = (criteria: any, data: any) => {
+    const filteredData = [];
+    for (const row of data.tableRows) {
+      const filteredResults: any = {};
+      for (const date in row.results) {
+        const result = row.results[date];
+        let matchCriteria = true;
 
-        const passesFilters = data.resultDates.some((date: any) => {
-          const result = results[date];
-          if (!result) return false;
+        if (criteria.hasOwnProperty("positive")) {
+          matchCriteria =
+            matchCriteria && result.positive === criteria.positive;
+        }
 
-          let passTest = true;
-          if (test) {
-            const searchTerm = test.toLowerCase().trim();
-            passTest = categoryItem.category.toLowerCase().includes(searchTerm);
-          }
+        if (criteria.hasOwnProperty("prescribed")) {
+          matchCriteria =
+            matchCriteria && result.prescribed === criteria.prescribed;
+        }
+        if (criteria.hasOwnProperty("consistent")) {
+          matchCriteria =
+            matchCriteria && result.consistent === criteria.consistent;
+        }
+        if (criteria.hasOwnProperty("test")) {
+          const searchTerm = criteria.test.toLowerCase().trim();
+          matchCriteria =
+            matchCriteria && row.category.toLowerCase().includes(searchTerm);
+        }
 
-          let passConsistent = true;
-          if (consistent !== undefined) {
-            passConsistent = result.consistent === consistent;
-          }
-          let passPositive = true;
-          if (positive !== undefined) {
-            passPositive = result.positive === positive;
-          }
-
-          let passPrescribed = true;
-          if (prescribed !== undefined) {
-            passPrescribed = result.prescribed === prescribed;
-          }
-
-          return passTest && passConsistent && passPrescribed && passPositive;
+        if (matchCriteria) {
+          filteredResults[date] = result;
+        }
+      }
+      if (Object.keys(filteredResults).length > 0) {
+        filteredData.push({
+          ...row,
+          results: filteredResults,
         });
-
-        return passesFilters;
-      }),
-    };
+      }
+    }
 
     return filteredData;
   };

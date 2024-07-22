@@ -57,67 +57,72 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
               {row?.ref_range ? row?.ref_range : "-"}{" "}
               {row?.ref_range ? row?.units : ""}
             </td>
-            {Object.keys(row.results)?.map((item: any, index) => {
-              return (
-                <td
-                  style={{
-                    background:
-                      row?.results[item]?.positive == "true"
-                        ? "#f2d2d7"
-                        : row?.results[item]?.positive == "false"
-                        ? "#cce7d4"
-                        : "#f0edfe",
-                  }}
-                  key={index}
-                >
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+            {toxicologyResults?.["resultDates"]?.map(
+              (item: any, index: any) => {
+                return (
+                  <td
+                    style={{
+                      background:
+                        row?.results[item]?.positive == "true"
+                          ? "#f2d2d7"
+                          : row?.results[item]?.positive == "false"
+                          ? "#cce7d4"
+                          : "#f0edfe",
+                    }}
+                    key={index}
                   >
-                    {row.results[item]?.result
-                      ? row.results[item]?.result
-                      : "-"}
-
                     <div
                       style={{
-                        display: row.results[item]?.result ? "flex" : "none",
-                        gap: "4px",
+                        display: "flex",
+                        justifyContent: "space-between",
                       }}
                     >
-                      {row.results[item]?.prescribed == "true" ? (
-                        <Image
-                          src={"/PR.svg"}
-                          alt="pr"
-                          width={23}
-                          height={23}
-                        />
-                      ) : (
-                        <Image
-                          src={"/NP.svg"}
-                          alt="np"
-                          width={23}
-                          height={23}
-                        />
-                      )}
-                      {row.results[item]?.consistent == "true" ? (
-                        <Image
-                          src={"/CO.svg"}
-                          alt="co"
-                          width={23}
-                          height={23}
-                        />
-                      ) : (
-                        <Image
-                          src={"/IN.svg"}
-                          alt="in"
-                          width={23}
-                          height={23}
-                        />
-                      )}
+                      {row.results[item]?.result
+                        ? row.results[item]?.result
+                        : "-"}
+
+                      <div
+                        style={{
+                          display: row.results[item]?.result ? "flex" : "none",
+                          gap: "4px",
+                        }}
+                      >
+                        {row.results[item]?.prescribed == "true" ? (
+                          <Image
+                            src={"/PR.svg"}
+                            alt="pr"
+                            width={23}
+                            height={23}
+                          />
+                        ) : (
+                          <Image
+                            src={"/NP.svg"}
+                            alt="np"
+                            width={23}
+                            height={23}
+                          />
+                        )}
+                        {row.results[item]?.consistent == "true" ? (
+                          <Image
+                            src={"/CO.svg"}
+                            alt="co"
+                            width={23}
+                            height={23}
+                          />
+                        ) : (
+                          <Image
+                            src={"/IN.svg"}
+                            alt="in"
+                            width={23}
+                            height={23}
+                          />
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </td>
-              );
-            })}
+                  </td>
+                );
+              }
+            )}
 
             <td
               style={{ cursor: "pointer" }}
@@ -139,7 +144,6 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
           graphDialogOpen={graphDialogOpen}
           setGraphDialogOpen={setGraphDialogOpen}
           graphData={graphData}
-          dates={toxicologyResults?.["resultDates"]}
         />
       ) : (
         ""

@@ -14,8 +14,8 @@ const GraphDialogForToxiResults = ({
   graphDialogOpen,
   setGraphDialogOpen,
   graphData,
-  dates,
 }: any) => {
+  let dates = { ...Object.keys(graphData.results) };
   const getGraphValuesDataInnerTable = (data: any) => {
     let results = JSON.parse(JSON.stringify(data.results));
     const resultArrayWithDates = Object.entries(results).map(
@@ -103,7 +103,9 @@ const GraphDialogForToxiResults = ({
       },
     },
     xAxis: {
-      categories: dates?.map((item: any) => momentWithTimezone(item)),
+      categories: Object?.keys(graphData?.results)?.map((item: any) =>
+        momentWithTimezone(item)
+      ),
     },
     series: [
       {
