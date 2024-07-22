@@ -25,7 +25,7 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
 
           {toxicologyResults?.["resultDates"]?.map(
             (result: any, resultIndex: any) => (
-              <th style={{ minWidth: "50px" }} key={resultIndex}>
+              <th style={{ minWidth: "100px",maxWidth:"100px" }} key={resultIndex}>
                 {momentWithTimezone(result)}
               </th>
             )

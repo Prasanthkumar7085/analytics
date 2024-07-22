@@ -72,7 +72,7 @@ export const ToxiPatientDetailsColumns = ({
       id: "actions",
       cell: (info: any) => (
         <span>
-          <Button
+          <Button className="viewBtn"
             variant="outlined"
             onClick={() => {
               setPatientsDetailsDialog(false);
@@ -81,7 +81,7 @@ export const ToxiPatientDetailsColumns = ({
               );
             }}
           >
-            View
+            View Details
           </Button>
         </span>
       ),

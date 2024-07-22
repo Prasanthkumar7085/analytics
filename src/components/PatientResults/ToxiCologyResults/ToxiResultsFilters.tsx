@@ -214,8 +214,9 @@ const ToxiResultsFilters = ({
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-end",
         gap: "10px",
+        flexWrap:"wrap"
       }}
     >
       <AutoCompleteForSearch

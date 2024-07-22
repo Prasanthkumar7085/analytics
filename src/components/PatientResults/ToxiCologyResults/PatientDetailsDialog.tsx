@@ -83,8 +83,8 @@ const ToxiCologyPatientDetailsDialog = ({
                 <Image
                   alt=""
                   src="/vector-patient.svg"
-                  height={20}
-                  width={20}
+                  height={14}
+                  width={14}
                 />
                 <div className="namesData patientLabel">
                   <label className="label">First Name</label>
@@ -104,8 +104,8 @@ const ToxiCologyPatientDetailsDialog = ({
                 <Image
                   alt=""
                   src="/vector-patient.svg"
-                  height={20}
-                  width={20}
+                  height={14}
+                  width={14}
                 />
                 <div className="namesData patientLabel">
                   <label className="label">Last Name</label>
@@ -122,10 +122,11 @@ const ToxiCologyPatientDetailsDialog = ({
                 </div>
               </div>
               <div className="eachBlocks b-right">
-                <Image alt="" src="/calendar.svg" height={20} width={20} />
+                <Image alt="" src="/calendar.svg" height={14} width={14} />
                 <div className="namesData patientLabel">
                   <label className="label">Date of Birth</label>
                   <DatePicker
+                    className="inputItemDate"
                     placeholder="Select Date of Birth"
                     format="MM/dd/yyyy"
                     value={dateOfBirth ? new Date(dateOfBirth) : null}
@@ -135,6 +136,8 @@ const ToxiCologyPatientDetailsDialog = ({
                   />
                 </div>
               </div>
+              <div className="eachBlocks btnBlock" >
+
               <Button
                 className={
                   !(firstName || lastName || dateOfBirth)
@@ -153,9 +156,10 @@ const ToxiCologyPatientDetailsDialog = ({
               >
                 Get Details
               </Button>
-              <Button onClick={() => setPatientsDetailsDialog(false)}>
+              <Button className="closeBtn" onClick={() => setPatientsDetailsDialog(false)}>
                 Close
               </Button>
+              </div>
             </div>
           </div>
           <div className="eachDataCard">
@@ -177,20 +181,15 @@ const ToxiCologyPatientDetailsDialog = ({
                 />
               ) : !loading ? (
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
+                    className="nodata"
                 >
                   <Image
                     src="/Search Image.svg"
                     alt=""
-                    height={210}
-                    width={410}
+                    height={200}
+                    width={200}
                   />
-                  <h3 className="no-data-text">No Data</h3>
+                  <h3 className="tableHeading">No Data</h3>
                 </div>
               ) : (
                 ""
