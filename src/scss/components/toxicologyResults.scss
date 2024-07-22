@@ -1,0 +1,43 @@
+#toxicologyResults {
+    padding-top: 8px;
+    .toxicologyContainer {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        margin-top: 8px !important;
+        .navActionsBlock {
+            margin:  0;
+            padding:0;
+        }
+    }
+}
+
+.toxipatientResultDialog {
+  background: #0000008f;
+  z-index: 1000;
+  .MuiPaper-root {
+    margin: 0 !important;
+    width: 100%;
+    height: calc(100% - 10px);
+    max-width: 75% !important;
+    max-height: 520px;
+  }
+  .MuiTypography-root {
+    color: #fff;
+  }
+  .patientResultstsDashboard {
+    #patientDetails {
+        .subNavBar {
+            .SubNavPointsBlock {
+                align-items: center;
+                .bacKBtn, .btnWithDisabled {
+                    min-height: inherit !important;
+                    height: 40px;
+                    text-transform: capitalize;
+                    
+                }
+            }
+        }
+    }
+  }
+}

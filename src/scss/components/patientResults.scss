@@ -7,9 +7,11 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 1rem 0;
+    border: 1px solid #E7E7F7;
 
     .SubNavPointsBlock {
       display: flex;
+      align-items: center;
       column-gap: 0.5rem;
       .tableHeading {
         color: #1b2459;
@@ -20,11 +22,11 @@
         display: flex;
         align-items: flex-start;
         column-gap: 0.5rem;
-        padding: 10px 20px;
-        border-left: 1px solid #606266;
+        padding: 6px 20px;
+        border-left: 1px solid #E7E7F7;
 
         &.b-right {
-          border-right: 1px solid #606266;
+          border-right: 1px solid #E7E7F7;
         }
 
         img {
@@ -38,15 +40,17 @@
           }
 
           .label {
-            font-size: 13px;
+            font-size: 11px;
             color: #606266;
             font-weight: 500;
+            font-family: $font-poppins;
           }
 
           .value {
-            font-size: 12px;
+            font-size: 10px;
             color: #000;
             font-weight: 400;
+            font-family: $font-poppins;
           }
         }
       }

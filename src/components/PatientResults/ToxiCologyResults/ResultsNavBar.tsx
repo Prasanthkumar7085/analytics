@@ -9,7 +9,7 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
     <div style={{ display: "flex" }}>
       <div className="SubNavPointsBlock">
         <div className="eachBlocks">
-          <Image alt="" src="/card.svg" height={20} width={20} />
+          <Image alt="" src="/card.svg" height={16} width={16} />
           <div className="namesData">
             <label className="label">Patient ID</label>
             <p className="value">
@@ -18,7 +18,7 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
           </div>
         </div>
         <div className="eachBlocks">
-          <Image alt="" src="/vector-patient.svg" height={20} width={20} />
+          <Image alt="" src="/vector-patient.svg" height={12} width={12} />
           <div className="namesData">
             <label className="label">First Name</label>
             <p className="value">
@@ -27,7 +27,7 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
           </div>
         </div>
         <div className="eachBlocks">
-          <Image alt="" src="/vector-patient.svg" height={20} width={20} />
+          <Image alt="" src="/vector-patient.svg" height={12} width={12} />
           <div className="namesData">
             <label className="label">Last Name</label>
             <p className="value">
@@ -36,7 +36,7 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
           </div>
         </div>
         <div className="eachBlocks">
-          <Image alt="" src="/Group.svg" height={20} width={20} />
+          <Image alt="" src="/Group.svg" height={16} width={16} />
           <div className="namesData">
             <label className="label">Gender</label>
             <p className="value">
@@ -45,7 +45,7 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
           </div>
         </div>
         <div className="eachBlocks b-right">
-          <Image alt="" src="/calendar.svg" height={20} width={20} />
+          <Image alt="" src="/calendar.svg" height={13} width={13} />
           <div className="namesData">
             <label className="label">Date of Birth</label>
             <p className="value">
@@ -59,7 +59,6 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
           sx={{
             height: "25px",
             textTransform: "capitalize",
-            marginTop: "15px",
           }}
           size="small"
           onClick={() => setPatientsDetailsDialog(true)}

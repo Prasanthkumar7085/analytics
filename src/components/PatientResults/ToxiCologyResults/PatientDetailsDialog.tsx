@@ -71,22 +71,9 @@ const ToxiCologyPatientDetailsDialog = ({
 
   return (
     <Dialog
+      className="toxipatientResultDialog"
       open={patientsDetailsDialog}
       fullWidth
-      sx={{
-        background: "#0000008f",
-        zIndex: 1000,
-        "& .MuiPaper-root": {
-          margin: "0 !important",
-          width: "100%",
-          height: "calc(100% - 10px)",
-          maxWidth: "75% !important",
-          maxHeight: "520px",
-        },
-        "& .MuiTypography-root": {
-          color: "#fff",
-        },
-      }}
     >
       <div className="patientResultstsDashboard">
         <section id="patientDetails">

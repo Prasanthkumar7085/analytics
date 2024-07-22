@@ -1,3 +1,6 @@
+$font-poppins:"Poppins", sans-serif;
+
+
 ul {
   margin: 0 !important;
   padding: 0 !important;
@@ -1670,3 +1673,4 @@ input:-webkit-autofill {
 @import "./components/patientResults.scss";
 @import "./components/upload.scss";
 @import "./components/billing-revenue.scss";
+@import "./components/toxicologyResults.scss";

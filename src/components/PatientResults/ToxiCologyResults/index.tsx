@@ -245,14 +245,14 @@ const ToxiCologyResults = () => {
   }, [params]);
 
   return (
-    <div style={{ paddingTop: "10px" }} className={"patientResultstsDashboard"}>
+    <div id="toxicologyResults" className={"patientResultstsDashboard"}>
       <div className="subNavBar">
         <ResultsNavBar
           patientsData={patientsData}
           setPatientsDetailsDialog={setPatientsDetailsDialog}
         />
       </div>
-
+      <div className="toxicologyContainer">     
       <div className="navActionsBlock">
         <h2 className="tableHeading">{"Toxicology Tests"}</h2>
         <ToxiResultsFilters
@@ -294,6 +294,7 @@ const ToxiCologyResults = () => {
       ) : (
         ""
       )}
+</div>
       <ToxiCologyPatientDetailsDialog
         patientsDetailsDialog={patientsDetailsDialog}
         setPatientsDetailsDialog={setPatientsDetailsDialog}

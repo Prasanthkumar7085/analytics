@@ -453,6 +453,9 @@
   background: #1b2459;
   padding: 30px 0 40px 0;
 }
+.toxicologyHeader {
+  padding: 10px 0 10px 0 !important;
+}
 .navigationLinks {
   display: flex;
   align-items: center;
