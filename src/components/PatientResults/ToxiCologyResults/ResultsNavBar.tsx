@@ -56,10 +56,7 @@ const ResultsNavBar = ({ patientsData, setPatientsDetailsDialog }: any) => {
           </div>
         </div>
         <Button
-          sx={{
-            height: "25px",
-            textTransform: "capitalize",
-          }}
+          className="changeBtn"
           size="small"
           onClick={() => setPatientsDetailsDialog(true)}
           variant="outlined"

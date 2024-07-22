@@ -1,15 +1,21 @@
 #toxicologyResults {
-    padding-top: 8px;
-    .toxicologyContainer {
-        background-color: #fff;
-        border-radius: 10px;
-        padding: 10px;
-        margin-top: 8px !important;
-        .navActionsBlock {
-            margin:  0;
-            padding:0;
-        }
+  padding-top: 8px;
+  .toxicologyContainer {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: 8px !important;
+    .navActionsBlock {
+      margin: 0;
+      padding: 0;
+      justify-content: space-between !important;
     }
+    .eachPatientResultTable {
+      margin-top: 0.5rem !important;
+      border: 0;
+      padding: 0;
+    }
+  }
 }
 
 .toxipatientResultDialog {
@@ -27,17 +33,17 @@
   }
   .patientResultstsDashboard {
     #patientDetails {
-        .subNavBar {
-            .SubNavPointsBlock {
-                align-items: center;
-                .bacKBtn, .btnWithDisabled {
-                    min-height: inherit !important;
-                    height: 40px;
-                    text-transform: capitalize;
-                    
-                }
-            }
+      .subNavBar {
+        .SubNavPointsBlock {
+          align-items: center;
+          .bacKBtn,
+          .btnWithDisabled {
+            min-height: inherit !important;
+            height: 40px;
+            text-transform: capitalize;
+          }
         }
+      }
     }
   }
 }

@@ -75,6 +75,8 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
+                        alignItems: "center",
+
                       }}
                     >
                       {row.results[item]?.result
@@ -84,6 +86,7 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                       <div
                         style={{
                           display: row.results[item]?.result ? "flex" : "none",
+                          alignItems:"center",
                           gap: "4px",
                         }}
                       >
@@ -91,30 +94,30 @@ const ToxiCologyResultsTable = ({ toxicologyResults }: any) => {
                           <Image
                             src={"/PR.svg"}
                             alt="pr"
-                            width={23}
-                            height={23}
+                            width={18}
+                            height={18}
                           />
                         ) : (
                           <Image
                             src={"/NP.svg"}
                             alt="np"
-                            width={23}
-                            height={23}
+                            width={18}
+                            height={18}
                           />
                         )}
                         {row.results[item]?.consistent == "true" ? (
                           <Image
                             src={"/CO.svg"}
                             alt="co"
-                            width={23}
-                            height={23}
+                            width={18}
+                            height={18}
                           />
                         ) : (
                           <Image
                             src={"/IN.svg"}
                             alt="in"
-                            width={23}
-                            height={23}
+                            width={18}
+                            height={18}
                           />
                         )}
                       </div>

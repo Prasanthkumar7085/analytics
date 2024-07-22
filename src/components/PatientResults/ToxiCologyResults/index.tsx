@@ -252,25 +252,24 @@ const ToxiCologyResults = () => {
           setPatientsDetailsDialog={setPatientsDetailsDialog}
         />
       </div>
-      <div className="toxicologyContainer">     
-      <div className="navActionsBlock">
-        <h2 className="tableHeading">{"Toxicology Tests"}</h2>
-        <ToxiResultsFilters
-          getPatientToxicologyResult={getPatientToxicologyResult}
-          id={id}
-          setDateFilterDefaultValue={setDateFilterDefaultValue}
-          dateFilterDefaultValue={dateFilterDefaultValue}
-          toxicologyResults={toxicologyResults}
-          setToxiCologyResults={setToxiCologyResults}
-          searchParams={searchParams}
-          router={router}
-          pathname={pathname}
-          completeData={completeData}
-          testAutoCompleteOptions={testAutoCompleteOptions}
-        />
-      </div>
-      {toxicologyResults?.["resultDates"]?.length ? (
-        <Container maxWidth="xl">
+      <div className="toxicologyContainer">
+        <div className="navActionsBlock">
+          <h2 className="tableHeading">{"Toxicology Tests"}</h2>
+          <ToxiResultsFilters
+            getPatientToxicologyResult={getPatientToxicologyResult}
+            id={id}
+            setDateFilterDefaultValue={setDateFilterDefaultValue}
+            dateFilterDefaultValue={dateFilterDefaultValue}
+            toxicologyResults={toxicologyResults}
+            setToxiCologyResults={setToxiCologyResults}
+            searchParams={searchParams}
+            router={router}
+            pathname={pathname}
+            completeData={completeData}
+            testAutoCompleteOptions={testAutoCompleteOptions}
+          />
+        </div>
+        {toxicologyResults?.["resultDates"]?.length ? (
           <div className="eachPatientResultTable">
             <div className="allPatientResultTable">
               <div className="tableContainer">
@@ -278,23 +277,15 @@ const ToxiCologyResults = () => {
               </div>
             </div>
           </div>
-        </Container>
-      ) : !loading ? (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Image src="/Search Image.svg" alt="" height={200} width={510} />
-          <h3>No Data</h3>
-        </div>
-      ) : (
-        ""
-      )}
-</div>
+        ) : !loading ? (
+          <div className="nodataBlock">
+            <Image src="/Search Image.svg" alt="" height={300} width={300} />
+            <h3 className="tableHeading">No Data</h3>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
       <ToxiCologyPatientDetailsDialog
         patientsDetailsDialog={patientsDetailsDialog}
         setPatientsDetailsDialog={setPatientsDetailsDialog}

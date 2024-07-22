@@ -251,7 +251,8 @@ const ToxiResultsFilters = ({
           downloadAsPdf();
         }}
         disabled={Object?.keys(toxicologyResults)?.length > 0 ? false : true}
-        variant="outlined"
+        variant="contained"
+        className="exportBtn"
       >
         Export to pdf
       </Button>
