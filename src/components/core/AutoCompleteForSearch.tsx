@@ -43,7 +43,7 @@ const AutoCompleteForSearch = ({
           const { key, ...optionProps } = props;
           return (
             <Box
-              key={key}
+              key={option.label}
               component="li"
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...optionProps}
